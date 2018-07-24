@@ -1,0 +1,99 @@
+buildscript {
+  repositories { 
+    mavenLocal() 
+    jcenter()
+    mavenCentral()
+  }
+  dependencies {
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.3.RELEASE")
+  }
+}
+
+plugins { 
+  id "io.spring.dependency-management" version "1.0.4.RELEASE" 
+  id "com.github.kt3k.coveralls" version "2.8.1" 
+  // id "de.aaschmid.cpd" version "1.0"
+  id "org.owasp.dependencycheck" version "3.1.2"
+  id "com.dorongold.task-tree" version "1.3"
+  id "org.ajoberstar.grgit" version "2.0.1"
+  // id "com.github.spotbugs" version "1.6.1"
+  id "com.jfrog.bintray" version "1.7.3"
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'jacoco'
+
+group = 'edu.kit.datamanager.metastore'
+version = '0.1.0'
+
+jar {
+  baseName = 'metastore-service'
+  version =  '0.1.0'
+}
+
+repositories {
+  mavenLocal() 
+  jcenter()
+  mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+ 
+configurations {
+  //   all*.exclude module : 'spring-boot-starter-logging'
+}
+
+dependencies {
+  compile("org.apache.httpcomponents:httpclient:4.5.1")
+  compile("com.arangodb:arangodb-spring-data:2.2.2")
+  compile("org.springframework.boot:spring-boot-starter")
+//  compile("org.springframework.boot:spring-boot-starter-data-rest")
+//  compile("org.springframework.boot:spring-boot-starter-web")
+//  compile("org.springframework.boot:spring-boot-starter-security")
+  //   compile("org.springframework.boot:spring-boot-starter-actuator")
+  //   compile("org.springframework.boot:spring-boot-starter-data-jpa")
+  //compile("org.springframework.security:spring-security-config")
+   
+  compile("io.springfox:springfox-swagger2:2.9.0")
+  compile("io.springfox:springfox-swagger-ui:2.9.0")
+  compile("com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.9.1")
+  compile("com.fasterxml.jackson.module:jackson-module-afterburner:2.7.1")
+  compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.6.5")
+   
+  compile("com.fasterxml.jackson.datatype:jackson-datatype-joda:2.4.0")
+   
+  compile("io.jsonwebtoken:jjwt:0.9.0")
+
+  compile("com.github.fge:json-patch:1.9")
+   
+  compile("org.apache.commons:commons-lang3:3.6")
+  compile("commons-io:commons-io:2.5")
+   
+  compile("org.apache.commons:commons-collections4:4.1")
+   
+  compile("org.slf4j:slf4j-api:1.7.25")
+  compile("ch.qos.logback:logback-classic:1.2.3")
+
+  //compile("org.eclipse.persistence:javax.persistence:2.1.0")
+   
+  compileOnly('org.projectlombok:lombok')
+
+  testCompile("junit:junit:4.12")
+
+  testCompile("org.mockito:mockito-core:2.8.9")
+  testCompile("org.powermock:powermock-module-junit4:1.7.4")
+  testCompile("org.powermock:powermock-api-mockito2:1.7.4")
+}
+
+
+jacocoTestReport {
+  reports {
+    xml.enabled true
+    html.enabled true
+  }
+}
