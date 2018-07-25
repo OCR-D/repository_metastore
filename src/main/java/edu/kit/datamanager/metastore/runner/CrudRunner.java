@@ -27,8 +27,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.ComponentScan;
 
 import com.arangodb.springframework.core.ArangoOperations;
+import edu.kit.datamanager.metastore.entity.MdType;
 import edu.kit.datamanager.metastore.entity.MetsDocument;
+import edu.kit.datamanager.metastore.entity.SectionDocument;
 import edu.kit.datamanager.metastore.repository.MetsDocumentRepository;
+import edu.kit.datamanager.metastore.repository.SectionDocumentRepository;
 import org.springframework.dao.DataAccessException;
 
 /**
@@ -42,6 +45,8 @@ public class CrudRunner implements CommandLineRunner {
   private ArangoOperations operations;
   @Autowired
   private MetsDocumentRepository repository;
+  @Autowired
+  private SectionDocumentRepository secRepository;
 
   @Override
   public void run(final String... args) throws Exception {
@@ -60,8 +65,16 @@ public class CrudRunner implements CommandLineRunner {
     // there is no need of creating the collection first. This happen automatically
     final MetsDocument metsDocument = new MetsDocument("id_0001", "someXML");
     repository.save(metsDocument);
-    // the generated id from the database is set in the original entity
     System.out.println(String.format("metsDocument saved in the database with id: '%s' with version: '%d' at %tD", metsDocument.getId(), metsDocument.getVersion(), metsDocument.getLastModified()));
+    for (MetsDocument document : createMetsDocuments()) {
+      repository.save(document);
+    System.out.println(String.format("metsDocument saved in the database with id: '%s' with version: '%d' at %tD", document.getId(), document.getVersion(), document.getLastModified()));
+    }
+    for (SectionDocument document : createSectionDocuments()) {
+      secRepository.save(document);
+    System.out.println(String.format("metsDocument saved in the database with id: '%s' with prefix: '%s' resourceId %s", document.getId(), document.getPrefix(), document.getResourceId()));
+    }
+    // the generated id from the database is set in the original entity
     Thread.sleep(2000);
 //
 //		// lets take a look whether we can find Ned Stark in the database
@@ -117,6 +130,34 @@ public class CrudRunner implements CommandLineRunner {
             new MetsDocument("id_0020", "Naharis"),
             new MetsDocument("id_0021", "Baratheon"),
             new MetsDocument("id_0022", "Bolton"));
+  }
+
+  public static Collection<SectionDocument> createSectionDocuments() {
+    return Arrays.asList(
+            new SectionDocument("id_0002", "bmd", "secId", MdType.OTHER, null, "someContent"),
+            new SectionDocument("id_0002", "tei", "secId", MdType.OTHER, null, "someContent"),
+            new SectionDocument("id_0002", "dc", "secId", MdType.OTHER, null, "someContent"),
+            new SectionDocument("id_0002", "file", "secId", MdType.OTHER, null, "someContent"));
+//            new SectionDocument("id_0003me", "Lannister"),
+//            new SectionDocument("id_0004sei", "Lannister"),
+//            new SectionDocument("id_0005ah", "Mormont"),
+//            new SectionDocument("id_0006e6rys", "Targaryen"),
+//            new SectionDocument("id_0007sa", "Stark"),
+//            new SectionDocument("id_0008b", "Stark"),
+//            new SectionDocument("id_0009n", "Stark"),
+//            new SectionDocument("id_0010dor", "Clegane"),
+//            new SectionDocument("id_0001l", "Drogo"),
+//            new SectionDocument("id_0012os", "Seaworth"),
+//            new SectionDocument("id_0013nnis", "Baratheon"),
+//            new SectionDocument("id_00140gaery", "Tyrell"),
+//            new SectionDocument("id_0015", "XML 00015"),
+//            new SectionDocument("id_0016", "Maegyr"),
+//            new SectionDocument("id_0017", "xml 0017"),
+//            new SectionDocument("id_0018", "xml00018"),
+//            new SectionDocument("id_0019", "Bolton"),
+//            new SectionDocument("id_0020", "Naharis"),
+//            new SectionDocument("id_0021", "Baratheon"),
+//            new SectionDocument("id_0022", "Bolton"));
   }
 
 }
