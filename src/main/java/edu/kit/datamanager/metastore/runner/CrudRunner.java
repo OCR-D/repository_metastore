@@ -30,8 +30,10 @@ import com.arangodb.springframework.core.ArangoOperations;
 import edu.kit.datamanager.metastore.entity.MdType;
 import edu.kit.datamanager.metastore.entity.MetsDocument;
 import edu.kit.datamanager.metastore.entity.SectionDocument;
+import edu.kit.datamanager.metastore.entity.XmlSchemaDefinition;
 import edu.kit.datamanager.metastore.repository.MetsDocumentRepository;
 import edu.kit.datamanager.metastore.repository.SectionDocumentRepository;
+import edu.kit.datamanager.metastore.repository.XmlSchemaDefinitionRepository;
 import org.springframework.dao.DataAccessException;
 
 /**
@@ -47,10 +49,12 @@ public class CrudRunner implements CommandLineRunner {
   private MetsDocumentRepository repository;
   @Autowired
   private SectionDocumentRepository secRepository;
+  @Autowired
+  private XmlSchemaDefinitionRepository xsdRepository;
 
   @Override
   public void run(final String... args) throws Exception {
-    System.out.println("Run CRUD Runner!");
+      System.out.println("Run CRUD Runner!");
     // first drop the database so that we can run this multiple times with the same dataset
     try {
       operations.dropDatabase();
@@ -68,14 +72,22 @@ public class CrudRunner implements CommandLineRunner {
     System.out.println(String.format("metsDocument saved in the database with id: '%s' with version: '%d' at %tD", metsDocument.getId(), metsDocument.getVersion(), metsDocument.getLastModified()));
     for (MetsDocument document : createMetsDocuments()) {
       repository.save(document);
-      System.out.println(String.format("metsDocument saved in the database with id: '%s' with version: '%d' at %tD", document.getId(), document.getVersion(), document.getLastModified()));
+    System.out.println(String.format("metsDocument saved in the database with id: '%s' with version: '%d' at %tD", document.getId(), document.getVersion(), document.getLastModified()));
     }
     for (SectionDocument document : createSectionDocuments()) {
       secRepository.save(document);
-      System.out.println(String.format("secDocument saved in the database with id: '%s' with prefix: '%s' resourceId %s", document.getId(), document.getPrefix(), document.getResourceId()));
+    System.out.println(String.format("secDocument saved in the database with id: '%s' with prefix: '%s' resourceId %s", document.getId(), document.getPrefix(), document.getResourceId()));
     }
     // the generated id from the database is set in the original entity
     Thread.sleep(2000);
+    
+    Iterable<SectionDocument> findByResourceIdAndPrefix = secRepository.findByResourceIdAndPrefix("id_0002", "dc");
+    System.out.println(findByResourceIdAndPrefix.iterator().next().getSectionDocument());
+    
+    for (XmlSchemaDefinition document : createSchemaDefinitions()) {
+      xsdRepository.save(document);
+    System.out.println(String.format("xsdDocument saved in the database with id: '%s' with prefix: '%s' namespace %s", document.getId(), document.getPrefix(), document.getNamespace()));
+    }
 //
 //		// lets take a look whether we can find Ned Stark in the database
 //		final Character foundNed = repository.findById(nedStark.getId()).get();
@@ -160,4 +172,32 @@ public class CrudRunner implements CommandLineRunner {
 //            new SectionDocument("id_0022", "Bolton"));
   }
 
+  public static Collection<XmlSchemaDefinition> createSchemaDefinitions() {
+    return Arrays.asList(
+            new XmlSchemaDefinition("bmd", "namespace1", "someBMDContent"),
+            new XmlSchemaDefinition("tei", "namespace2", "someTeiContent"),
+            new XmlSchemaDefinition("dc", "namespace3", "someDCContent"),
+            new XmlSchemaDefinition("file", "namespace4", "someFileContent"));
+//            new SectionDocument("id_0003me", "Lannister"),
+//            new SectionDocument("id_0004sei", "Lannister"),
+//            new SectionDocument("id_0005ah", "Mormont"),
+//            new SectionDocument("id_0006e6rys", "Targaryen"),
+//            new SectionDocument("id_0007sa", "Stark"),
+//            new SectionDocument("id_0008b", "Stark"),
+//            new SectionDocument("id_0009n", "Stark"),
+//            new SectionDocument("id_0010dor", "Clegane"),
+//            new SectionDocument("id_0001l", "Drogo"),
+//            new SectionDocument("id_0012os", "Seaworth"),
+//            new SectionDocument("id_0013nnis", "Baratheon"),
+//            new SectionDocument("id_00140gaery", "Tyrell"),
+//            new SectionDocument("id_0015", "XML 00015"),
+//            new SectionDocument("id_0016", "Maegyr"),
+//            new SectionDocument("id_0017", "xml 0017"),
+//            new SectionDocument("id_0018", "xml00018"),
+//            new SectionDocument("id_0019", "Bolton"),
+//            new SectionDocument("id_0020", "Naharis"),
+//            new SectionDocument("id_0021", "Baratheon"),
+//            new SectionDocument("id_0022", "Bolton"));
   }
+
+}
