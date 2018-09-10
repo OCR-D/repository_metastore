@@ -29,7 +29,7 @@ import edu.kit.datamanager.metastore.entity.SectionDocument;
  */
 public interface SectionDocumentRepository extends ArangoRepository<SectionDocument, String> {
 
-//	Iterable<Character> findByResourceId(String resourceId);
+	Iterable<SectionDocument> findByResourceIdAndPrefix(String resourceId, String prefix);
 
 //	Collection<Character> findTop2DistinctBySurnameIgnoreCaseOrderByAgeDesc(String surname);
 //

@@ -29,7 +29,7 @@ import edu.kit.datamanager.metastore.entity.MetsDocument;
  */
 public interface MetsDocumentRepository extends ArangoRepository<MetsDocument, String> {
 
-//	Iterable<Character> findByResourceId(String resourceId);
+	Iterable<MetsDocument> findByResourceId(String resourceId);
 
 //	Collection<Character> findTop2DistinctBySurnameIgnoreCaseOrderByAgeDesc(String surname);
 //

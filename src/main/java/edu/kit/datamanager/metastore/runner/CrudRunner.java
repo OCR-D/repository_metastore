@@ -50,7 +50,7 @@ public class CrudRunner implements CommandLineRunner {
 
   @Override
   public void run(final String... args) throws Exception {
-      System.out.println("Run CRUD Runner!");
+    System.out.println("Run CRUD Runner!");
     // first drop the database so that we can run this multiple times with the same dataset
     try {
       operations.dropDatabase();
@@ -68,11 +68,11 @@ public class CrudRunner implements CommandLineRunner {
     System.out.println(String.format("metsDocument saved in the database with id: '%s' with version: '%d' at %tD", metsDocument.getId(), metsDocument.getVersion(), metsDocument.getLastModified()));
     for (MetsDocument document : createMetsDocuments()) {
       repository.save(document);
-    System.out.println(String.format("metsDocument saved in the database with id: '%s' with version: '%d' at %tD", document.getId(), document.getVersion(), document.getLastModified()));
+      System.out.println(String.format("metsDocument saved in the database with id: '%s' with version: '%d' at %tD", document.getId(), document.getVersion(), document.getLastModified()));
     }
     for (SectionDocument document : createSectionDocuments()) {
       secRepository.save(document);
-    System.out.println(String.format("metsDocument saved in the database with id: '%s' with prefix: '%s' resourceId %s", document.getId(), document.getPrefix(), document.getResourceId()));
+      System.out.println(String.format("secDocument saved in the database with id: '%s' with prefix: '%s' resourceId %s", document.getId(), document.getPrefix(), document.getResourceId()));
     }
     // the generated id from the database is set in the original entity
     Thread.sleep(2000);
@@ -134,10 +134,10 @@ public class CrudRunner implements CommandLineRunner {
 
   public static Collection<SectionDocument> createSectionDocuments() {
     return Arrays.asList(
-            new SectionDocument("id_0002", "bmd", "secId", MdType.OTHER, null, "someContent"),
-            new SectionDocument("id_0002", "tei", "secId", MdType.OTHER, null, "someContent"),
-            new SectionDocument("id_0002", "dc", "secId", MdType.OTHER, null, "someContent"),
-            new SectionDocument("id_0002", "file", "secId", MdType.OTHER, null, "someContent"));
+            new SectionDocument("id_0002", "bmd", "secId", MdType.OTHER, null, "someBMDContent"),
+            new SectionDocument("id_0002", "tei", "secId", MdType.OTHER, null, "someTeiContent"),
+            new SectionDocument("id_0002", "dc", "secId", MdType.OTHER, null, "someDCContent"),
+            new SectionDocument("id_0002", "file", "secId", MdType.OTHER, null, "someFileContent"));
 //            new SectionDocument("id_0003me", "Lannister"),
 //            new SectionDocument("id_0004sei", "Lannister"),
 //            new SectionDocument("id_0005ah", "Mormont"),
@@ -160,4 +160,4 @@ public class CrudRunner implements CommandLineRunner {
 //            new SectionDocument("id_0022", "Bolton"));
   }
 
-}
+  }
