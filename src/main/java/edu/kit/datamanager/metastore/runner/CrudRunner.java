@@ -35,7 +35,7 @@ import edu.kit.datamanager.metastore.repository.SectionDocumentRepository;
 import org.springframework.dao.DataAccessException;
 
 /**
- * @author Mark Vollmary
+ * @author Volker Hartmann
  *
  */
 @ComponentScan("edu.kit.datamanager.metastore")

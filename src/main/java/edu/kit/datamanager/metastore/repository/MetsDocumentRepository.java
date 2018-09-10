@@ -27,7 +27,7 @@ import edu.kit.datamanager.metastore.entity.MetsDocument;
  * @author Volker Hartmann
  *
  */
-public interface MetsDocumentRepository extends ArangoRepository<MetsDocument> {
+public interface MetsDocumentRepository extends ArangoRepository<MetsDocument, String> {
 
 //	Iterable<Character> findByResourceId(String resourceId);
 

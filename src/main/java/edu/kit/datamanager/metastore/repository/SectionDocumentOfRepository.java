@@ -27,7 +27,7 @@ import edu.kit.datamanager.metastore.entity.SectionDocumentOf;
  * @author Volker Hartmann
  *
  */
-public interface SectionDocumentOfRepository extends ArangoRepository<SectionDocumentOf> {
+public interface SectionDocumentOfRepository extends ArangoRepository<SectionDocumentOf, String> {
 
 //	Iterable<Character> findByResourceId(String resourceId);
 
