@@ -23,16 +23,25 @@ import org.springframework.data.annotation.Id;
  *
  * @author hartmann-v
  */
-@Document("sectionDocument")
+@Document("xmlSchemaDefinition")
 @HashIndex(fields = {"prefix"}, unique = true)
-public class XmlSchemaDefiniton {
+@HashIndex(fields = {"namespace"}, unique = true)
+public class XmlSchemaDefinition {
   	@Id
 	private String id;
 
 	private String prefix;
 	private String namespace;
+  
 	private String xsdFile;
 
+
+  public XmlSchemaDefinition(final String prefix, final String namespace, final String xsdFile) {
+    super();
+    this.prefix = prefix;
+    this.namespace = namespace;
+    this.xsdFile = xsdFile;
+  }
   /**
    * @return the id
    */
