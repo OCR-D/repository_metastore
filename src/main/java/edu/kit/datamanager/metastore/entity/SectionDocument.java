@@ -168,4 +168,10 @@ public class SectionDocument {
   public void setSectionDocument(String sectionDocument) {
     this.sectionDocument = sectionDocument;
   }
+  
+  @Override
+  public String toString() {
+     return "SectionDocument [id=" + id + ", prefix=" + prefix + ", resourceId=" + resourceId + ", sectionDocument=" + sectionDocument + ", sectionId=" + sectionId + ", sectionOtherMD=" + sectionOtherMdType + "]";
+    
+  }
 }

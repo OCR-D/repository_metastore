@@ -27,13 +27,19 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.ComponentScan;
 
 import com.arangodb.springframework.core.ArangoOperations;
+import edu.kit.datamanager.metastore.entity.IUrlOfMetsFile;
 import edu.kit.datamanager.metastore.entity.MdType;
 import edu.kit.datamanager.metastore.entity.MetsDocument;
+import edu.kit.datamanager.metastore.entity.MetsFile;
+import edu.kit.datamanager.metastore.entity.MetsFileOf;
 import edu.kit.datamanager.metastore.entity.SectionDocument;
 import edu.kit.datamanager.metastore.entity.XmlSchemaDefinition;
 import edu.kit.datamanager.metastore.repository.MetsDocumentRepository;
+import edu.kit.datamanager.metastore.repository.MetsFileOfRepository;
+import edu.kit.datamanager.metastore.repository.MetsFileRepository;
 import edu.kit.datamanager.metastore.repository.SectionDocumentRepository;
 import edu.kit.datamanager.metastore.repository.XmlSchemaDefinitionRepository;
+import java.util.Iterator;
 import org.springframework.dao.DataAccessException;
 
 /**
@@ -51,6 +57,10 @@ public class CrudRunner implements CommandLineRunner {
   private SectionDocumentRepository secRepository;
   @Autowired
   private XmlSchemaDefinitionRepository xsdRepository;
+  @Autowired
+  private MetsFileRepository metsFileRepository;
+  @Autowired
+  private MetsFileOfRepository metsFileOfRepository;
 
   @Override
   public void run(final String... args) throws Exception {
@@ -67,6 +77,9 @@ public class CrudRunner implements CommandLineRunner {
 
     // save a single entity in the database
     // there is no need of creating the collection first. This happen automatically
+    System.out.println("********************************************************************************************************************");
+    System.out.println("*******************************           MetsDocument           ***************************************************");
+    System.out.println("********************************************************************************************************************");
     final MetsDocument metsDocument = new MetsDocument("id_0001", "someXML");
     repository.save(metsDocument);
     System.out.println(String.format("metsDocument saved in the database with id: '%s' with version: '%d' at %tD", metsDocument.getId(), metsDocument.getVersion(), metsDocument.getLastModified()));
@@ -78,6 +91,9 @@ public class CrudRunner implements CommandLineRunner {
       secRepository.save(document);
     System.out.println(String.format("secDocument saved in the database with id: '%s' with prefix: '%s' resourceId %s", document.getId(), document.getPrefix(), document.getResourceId()));
     }
+    System.out.println("********************************************************************************************************************");
+    System.out.println("************************       SectionDocument         ************************************************************");
+   System.out.println("********************************************************************************************************************");
     // the generated id from the database is set in the original entity
     Thread.sleep(2000);
     
@@ -88,7 +104,64 @@ public class CrudRunner implements CommandLineRunner {
       xsdRepository.save(document);
     System.out.println(String.format("xsdDocument saved in the database with id: '%s' with prefix: '%s' namespace %s", document.getId(), document.getPrefix(), document.getNamespace()));
     }
-//
+    System.out.println("********************************************************************************************************************");
+    System.out.println("************************      MetsFile / MetsFileOf                      *******************************************");
+   System.out.println("********************************************************************************************************************");
+    Collection<MetsFile> createMetsFiles = createMetsFiles();
+    for (MetsFile metsFile : createMetsFiles) {
+        String resourceId = metsFile.getResourceId();
+        System.out.println("ResourceId: " + resourceId);
+        metsFileRepository.save(metsFile);
+        System.out.println("MetsFile saved!");
+        Iterable<MetsDocument> findByResourceId = repository.findByResourceId(resourceId);
+        MetsDocument mDoc = findByResourceId.iterator().next();
+        System.out.println("Find MetsDocument: " + mDoc);
+        metsFileOfRepository.save(new MetsFileOf(metsFile, mDoc));
+         System.out.println("MetsFileOf saved!");
+       
+    System.out.println(String.format("MetsFile saved in the database with id: '%s' with use: '%s' groupId %s", metsFile.getFileId(), metsFile.getUse(), metsFile.getGroupId()));
+    }
+     System.out.println("********************************************************************************************************************");
+     System.out.println("************************      MetsFiles of MetsDocument with id id_0002  *******************************************");
+   System.out.println("********************************************************************************************************************");
+  
+    MetsDocument doc = repository.findByResourceId("id_0002").iterator().next();
+    for (MetsFile file : doc.getMetsFiles()) {
+      System.out.println(file);
+    }
+     System.out.println("********************************************************************************************************************");
+     System.out.println("************************      Find URL of MetsFiles by USE        ******************************************************");
+   System.out.println("********************************************************************************************************************");
+  Iterable<MetsFile> findUrl = repository.findMetsFileByMetsFilesUse("OCR-D-GT-IMG-BIN");
+    Iterator<MetsFile> urlIterator = findUrl.iterator();
+    while (urlIterator.hasNext() ) {
+      System.out.println(urlIterator.next().getUrl());
+    }
+    System.out.println("********************************************************************************************************************");
+     System.out.println("************************      Find MetsDocument by USE        ******************************************************");
+   System.out.println("********************************************************************************************************************");
+  Iterable<MetsDocument> findMetsFileByUse = repository.findByMetsFilesUse("OCR-D-GT-IMG-BIN");
+    Iterator<MetsDocument> iterator = findMetsFileByUse.iterator();
+    while (iterator.hasNext() ) {
+      System.out.println(iterator.next());
+    }
+    System.out.println("********************************************************************************************************************");
+     System.out.println("************************      Find MetsDocument by at least one USE   *********************************************");
+   System.out.println("********************************************************************************************************************");
+  Iterable<MetsDocument> findMetsFileByUseIn = repository.findByMetsFilesUseIn(Arrays.asList("OCR-D-GT-IMG-BIN", "OCR-D-GT-IMG-DESPEC"));
+    Iterator<MetsDocument> useInIterator = findMetsFileByUseIn.iterator();
+    while (useInIterator.hasNext() ) {
+      System.out.println(useInIterator.next());
+    }
+    System.out.println("********************************************************************************************************************");
+     System.out.println("************************      Find MetsDocument by USE  and ID      ******************************************************");
+   System.out.println("********************************************************************************************************************");
+  Iterable<MetsDocument> findByResourceIdAndMetsFilesUse = repository.findByResourceIdAndMetsFilesUse("id_0002", "OCR-D-GT-IMG-BIN");
+    Iterator<MetsDocument> resourceAndUseIterator = findByResourceIdAndMetsFilesUse.iterator();
+    while (resourceAndUseIterator.hasNext() ) {
+      System.out.println(resourceAndUseIterator.next());
+    }
+ //
 //		// lets take a look whether we can find Ned Stark in the database
 //		final Character foundNed = repository.findById(nedStark.getId()).get();
 //		System.out.println(String.format("Found %s", foundNed));
@@ -149,7 +222,8 @@ public class CrudRunner implements CommandLineRunner {
             new SectionDocument("id_0002", "bmd", "secId", MdType.OTHER, null, "someBMDContent"),
             new SectionDocument("id_0002", "tei", "secId", MdType.OTHER, null, "someTeiContent"),
             new SectionDocument("id_0002", "dc", "secId", MdType.OTHER, null, "someDCContent"),
-            new SectionDocument("id_0002", "file", "secId", MdType.OTHER, null, "someFileContent"));
+            new SectionDocument("id_0002", "file", "secId", MdType.OTHER, null, "someFileContent"),
+            new SectionDocument("id_0002", "gt_ocr-d", "GT_OCR-D", MdType.OTHER, null, "<ocrd><groundTruth><language>deutsch</language></groundTruth></ocrd>someFileContent"));
 //            new SectionDocument("id_0003me", "Lannister"),
 //            new SectionDocument("id_0004sei", "Lannister"),
 //            new SectionDocument("id_0005ah", "Mormont"),
@@ -178,26 +252,21 @@ public class CrudRunner implements CommandLineRunner {
             new XmlSchemaDefinition("tei", "namespace2", "someTeiContent"),
             new XmlSchemaDefinition("dc", "namespace3", "someDCContent"),
             new XmlSchemaDefinition("file", "namespace4", "someFileContent"));
-//            new SectionDocument("id_0003me", "Lannister"),
-//            new SectionDocument("id_0004sei", "Lannister"),
-//            new SectionDocument("id_0005ah", "Mormont"),
-//            new SectionDocument("id_0006e6rys", "Targaryen"),
-//            new SectionDocument("id_0007sa", "Stark"),
-//            new SectionDocument("id_0008b", "Stark"),
-//            new SectionDocument("id_0009n", "Stark"),
-//            new SectionDocument("id_0010dor", "Clegane"),
-//            new SectionDocument("id_0001l", "Drogo"),
-//            new SectionDocument("id_0012os", "Seaworth"),
-//            new SectionDocument("id_0013nnis", "Baratheon"),
-//            new SectionDocument("id_00140gaery", "Tyrell"),
-//            new SectionDocument("id_0015", "XML 00015"),
-//            new SectionDocument("id_0016", "Maegyr"),
-//            new SectionDocument("id_0017", "xml 0017"),
-//            new SectionDocument("id_0018", "xml00018"),
-//            new SectionDocument("id_0019", "Bolton"),
-//            new SectionDocument("id_0020", "Naharis"),
-//            new SectionDocument("id_0021", "Baratheon"),
-//            new SectionDocument("id_0022", "Bolton"));
+  }
+  public static Collection<MetsFile> createMetsFiles() {
+    return Arrays.asList(
+            new MetsFile("PAGE-0001_IMG_BIN",    "id_0002", "image/png", "PAGE-0001", "OCR-D-GT-IMG-BIN",    "url1"),
+            new MetsFile("PAGE-0001_IMG-CROP",   "id_0002", "image/png", "PAGE-0001", "OCR-D-GT-IMG-CROP",   "url2"),
+            new MetsFile("PAGE-0001_IMG-DESPEC", "id_0002", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DESPEC", "url3"),
+            new MetsFile("PAGE-0001_IMG-DEWARP", "id_0002", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DEWARP", "url4"),
+            new MetsFile("PAGE-0001_IMG_BIN",    "id_0015", "image/png", "PAGE-0001", "OCR-D-GT-IMG-BIN",    "url11"),
+            new MetsFile("PAGE-0001_IMG-CROP",   "id_0015", "image/png", "PAGE-0001", "OCR-D-GT-IMG-CROP",   "url21"),
+            new MetsFile("PAGE-0001_IMG-DESPEC", "id_0015", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DESPEC", "url31"),
+            new MetsFile("PAGE-0001_IMG-DEWARP", "id_0015", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DEWARP", "url41"),
+            new MetsFile("PAGE-0001_IMG_BIN",    "id_0016", "image/png", "PAGE-0001", "OCR-D-GT-IMG-BIN",    "url16"),
+            new MetsFile("PAGE-0001_IMG-CROP",   "id_0017", "image/png", "PAGE-0001", "OCR-D-GT-IMG-CROP",   "url17"),
+            new MetsFile("PAGE-0001_IMG-DESPEC", "id_0018", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DESPEC", "url18"),
+            new MetsFile("PAGE-0001_IMG-DEWARP", "id_0019", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DEWARP", "url19"));
   }
 
 }

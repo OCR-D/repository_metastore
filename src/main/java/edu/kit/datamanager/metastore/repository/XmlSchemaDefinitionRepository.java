@@ -31,10 +31,15 @@ public interface XmlSchemaDefinitionRepository extends ArangoRepository<XmlSchem
   /**
    * Find all xsd-files given by namespace.
    * 
-   * @param namespace namespace of the xsd file (should be unique)
-   * @return instances of XmlSchemaDefinition
+   * @param namespace Namespace of the xsd-file (should be unique)
+   * @return Instances of XML schema definition
    */
 	Iterable<XmlSchemaDefinition> findByNamespace(String namespace);
+  /**
+   * Find all xsd-files given by prefix.
+   * @param prefix Prefix of the xsd-file (should be unique)
+   * @return  Instances of XML schema definition.
+   */
 	Iterable<XmlSchemaDefinition> findByPrefix(String prefix);
 
 //	Collection<Character> findTop2DistinctBySurnameIgnoreCaseOrderByAgeDesc(String surname);

@@ -21,25 +21,15 @@
 package edu.kit.datamanager.metastore.repository;
 
 import com.arangodb.springframework.repository.ArangoRepository;
-import edu.kit.datamanager.metastore.entity.MetsDocument;
-import edu.kit.datamanager.metastore.entity.MetsFile;
-import java.util.Collection;
+import edu.kit.datamanager.metastore.entity.MetsFileOf;
 
 /**
  * @author Volker Hartmann
  *
  */
-public interface MetsDocumentRepository extends ArangoRepository<MetsDocument, String> {
+public interface MetsFileOfRepository extends ArangoRepository<MetsFileOf, String> {
 
-	Iterable<MetsDocument> findByResourceId(String resourceId);
- 
-  Iterable<MetsDocument> findByMetsFilesUse(String use);
-
-  Iterable<MetsDocument> findByMetsFilesUseIn(Collection use);
-
-  Iterable<MetsDocument> findByResourceIdAndMetsFilesUse(String resourceId, String use);
-  
-  Iterable<MetsFile> findMetsFileByMetsFilesUse(String use);
+//	Iterable<Character> findByResourceId(String resourceId);
 
 //	Collection<Character> findTop2DistinctBySurnameIgnoreCaseOrderByAgeDesc(String surname);
 //

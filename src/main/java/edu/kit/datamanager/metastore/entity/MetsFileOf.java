@@ -27,18 +27,18 @@ import com.arangodb.springframework.annotation.To;
  *
  */
 @Edge
-public class SectionDocumentOf {
+public class MetsFileOf {
 
 	@Id
 	private String id;
 
 	@From
-	private SectionDocument child;
+	private MetsFile child;
 
 	@To
 	private MetsDocument parent;
 
-	public SectionDocumentOf(final SectionDocument child, final MetsDocument parent) {
+	public MetsFileOf(final MetsFile child, final MetsDocument parent) {
 		super();
 		this.child = child;
 		this.parent = parent;
@@ -52,11 +52,11 @@ public class SectionDocumentOf {
 		this.id = id;
 	}
 
-	public SectionDocument getChild() {
+	public MetsFile getChild() {
 		return child;
 	}
 
-	public void setChild(final SectionDocument child) {
+	public void setChild(final MetsFile child) {
 		this.child = child;
 	}
 
@@ -70,7 +70,7 @@ public class SectionDocumentOf {
 
 	@Override
 	public String toString() {
-		return "SectionDocumentOf [id=" + id + ", child=" + child + ", parent=" + parent + "]";
+		return "MetsFileOf [id=" + id + ", child=" + child + ", parent=" + parent + "]";
 	}
 
 }

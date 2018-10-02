@@ -17,7 +17,6 @@
  *
  * Copyright holder is ArangoDB GmbH, Cologne, Germany
  */
-
 package edu.kit.datamanager.metastore.entity;
 
 import java.util.Collection;
@@ -26,39 +25,75 @@ import org.springframework.data.annotation.Id;
 
 import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.HashIndex;
+import com.arangodb.springframework.annotation.Relations;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * @author Volker Hartmann
- *
+ * This class contains all information about a digital object.
+ * These are: <p><ul>
+ *    <li>descriptive metadata
+ *       <ul><li>dublin core metadata
+ *       <li>content metadata
+ *       <li>files</ul>
+ *    <li>administrative metadata
+ *    </ul><p>
+ * In case of OCR-D data there may be an optional attribute holding
+ * all metadata about the Ground-Truth. 
+ * 
  */
 @Document("metsDocument")
-@HashIndex(fields = { "resourceId"}, unique = true)
+@HashIndex(fields = {"resourceId"}, unique = true)
 public class MetsDocument {
 
-	@Id
-	private String id;
-
-	private String resourceId;
-	private String metsDocument;
-	private Integer version;
+  /** 
+   * ID of the document.
+   */
+  @Id
+  private String id;
+  /** 
+   * Resource ID of the document extracted from mets document. 
+   */
+  private String resourceId;
+  /**
+   * Original Mets document. 
+   * Does not contain updates in sections.
+   */
+  private String metsDocument;
+  /**
+   * Version number of the document.
+   */
+  private Integer version;
+  /** 
+   * Last modification in any section.
+   */
   private Date lastModified;
-//	@Relations(edges = ChildOf.class, lazy = true)
-//	private Collection<MetsDocument> childs;
+  /**
+   * Collection with all sections of the administrative and descriptive metadata.
+   */
+  @Relations(edges = SectionDocumentOf.class, lazy = true)
+  private Collection<SectionDocument> sectionDocuments;
+  /** 
+   * Collection holding all referenced files inside the file section.
+   */
+  @Relations(edges = MetsFileOf.class, lazy = true)
+  private Collection<MetsFile> metsFiles;
 
-	public MetsDocument() {
-		super();
-	}
+  /**
+   * Constructor.
+   */
+  public MetsDocument() {
+    super();
+  }
 
-	public MetsDocument(final String resourceId, final String metsDocument) {
-		super();
-		this.resourceId = resourceId;
-		this.metsDocument = metsDocument;
-		this.version = 1;
+  public MetsDocument(final String resourceId, final String metsDocument) {
+    super();
+    this.resourceId = resourceId;
+    this.metsDocument = metsDocument;
+    this.version = 1;
     this.lastModified = new Date();
-	}
-
-
+    metsFiles = new ArrayList<>();
+  }
 
 //	public Collection<MetsDocument> getChilds() {
 //		return childs;
@@ -73,7 +108,6 @@ public class MetsDocument {
 //		return "Character [id=" + id + ", name=" + name + ", surname=" + surname + ", alive=" + alive + ", age=" + age
 //				+ "]";
 //	}
-
   /**
    * @return the id
    */
@@ -142,6 +176,56 @@ public class MetsDocument {
    */
   public void setLastModified(Date lastModified) {
     this.lastModified = lastModified;
+  }
+
+  /**
+   * @return the sectionDocuments
+   */
+  public Collection<SectionDocument> getSectionDocuments() {
+    return sectionDocuments;
+  }
+
+  /**
+   * @param sectionDocuments the sectionDocuments to set
+   */
+  public void setSectionDocuments(Collection<SectionDocument> sectionDocuments) {
+    this.sectionDocuments = sectionDocuments;
+  }
+
+  /**
+   * @return the metsFiles
+   */
+  public Collection<MetsFile> getMetsFiles() {
+    return metsFiles;
+  }
+
+  /**
+   * @param metsFiles the metsFiles to set
+   */
+  public void setMetsFiles(Collection<MetsFile> metsFiles) {
+    this.metsFiles = metsFiles;
+  }
+
+  @Override
+  public String toString() {
+    StringBuffer sb = new StringBuffer("MetsDocument [");
+    sb.append("id=").append(id).append(", ");
+    sb.append("lastModified=").append(lastModified).append(", ");
+    sb.append("metsDocument=").append(metsDocument).append(", ");
+    sb.append("resourceId=").append(resourceId).append(", ");
+    sb.append("version=").append(version).append(", \n");
+    sb.append("metsFiles: \n");
+    for (MetsFile file : metsFiles) {
+      sb.append("  ").append(file.toString()).append(", \n");
+    }
+    if (sectionDocuments != null) {
+    sb.append("sectionDocuments: \n");
+      for (SectionDocument secDoc : sectionDocuments) {
+        sb.append("  ").append(secDoc.toString()).append(", \n");
+      }
+    }
+    sb.append("]");
+    return sb.toString();
   }
 
 }
