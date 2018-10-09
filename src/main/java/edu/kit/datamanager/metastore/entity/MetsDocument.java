@@ -43,7 +43,7 @@ import java.util.Date;
  * 
  */
 @Document("metsDocument")
-@HashIndex(fields = {"resourceId"}, unique = true)
+@HashIndex(fields = {"resourceId", "version"}, unique = true)
 public class MetsDocument {
 
   /** 
@@ -85,30 +85,35 @@ public class MetsDocument {
   public MetsDocument() {
     super();
   }
-
+  /**
+   * Constructor with resourceId and the original METS document.
+   * 
+   * @param resourceId ResourceId of the digital object referenced by the METS document. (has to be unique)
+   * @param metsDocument METS document.
+   */
   public MetsDocument(final String resourceId, final String metsDocument) {
+    this(resourceId, metsDocument, 1);
+  }
+
+  /**
+   * Constructor with resourceId and the original METS document.
+   * 
+   * @param resourceId ResourceId of the digital object referenced by the METS document. (has to be unique)
+   * @param metsDocument METS document.
+   * @param version Version of the document. Initial version is version 1.
+   */
+  public MetsDocument(final String resourceId, final String metsDocument, final Integer version) {
     super();
     this.resourceId = resourceId;
     this.metsDocument = metsDocument;
-    this.version = 1;
+    this.version = version;
     this.lastModified = new Date();
     metsFiles = new ArrayList<>();
   }
 
-//	public Collection<MetsDocument> getChilds() {
-//		return childs;
-//	}
-//
-//	public void setChilds(final Collection<MetsDocument> childs) {
-//		this.childs = childs;
-//	}
-//
-//	@Override
-//	public String toString() {
-//		return "Character [id=" + id + ", name=" + name + ", surname=" + surname + ", alive=" + alive + ", age=" + age
-//				+ "]";
-//	}
   /**
+   * Get internal ID of the database.
+   * 
    * @return the id
    */
   public String getId() {
@@ -116,6 +121,9 @@ public class MetsDocument {
   }
 
   /**
+   *  Set internal ID of the database.
+   *  Don't use this method.
+   * 
    * @param id the id to set
    */
   public void setId(String id) {
@@ -123,6 +131,9 @@ public class MetsDocument {
   }
 
   /**
+   * Get resource ID of the digital object. 
+   * (Resource ID has to be unique at least inside a repository)
+   * 
    * @return the resourceId
    */
   public String getResourceId() {
@@ -130,6 +141,9 @@ public class MetsDocument {
   }
 
   /**
+   * Set resource ID of the digital object.
+   * Don't use this method. Resource ID should be set during instantiation.
+   * 
    * @param resourceId the resourceId to set
    */
   public void setResourceId(String resourceId) {
@@ -137,6 +151,9 @@ public class MetsDocument {
   }
 
   /**
+   * Get the original METS document.
+   * The most current version has to be build dynamically.
+   * 
    * @return the metsDocument
    */
   public String getMetsDocument() {
@@ -144,6 +161,9 @@ public class MetsDocument {
   }
 
   /**
+   * Set the original METS document.
+   * Don't use this method. METS document should be set during instantiation.
+   * 
    * @param metsDocument the metsDocument to set
    */
   public void setMetsDocument(String metsDocument) {
@@ -151,6 +171,9 @@ public class MetsDocument {
   }
 
   /**
+   * Get version of the METS document.
+   * Version number has to be inceremented during each update of any section document.
+   * 
    * @return the version
    */
   public Integer getVersion() {
@@ -158,6 +181,9 @@ public class MetsDocument {
   }
 
   /**
+   * Set version of the METS document.
+   * Don't use this method. The version should be handled by the class itself.
+   * 
    * @param version the version to set
    */
   public void setVersion(Integer version) {
@@ -165,6 +191,8 @@ public class MetsDocument {
   }
 
   /**
+   * Get the date of the last modification.
+   * 
    * @return the lastModified
    */
   public Date getLastModified() {
@@ -172,6 +200,9 @@ public class MetsDocument {
   }
 
   /**
+   * Set the date of the last modification.
+   * Don't use this method. The last modification should be handled by the class itself.
+   * 
    * @param lastModified the lastModified to set
    */
   public void setLastModified(Date lastModified) {
@@ -179,6 +210,8 @@ public class MetsDocument {
   }
 
   /**
+   * Get all section documents.
+   * 
    * @return the sectionDocuments
    */
   public Collection<SectionDocument> getSectionDocuments() {
@@ -186,6 +219,8 @@ public class MetsDocument {
   }
 
   /**
+   * Set all section Documents.
+   * 
    * @param sectionDocuments the sectionDocuments to set
    */
   public void setSectionDocuments(Collection<SectionDocument> sectionDocuments) {
@@ -193,6 +228,8 @@ public class MetsDocument {
   }
 
   /**
+   * Get all mets files defined in the file section.
+   * 
    * @return the metsFiles
    */
   public Collection<MetsFile> getMetsFiles() {
@@ -200,6 +237,8 @@ public class MetsDocument {
   }
 
   /**
+   * Set all mets files defined in the file section.
+   * 
    * @param metsFiles the metsFiles to set
    */
   public void setMetsFiles(Collection<MetsFile> metsFiles) {

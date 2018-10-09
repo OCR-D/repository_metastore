@@ -21,55 +21,53 @@
 package edu.kit.datamanager.metastore.repository;
 
 import com.arangodb.springframework.repository.ArangoRepository;
+import edu.kit.datamanager.metastore.entity.IVersion;
 import edu.kit.datamanager.metastore.entity.MetsDocument;
-import edu.kit.datamanager.metastore.entity.MetsFile;
 import java.util.Collection;
 
 /**
+ * Repository holding all MetsDocuments.
+ * 
  * @author Volker Hartmann
  *
  */
 public interface MetsDocumentRepository extends ArangoRepository<MetsDocument, String> {
-
+  /** 
+   * Find most recent version of a METS document.
+   * 
+   * @param resourceId Resource ID of the METS document.
+   * @return  Most recent version of METS document.
+   */
+	MetsDocument findTop1DistinctByResourceIdOrderByVersionDesc(String resourceId);
+  /**
+   * Find all versions of a METS document.
+   * Most recent version first.
+   * 
+   * @param resourceId Resource ID of the METS document.
+   * @return All versions of given METS document.
+   */
+	Iterable<IVersion> findVersionByResourceIdOrderByVersionDesc(String resourceId);
+  /**
+   * Find all versions of a METS document.
+   * 
+   * @param resourceId Resource ID of the METS document.
+   * @return All versions of a METS document.
+   */
 	Iterable<MetsDocument> findByResourceId(String resourceId);
- 
+   /**
+    * Find all METSFiles with given USE.
+    * 
+    * @param use USE of the fileGrp.
+    * @return All Metsdocuments containing a fileGrp with given USE.
+    */
   Iterable<MetsDocument> findByMetsFilesUse(String use);
 
+   /**
+    * Find all METSFiles with given USE.
+    * 
+    * @param use All possible USE of the fileGrp.
+    * @return All Metsdocuments containing at least one fileGrp with given USE.
+    */
   Iterable<MetsDocument> findByMetsFilesUseIn(Collection use);
-
-  Iterable<MetsDocument> findByResourceIdAndMetsFilesUse(String resourceId, String use);
-  
-  Iterable<MetsFile> findMetsFileByMetsFilesUse(String use);
-
-//	Collection<Character> findTop2DistinctBySurnameIgnoreCaseOrderByAgeDesc(String surname);
-//
-//	List<Character> findBySurnameEndsWithAndAgeBetweenAndNameInAllIgnoreCase(
-//		String suffix,
-//		int lowerBound,
-//		int upperBound,
-//		String[] nameList);
-//
-//	Optional<Character> findByNameAndSurname(String name, String surname);
-//
-//	Integer countByAliveTrue();
-//
-//	void removeBySurnameNotLikeOrAliveFalse(String surname);
-//
-//	Iterable<Character> findByChildsName(String name);
-//
-//	Iterable<Character> findByChildsAgeBetween(int lowerBound, int upperBound);
-//
-//	@Query("FOR c IN characters FILTER c.age > @0 SORT c.age DESC RETURN c")
-//	Iterable<Character> getOlderThan(int value);
-//
-//	@Query("FOR c IN characters FILTER c.surname == @surname SORT c.age ASC RETURN c")
-//	Iterable<Character> getWithSurname(@Param("surname") String value);
-//
-//	@Query("FOR c IN @@col FILTER c.surname == @surname AND c.age > @age RETURN c")
-//	@QueryOptions(count = true)
-//	ArangoCursor<Character> getWithSurnameOlderThan(@Param("age") int value, @BindVars Map<String, Object> bindvars);
-//
-//	@Query("FOR v IN 1..2 INBOUND @id @@edgeCol SORT v.age DESC RETURN DISTINCT v")
-//	Set<Character> getAllChildsAndGrandchilds(@Param("id") String id, @Param("@edgeCol") Class<?> edgeCollection);
 
 }

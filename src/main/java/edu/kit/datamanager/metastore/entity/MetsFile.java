@@ -27,7 +27,7 @@ import java.util.Date;
  */
 @Document("metsFile")
 @HashIndex(fields = {"resourceId", "fileId"}, unique = true)
-public class MetsFile implements IUrlOfMetsFile {
+public class MetsFile implements IMimetype, IGroupId, IUse, IUrl {
   /** ID of MetsFile used for indexing. */
   @Id
   private String id;
@@ -55,10 +55,23 @@ public class MetsFile implements IUrlOfMetsFile {
    */
   private String url;
 
+  /**
+   * Default constructor for MetsFile.
+   */
   public MetsFile() {
     super();
   }
 
+  /**
+   * Constructor for MetsFile
+   * 
+   * @param id ID of the file.
+   * @param resourceId ResourceID of the METS document.
+   * @param mimetype Mimetype of the file.
+   * @param groupId GROUPID of the file.
+   * @param use USE of the fileGrp.
+   * @param url URL of the file (maybe relative to METS document)
+   */
   public MetsFile(final String id, final String resourceId, final String mimetype, final String groupId,
           final String use, final String url) {
     super();
@@ -143,7 +156,6 @@ public class MetsFile implements IUrlOfMetsFile {
   /**
    * @return the url
    */
-  @Override
   public String getUrl() {
     return url;
   }
@@ -151,7 +163,6 @@ public class MetsFile implements IUrlOfMetsFile {
   /**
    * @param url the url to set
    */
-  @Override
   public void setUrl(String url) {
     this.url = url;
   }

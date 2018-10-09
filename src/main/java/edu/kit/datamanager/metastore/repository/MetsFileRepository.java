@@ -17,50 +17,129 @@
  *
  * Copyright holder is ArangoDB GmbH, Cologne, Germany
  */
-
 package edu.kit.datamanager.metastore.repository;
 
 import com.arangodb.springframework.repository.ArangoRepository;
+import edu.kit.datamanager.metastore.entity.IMimetype;
+import edu.kit.datamanager.metastore.entity.IUrl;
 import edu.kit.datamanager.metastore.entity.MetsFile;
-import edu.kit.datamanager.metastore.entity.SectionDocument;
+import java.util.Collection;
 
 /**
+ * Repository holding all MetsFiles.
+ * 
  * @author Volker Hartmann
  *
  */
 public interface MetsFileRepository extends ArangoRepository<MetsFile, String> {
 
-	Iterable<SectionDocument> findByResourceIdAndUse(String resourceId, String use);
+  /**
+   * Find file of a METS document with given ID.
+   * @param resourceId ID of the METS document.
+   * @param fileId ID of the file.
+   * @return Instance holding selected file.
+   */
+  MetsFile findOneByResourceIdAndFileId(String resourceId, String fileId);
 
-//	Collection<Character> findTop2DistinctBySurnameIgnoreCaseOrderByAgeDesc(String surname);
-//
-//	List<Character> findBySurnameEndsWithAndAgeBetweenAndNameInAllIgnoreCase(
-//		String suffix,
-//		int lowerBound,
-//		int upperBound,
-//		String[] nameList);
-//
-//	Optional<Character> findByNameAndSurname(String name, String surname);
-//
-//	Integer countByAliveTrue();
-//
-//	void removeBySurnameNotLikeOrAliveFalse(String surname);
-//
-//	Iterable<Character> findByChildsName(String name);
-//
-//	Iterable<Character> findByChildsAgeBetween(int lowerBound, int upperBound);
-//
-//	@Query("FOR c IN characters FILTER c.age > @0 SORT c.age DESC RETURN c")
-//	Iterable<Character> getOlderThan(int value);
-//
-//	@Query("FOR c IN characters FILTER c.surname == @surname SORT c.age ASC RETURN c")
-//	Iterable<Character> getWithSurname(@Param("surname") String value);
-//
-//	@Query("FOR c IN @@col FILTER c.surname == @surname AND c.age > @age RETURN c")
-//	@QueryOptions(count = true)
-//	ArangoCursor<Character> getWithSurnameOlderThan(@Param("age") int value, @BindVars Map<String, Object> bindvars);
-//
-//	@Query("FOR v IN 1..2 INBOUND @id @@edgeCol SORT v.age DESC RETURN DISTINCT v")
-//	Set<Character> getAllChildsAndGrandchilds(@Param("id") String id, @Param("@edgeCol") Class<?> edgeCollection);
+  /**
+   * Find all files of a METS document within the same fileGrp.
+   * @param resourceId ID of the METS document.
+   * @param use USE of the fileGrp.
+   * @return Iterator holding all files.
+   */
+  Iterable<MetsFile> findByResourceIdAndUse(String resourceId, String use);
+
+  /**
+   * Find all files of a METS document within the given fileGrps.
+   * @param resourceId ID of the METS document.
+   * @param use All possible USE of the fileGrp.
+   * @return Iterator holding all files.
+   */
+  Iterable<MetsFile> findByResourceIdAndUseIn(String resourceId, Collection <String> use);
+
+  /**
+   * Find all file URLs of a METS document within the same fileGrp.
+   * @param resourceId ID of the METS document.
+   * @param use USE of the fileGrp.
+   * @return Iterator holding all file URLs.
+   */
+  Iterable<IUrl> findUrlByResourceIdAndUse(String resourceId, String use);
+
+  /**
+   * Find all file URLs of a METS document within the given fileGrps.
+   * @param resourceId ID of the METS document.
+   * @param use All possible USE of the fileGrp.
+   * @return Iterator holding all file URLs.
+   */
+  Iterable<IUrl> findUrlByResourceIdAndUseIn(String resourceId, Collection <String> use);
+
+  /**
+   * Find all files of a METS document with the same GROUPID.
+   * @param resourceId ID of the METS document.
+   * @param groupId GROUPID of the files.
+   * @return Iterator holding all files.
+   */
+  Iterable<MetsFile> findByResourceIdAndGroupId(String resourceId, String groupId);
+
+  /**
+   * Find all files of a METS document with the same GROUPID.
+   * @param resourceId ID of the METS document.
+   * @param groupId All possible GROUPID of the files.
+   * @return Iterator holding all files.
+   */
+  Iterable<MetsFile> findByResourceIdAndGroupIdIn(String resourceId, Collection<String> groupId);
+
+  /**
+   * Find all file URLs of a METS document with the same GROUPID.
+   * @param resourceId ID of the METS document.
+   * @param groupId GROUPID of the files.
+   * @return Iterator holding all files.
+   */
+  Iterable<IUrl> findUrlByResourceIdAndGroupId(String resourceId, String groupId);
+
+  /**
+   * Find all file URLs of a METS document with the same GROUPID.
+   * @param resourceId ID of the METS document.
+   * @param groupId All possible GROUPID of the files.
+   * @return Iterator holding all file URLs.
+   */
+  Iterable<IUrl> findUrlByResourceIdAndGroupIdIn(String resourceId, Collection<String> groupId);
+
+
+  /**
+   * Find all files of a METS document with the same USE and GROUPID.
+   * @param resourceId ID of the METS document.
+   * @param use USE of the fileGrps.
+   * @param groupId GROUPID of the files.
+   * @return Iterator holding all files.
+   */
+  Iterable<MetsFile> findByResourceIdAndUseAndGroupId(String resourceId, String use, String groupId);
+
+  /**
+   * Find all files of a METS document with the same USE and GROUPID.
+   * @param resourceId ID of the METS document.
+   * @param use All possible USE of the fileGrps.
+   * @param groupId All possible GROUPID of the files.
+   * @return Iterator holding all files.
+   */
+  Iterable<MetsFile> findByResourceIdAndUseInAndGroupIdIn(String resourceId, Collection<String> use, Collection<String> groupId);
+
+  /**
+   * Find all file URLs of a METS document with the same USE and GROUPID.
+   * @param resourceId ID of the METS document.
+   * @param use USE of the fileGrps.
+   * @param groupId GROUPID of the files.
+   * @return Iterator holding all files.
+   */
+  Iterable<IUrl> findUrlByResourceIdAndUseAndGroupId(String resourceId, String use, String groupId);
+
+  /**
+   * Find all file URLs of a METS document with the same USE and GROUPID.
+   * @param resourceId ID of the METS document.
+   * @param use All possible USE of the fileGrps.
+   * @param groupId All possible GROUPID of the files.
+   * @return Iterator holding all file URLs.
+   */
+  Iterable<IUrl> findUrlByResourceIdAndUseInAndGroupIdIn(String resourceId, Collection<String> use, Collection<String> groupId);
 
 }
