@@ -209,9 +209,9 @@ public class CrudRunner implements CommandLineRunner {
     Iterable<IUrl> urlOfMetsFile;
     Iterator<IUrl> urlIterator;
     System.out.println("********************************************************************************************************************");
-    System.out.println("************************      Find one MetsFile by resourceId and fileID      ******************************************************");
+    System.out.println("************************      Find one MetsFile by resourceId and fileID (highest version)     ******************************************************");
     System.out.println("********************************************************************************************************************");
-    MetsFile metsFile1 = metsFileRepository.findOneByResourceIdAndFileId("id_0002", "PAGE-0001_IMG_BIN");
+    MetsFile metsFile1 = metsFileRepository.findTop1DistinctByResourceIdAndFileIdOrderByVersionDesc("id_0002", "PAGE-0001_IMG_BIN");
     System.out.println(metsFile1);
     System.out.println("********************************************************************************************************************");
     System.out.println("************************      Find MetsFile by resourceId and USE      ******************************************************");
@@ -419,30 +419,34 @@ public class CrudRunner implements CommandLineRunner {
 
   public static Collection<MetsFile> createMetsFiles() {
     return Arrays.asList(
-            new MetsFile("PAGE-0001_IMG_BIN", "id_0002", "image/png", "PAGE-0001", "OCR-D-GT-IMG-BIN", "url1"),
-            new MetsFile("PAGE-0001_IMG-CROP", "id_0002", "image/png", "PAGE-0001", "OCR-D-GT-IMG-CROP", "url2"),
-            new MetsFile("PAGE-0001_IMG-DESPEC", "id_0002", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DESPEC", "url3"),
-            new MetsFile("PAGE-0001_IMG-DEWARP", "id_0002", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DEWARP", "url4"),
-            new MetsFile("PAGE-0001_IMG_BIN", "id_0015", "image/png", "PAGE-0001", "OCR-D-GT-IMG-BIN", "url11"),
-            new MetsFile("PAGE-0001_IMG-CROP", "id_0015", "image/png", "PAGE-0001", "OCR-D-GT-IMG-CROP", "url21"),
-            new MetsFile("PAGE-0001_IMG-DESPEC", "id_0015", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DESPEC", "url31"),
-            new MetsFile("PAGE-0001_IMG-DEWARP", "id_0015", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DEWARP", "url41"),
-            new MetsFile("PAGE-0001_IMG_BIN", "id_0016", "image/png", "PAGE-0001", "OCR-D-GT-IMG-BIN", "url16"),
-            new MetsFile("PAGE-0001_IMG-CROP", "id_0017", "image/png", "PAGE-0001", "OCR-D-GT-IMG-CROP", "url17"),
-            new MetsFile("PAGE-0001_IMG-DESPEC", "id_0018", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DESPEC", "url18"),
-            new MetsFile("PAGE-0001_IMG-DEWARP", "id_0019", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DEWARP", "url19"),
-            new MetsFile("PAGE-0002_IMG_BIN", "id_0002", "image/png", "PAGE-0002", "OCR-D-GT-IMG-BIN", "url2_1"),
-            new MetsFile("PAGE-0002_IMG-CROP", "id_0002", "image/png", "PAGE-0002", "OCR-D-GT-IMG-CROP", "url2_2"),
-            new MetsFile("PAGE-0002_IMG-DESPEC", "id_0002", "image/png", "PAGE-0002", "OCR-D-GT-IMG-DESPEC", "url2_3"),
-            new MetsFile("PAGE-0002_IMG-DEWARP", "id_0002", "image/png", "PAGE-0002", "OCR-D-GT-IMG-DEWARP", "url2_4"),
-            new MetsFile("PAGE-0002_IMG_BIN", "id_0015", "image/png", "PAGE-0002", "OCR-D-GT-IMG-BIN", "url2_11"),
-            new MetsFile("PAGE-0002_IMG-CROP", "id_0015", "image/png", "PAGE-0002", "OCR-D-GT-IMG-CROP", "url2_21"),
-            new MetsFile("PAGE-0002_IMG-DESPEC", "id_0015", "image/png", "PAGE-0002", "OCR-D-GT-IMG-DESPEC", "url2_31"),
-            new MetsFile("PAGE-0002_IMG-DEWARP", "id_0015", "image/png", "PAGE-0002", "OCR-D-GT-IMG-DEWARP", "url2_41"),
-            new MetsFile("PAGE-0002_IMG_BIN", "id_0016", "image/png", "PAGE-0002", "OCR-D-GT-IMG-BIN", "url2_16"),
-            new MetsFile("PAGE-0002_IMG-CROP", "id_0017", "image/png", "PAGE-0002", "OCR-D-GT-IMG-CROP", "url2_17"),
-            new MetsFile("PAGE-0002_IMG-DESPEC", "id_0018", "image/png", "PAGE-0002", "OCR-D-GT-IMG-DESPEC", "url2_18"),
-            new MetsFile("PAGE-0002_IMG-DEWARP", "id_0019", "image/png", "PAGE-0002", "OCR-D-GT-IMG-DEWARP", "url2_19"));
+            new MetsFile("PAGE-0001_IMG_BIN", "id_0002",    1, "image/png", "PAGE-0001", "OCR-D-GT-IMG-BIN", "url1"),
+            new MetsFile("PAGE-0001_IMG-CROP", "id_0002",   1,  "image/png", "PAGE-0001", "OCR-D-GT-IMG-CROP", "url2"),
+            new MetsFile("PAGE-0001_IMG-DESPEC", "id_0002", 1,  "image/png", "PAGE-0001", "OCR-D-GT-IMG-DESPEC", "url3"),
+            new MetsFile("PAGE-0001_IMG-DEWARP", "id_0002", 1,  "image/png", "PAGE-0001", "OCR-D-GT-IMG-DEWARP", "url4"),
+            new MetsFile("PAGE-0001_IMG_BIN", "id_0002",    2, "image/png", "PAGE-0001", "OCR-D-GT-IMG-BIN", "url1_v2"),
+            new MetsFile("PAGE-0001_IMG-CROP", "id_0002",   2,  "image/png", "PAGE-0001", "OCR-D-GT-IMG-CROP", "url2_v2"),
+            new MetsFile("PAGE-0001_IMG-DESPEC", "id_0002", 2,  "image/png", "PAGE-0001", "OCR-D-GT-IMG-DESPEC", "url3_v2"),
+            new MetsFile("PAGE-0001_IMG-DEWARP", "id_0002", 2,  "image/png", "PAGE-0001", "OCR-D-GT-IMG-DEWARP", "url4_v2"),
+            new MetsFile("PAGE-0001_IMG_BIN", "id_0015",    1,  "image/png", "PAGE-0001", "OCR-D-GT-IMG-BIN", "url11"),
+            new MetsFile("PAGE-0001_IMG-CROP", "id_0015",   1,  "image/png", "PAGE-0001", "OCR-D-GT-IMG-CROP", "url21"),
+            new MetsFile("PAGE-0001_IMG-DESPEC", "id_0015", 1,  "image/png", "PAGE-0001", "OCR-D-GT-IMG-DESPEC", "url31"),
+            new MetsFile("PAGE-0001_IMG-DEWARP", "id_0015", 1,  "image/png", "PAGE-0001", "OCR-D-GT-IMG-DEWARP", "url41"),
+            new MetsFile("PAGE-0001_IMG_BIN", "id_0016",    1,  "image/png", "PAGE-0001", "OCR-D-GT-IMG-BIN", "url16"),
+            new MetsFile("PAGE-0001_IMG-CROP", "id_0017",   1,  "image/png", "PAGE-0001", "OCR-D-GT-IMG-CROP", "url17"),
+            new MetsFile("PAGE-0001_IMG-DESPEC", "id_0018", 1,  "image/png", "PAGE-0001", "OCR-D-GT-IMG-DESPEC", "url18"),
+            new MetsFile("PAGE-0001_IMG-DEWARP", "id_0019", 1,  "image/png", "PAGE-0001", "OCR-D-GT-IMG-DEWARP", "url19"),
+            new MetsFile("PAGE-0002_IMG_BIN", "id_0002",    1,  "image/png", "PAGE-0002", "OCR-D-GT-IMG-BIN", "url2_1"),
+            new MetsFile("PAGE-0002_IMG-CROP", "id_0002",   1,  "image/png", "PAGE-0002", "OCR-D-GT-IMG-CROP", "url2_2"),
+            new MetsFile("PAGE-0002_IMG-DESPEC", "id_0002", 1,  "image/png", "PAGE-0002", "OCR-D-GT-IMG-DESPEC", "url2_3"),
+            new MetsFile("PAGE-0002_IMG-DEWARP", "id_0002", 1,  "image/png", "PAGE-0002", "OCR-D-GT-IMG-DEWARP", "url2_4"),
+            new MetsFile("PAGE-0002_IMG_BIN", "id_0015",    1,  "image/png", "PAGE-0002", "OCR-D-GT-IMG-BIN", "url2_11"),
+            new MetsFile("PAGE-0002_IMG-CROP", "id_0015",   1,  "image/png", "PAGE-0002", "OCR-D-GT-IMG-CROP", "url2_21"),
+            new MetsFile("PAGE-0002_IMG-DESPEC", "id_0015", 1,  "image/png", "PAGE-0002", "OCR-D-GT-IMG-DESPEC", "url2_31"),
+            new MetsFile("PAGE-0002_IMG-DEWARP", "id_0015", 1,  "image/png", "PAGE-0002", "OCR-D-GT-IMG-DEWARP", "url2_41"),
+            new MetsFile("PAGE-0002_IMG_BIN", "id_0016",    1,  "image/png", "PAGE-0002", "OCR-D-GT-IMG-BIN", "url2_16"),
+            new MetsFile("PAGE-0002_IMG-CROP", "id_0017",   1,  "image/png", "PAGE-0002", "OCR-D-GT-IMG-CROP", "url2_17"),
+            new MetsFile("PAGE-0002_IMG-DESPEC", "id_0018", 1,  "image/png", "PAGE-0002", "OCR-D-GT-IMG-DESPEC", "url2_18"),
+            new MetsFile("PAGE-0002_IMG-DEWARP", "id_0019", 1,  "image/png", "PAGE-0002", "OCR-D-GT-IMG-DEWARP", "url2_19"));
   }
 
 }

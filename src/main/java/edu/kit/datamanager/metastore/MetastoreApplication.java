@@ -19,6 +19,7 @@ package edu.kit.datamanager.metastore;
 import edu.kit.datamanager.metastore.runner.CrudRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 
 /**
  *
@@ -28,14 +29,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MetastoreApplication{
 
    public static void main(String[] args){
+     
+//     if (args.length >= 30) {
 //    ApplicationContext ctx = SpringApplication.run(MetastoreApplication.class, args);
+//     } else {
 //    ApplicationProperties bean = ctx.getBean(ApplicationProperties.class);
 //    System.out.println(bean);
      final Class<?>[] runner = new Class<?>[]{CrudRunner.class/*, ByExampleRunner.class, DerivedQueryRunner.class ,
 				RelationsRunner.class, AQLRunner.class, GeospatialRunner.class */
      };
      System.exit(SpringApplication.exit(SpringApplication.run(runner, args)));
-
+//     }
     /*  String[] beanNames = ctx.getBeanDefinitionNames();
     Arrays.sort(beanNames);
     for(String beanName : beanNames){

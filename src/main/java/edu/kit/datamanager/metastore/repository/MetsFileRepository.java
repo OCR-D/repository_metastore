@@ -39,7 +39,7 @@ public interface MetsFileRepository extends ArangoRepository<MetsFile, String> {
    * @param fileId ID of the file.
    * @return Instance holding selected file.
    */
-  MetsFile findOneByResourceIdAndFileId(String resourceId, String fileId);
+  MetsFile findTop1DistinctByResourceIdAndFileIdOrderByVersionDesc(String resourceId, String fileId);
 
   /**
    * Find all files of a METS document within the same fileGrp.

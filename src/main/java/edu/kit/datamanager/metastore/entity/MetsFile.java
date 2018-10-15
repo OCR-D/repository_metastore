@@ -26,7 +26,7 @@ import java.util.Date;
  *
  */
 @Document("metsFile")
-@HashIndex(fields = {"resourceId", "fileId"}, unique = true)
+@HashIndex(fields = {"resourceId", "fileId", "version"}, unique = true)
 public class MetsFile implements IMimetype, IGroupId, IUse, IUrl {
   /** ID of MetsFile used for indexing. */
   @Id
@@ -38,6 +38,10 @@ public class MetsFile implements IMimetype, IGroupId, IUse, IUrl {
    * Prefix of the registered namespace.
    */
   private String resourceId;
+  /**
+   * Version number of the document.
+   */
+  private Integer version;
   /**
    * Mimetype of file.
    */
@@ -67,15 +71,18 @@ public class MetsFile implements IMimetype, IGroupId, IUse, IUrl {
    * 
    * @param id ID of the file.
    * @param resourceId ResourceID of the METS document.
+   * @param version Version of the METS document.
    * @param mimetype Mimetype of the file.
    * @param groupId GROUPID of the file.
    * @param use USE of the fileGrp.
    * @param url URL of the file (maybe relative to METS document)
    */
-  public MetsFile(final String id, final String resourceId, final String mimetype, final String groupId,
-          final String use, final String url) {
+  public MetsFile(final String id, final String resourceId, final Integer version, 
+          final String mimetype, final String groupId, final String use, 
+          final String url) {
     super();
     this.resourceId = resourceId;
+    this.version = version;
     this.fileId = id;
     this.mimetype = mimetype;
     this.groupId = groupId;
@@ -109,6 +116,20 @@ public class MetsFile implements IMimetype, IGroupId, IUse, IUrl {
    */
   public void setResourceId(String resourceId) {
     this.resourceId = resourceId;
+  }
+
+  /**
+   * @return the version of the METS file.
+   */
+  public Integer getVersion() {
+    return version;
+  }
+
+  /**
+   * @param resourceId the version to set
+   */
+  public void setVersion(Integer version) {
+    this.version = version;
   }
 
   /**
@@ -182,6 +203,6 @@ public class MetsFile implements IMimetype, IGroupId, IUse, IUrl {
   }
   @Override
   public String toString() {
-     return "MetsFile [id=" + id + ", fileId=" + fileId + ", groupId=" + groupId + ", mimetype=" + mimetype + ", resourceId=" + resourceId + ", use=" + use + ", url=" + url + "]";
+     return "MetsFile [id=" + id + ", fileId=" + fileId + ", groupId=" + groupId + ", mimetype=" + mimetype + ", resourceId=" + resourceId + ", version=" + version + ", use=" + use + ", url=" + url + "]";
   }
 }
