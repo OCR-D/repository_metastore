@@ -40,6 +40,7 @@ public class MetsDocumentController {
   @GetMapping("mets")
   public ResponseEntity<List<MetsDocument>> getAllDocuments() {
     List<MetsDocument> allDocuments = metastoreService.getAllDocuments();
+    System.out.println("GetAllDocuments");
     return new ResponseEntity<>(allDocuments, HttpStatus.OK);
   }
 }

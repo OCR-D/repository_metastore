@@ -50,9 +50,9 @@ configurations {
 
 dependencies {
   compile("org.apache.httpcomponents:httpclient:4.5.1")
-  compile("com.arangodb:arangodb-spring-data:3.0.0")
+  compile("com.arangodb:arangodb-spring-data:3.1.1")
   //compile("com.springframework:spring-web")
-  compile("org.springframework.boot:spring-boot-starter")
+//  compile("org.springframework.boot:spring-boot-starter")
   compile("org.springframework.boot:spring-boot-starter-data-rest")
   compile("org.springframework.boot:spring-boot-starter-web")
 //  compile("org.springframework.boot:spring-boot-starter-security")

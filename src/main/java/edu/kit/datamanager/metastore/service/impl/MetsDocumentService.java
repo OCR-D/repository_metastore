@@ -118,7 +118,7 @@ public class MetsDocumentService implements IMetsDocumentService {
   }
 
   @Override
-  public List<MetsFile> getAvailableMetsFiles(String resourceId) {
+  public List<MetsFile> getAvailableMetsFiles(String resourceId, Integer version) {
     List<MetsFile> metsFiles = new ArrayList<>();
     MetsDocument metsDocument = getMostRecentDocumentByResourceId(resourceId);
     Collection<MetsFile> allMetsFiles = metsDocument.getMetsFiles();

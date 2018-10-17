@@ -98,9 +98,10 @@ public interface IMetsDocumentService {
    * Get all files referenced in the fileGrps inside METS.
    * 
    * @param resourceId Resource ID of METS document.
+   * @param version Version of METS document.
    * @return List holding all files.
    */
-  List<MetsFile> getAvailableMetsFiles(String resourceId);
+  List<MetsFile> getAvailableMetsFiles(String resourceId, Integer version);
   
   /**
    * Get all files referenced in the fileGrps inside METS filtered by

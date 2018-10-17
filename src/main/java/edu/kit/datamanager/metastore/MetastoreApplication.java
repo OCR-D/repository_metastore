@@ -17,29 +17,39 @@ package edu.kit.datamanager.metastore;
 
 //import edu.kit.datamanager.repo.configuration.ApplicationProperties;
 import edu.kit.datamanager.metastore.runner.CrudRunner;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  *
  * @author Volker Hartmann
  */
 @SpringBootApplication
-public class MetastoreApplication{
+@EnableAutoConfiguration
+@ComponentScan(basePackages = {"edu.kit.datamanager.metastore"})
+@EntityScan(basePackages = {"edu.kit.datamanager.metastore"})
+public class MetastoreApplication implements ApplicationRunner {
 
    public static void main(String[] args){
+     System.out.println("args.length: " + args.length);
      
-//     if (args.length >= 30) {
-//    ApplicationContext ctx = SpringApplication.run(MetastoreApplication.class, args);
-//     } else {
+     if (args.length > 0) {
+    ApplicationContext ctx = SpringApplication.run(MetastoreApplication.class, args);
 //    ApplicationProperties bean = ctx.getBean(ApplicationProperties.class);
-//    System.out.println(bean);
+     } else {
+//    ApplicationProperties bean = ctx.getBean(ApplicationProperties.class);
+    System.out.println("CRUD_Runner");
      final Class<?>[] runner = new Class<?>[]{CrudRunner.class/*, ByExampleRunner.class, DerivedQueryRunner.class ,
 				RelationsRunner.class, AQLRunner.class, GeospatialRunner.class */
      };
      System.exit(SpringApplication.exit(SpringApplication.run(runner, args)));
-//     }
+     }
     /*  String[] beanNames = ctx.getBeanDefinitionNames();
     Arrays.sort(beanNames);
     for(String beanName : beanNames){
@@ -47,5 +57,10 @@ public class MetastoreApplication{
     }
     System.out.println("Spring Boot started...");*/
   }
+
+  @Override
+  public void run(ApplicationArguments args) throws Exception {
+    System.out.println("Running....");
+   }
 
 }

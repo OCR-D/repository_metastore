@@ -116,7 +116,15 @@ public class CrudRunner implements CommandLineRunner {
       System.out.println("ResourceId: " + resourceId);
       metsFileRepository.save(metsFile);
       System.out.println("MetsFile saved!");
-      MetsDocument mDoc = repository.findTop1DistinctByResourceIdOrderByVersionDesc(resourceId);
+      MetsDocument mDoc = null;
+     Iterable<MetsDocument> findByResourceId = repository.findByResourceId(resourceId);
+      for (MetsDocument doc : findByResourceId) {
+        if (doc.getVersion().equals(metsFile.getVersion())) {
+          mDoc = doc;
+          break;
+        }
+      }
+//     MetsDocument mDoc = repository.findTop1DistinctByResourceIdOrderByVersionDesc(resourceId);
       System.out.println("Find MetsDocument: " + mDoc);
       metsFileOfRepository.save(new MetsFileOf(metsFile, mDoc));
       System.out.println("MetsFileOf saved!");
