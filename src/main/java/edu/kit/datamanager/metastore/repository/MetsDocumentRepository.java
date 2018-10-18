@@ -32,13 +32,27 @@ import java.util.Collection;
  *
  */
 public interface MetsDocumentRepository extends ArangoRepository<MetsDocument, String> {
+  /**
+   * Find all current versions of METS documents.
+   * 
+   * @return Current versions of all METS documents.
+   */
+	Iterable<MetsDocument> findByCurrentTrue();
   /** 
    * Find most recent version of a METS document.
    * 
    * @param resourceId Resource ID of the METS document.
    * @return  Most recent version of METS document.
    */
-	MetsDocument findTop1DistinctByResourceIdOrderByVersionDesc(String resourceId);
+	MetsDocument findByResourceIdAndCurrentTrue(String resourceId);
+  /**
+   * Find all versions of a METS document.
+   * 
+   * @param resourceId Resource ID of the METS document.
+   * @param version Version of the METS document.
+   * @return All versions of a METS document.
+   */
+	MetsDocument findByResourceIdAndVersion(String resourceId, Integer version);
   /**
    * Find all versions of a METS document.
    * Most recent version first.
@@ -47,27 +61,5 @@ public interface MetsDocumentRepository extends ArangoRepository<MetsDocument, S
    * @return All versions of given METS document.
    */
 	Iterable<IVersion> findVersionByResourceIdOrderByVersionDesc(String resourceId);
-  /**
-   * Find all versions of a METS document.
-   * 
-   * @param resourceId Resource ID of the METS document.
-   * @return All versions of a METS document.
-   */
-	Iterable<MetsDocument> findByResourceId(String resourceId);
-   /**
-    * Find all METSFiles with given USE.
-    * 
-    * @param use USE of the fileGrp.
-    * @return All Metsdocuments containing a fileGrp with given USE.
-    */
-  Iterable<MetsDocument> findByMetsFilesUse(String use);
-
-   /**
-    * Find all METSFiles with given USE.
-    * 
-    * @param use All possible USE of the fileGrp.
-    * @return All Metsdocuments containing at least one fileGrp with given USE.
-    */
-  Iterable<MetsDocument> findByMetsFilesUseIn(Collection use);
 
 }

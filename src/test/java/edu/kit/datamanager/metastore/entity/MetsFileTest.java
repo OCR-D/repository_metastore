@@ -178,7 +178,7 @@ public class MetsFileTest {
 
   @Test
   public void testMetsFileCompleteConstructorAndToString() {
-    MetsFile metsFile = new MetsFile(fileId, resourceId, version, mimetype, groupId, use, url);
+    MetsFile metsFile = new MetsFile(resourceId, version, fileId, mimetype, groupId, use, url);
     metsFile.setUrl(url);
     assertNull(metsFile.getId());
     assertTrue(metsFile.toString().contains("null"));

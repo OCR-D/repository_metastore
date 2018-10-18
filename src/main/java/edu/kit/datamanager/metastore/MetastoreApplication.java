@@ -39,7 +39,7 @@ public class MetastoreApplication implements ApplicationRunner {
    public static void main(String[] args){
      System.out.println("args.length: " + args.length);
      
-     if (args.length > 0) {
+     if (args.length == 0) {
     ApplicationContext ctx = SpringApplication.run(MetastoreApplication.class, args);
 //    ApplicationProperties bean = ctx.getBean(ApplicationProperties.class);
      } else {

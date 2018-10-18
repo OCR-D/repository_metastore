@@ -17,23 +17,19 @@ package edu.kit.datamanager.metastore.service.impl;
 
 import edu.kit.datamanager.metastore.entity.IVersion;
 import edu.kit.datamanager.metastore.entity.MetsDocument;
-import edu.kit.datamanager.metastore.entity.MetsFile;
-import edu.kit.datamanager.metastore.entity.SectionDocument;
+import edu.kit.datamanager.metastore.exception.ResourceAlreadyExistsException;
 import edu.kit.datamanager.metastore.repository.MetsDocumentRepository;
 import edu.kit.datamanager.metastore.service.IMetsDocumentService;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Class implementing METS services.
  * 
- * @author hartmann-v
  */
 @Service
 public class MetsDocumentService implements IMetsDocumentService {
@@ -42,35 +38,15 @@ public class MetsDocumentService implements IMetsDocumentService {
 
   @Override
   public List<MetsDocument> getAllDocuments() {
-    Iterator<MetsDocument> metsIterator = metsRepository.findAll().iterator();
+    Iterator<MetsDocument> metsIterator = metsRepository.findByCurrentTrue().iterator();
     List<MetsDocument> metsList = IteratorUtils.toList(metsIterator);
     return metsList;
   }
 
   @Override
-  public MetsDocument getMostRecentDocumentByResourceId(String resourceId) {
-    MetsDocument metsDocument = metsRepository.findTop1DistinctByResourceIdOrderByVersionDesc(resourceId);
+  public MetsDocument getMostRecentMetsDocumentByResourceId(String resourceId) {
+     MetsDocument metsDocument = metsRepository.findByResourceIdAndCurrentTrue(resourceId);
     return metsDocument;
-  }
-
-  @Override
-  public List<MetsDocument> getDocumentByResourceId(String resourceId) {
-    Iterator<MetsDocument> metsIterator = metsRepository.findByResourceId(resourceId).iterator();
-    List<MetsDocument> metsList = IteratorUtils.toList(metsIterator);
-    return metsList;
-  }
-
-  @Override
-  public MetsDocument getDocumentByResourceIdAndVersion(String resourceId, Integer version) {
-    MetsDocument document = null;
-    Iterable<MetsDocument> metsIterator = metsRepository.findByResourceId(resourceId);
-    for (MetsDocument documentIndex : metsIterator) {
-      if (documentIndex.getVersion().compareTo(version) == 0) {
-        document = documentIndex;
-        break;
-      }
-    }
-    return document;
   }
 
   @Override
@@ -84,60 +60,22 @@ public class MetsDocumentService implements IMetsDocumentService {
   }
 
   @Override
-  public List<String> getPrefixOfAvailableSectionDocuments(String resourceId) {
-    List<String> prefixList = new ArrayList<>();
-    MetsDocument metsDocument = getMostRecentDocumentByResourceId(resourceId);
-    Collection<SectionDocument> sectionDocuments = metsDocument.getSectionDocuments();
-    for (SectionDocument indexElement : sectionDocuments) {
-      prefixList.add(indexElement.getPrefix());
+  public MetsDocument getDocumentByResourceIdAndVersion(String resourceId, Integer version) {
+    MetsDocument document = metsRepository.findByResourceIdAndVersion(resourceId, version);
+    return document;
+  }
+  @Override
+  public void createMetsDocument(String resourceId, String fileContent) throws ResourceAlreadyExistsException {
+    MetsDocument metsDocExists = metsRepository.findByResourceIdAndCurrentTrue(resourceId);
+    if (metsDocExists != null) {
+      throw new ResourceAlreadyExistsException("METS document with resourceid '" + resourceId + "' already exists!");
     }
-    return prefixList;
+        MetsDocument metsDoc = new MetsDocument(resourceId, fileContent);
+    metsRepository.save(metsDoc);
   }
 
   @Override
-  public List<SectionDocument> getAllSectionDocuments(String resourceId) {
-    List<SectionDocument> sectionList = new ArrayList<>();
-    MetsDocument metsDocument = getMostRecentDocumentByResourceId(resourceId);
-    Collection<SectionDocument> sectionDocuments = metsDocument.getSectionDocuments();
-    sectionList.addAll(sectionDocuments);
-    return sectionList;
-  }
-
-  @Override
-  public SectionDocument getSectionDocument(String resourceId, String prefix) {
-    SectionDocument sectionDocument = null;
-    List<SectionDocument> allSectionDocuments = getAllSectionDocuments(resourceId);
-    
-    for (SectionDocument indexElement : allSectionDocuments) {
-      if (indexElement.getPrefix().equals(prefix)) {
-        sectionDocument = indexElement;
-        break;
-      }
-    }
-    return sectionDocument;
-  }
-
-  @Override
-  public List<MetsFile> getAvailableMetsFiles(String resourceId, Integer version) {
-    List<MetsFile> metsFiles = new ArrayList<>();
-    MetsDocument metsDocument = getMostRecentDocumentByResourceId(resourceId);
-    Collection<MetsFile> allMetsFiles = metsDocument.getMetsFiles();
-    metsFiles.addAll(allMetsFiles);
-    return metsFiles;
-  }
-
-  @Override
-  public List<MetsFile> getAvailableMetsFilesByUseAndGroupId(String resourceId, String[] use, String[] groupId) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-  }
-
-  @Override
-  public List<MetsFile> getAvailableMetsFilesByFileId(String resourceId, String fileId) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-  }
-
-  @Override
-  public void createMetsDocument(MultipartFile file) {
+  public void updateMetsDocument(String resourceId, String fileContent) {
     throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
 }
