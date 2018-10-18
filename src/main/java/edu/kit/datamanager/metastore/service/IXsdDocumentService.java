@@ -66,7 +66,8 @@ public interface IXsdDocumentService {
   /**
    * Create METS document.
    *
+   * @param prefix prefix for XSD target namespace.
    * @param file METS file holding all information.
    */
-  void createXsdDocument(MultipartFile file);
+  void createXsdDocument(String prefix, String file);
 }

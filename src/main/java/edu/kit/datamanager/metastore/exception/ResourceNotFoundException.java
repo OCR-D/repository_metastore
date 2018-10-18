@@ -19,20 +19,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * Can't create resource with given ID.
+ * Can't find resource with given ID.
  */
-@ResponseStatus(value = HttpStatus.BAD_REQUEST)
-public class ResourceAlreadyExistsException  extends RuntimeException {
-  public ResourceAlreadyExistsException() {
+@ResponseStatus(value = HttpStatus.NOT_FOUND)
+public class ResourceNotFoundException  extends RuntimeException {
+  public ResourceNotFoundException() {
     super();
   }
-    public ResourceAlreadyExistsException(String message, Throwable cause) {
+    public ResourceNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
-    public ResourceAlreadyExistsException(String message) {
+    public ResourceNotFoundException(String message) {
         super(message);
     }
-    public ResourceAlreadyExistsException(Throwable cause) {
+    public ResourceNotFoundException(Throwable cause) {
         super(cause);
     }
 }
