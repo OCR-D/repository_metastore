@@ -39,6 +39,9 @@ repositories {
   mavenLocal() 
   jcenter()
   mavenCentral()
+  maven {
+    url "./localRepo"
+  }
 }
 
 sourceCompatibility = 1.8
@@ -80,6 +83,11 @@ dependencies {
    
   compile("org.slf4j:slf4j-api:1.7.25")
   compile("ch.qos.logback:logback-classic:1.2.3")
+  
+  // local dependencies
+  compile("org.fzk.ipe:Tools:1.6")
+  compile("jaxen:jaxen:1.1.6")
+  compile("org.jdom:jdom:1.1")
 
   //compile("org.eclipse.persistence:javax.persistence:2.1.0")
    
