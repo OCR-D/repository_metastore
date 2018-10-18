@@ -19,29 +19,39 @@ import org.springframework.data.annotation.Id;
 
 import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.HashIndex;
-import java.util.Date;
 
 /**
- * @author Volker Hartmann
- *
+ * This class contains information about one file inside a METS document referenced
+ * in the fileGrp section.
+ * These are: <p><ul>
+ *    <li>Resource Identifier
+ *    <li>Version Number
+ *    <li>ID of file
+ *    <li>GROUPID of file
+ *    <li>USE of file
+ *    <li>MIMETYPE of file
+ *    <li>URL of file
+ *    </ul><p>
  */
 @Document("metsFile")
-@HashIndex(fields = {"resourceId", "fileId", "version"}, unique = true)
-public class MetsFile implements IMimetype, IGroupId, IUse, IUrl {
-  /** ID of MetsFile used for indexing. */
+@HashIndex(fields = {"resourceId", "version", "fileId"}, unique = true)
+public class MetsFile implements IBaseEntity, IMimetype, IGroupId, IUrl, IUse {
+  /** 
+   * ID of the document.
+   */
   @Id
   private String id;
-
-  /** Id is only unique inside of a METS file. */
-  private String fileId;
   /**
-   * Prefix of the registered namespace.
+   * Resource Identifier for Document.
    */
   private String resourceId;
   /**
-   * Version number of the document.
+   * Version of the document. (Start with version 1 increment version number.)
    */
   private Integer version;
+
+  /** File ID is only unique inside of a METS file. */
+  private String fileId;
   /**
    * Mimetype of file.
    */
@@ -69,28 +79,60 @@ public class MetsFile implements IMimetype, IGroupId, IUse, IUrl {
   /**
    * Constructor for MetsFile
    * 
-   * @param id ID of the file.
    * @param resourceId ResourceID of the METS document.
    * @param version Version of the METS document.
+   * @param fileId ID of the file.
    * @param mimetype Mimetype of the file.
    * @param groupId GROUPID of the file.
    * @param use USE of the fileGrp.
    * @param url URL of the file (maybe relative to METS document)
    */
-  public MetsFile(final String id, final String resourceId, final Integer version, 
+  public MetsFile(final String resourceId, final Integer version,final String fileId,  
           final String mimetype, final String groupId, final String use, 
           final String url) {
     super();
     this.resourceId = resourceId;
     this.version = version;
-    this.fileId = id;
+    this.fileId = fileId;
     this.mimetype = mimetype;
     this.groupId = groupId;
     this.use = use;
     this.url = url;
   }
 
+  @Override
+  public String getId() {
+    return id;
+  }
+
+  @Override
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  @Override
+  public String getResourceId() {
+    return resourceId;
+  }
+
+  @Override
+  public void setResourceId(String resourceId) {
+    this.resourceId = resourceId;
+  }
+
+  @Override
+  public Integer getVersion() {
+    return version;
+  }
+
+  @Override
+  public void setVersion(Integer version) {
+    this.version = version;
+  }
+
   /**
+   * Get the file ID.
+   * 
    * @return the fileId
    */
   public String getFileId() {
@@ -98,6 +140,8 @@ public class MetsFile implements IMimetype, IGroupId, IUse, IUrl {
   }
 
   /**
+   * Set the file ID.
+   * 
    * @param fileId the fileId to set
    */
   public void setFileId(String fileId) {
@@ -105,34 +149,8 @@ public class MetsFile implements IMimetype, IGroupId, IUse, IUrl {
   }
 
   /**
-   * @return the resourceId
-   */
-  public String getResourceId() {
-    return resourceId;
-  }
-
-  /**
-   * @param resourceId the resourceId to set
-   */
-  public void setResourceId(String resourceId) {
-    this.resourceId = resourceId;
-  }
-
-  /**
-   * @return the version of the METS file.
-   */
-  public Integer getVersion() {
-    return version;
-  }
-
-  /**
-   * @param resourceId the version to set
-   */
-  public void setVersion(Integer version) {
-    this.version = version;
-  }
-
-  /**
+   * Get the mimetype of file.
+   * 
    * @return the mimetype
    */
   public String getMimetype() {
@@ -140,6 +158,8 @@ public class MetsFile implements IMimetype, IGroupId, IUse, IUrl {
   }
 
   /**
+   * Set mimetype of file.
+   * 
    * @param mimetype the mimetype to set
    */
   public void setMimetype(String mimetype) {
@@ -147,6 +167,8 @@ public class MetsFile implements IMimetype, IGroupId, IUse, IUrl {
   }
 
   /**
+   * Get GROUPID of file.
+   * 
    * @return the groupId
    */
   public String getGroupId() {
@@ -154,6 +176,8 @@ public class MetsFile implements IMimetype, IGroupId, IUse, IUrl {
   }
 
   /**
+   * Set GROUPID of file.
+   * 
    * @param groupId the groupId to set
    */
   public void setGroupId(String groupId) {
@@ -161,6 +185,8 @@ public class MetsFile implements IMimetype, IGroupId, IUse, IUrl {
   }
 
   /**
+   * Get USE of file.
+   * 
    * @return the use
    */
   public String getUse() {
@@ -168,6 +194,8 @@ public class MetsFile implements IMimetype, IGroupId, IUse, IUrl {
   }
 
   /**
+   * Set USE of file.
+   * 
    * @param use the use to set
    */
   public void setUse(String use) {
@@ -175,6 +203,8 @@ public class MetsFile implements IMimetype, IGroupId, IUse, IUrl {
   }
 
   /**
+   * Get URL of file.
+   * 
    * @return the url
    */
   public String getUrl() {
@@ -182,27 +212,28 @@ public class MetsFile implements IMimetype, IGroupId, IUse, IUrl {
   }
 
   /**
+   * Set URL of file.
+   * 
    * @param url the url to set
    */
   public void setUrl(String url) {
     this.url = url;
   }
-
-  /**
-   * @return the id
+  /** 
+   * Update file of METS document.
+   * Creates a new version of the mets file and increment version number.
+   * 
+   * @param url URL of the new mets file.
+   * 
+   * @return Updated mets file.
    */
-  public String getId() {
-    return id;
+  public MetsFile updateMetsFile(String url) {
+    MetsFile newMetsFile = new MetsFile(resourceId, version + 1, fileId, mimetype, groupId, use, url);
+    return newMetsFile;
   }
-
-  /**
-   * @param id the id to set
-   */
-  public void setId(String id) {
-    this.id = id;
-  }
+  
   @Override
   public String toString() {
-     return "MetsFile [id=" + id + ", fileId=" + fileId + ", groupId=" + groupId + ", mimetype=" + mimetype + ", resourceId=" + resourceId + ", version=" + version + ", use=" + use + ", url=" + url + "]";
+     return "MetsFile [id=" + id + ", resourceId=" + resourceId + ", version=" + version + ", fileId=" + fileId + ", groupId=" + groupId + ", mimetype=" + mimetype + ", use=" + use + ", url=" + url + "]";
   }
 }

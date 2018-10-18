@@ -29,7 +29,7 @@ public interface IMimetype {
   public void setMimetype(String mimetype);
 
   /**
-   * Set MIMETYPE of a file.
+   * Get MIMETYPE of a file.
    *
    * @return MIMETYPE of the file.
    */

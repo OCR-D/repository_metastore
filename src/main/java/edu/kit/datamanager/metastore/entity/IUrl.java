@@ -29,7 +29,7 @@ public interface IUrl {
   public void setUrl(String url);
 
   /**
-   * Set URL of a file.
+   * Get URL of a file.
    *
    * @return URL of the file.
    */

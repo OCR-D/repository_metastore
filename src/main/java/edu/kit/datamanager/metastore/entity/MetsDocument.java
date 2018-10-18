@@ -19,18 +19,22 @@
  */
 package edu.kit.datamanager.metastore.entity;
 
-import java.util.Collection;
 
 import org.springframework.data.annotation.Id;
 
 import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.HashIndex;
-import com.arangodb.springframework.annotation.Relations;
-import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * This class contains all information about a digital object.
+ * This class contains information about the current version of a digital object.
+ * These are: <p><ul>
+ *    <li>Resource Identifier
+ *       <li>Version Number
+ *       <li>Date of last modification
+ *    </ul><p>
+ * 
+ * Mets file contains several section documents.
  * These are: <p><ul>
  *    <li>descriptive metadata
  *       <ul><li>dublin core metadata
@@ -38,47 +42,39 @@ import java.util.Date;
  *       <li>files</ul>
  *    <li>administrative metadata
  *    </ul><p>
- * In case of OCR-D data there may be an optional attribute holding
+ * In case of OCR-D data there may be an optional section document holding
  * all metadata about the Ground-Truth. 
  * 
  */
 @Document("metsDocument")
 @HashIndex(fields = {"resourceId", "version"}, unique = true)
-public class MetsDocument {
+public class MetsDocument implements IBaseEntity {
 
   /** 
    * ID of the document.
    */
   @Id
   private String id;
-  /** 
-   * Resource ID of the document extracted from mets document. 
+  /**
+   * Resource Identifier for Document.
    */
   private String resourceId;
   /**
-   * Original Mets document. 
-   * Does not contain updates in sections.
-   */
-  private String metsDocument;
-  /**
-   * Version number of the document.
+   * Version of the document. (Start with version 1 increment version number.)
    */
   private Integer version;
   /** 
-   * Last modification in any section.
+   * Date of the last change. 
    */
   private Date lastModified;
-  /**
-   * Collection with all sections of the administrative and descriptive metadata.
-   */
-  @Relations(edges = SectionDocumentOf.class, lazy = true)
-  private Collection<SectionDocument> sectionDocuments;
   /** 
-   * Collection holding all referenced files inside the file section.
+   * Is the current version.
    */
-  @Relations(edges = MetsFileOf.class, lazy = true)
-  private Collection<MetsFile> metsFiles;
-
+  private Boolean current;
+  /**
+   * Holds the content of the METS file.
+   */
+  private String metsContent;
   /**
    * Constructor.
    */
@@ -92,177 +88,128 @@ public class MetsDocument {
    * @param metsDocument METS document.
    */
   public MetsDocument(final String resourceId, final String metsDocument) {
-    this(resourceId, metsDocument, 1);
+    this(resourceId, 1, metsDocument);
   }
 
   /**
    * Constructor with resourceId and the original METS document.
    * 
    * @param resourceId ResourceId of the digital object referenced by the METS document. (has to be unique)
-   * @param metsDocument METS document.
    * @param version Version of the document. Initial version is version 1.
+   * @param metsDocument Content of METS file.
    */
-  public MetsDocument(final String resourceId, final String metsDocument, final Integer version) {
+  public MetsDocument(final String resourceId, final Integer version, final String metsDocument) {
     super();
     this.resourceId = resourceId;
-    this.metsDocument = metsDocument;
     this.version = version;
     this.lastModified = new Date();
-    metsFiles = new ArrayList<>();
+    this.metsContent = metsDocument;
+    this.current = true;
   }
 
-  /**
-   * Get internal ID of the database.
-   * 
-   * @return the id
-   */
+
+  @Override
   public String getId() {
     return id;
   }
 
-  /**
-   *  Set internal ID of the database.
-   *  Don't use this method.
-   * 
-   * @param id the id to set
-   */
   public void setId(String id) {
     this.id = id;
   }
+ 
 
-  /**
-   * Get resource ID of the digital object. 
-   * (Resource ID has to be unique at least inside a repository)
-   * 
-   * @return the resourceId
-   */
+  @Override
   public String getResourceId() {
     return resourceId;
   }
 
-  /**
-   * Set resource ID of the digital object.
-   * Don't use this method. Resource ID should be set during instantiation.
-   * 
-   * @param resourceId the resourceId to set
-   */
+  @Override
   public void setResourceId(String resourceId) {
     this.resourceId = resourceId;
   }
 
-  /**
-   * Get the original METS document.
-   * The most current version has to be build dynamically.
-   * 
-   * @return the metsDocument
-   */
-  public String getMetsDocument() {
-    return metsDocument;
-  }
-
-  /**
-   * Set the original METS document.
-   * Don't use this method. METS document should be set during instantiation.
-   * 
-   * @param metsDocument the metsDocument to set
-   */
-  public void setMetsDocument(String metsDocument) {
-    this.metsDocument = metsDocument;
-  }
-
-  /**
-   * Get version of the METS document.
-   * Version number has to be inceremented during each update of any section document.
-   * 
-   * @return the version
-   */
+  @Override
   public Integer getVersion() {
     return version;
   }
 
-  /**
-   * Set version of the METS document.
-   * Don't use this method. The version should be handled by the class itself.
-   * 
-   * @param version the version to set
-   */
+  @Override
   public void setVersion(Integer version) {
     this.version = version;
   }
 
   /**
-   * Get the date of the last modification.
+   * Get date of last modification.
    * 
-   * @return the lastModified
+   * @return Last modification date.
    */
   public Date getLastModified() {
     return lastModified;
   }
 
   /**
-   * Set the date of the last modification.
-   * Don't use this method. The last modification should be handled by the class itself.
-   * 
-   * @param lastModified the lastModified to set
+   * Set date of last modification.
+   * @param lastModified Last modification date.
    */
   public void setLastModified(Date lastModified) {
     this.lastModified = lastModified;
   }
 
   /**
-   * Get all section documents.
-   * 
-   * @return the sectionDocuments
+   * I
+   * @return the current
    */
-  public Collection<SectionDocument> getSectionDocuments() {
-    return sectionDocuments;
+  public Boolean getCurrent() {
+    return current;
   }
 
   /**
-   * Set all section Documents.
-   * 
-   * @param sectionDocuments the sectionDocuments to set
+   * @param current the current to set
    */
-  public void setSectionDocuments(Collection<SectionDocument> sectionDocuments) {
-    this.sectionDocuments = sectionDocuments;
+  public void setCurrent(Boolean current) {
+    this.current = current;
   }
 
   /**
-   * Get all mets files defined in the file section.
+   * Get content of METS file.
    * 
-   * @return the metsFiles
+   * @return the metsContent
    */
-  public Collection<MetsFile> getMetsFiles() {
-    return metsFiles;
+  public String getMetsContent() {
+    return metsContent;
   }
 
   /**
-   * Set all mets files defined in the file section.
+   * Set content of METS file.
    * 
-   * @param metsFiles the metsFiles to set
+   * @param metsContent the metsContent to set
    */
-  public void setMetsFiles(Collection<MetsFile> metsFiles) {
-    this.metsFiles = metsFiles;
+  public void setMetsContent(String metsContent) {
+    this.metsContent = metsContent;
   }
-
+  /** 
+   * Update Metsdocument.
+   * Creates a new version of the METS document and increment version number.
+   * Set old version to  be no longer current.
+   * 
+   * @param metsContent Content of the new METS file.
+   * 
+   * @return Updated METS document.
+   */
+  public MetsDocument updateMetsContent(String metsContent) {
+    MetsDocument newMetsDoc = new MetsDocument(resourceId, version + 1, metsContent);
+    this.current = false;
+    return newMetsDoc;
+  }
   @Override
   public String toString() {
     StringBuffer sb = new StringBuffer("MetsDocument [");
     sb.append("id=").append(id).append(", ");
-    sb.append("lastModified=").append(lastModified).append(", ");
-    sb.append("metsDocument=").append(metsDocument).append(", ");
     sb.append("resourceId=").append(resourceId).append(", ");
-    sb.append("version=").append(version).append(", \n");
-    sb.append("metsFiles: \n");
-    for (MetsFile file : metsFiles) {
-      sb.append("  ").append(file.toString()).append(", \n");
-    }
-    if (sectionDocuments != null) {
-    sb.append("sectionDocuments: \n");
-      for (SectionDocument secDoc : sectionDocuments) {
-        sb.append("  ").append(secDoc.toString()).append(", \n");
-      }
-    }
+    sb.append("version=").append(version).append(", ");
+    sb.append("lastModified=").append(lastModified).append(", ");
+    sb.append("current=").append(current).append(", \n");
+    sb.append("metsDocument=").append(metsContent);
     sb.append("]");
     return sb.toString();
   }

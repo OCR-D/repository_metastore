@@ -27,14 +27,21 @@ import java.util.Date;
  */
 @Document("sectionDocument")
 @HashIndex(fields = {"resourceId", "prefix"}, unique = true)
-public class SectionDocument {
+public class SectionDocument implements IBaseEntity {
 
+  /** 
+   * ID of the document.
+   */
   @Id
   private String id;
   /**
-   * Prefix of the registered namespace.
+   * Resource Identifier for Document.
    */
   private String resourceId;
+  /**
+   * Version of the document. (Start with version 1 increment version number.)
+   */
+  private Integer version;
   /**
    * Prefix of the registered namespace.
    */
@@ -55,12 +62,23 @@ public class SectionDocument {
    * Content of the section document.
    */
   private String sectionDocument;
-
+  /** 
+   * Default constructor.
+   */
   public SectionDocument() {
     super();
   }
-
-  public SectionDocument(final String resourceId, final String prefix, final String sectionId, final MdType sectionMdType,
+  /**
+   * Constructor setting all attributes.
+   * @param resourceId ResourceId of the digital object referenced by the METS document. (has to be unique)
+   * @param version Version of the document. Initial version is version 1.
+   * @param prefix  Prefix of the registered namespace.
+   * @param sectionId ID of the section.
+   * @param sectionMdType MDType of the section.
+   * @param sectionOtherMdType Special metadata type if MDType is 'OTHER'.
+   * @param sectionDocument Content of the section document.
+   */
+  public SectionDocument(final String resourceId, final Integer version, final String prefix, final String sectionId, final MdType sectionMdType,
           final String sectionOtherMdType, final String sectionDocument) {
     super();
     this.resourceId = resourceId;
@@ -71,35 +89,39 @@ public class SectionDocument {
     this.sectionDocument = sectionDocument;
   }
 
-  /**
-   * @return the id
-   */
+  @Override
   public String getId() {
     return id;
   }
 
-  /**
-   * @param id the id to set
-   */
+  @Override
   public void setId(String id) {
     this.id = id;
   }
 
-  /**
-   * @return the resourceId
-   */
+  @Override
   public String getResourceId() {
     return resourceId;
   }
-
-  /**
-   * @param resourceId the resourceId to set
-   */
+  
+  @Override
   public void setResourceId(String resourceId) {
     this.resourceId = resourceId;
   }
+
+  @Override
+  public Integer getVersion() {
+    return version;
+  }
+
+  @Override
+  public void setVersion(Integer version) {
+    this.version = version;
+  }
   
   /**
+   * Get the prefix of the registered namespace.
+   * 
    * @return the prefix
    */
   public String getPrefix() {
@@ -107,6 +129,8 @@ public class SectionDocument {
   }
 
   /**
+   * Set the prefix of the registered namespace.
+   * 
    * @param prefix the prefix to set
    */
   public void setPrefix(String prefix) {
@@ -114,6 +138,8 @@ public class SectionDocument {
   }
 
   /**
+   * Get the section ID of the document.
+   * 
    * @return the sectionId
    */
   public String getSectionId() {
@@ -121,6 +147,8 @@ public class SectionDocument {
   }
 
   /**
+   * Set the section ID of the document.
+   * 
    * @param sectionId the sectionId to set
    */
   public void setSectionId(String sectionId) {
@@ -128,6 +156,8 @@ public class SectionDocument {
   }
 
   /**
+   * Get the MDTYPE of the section document.
+   * 
    * @return the sectionMdType
    */
   public MdType getSectionMdType() {
@@ -135,6 +165,8 @@ public class SectionDocument {
   }
 
   /**
+   * Set the MDTYPE of the section document.
+   * 
    * @param sectionMdType the sectionMdType to set
    */
   public void setSectionMdType(MdType sectionMdType) {
@@ -142,6 +174,8 @@ public class SectionDocument {
   }
 
   /**
+   * Get special metadata type.
+   * 
    * @return the sectionOtherMdType
    */
   public String getSectionOtherMdType() {
@@ -149,6 +183,8 @@ public class SectionDocument {
   }
 
   /**
+   * Set special metadata type.
+   * 
    * @param sectionOtherMdType the sectionOtherMdType to set
    */
   public void setSectionOtherMdType(String sectionOtherMdType) {
@@ -156,6 +192,8 @@ public class SectionDocument {
   }
 
   /**
+   * Get content of section document.
+   * 
    * @return the sectionDocument
    */
   public String getSectionDocument() {
@@ -163,10 +201,24 @@ public class SectionDocument {
   }
 
   /**
+   * Set content of section document.
+   * 
    * @param sectionDocument the sectionDocument to set
    */
   public void setSectionDocument(String sectionDocument) {
     this.sectionDocument = sectionDocument;
+  }
+  /** 
+   * Update section document.
+   * Creates a new version of the section document and increment version number.
+   * 
+   * @param sectionDocument Content of the new section document.
+   * 
+   * @return Updated section document.
+   */
+  public SectionDocument updateSectionDocument(String sectionDocument) {
+    SectionDocument newSecDoc = new SectionDocument(resourceId, version + 1, prefix, sectionId, sectionMdType, sectionOtherMdType, sectionDocument);
+    return newSecDoc;
   }
   
   @Override

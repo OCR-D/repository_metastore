@@ -29,7 +29,7 @@ public interface IUse {
   public void setUse(String use);
 
   /**
-   * Set USE of a file.
+   * Get USE of a file.
    *
    * @return USE of the file.
    */

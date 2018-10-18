@@ -20,22 +20,43 @@ import com.arangodb.springframework.annotation.HashIndex;
 import org.springframework.data.annotation.Id;
 
 /**
- *
- * @author hartmann-v
+ * This class contains information about the registered XSD files.
+ * These are: <p><ul>
+ *    <li>namespace
+ *       <li>prefix of the namespace
+ *       <li>content of XSD file
+ *    </ul><p>
  */
 @Document("xmlSchemaDefinition")
 @HashIndex(fields = {"prefix"}, unique = true)
 @HashIndex(fields = {"namespace"}, unique = true)
 public class XmlSchemaDefinition {
-  	@Id
-	private String id;
 
+  /** 
+   * ID of XSD document.
+   */
+  @Id
+  private String id;
+  /**
+   * Prefix of namespace. 
+   */	
 	private String prefix;
+  /** 
+   * (Target) Namespace of XSD document.
+   */
 	private String namespace;
-  
+  /** 
+   * Content of XSD document.
+   */
 	private String xsdFile;
 
-
+  /** 
+   * Constructor setting all attributes. 
+   * 
+   * @param prefix Prefix of namespace.
+   * @param namespace (Target) Namespace of XSD document.
+   * @param xsdFile Content of XSD document.
+   */
   public XmlSchemaDefinition(final String prefix, final String namespace, final String xsdFile) {
     super();
     this.prefix = prefix;
@@ -43,6 +64,7 @@ public class XmlSchemaDefinition {
     this.xsdFile = xsdFile;
   }
   /**
+   * Get database ID.
    * @return the id
    */
   public String getId() {
@@ -50,6 +72,9 @@ public class XmlSchemaDefinition {
   }
 
   /**
+   * Set database ID.
+   * (Shouldn't be used.)
+   * 
    * @param id the id to set
    */
   public void setId(String id) {
@@ -57,6 +82,8 @@ public class XmlSchemaDefinition {
   }
 
   /**
+   * Get prefix of namespace.
+   * 
    * @return the prefix
    */
   public String getPrefix() {
@@ -64,6 +91,8 @@ public class XmlSchemaDefinition {
   }
 
   /**
+   * Set prefix of namespace.
+   * 
    * @param prefix the prefix to set
    */
   public void setPrefix(String prefix) {
@@ -71,6 +100,8 @@ public class XmlSchemaDefinition {
   }
 
   /**
+   * Get namespace. 
+   * 
    * @return the namespace
    */
   public String getNamespace() {
@@ -78,6 +109,8 @@ public class XmlSchemaDefinition {
   }
 
   /**
+   * Set namespace.
+   * 
    * @param namespace the namespace to set
    */
   public void setNamespace(String namespace) {
@@ -85,6 +118,8 @@ public class XmlSchemaDefinition {
   }
 
   /**
+   * Get content of XSD file.
+   * 
    * @return the xsdFile
    */
   public String getXsdFile() {
@@ -92,6 +127,8 @@ public class XmlSchemaDefinition {
   }
 
   /**
+   * Set content of XSD file.
+   * 
    * @param xsdFile the xsdFile to set
    */
   public void setXsdFile(String xsdFile) {

@@ -29,7 +29,7 @@ public interface IGroupId {
   public void setGroupId(String groupId);
 
   /**
-   * Set GROUPID of a file.
+   * Get GROUPID of a file.
    *
    * @return GROUPID of the file.
    */
