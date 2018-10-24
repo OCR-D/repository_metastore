@@ -67,9 +67,20 @@ public class MetsDocumentService implements IMetsDocumentService {
   @Override
   public void createMetsDocument(String resourceId, String fileContent) throws ResourceAlreadyExistsException {
     MetsDocument metsDocExists = metsRepository.findByResourceIdAndCurrentTrue(resourceId);
+    // Check for existing resource ID
     if (metsDocExists != null) {
       throw new ResourceAlreadyExistsException("METS document with resourceid '" + resourceId + "' already exists!");
     }
+    // 
+    // Validate METS (priority low)
+    // Extract section documents (priority low)
+    //   Validate section documents (priority low)
+    // Extract fileGrps
+    //   Change URL if neccessary
+    // If everything is valid:
+    // Store METS document
+    // Store section documents (priority low)
+    // Store METS files
         MetsDocument metsDoc = new MetsDocument(resourceId, fileContent);
     metsRepository.save(metsDoc);
   }

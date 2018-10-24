@@ -33,10 +33,12 @@ import edu.kit.datamanager.metastore.entity.IVersion;
 import edu.kit.datamanager.metastore.entity.MdType;
 import edu.kit.datamanager.metastore.entity.MetsDocument;
 import edu.kit.datamanager.metastore.entity.MetsFile;
+import edu.kit.datamanager.metastore.entity.MetsProperties;
 import edu.kit.datamanager.metastore.entity.SectionDocument;
 import edu.kit.datamanager.metastore.entity.XmlSchemaDefinition;
 import edu.kit.datamanager.metastore.repository.MetsDocumentRepository;
 import edu.kit.datamanager.metastore.repository.MetsFileRepository;
+import edu.kit.datamanager.metastore.repository.MetsPropertiesRepository;
 import edu.kit.datamanager.metastore.repository.SectionDocumentRepository;
 import edu.kit.datamanager.metastore.repository.XmlSchemaDefinitionRepository;
 import java.util.Iterator;
@@ -60,6 +62,8 @@ public class CrudRunner implements CommandLineRunner {
   private XmlSchemaDefinitionRepository xsdRepository;
   @Autowired
   private MetsFileRepository metsFileRepository;
+  @Autowired
+  private MetsPropertiesRepository metsPropertiesRepository;
 
   @Override
   public void run(final String... args) throws Exception {
@@ -67,6 +71,7 @@ public class CrudRunner implements CommandLineRunner {
     final String SECTION_DOCUMENT = "sec";
     final String METS_FILES = "file";
     final String XSD = "xsd";
+    final String METS_PROPERTIES = "prop";
     List<String> argumentList = Arrays.asList(args);
     System.out.println("Run CRUD Runner!");
     // first drop the database so that we can run this multiple times with the same dataset
@@ -84,6 +89,29 @@ public class CrudRunner implements CommandLineRunner {
     System.out.println("********************************************************************************************************************");
     System.out.println("*******************************          Build  Database         ***************************************************");
     System.out.println("********************************************************************************************************************");
+    if (argumentList.contains(METS_PROPERTIES)) {
+      System.out.println("*******************************          MetsProperties         ***************************************************");
+      MetsProperties metsProperties = new MetsProperties();
+      metsProperties.setTitle("Titel");
+      metsProperties.setPpn("ppn1");
+      metsProperties.setResourceId("id_1");
+      metsPropertiesRepository.save(metsProperties);
+      metsProperties = new MetsProperties();
+      metsProperties.setTitle("Titel2");
+      metsProperties.setPpn("ppn2");
+      metsProperties.setResourceId("id_2");
+      metsPropertiesRepository.save(metsProperties);
+      metsProperties = new MetsProperties();
+      metsProperties.setTitle("Titel");
+      metsProperties.setPpn("ppn3");
+      metsProperties.setResourceId("id_3");
+      metsPropertiesRepository.save(metsProperties);
+      metsProperties = new MetsProperties();
+      metsProperties.setTitle("Titel3");
+      metsProperties.setPpn("ppn1");
+      metsProperties.setResourceId("id_4");
+      metsPropertiesRepository.save(metsProperties);
+    }
     if (argumentList.contains(METS_DOCUMENT)) {
       System.out.println("*******************************          MetsDocuments         ***************************************************");
       final MetsDocument metsDocument = new MetsDocument("id_0001", "someXML");
@@ -120,6 +148,35 @@ public class CrudRunner implements CommandLineRunner {
     System.out.println("************************         START TESTS            ************************************************************");
     System.out.println("********************************************************************************************************************");
 
+    if (argumentList.contains(METS_PROPERTIES)) {
+      System.out.println("********************************************************************************************************************");
+      System.out.println("*******************************          MetsProperties         ***************************************************");
+      System.out.println("********************************************************************************************************************");
+      System.out.println("metsPropertiesRepository.findResourceIdByPpn(\"ppn2\")");
+      Iterable<IResourceId> findResourceIdByPpn = metsPropertiesRepository.findResourceIdByPpn("ppn2");
+      for (Iterator<IResourceId> it = findResourceIdByPpn.iterator(); it.hasNext();) {
+        IResourceId index = it.next();
+        System.out.println(index.getResourceId());
+      }
+      System.out.println("metsPropertiesRepository.findResourceIdByPpn(\"ppn1\")");
+      findResourceIdByPpn = metsPropertiesRepository.findResourceIdByPpn("ppn1");
+      for (Iterator<IResourceId> it = findResourceIdByPpn.iterator(); it.hasNext();) {
+        IResourceId index = it.next();
+        System.out.println(index.getResourceId());
+      }
+      System.out.println("metsPropertiesRepository.findResourceIdByTitle(\"Titel\")");
+      Iterable<IResourceId> findResourceIdByTitle = metsPropertiesRepository.findResourceIdByTitle("Titel");
+      for (Iterator<IResourceId> it = findResourceIdByTitle.iterator(); it.hasNext();) {
+        IResourceId index = it.next();
+        System.out.println(index.getResourceId());
+      }
+      System.out.println("metsPropertiesRepository.findResourceIdByTitle(\"Titel3\")");
+      findResourceIdByTitle = metsPropertiesRepository.findResourceIdByTitle("Titel3");
+      for (Iterator<IResourceId> it = findResourceIdByTitle.iterator(); it.hasNext();) {
+        IResourceId index = it.next();
+        System.out.println(index.getResourceId());
+      }
+    }
     if (argumentList.contains(SECTION_DOCUMENT)) {
       System.out.println("********************************************************************************************************************");
       System.out.println("************************       SectionDocument         ************************************************************");
@@ -198,12 +255,20 @@ public class CrudRunner implements CommandLineRunner {
       Iterable<IUrl> urlOfMetsFile;
       Iterator<IUrl> urlIterator;
       System.out.println("********************************************************************************************************************");
-      System.out.println("************************      Find one MetsFile by resourceId and fileID (highest version)     ******************************************************");
+      System.out.println("************************                             Find all METSFiles                        *********************");
+      System.out.println("********************************************************************************************************************");
+      metsFile = metsFileRepository.findAll();
+      metsFileIterator = metsFile.iterator();
+      while (metsFileIterator.hasNext()) {
+        System.out.println(metsFileIterator.next());
+      }
+      System.out.println("********************************************************************************************************************");
+      System.out.println("************************      Find one MetsFile by resourceId and fileID (highest version)     *********************");
       System.out.println("********************************************************************************************************************");
       MetsFile metsFile1 = metsFileRepository.findTop1DistinctByResourceIdAndFileIdOrderByVersionDesc("id_0002", "PAGE-0001_IMG_BIN");
       System.out.println(metsFile1);
       System.out.println("********************************************************************************************************************");
-      System.out.println("************************      Find MetsFile by resourceId and USE      ******************************************************");
+      System.out.println("************************      Find MetsFile by resourceId and USE      *********************************************");
       System.out.println("********************************************************************************************************************");
       System.out.println("metsFileRepository.findByResourceIdAndUse(\"id_0002\", \"OCR-D-GT-IMG-BIN\")");
       metsFile = metsFileRepository.findByResourceIdAndUse("id_0002", "OCR-D-GT-IMG-BIN");
@@ -212,7 +277,7 @@ public class CrudRunner implements CommandLineRunner {
         System.out.println(metsFileIterator.next());
       }
       System.out.println("********************************************************************************************************************");
-      System.out.println("************************      Find MetsFile by resourceId and USE IN      ******************************************************");
+      System.out.println("************************      Find MetsFile by resourceId and USE IN      ******************************************");
       System.out.println("********************************************************************************************************************");
       System.out.println("metsFileRepository.findByResourceIdAndUseIn(\"id_0002\", Arrays.asList(\"OCR-D-GT-IMG-BIN\", \"OCR-D-GT-IMG-CROP\")");
       metsFile = metsFileRepository.findByResourceIdAndUseIn("id_0002", Arrays.asList("OCR-D-GT-IMG-BIN", "OCR-D-GT-IMG-CROP"));
@@ -221,7 +286,7 @@ public class CrudRunner implements CommandLineRunner {
         System.out.println(metsFileIterator.next());
       }
       System.out.println("********************************************************************************************************************");
-      System.out.println("************************      Find MetsFile URL by resourceId and USE      ******************************************************");
+      System.out.println("************************      Find MetsFile URL by resourceId and USE      *****************************************");
       System.out.println("********************************************************************************************************************");
       System.out.println("metsFileRepository.findUrlByResourceIdAndUse(\"id_0002\", \"OCR-D-GT-IMG-BIN\")");
       urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndUse("id_0002", "OCR-D-GT-IMG-BIN");
@@ -230,7 +295,7 @@ public class CrudRunner implements CommandLineRunner {
         System.out.println(urlIterator.next().getUrl());
       }
       System.out.println("********************************************************************************************************************");
-      System.out.println("************************      Find MetsFile URL by resourceId and USE IN      ******************************************************");
+      System.out.println("************************      Find MetsFile URL by resourceId and USE IN      **************************************");
       System.out.println("********************************************************************************************************************");
       System.out.println("metsFileRepository.findUrlByResourceIdAndUseIn(\"id_0002\", Arrays.asList(\"OCR-D-GT-IMG-BIN\", \"OCR-D-GT-IMG-CROP\")");
       urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndUseIn("id_0002", Arrays.asList("OCR-D-GT-IMG-BIN", "OCR-D-GT-IMG-CROP"));
@@ -239,7 +304,7 @@ public class CrudRunner implements CommandLineRunner {
         System.out.println(urlIterator.next().getUrl());
       }
       System.out.println("********************************************************************************************************************");
-      System.out.println("************************      Find MetsFile by resourceId and GROUPID     ******************************************************");
+      System.out.println("************************      Find MetsFile by resourceId and GROUPID     ******************************************");
       System.out.println("********************************************************************************************************************");
       System.out.println("metsFileRepository.findByResourceIdAndGroupId(\"id_0002\", \"PAGE-0001\")");
       metsFile = metsFileRepository.findByResourceIdAndGroupId("id_0002", "PAGE-0001");
@@ -248,7 +313,7 @@ public class CrudRunner implements CommandLineRunner {
         System.out.println(metsFileIterator.next());
       }
       System.out.println("********************************************************************************************************************");
-      System.out.println("************************      Find MetsFile by resourceId and GROUPID IN      ******************************************************");
+      System.out.println("************************      Find MetsFile by resourceId and GROUPID IN      **************************************");
       System.out.println("********************************************************************************************************************");
       System.out.println("metsFileRepository.findByResourceIdAndGroupIdIn(\"id_0002\", Arrays.asList(\"PAGE-0001\", \"PAGE-0002\")");
       metsFile = metsFileRepository.findByResourceIdAndGroupIdIn("id_0002", Arrays.asList("PAGE-0001", "PAGE-0002"));
@@ -257,7 +322,7 @@ public class CrudRunner implements CommandLineRunner {
         System.out.println(metsFileIterator.next());
       }
       System.out.println("********************************************************************************************************************");
-      System.out.println("************************      Find MetsFile URL by resourceId and GROUPID      ******************************************************");
+      System.out.println("************************      Find MetsFile URL by resourceId and GROUPID      *************************************");
       System.out.println("********************************************************************************************************************");
       System.out.println("metsFileRepository.findUrlByResourceIdAndGroupId(\"id_0002\", \"PAGE-0001\")");
       urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndGroupId("id_0002", "PAGE-0001");
@@ -266,7 +331,7 @@ public class CrudRunner implements CommandLineRunner {
         System.out.println(urlIterator.next().getUrl());
       }
       System.out.println("********************************************************************************************************************");
-      System.out.println("************************      Find MetsFile URL by resourceId and GROUPID IN      ******************************************************");
+      System.out.println("************************      Find MetsFile URL by resourceId and GROUPID IN      **********************************");
       System.out.println("********************************************************************************************************************");
       System.out.println("metsFileRepository.findUrlByResourceIdAndGroupIdIn(\"id_0002\", Arrays.asList(\"PAGE-0001\", \"PAGE-0002\")");
       urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndGroupIdIn("id_0002", Arrays.asList("PAGE-0001", "PAGE-0002"));
@@ -275,7 +340,7 @@ public class CrudRunner implements CommandLineRunner {
         System.out.println(urlIterator.next().getUrl());
       }
       System.out.println("********************************************************************************************************************");
-      System.out.println("************************      Find MetsFile by resourceId and USE AND GROUPID     ******************************************************");
+      System.out.println("************************      Find MetsFile by resourceId and USE AND GROUPID     **********************************");
       System.out.println("********************************************************************************************************************");
       System.out.println("metsFileRepository.findByResourceIdAndUseAndGroupId(\"id_0002\", \"OCR-D-GT-IMG-BIN\", \"PAGE-0001\")");
       metsFile = metsFileRepository.findByResourceIdAndUseAndGroupId("id_0002", "OCR-D-GT-IMG-BIN", "PAGE-0001");
@@ -284,7 +349,7 @@ public class CrudRunner implements CommandLineRunner {
         System.out.println(metsFileIterator.next());
       }
       System.out.println("********************************************************************************************************************");
-      System.out.println("************************      Find MetsFile by resourceId and USE AND GROUPID IN      ******************************************************");
+      System.out.println("************************      Find MetsFile by resourceId and USE AND GROUPID IN      ******************************");
       System.out.println("********************************************************************************************************************");
       System.out.println("metsFileRepository.findByResourceIdAndUseInAndGroupIdIn(\"id_0002\", Arrays.asList(\"OCR-D-GT-IMG-BIN\", \"OCR-D-GT-IMG-DESPEC\"), Arrays.asList(\"PAGE-0001\", \"PAGE-0002\")");
       metsFile = metsFileRepository.findByResourceIdAndUseInAndGroupIdIn("id_0002", Arrays.asList("OCR-D-GT-IMG-BIN", "OCR-D-GT-IMG-DESPEC"), Arrays.asList("PAGE-0001", "PAGE-0002"));
@@ -293,7 +358,7 @@ public class CrudRunner implements CommandLineRunner {
         System.out.println(metsFileIterator.next());
       }
       System.out.println("********************************************************************************************************************");
-      System.out.println("************************      Find MetsFile URL by resourceId USE AND and GROUPID      ******************************************************");
+      System.out.println("************************      Find MetsFile URL by resourceId USE AND and GROUPID      *****************************");
       System.out.println("********************************************************************************************************************");
       System.out.println("metsFileRepository.findUrlByResourceIdAndUseAndGroupId(\"id_0002\", \"OCR-D-GT-IMG-BIN\", \"PAGE-0001\")");
       urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndUseAndGroupId("id_0002", "OCR-D-GT-IMG-BIN", "PAGE-0001");
@@ -302,7 +367,7 @@ public class CrudRunner implements CommandLineRunner {
         System.out.println(urlIterator.next().getUrl());
       }
       System.out.println("********************************************************************************************************************");
-      System.out.println("************************      Find MetsFile URL by resourceId USE AND and GROUPID IN      ******************************************************");
+      System.out.println("************************      Find MetsFile URL by resourceId USE AND and GROUPID IN      **************************");
       System.out.println("********************************************************************************************************************");
       System.out.println("metsFileRepository.findUrlByResourceIdAndUseInAndGroupIdIn(\"id_0002\", Arrays.asList(\"OCR-D-GT-IMG-BIN\", \"OCR-D-GT-IMG-DESPEC\"), Arrays.asList(\"PAGE-0001\", \"PAGE-0002\")");
       urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndUseInAndGroupIdIn("id_0002", Arrays.asList("OCR-D-GT-IMG-BIN", "OCR-D-GT-IMG-DESPEC"), Arrays.asList("PAGE-0001", "PAGE-0002"));
@@ -413,34 +478,34 @@ public class CrudRunner implements CommandLineRunner {
 
   public static Collection<MetsFile> createMetsFiles() {
     return Arrays.asList(
-            new MetsFile("PAGE-0001_IMG_BIN",    1, "id_0002", "image/png", "PAGE-0001", "OCR-D-GT-IMG-BIN",    "url1"),
-            new MetsFile("PAGE-0001_IMG-CROP",   1, "id_0002", "image/png", "PAGE-0001", "OCR-D-GT-IMG-CROP",   "url2"),
-            new MetsFile("PAGE-0001_IMG-DESPEC", 1, "id_0002", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DESPEC", "url3"),
-            new MetsFile("PAGE-0001_IMG-DEWARP", 1, "id_0002", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DEWARP", "url4"),
-            new MetsFile("PAGE-0001_IMG_BIN",    2, "id_0002", "image/png", "PAGE-0001", "OCR-D-GT-IMG-BIN",    "url1_v2"),
-            new MetsFile("PAGE-0001_IMG-CROP",   2, "id_0002", "image/png", "PAGE-0001", "OCR-D-GT-IMG-CROP",   "url2_v2"),
-            new MetsFile("PAGE-0001_IMG-DESPEC", 2, "id_0002", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DESPEC", "url3_v2"),
-            new MetsFile("PAGE-0001_IMG-DEWARP", 2, "id_0002", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DEWARP", "url4_v2"),
-            new MetsFile("PAGE-0001_IMG_BIN",    1, "id_0015", "image/png", "PAGE-0001", "OCR-D-GT-IMG-BIN",    "url11"),
-            new MetsFile("PAGE-0001_IMG-CROP",   1, "id_0015", "image/png", "PAGE-0001", "OCR-D-GT-IMG-CROP",   "url21"),
-            new MetsFile("PAGE-0001_IMG-DESPEC", 1, "id_0015", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DESPEC", "url31"),
-            new MetsFile("PAGE-0001_IMG-DEWARP", 1, "id_0015", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DEWARP", "url41"),
-            new MetsFile("PAGE-0001_IMG_BIN",    1, "id_0016", "image/png", "PAGE-0001", "OCR-D-GT-IMG-BIN",    "url16"),
-            new MetsFile("PAGE-0001_IMG-CROP",   1, "id_0017", "image/png", "PAGE-0001", "OCR-D-GT-IMG-CROP",   "url17"),
-            new MetsFile("PAGE-0001_IMG-DESPEC", 1, "id_0018", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DESPEC", "url18"),
-            new MetsFile("PAGE-0001_IMG-DEWARP", 1, "id_0019", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DEWARP", "url19"),
-            new MetsFile("PAGE-0002_IMG_BIN",    1, "id_0002", "image/png", "PAGE-0002", "OCR-D-GT-IMG-BIN",    "url2_1"),
-            new MetsFile("PAGE-0002_IMG-CROP",   1, "id_0002", "image/png", "PAGE-0002", "OCR-D-GT-IMG-CROP",   "url2_2"),
-            new MetsFile("PAGE-0002_IMG-DESPEC", 1, "id_0002", "image/png", "PAGE-0002", "OCR-D-GT-IMG-DESPEC", "url2_3"),
-            new MetsFile("PAGE-0002_IMG-DEWARP", 1, "id_0002", "image/png", "PAGE-0002", "OCR-D-GT-IMG-DEWARP", "url2_4"),
-            new MetsFile("PAGE-0002_IMG_BIN",    1, "id_0015", "image/png", "PAGE-0002", "OCR-D-GT-IMG-BIN",    "url2_11"),
-            new MetsFile("PAGE-0002_IMG-CROP",   1, "id_0015", "image/png", "PAGE-0002", "OCR-D-GT-IMG-CROP",   "url2_21"),
-            new MetsFile("PAGE-0002_IMG-DESPEC", 1, "id_0015", "image/png", "PAGE-0002", "OCR-D-GT-IMG-DESPEC", "url2_31"),
-            new MetsFile("PAGE-0002_IMG-DEWARP", 1, "id_0015", "image/png", "PAGE-0002", "OCR-D-GT-IMG-DEWARP", "url2_41"),
-            new MetsFile("PAGE-0002_IMG_BIN",    1, "id_0016", "image/png", "PAGE-0002", "OCR-D-GT-IMG-BIN",    "url2_16"),
-            new MetsFile("PAGE-0002_IMG-CROP",   1, "id_0017", "image/png", "PAGE-0002", "OCR-D-GT-IMG-CROP",   "url2_17"),
-            new MetsFile("PAGE-0002_IMG-DESPEC", 1, "id_0018", "image/png", "PAGE-0002", "OCR-D-GT-IMG-DESPEC", "url2_18"),
-            new MetsFile("PAGE-0002_IMG-DEWARP", 1, "id_0019", "image/png", "PAGE-0002", "OCR-D-GT-IMG-DEWARP", "url2_19"));
+            new MetsFile("id_0002", 1, "PAGE-0001_IMG_BIN",    "image/png", "PAGE-0001", "OCR-D-GT-IMG-BIN",    "url1"),
+            new MetsFile("id_0002", 1, "PAGE-0001_IMG-CROP",   "image/png", "PAGE-0001", "OCR-D-GT-IMG-CROP",   "url2"),
+            new MetsFile("id_0002", 1, "PAGE-0001_IMG-DESPEC", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DESPEC", "url3"),
+            new MetsFile("id_0002", 1, "PAGE-0001_IMG-DEWARP", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DEWARP", "url4"),
+            new MetsFile("id_0002", 2, "PAGE-0001_IMG_BIN",    "image/png", "PAGE-0001", "OCR-D-GT-IMG-BIN",    "url1_v2"),
+            new MetsFile("id_0002", 2, "PAGE-0001_IMG-CROP",   "image/png", "PAGE-0001", "OCR-D-GT-IMG-CROP",   "url2_v2"),
+            new MetsFile("id_0002", 2, "PAGE-0001_IMG-DESPEC", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DESPEC", "url3_v2"),
+            new MetsFile("id_0002", 2, "PAGE-0001_IMG-DEWARP", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DEWARP", "url4_v2"),
+            new MetsFile("id_0015", 1, "PAGE-0001_IMG_BIN",    "image/png", "PAGE-0001", "OCR-D-GT-IMG-BIN",    "url11"),
+            new MetsFile("id_0015", 1, "PAGE-0001_IMG-CROP",   "image/png", "PAGE-0001", "OCR-D-GT-IMG-CROP",   "url21"),
+            new MetsFile("id_0015", 1, "PAGE-0001_IMG-DESPEC", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DESPEC", "url31"),
+            new MetsFile("id_0015", 1, "PAGE-0001_IMG-DEWARP", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DEWARP", "url41"),
+            new MetsFile("id_0016", 1, "PAGE-0001_IMG_BIN",    "image/png", "PAGE-0001", "OCR-D-GT-IMG-BIN",    "url16"),
+            new MetsFile("id_0017", 1, "PAGE-0001_IMG-CROP",   "image/png", "PAGE-0001", "OCR-D-GT-IMG-CROP",   "url17"),
+            new MetsFile("id_0018", 1, "PAGE-0001_IMG-DESPEC", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DESPEC", "url18"),
+            new MetsFile("id_0019", 1, "PAGE-0001_IMG-DEWARP", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DEWARP", "url19"),
+            new MetsFile("id_0002", 1, "PAGE-0002_IMG_BIN",    "image/png", "PAGE-0002", "OCR-D-GT-IMG-BIN",    "url2_1"),
+            new MetsFile("id_0002", 1, "PAGE-0002_IMG-CROP",   "image/png", "PAGE-0002", "OCR-D-GT-IMG-CROP",   "url2_2"),
+            new MetsFile("id_0002", 1, "PAGE-0002_IMG-DESPEC", "image/png", "PAGE-0002", "OCR-D-GT-IMG-DESPEC", "url2_3"),
+            new MetsFile("id_0002", 1, "PAGE-0002_IMG-DEWARP", "image/png", "PAGE-0002", "OCR-D-GT-IMG-DEWARP", "url2_4"),
+            new MetsFile("id_0015", 1, "PAGE-0002_IMG_BIN",    "image/png", "PAGE-0002", "OCR-D-GT-IMG-BIN",    "url2_11"),
+            new MetsFile("id_0015", 1, "PAGE-0002_IMG-CROP",   "image/png", "PAGE-0002", "OCR-D-GT-IMG-CROP",   "url2_21"),
+            new MetsFile("id_0015", 1, "PAGE-0002_IMG-DESPEC", "image/png", "PAGE-0002", "OCR-D-GT-IMG-DESPEC", "url2_31"),
+            new MetsFile("id_0015", 1, "PAGE-0002_IMG-DEWARP", "image/png", "PAGE-0002", "OCR-D-GT-IMG-DEWARP", "url2_41"),
+            new MetsFile("id_0016", 1, "PAGE-0002_IMG_BIN",    "image/png", "PAGE-0002", "OCR-D-GT-IMG-BIN",    "url2_16"),
+            new MetsFile("id_0017", 1, "PAGE-0002_IMG-CROP",   "image/png", "PAGE-0002", "OCR-D-GT-IMG-CROP",   "url2_17"),
+            new MetsFile("id_0018", 1, "PAGE-0002_IMG-DESPEC", "image/png", "PAGE-0002", "OCR-D-GT-IMG-DESPEC", "url2_18"),
+            new MetsFile("id_0019", 1, "PAGE-0002_IMG-DEWARP", "image/png", "PAGE-0002", "OCR-D-GT-IMG-DEWARP", "url2_19"));
   }
 
 }

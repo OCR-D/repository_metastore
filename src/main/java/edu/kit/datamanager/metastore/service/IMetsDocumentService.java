@@ -61,7 +61,7 @@ public interface IMetsDocumentService {
    * @param resourceId Resource ID of the document.
    * @param fileContent METS file holding all information.
    */
-  void createMetsDocument(String resourceId, String fileContent) throws ResourceAlreadyExistsException ;
+  void createMetsDocument(String resourceId, String fileContent) throws ResourceAlreadyExistsException;
   /**
    * Create METS document.
    * 
