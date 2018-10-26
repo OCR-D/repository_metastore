@@ -17,12 +17,14 @@ package edu.kit.datamanager.metastore;
 
 //import edu.kit.datamanager.repo.configuration.ApplicationProperties;
 import edu.kit.datamanager.metastore.runner.CrudRunner;
+import edu.kit.datamanager.metastore.storageservice.StorageProperties;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 
@@ -32,6 +34,7 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @SpringBootApplication
 @EnableAutoConfiguration
+@EnableConfigurationProperties(StorageProperties.class)
 @ComponentScan(basePackages = {"edu.kit.datamanager.metastore"})
 @EntityScan(basePackages = {"edu.kit.datamanager.metastore"})
 public class MetastoreApplication implements ApplicationRunner {
