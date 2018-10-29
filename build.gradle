@@ -84,6 +84,8 @@ dependencies {
    
   compile("org.slf4j:slf4j-api:1.7.25")
   compile("ch.qos.logback:logback-classic:1.2.3")
+  // bag it
+  compile("gov.loc:bagit:4.0")
   
   // local dependencies
   compile("org.fzk.ipe:Tools:1.6")

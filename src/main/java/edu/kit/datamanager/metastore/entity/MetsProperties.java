@@ -17,8 +17,11 @@ package edu.kit.datamanager.metastore.entity;
 
 import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.HashIndex;
+import edu.kit.datamanager.metastore.util.MetsDocumentUtil;
 import org.fzk.tools.xml.JaxenUtil;
 import org.jdom.Namespace;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.Id;
 
 /**
@@ -33,6 +36,11 @@ import org.springframework.data.annotation.Id;
 @Document("metsProperties")
 @HashIndex(fields = {"resourceId", "version"}, unique = true)
 public class MetsProperties {
+
+  /**
+   * Logger.
+   */
+  private static final Logger LOGGER = LoggerFactory.getLogger(MetsProperties.class);
 
   /**
    * ID of the document.
@@ -75,10 +83,14 @@ public class MetsProperties {
    * @param metsDocument METS document;
    */
   private void extractProperties(org.jdom.Document metsDocument) {
-    Namespace namespace = Namespace.getNamespace("mods", "http://www.loc.gov/mods/v3");
-    Namespace[] namespaces = {namespace};
+    LOGGER.info("Extract properties from METS document.");
+    Namespace[] namespaces = MetsDocumentUtil.getNamespaces();
     title = JaxenUtil.getNodeValue(metsDocument, "//mods:title[1]", namespaces);
+    if (title == null) {
+      title = "No title available";
+    }
     ppn = JaxenUtil.getNodeValue(metsDocument, "//mods:recordIdentifier[1]", namespaces);
+    LOGGER.info("Properties:\nTitle: {}\nPPN: {}", title, ppn);
   }
 
   /**

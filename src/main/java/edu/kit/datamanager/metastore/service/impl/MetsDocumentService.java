@@ -17,24 +17,46 @@ package edu.kit.datamanager.metastore.service.impl;
 
 import edu.kit.datamanager.metastore.entity.IVersion;
 import edu.kit.datamanager.metastore.entity.MetsDocument;
+import edu.kit.datamanager.metastore.entity.MetsFile;
+import edu.kit.datamanager.metastore.entity.MetsProperties;
+import edu.kit.datamanager.metastore.exception.InvalidFormatException;
 import edu.kit.datamanager.metastore.exception.ResourceAlreadyExistsException;
 import edu.kit.datamanager.metastore.repository.MetsDocumentRepository;
+import edu.kit.datamanager.metastore.repository.MetsFileRepository;
+import edu.kit.datamanager.metastore.repository.MetsPropertiesRepository;
 import edu.kit.datamanager.metastore.service.IMetsDocumentService;
+import edu.kit.datamanager.metastore.util.MetsDocumentUtil;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.apache.commons.collections4.IteratorUtils;
+import org.fzk.tools.xml.JaxenUtil;
+import org.jdom.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
  * Class implementing METS services.
- * 
+ *
  */
 @Service
 public class MetsDocumentService implements IMetsDocumentService {
+
+  /**
+   * Logger.
+   */
+  private static final Logger LOGGER = LoggerFactory.getLogger(MetsDocumentService.class);
+
   @Autowired
-	private MetsDocumentRepository metsRepository;
+  private MetsDocumentRepository metsRepository;
+
+  @Autowired
+  private MetsFileRepository metsFileRepository;
+
+  @Autowired
+  private MetsPropertiesRepository metsPropertiesRepository;
 
   @Override
   public List<MetsDocument> getAllDocuments() {
@@ -45,7 +67,7 @@ public class MetsDocumentService implements IMetsDocumentService {
 
   @Override
   public MetsDocument getMostRecentMetsDocumentByResourceId(String resourceId) {
-     MetsDocument metsDocument = metsRepository.findByResourceIdAndCurrentTrue(resourceId);
+    MetsDocument metsDocument = metsRepository.findByResourceIdAndCurrentTrue(resourceId);
     return metsDocument;
   }
 
@@ -64,6 +86,7 @@ public class MetsDocumentService implements IMetsDocumentService {
     MetsDocument document = metsRepository.findByResourceIdAndVersion(resourceId, version);
     return document;
   }
+
   @Override
   public void createMetsDocument(String resourceId, String fileContent) throws ResourceAlreadyExistsException {
     MetsDocument metsDocExists = metsRepository.findByResourceIdAndCurrentTrue(resourceId);
@@ -71,17 +94,53 @@ public class MetsDocumentService implements IMetsDocumentService {
     if (metsDocExists != null) {
       throw new ResourceAlreadyExistsException("METS document with resourceid '" + resourceId + "' already exists!");
     }
-    // 
+    Document metsDocument = null;
+    try {
+      // ****************************************************
+      // METS to XML Document
+      // ****************************************************
+      metsDocument = JaxenUtil.getDocument(fileContent);
+    } catch (Exception ex) {
+      LOGGER.error("Invalid METS file", ex);
+      throw new InvalidFormatException("Invalid METS file!");
+    }
+    // ****************************************************
     // Validate METS (priority low)
+    // ****************************************************
+    // ****************************************************
     // Extract section documents (priority low)
+    // ****************************************************
+    // ****************************************************
     //   Validate section documents (priority low)
+    // ****************************************************
+    // ****************************************************
     // Extract fileGrps
+    // ****************************************************
+    List<MetsFile> extractMetsFiles = MetsDocumentUtil.extractMetsFiles(metsDocument, resourceId, 1);
+    metsFileRepository.saveAll(extractMetsFiles);
+    
+    // ****************************************************
+    // Extract METS properties 
+    // ****************************************************
+    MetsProperties metsProperties = new MetsProperties(metsDocument);
+    metsPropertiesRepository.save(metsProperties);
+    // ****************************************************
     //   Change URL if neccessary
+    // ****************************************************
+    // ****************************************************
     // If everything is valid:
-    // Store METS document
-    // Store section documents (priority low)
     // Store METS files
-        MetsDocument metsDoc = new MetsDocument(resourceId, fileContent);
+    // ****************************************************
+    // ****************************************************
+    // Store METS properties 
+    // ****************************************************
+    // ****************************************************
+    // Store section documents (priority low)
+    // ****************************************************
+    // ****************************************************
+    // Store METS document
+    // ****************************************************
+    MetsDocument metsDoc = new MetsDocument(resourceId, fileContent);
     metsRepository.save(metsDoc);
   }
 
