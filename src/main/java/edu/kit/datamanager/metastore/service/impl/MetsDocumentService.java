@@ -123,7 +123,12 @@ public class MetsDocumentService implements IMetsDocumentService {
     // Extract METS properties 
     // ****************************************************
     MetsProperties metsProperties = new MetsProperties(metsDocument);
+    metsProperties.setResourceId(resourceId);
+    LOGGER.info(metsProperties.toString());
     metsPropertiesRepository.save(metsProperties);
+    for (MetsProperties item : metsPropertiesRepository.findAll())
+      System.out.println(item.toString());
+    
     // ****************************************************
     //   Change URL if neccessary
     // ****************************************************

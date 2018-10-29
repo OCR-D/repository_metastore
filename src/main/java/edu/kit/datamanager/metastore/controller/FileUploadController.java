@@ -1,7 +1,7 @@
 package edu.kit.datamanager.metastore.controller;
 
+import edu.kit.datamanager.metastore.exception.InvalidFormatException;
 import edu.kit.datamanager.metastore.service.IMetsDocumentService;
-import edu.kit.datamanager.metastore.service.impl.MetsDocumentService;
 import edu.kit.datamanager.metastore.storageservice.ArchiveService;
 import edu.kit.datamanager.metastore.storageservice.StorageFileNotFoundException;
 import edu.kit.datamanager.metastore.storageservice.StorageService;
@@ -35,8 +35,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Controller
-@RequestMapping("/")
+/**
+ * REST service handling upload of zipped Bagit containers.
+ */
+ @Controller
+@RequestMapping("/metastore/bagit")
 public class FileUploadController {
 
   @Autowired
@@ -45,14 +48,27 @@ public class FileUploadController {
   private final StorageService storageService;
 
   private final ArchiveService archiveService;
-
+  
+ /**
+  * Constructor setting up controller for upload of BagIt containers.
+  * 
+  * @param storageService Properties for storing zipped BagIt container.
+  * @param archiveService Properties for storing unzipped BagIt container.
+  */
   @Autowired
   public FileUploadController(StorageService storageService, ArchiveService archiveService) {
     this.storageService = storageService;
     this.archiveService = archiveService;
   }
-
-  @GetMapping("metastore/bagit/")
+  /**
+   * Listing of uploaded files.
+   * 
+   * @param model Model holding information about uploaded files.
+   * 
+   * @return Website displaying information about uploaded files.
+   * @throws IOException Error while storing/reading file.
+   */
+  @GetMapping("/")
   public String listUploadedFiles(Model model) throws IOException {
     System.out.println("listUploadedFiles - " + model);
 
@@ -63,8 +79,14 @@ public class FileUploadController {
 
     return "uploadForm";
   }
-
-  @GetMapping("metastore/bagit/files/{filename:.+}")
+  /**
+   * Get file by its filename. 
+   * 
+   * @param filename Filename of the uploaded file.
+   * 
+   * @return Selected file.
+   */
+  @GetMapping("files/{filename:.+}")
   @ResponseBody
   public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
     System.out.println("serveFile - " + filename);
@@ -73,8 +95,16 @@ public class FileUploadController {
     return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
             "attachment; filename=\"" + file.getFilename() + "\"").body(file);
   }
-
-  @PostMapping("/metastore/bagit/")
+  /**
+   * Handle upload of file (zipped BagIt container)
+   * 
+   * @param file Instance holding content of file and attributes of the file.
+   * @param redirectAttributes Attributes storing internal information.
+   * 
+   * @return Website displaying information about uploaded files.
+   * @throws IOException Error during upload.
+   */
+  @PostMapping("/")
   public String handleFileUpload(@RequestParam("file") MultipartFile file,
           RedirectAttributes redirectAttributes) throws IOException {
     System.out.println("handleFileUpload");
@@ -93,14 +123,24 @@ public class FileUploadController {
       Bag bag = BagItUtil.createBag(pathToArchive.toFile());
       String xOcrdMets = bag.getBagInfoTxt().getOrDefault("X-Ocrd-Mets", "data/mets.xml");
       File metsFile = Paths.get(pathToArchive.toString(), xOcrdMets).toFile();
+      if (metsFile.exists()) {
       String metsFileAsString = FileUtils.readFileToString(metsFile, "UTF-8");
-      metsDocumentService.createMetsDocument("mets_0001", metsFileAsString);
+      metsDocumentService.createMetsDocument(baseName, metsFileAsString);
+      } else {
+        throw new InvalidFormatException("METS file doesn't exist or isn't specified");
+      }
            
     }
 
     return "redirect:/metastore/bagit/";
   }
-
+  /**
+   * Handler for Exceptions.
+   * 
+   * @param exc Exception reading/writing file.
+   * 
+   * @return Error status.
+   */
   @ExceptionHandler(StorageFileNotFoundException.class)
   public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
     return ResponseEntity.notFound().build();

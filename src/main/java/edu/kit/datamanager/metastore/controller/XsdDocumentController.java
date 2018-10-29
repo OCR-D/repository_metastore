@@ -46,13 +46,22 @@ public class XsdDocumentController {
 
   @Autowired
   private IXsdDocumentService xsdService;
-
+  /**
+   * Get all XSD documents.
+   * 
+   * @return Array holding all XSD documents.
+   */
   @GetMapping("xsd")
   public ResponseEntity<List<XmlSchemaDefinition>> getAllDocuments() {
     List<XmlSchemaDefinition> allDocuments = xsdService.getAllDocuments();
     LOGGER.trace("Get all METS documents");
     return new ResponseEntity<>(allDocuments, HttpStatus.OK);
   }
+  /**
+   * Get all registered prefixes.
+   * 
+   * @return Array with all prefixes.
+   */
   @GetMapping("xsd/prefix")
   public ResponseEntity<List<String>> getAllPrefixes() {
     LOGGER.trace("Get prefixes of  all XSD documents");
@@ -61,6 +70,12 @@ public class XsdDocumentController {
     List<String> allPrefixes = xsdService.getAllPrefixes();
     return new ResponseEntity<>(allPrefixes, HttpStatus.OK);
   }
+  /** 
+   * Get document registered with given prefix.
+   * @param prefix Prefix of the XSD document.
+   * 
+   * @return XSD document.
+   */
   @GetMapping("xsd/prefix/{prefix}")
   public ResponseEntity<XmlSchemaDefinition> getXsdDocumentByPrefix(@PathVariable("prefix")String prefix) {
     LOGGER.trace("Get XSD document with prefix " + prefix);
@@ -69,6 +84,13 @@ public class XsdDocumentController {
     xsdDocument = xsdService.getDocumentByPrefix(prefix);
     return new ResponseEntity<>(xsdDocument, HttpStatus.OK);
   }
+  /**
+   * Get document registered with given namespace.
+   * 
+   * @param namespace Namespace of the XSD document.
+   * 
+   * @return XSD document.
+   */
   @GetMapping("xsd/ns")
   public ResponseEntity<XmlSchemaDefinition> getXsdDocumentByNamespace(@RequestParam("namespace")String namespace) {
     LOGGER.trace("Get XSD document with namespace " + namespace);
