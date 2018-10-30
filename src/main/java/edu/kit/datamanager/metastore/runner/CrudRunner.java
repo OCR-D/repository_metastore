@@ -72,6 +72,7 @@ public class CrudRunner implements CommandLineRunner {
     final String METS_FILES = "file";
     final String XSD = "xsd";
     final String METS_PROPERTIES = "prop";
+    final String DROP_DATABASE = "dropArangoDBOnly";
     List<String> argumentList = Arrays.asList(args);
     System.out.println("Run CRUD Runner!");
     // first drop the database so that we can run this multiple times with the same dataset
@@ -80,6 +81,9 @@ public class CrudRunner implements CommandLineRunner {
     } catch (DataAccessException dae) {
       System.out.println("This message should be printed only once!");
       System.out.println(dae.toString());
+    }
+    if (argumentList.contains(DROP_DATABASE)) {
+      return;
     }
 
     System.out.println("# CRUD operations");

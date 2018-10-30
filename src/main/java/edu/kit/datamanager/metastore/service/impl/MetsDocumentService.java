@@ -15,6 +15,7 @@
  */
 package edu.kit.datamanager.metastore.service.impl;
 
+import com.arangodb.ArangoDBException;
 import edu.kit.datamanager.metastore.entity.IVersion;
 import edu.kit.datamanager.metastore.entity.MetsDocument;
 import edu.kit.datamanager.metastore.entity.MetsFile;
@@ -89,7 +90,15 @@ public class MetsDocumentService implements IMetsDocumentService {
 
   @Override
   public void createMetsDocument(String resourceId, String fileContent) throws ResourceAlreadyExistsException {
-    MetsDocument metsDocExists = metsRepository.findByResourceIdAndCurrentTrue(resourceId);
+    MetsDocument metsDocExists = null;
+    try {
+      metsDocExists = metsRepository.findByResourceIdAndCurrentTrue(resourceId);
+    } catch (ArangoDBException ade) {
+      // if response code= 404 -> ignore Exception due to empty database.
+      if (ade.getResponseCode() != 404) {
+        throw ade;
+      }
+    }
     // Check for existing resource ID
     if (metsDocExists != null) {
       throw new ResourceAlreadyExistsException("METS document with resourceid '" + resourceId + "' already exists!");
@@ -118,7 +127,7 @@ public class MetsDocumentService implements IMetsDocumentService {
     // ****************************************************
     List<MetsFile> extractMetsFiles = MetsDocumentUtil.extractMetsFiles(metsDocument, resourceId, 1);
     metsFileRepository.saveAll(extractMetsFiles);
-    
+
     // ****************************************************
     // Extract METS properties 
     // ****************************************************
@@ -126,9 +135,10 @@ public class MetsDocumentService implements IMetsDocumentService {
     metsProperties.setResourceId(resourceId);
     LOGGER.info(metsProperties.toString());
     metsPropertiesRepository.save(metsProperties);
-    for (MetsProperties item : metsPropertiesRepository.findAll())
+    for (MetsProperties item : metsPropertiesRepository.findAll()) {
       System.out.println(item.toString());
-    
+    }
+
     // ****************************************************
     //   Change URL if neccessary
     // ****************************************************

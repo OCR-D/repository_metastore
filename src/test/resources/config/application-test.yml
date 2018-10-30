@@ -1,9 +1,0 @@
-repo:
-   auth:
-      jwtSecret: test123
-   basepath: file:///tmp/
-  
-management:
-   endpoint:
-      health:
-        show-details: "ALWAYS"
