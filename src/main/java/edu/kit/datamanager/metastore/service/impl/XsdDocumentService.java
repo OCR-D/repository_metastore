@@ -28,10 +28,12 @@ import org.springframework.stereotype.Service;
 
 /**
  * Class implementing XSD services.
- * 
  */
 @Service
 public class XsdDocumentService implements IXsdDocumentService {
+  /**
+   * Repository persisting XSD documents.
+   */
   @Autowired
 	private XmlSchemaDefinitionRepository xsdRepository;
 

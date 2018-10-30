@@ -21,7 +21,6 @@ import java.util.List;
 
 /**
  * Interface defining METS service.
- * 
  */
 public interface IMetsDocumentService {
   /**

@@ -134,5 +134,4 @@ public class XmlSchemaDefinition {
   public void setXsdFile(String xsdFile) {
     this.xsdFile = xsdFile;
   }
-
 }

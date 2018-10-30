@@ -15,9 +15,10 @@
  */
 package edu.kit.datamanager.metastore;
 
-//import edu.kit.datamanager.repo.configuration.ApplicationProperties;
 import edu.kit.datamanager.metastore.runner.CrudRunner;
 import edu.kit.datamanager.metastore.storageservice.StorageProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
@@ -29,8 +30,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
- *
- * @author Volker Hartmann
+ * Entry point for Spring Boot application
  */
 @SpringBootApplication
 @EnableAutoConfiguration
@@ -39,31 +39,33 @@ import org.springframework.context.annotation.ComponentScan;
 @EntityScan(basePackages = {"edu.kit.datamanager.metastore"})
 public class MetastoreApplication implements ApplicationRunner {
 
-   public static void main(String[] args){
-     System.out.println("args.length: " + args.length);
-     
-     if (args.length == 0) {
-    ApplicationContext ctx = SpringApplication.run(MetastoreApplication.class, args);
-//    ApplicationProperties bean = ctx.getBean(ApplicationProperties.class);
-     } else {
-//    ApplicationProperties bean = ctx.getBean(ApplicationProperties.class);
-    System.out.println("CRUD_Runner");
-     final Class<?>[] runner = new Class<?>[]{CrudRunner.class/*, ByExampleRunner.class, DerivedQueryRunner.class ,
+  /**
+   * Logger for this class.
+   */
+  private static final Logger LOGGER = LoggerFactory.getLogger(MetastoreApplication.class);
+
+  /**
+   * Main method for Spring Boot Application.
+   *
+   * @param args Command line arguments.
+   */
+  public static void main(String[] args) {
+    LOGGER.debug("Number of arguments: {}", args.length);
+    // If no arguments are specified start the server...
+    if (args.length == 0) {
+      LOGGER.info("Start Spring Boot...");
+      ApplicationContext ctx = SpringApplication.run(MetastoreApplication.class, args);
+    } else {
+      LOGGER.info("CRUD_Runner");
+      final Class<?>[] runner = new Class<?>[]{CrudRunner.class/*, ByExampleRunner.class, DerivedQueryRunner.class ,
 				RelationsRunner.class, AQLRunner.class, GeospatialRunner.class */
-     };
-     System.exit(SpringApplication.exit(SpringApplication.run(runner, args)));
-     }
-    /*  String[] beanNames = ctx.getBeanDefinitionNames();
-    Arrays.sort(beanNames);
-    for(String beanName : beanNames){
-      System.out.println(beanName);
+      };
+      System.exit(SpringApplication.exit(SpringApplication.run(runner, args)));
     }
-    System.out.println("Spring Boot started...");*/
   }
 
   @Override
   public void run(ApplicationArguments args) throws Exception {
-    System.out.println("Running....");
-   }
-
+    LOGGER.info("Running....");
+  }
 }

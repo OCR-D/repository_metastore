@@ -22,17 +22,40 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * Can't create resource with given ID.
  */
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-public class ResourceAlreadyExistsException  extends RuntimeException {
+public class ResourceAlreadyExistsException extends RuntimeException {
+
+  /**
+   * Default constructor.
+   */
   public ResourceAlreadyExistsException() {
     super();
   }
-    public ResourceAlreadyExistsException(String message, Throwable cause) {
-        super(message, cause);
-    }
-    public ResourceAlreadyExistsException(String message) {
-        super(message);
-    }
-    public ResourceAlreadyExistsException(Throwable cause) {
-        super(cause);
-    }
+
+   /**
+   * Constructor with given message and cause.
+   *
+   * @param message Message.
+   * @param cause Cause.
+   */
+ public ResourceAlreadyExistsException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
+  /**
+   * Constructor with given message.
+   *
+   * @param message Message.
+   */
+  public ResourceAlreadyExistsException(String message) {
+    super(message);
+  }
+
+  /**
+   * Constructor with given message and cause.
+   *
+   * @param cause Cause.
+   */
+  public ResourceAlreadyExistsException(Throwable cause) {
+    super(cause);
+  }
 }

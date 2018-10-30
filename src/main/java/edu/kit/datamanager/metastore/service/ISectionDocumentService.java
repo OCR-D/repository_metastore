@@ -23,8 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Interface defining section document service.
- * 
- * @author hartmann-v
  */
 public interface ISectionDocumentService {
   /**
@@ -38,6 +36,7 @@ public interface ISectionDocumentService {
    * Get most recent content of METS document with given resource ID.
    * 
    * @param resourceId Resource ID of METS document.
+   * 
    * @return METS document.
    */
   MetsDocument getMostRecentMetsDocumentByResourceId(String resourceId);
@@ -46,6 +45,7 @@ public interface ISectionDocumentService {
    * Get most recent METS document with given resource ID.
    * 
    * @param resourceId Resource ID of METS document.
+   * 
    * @return METS document.
    */
   MetsDocument getMostRecentDocumentByResourceId(String resourceId);
@@ -54,6 +54,7 @@ public interface ISectionDocumentService {
    * Get all versions of METS document with given resource ID.
    * 
    * @param resourceId Resource ID of METS document.
+   * 
    * @return List holding all versions of METS document.
    */
   List<MetsDocument> getDocumentByResourceId(String resourceId);
@@ -63,6 +64,7 @@ public interface ISectionDocumentService {
    * 
    * @param resourceId Resource ID of METS document.
    * @param version Version of METS document.
+   * 
    * @return List holding all versions of METS document.
    */
   MetsDocument getDocumentByResourceIdAndVersion(String resourceId, Integer version);
@@ -71,6 +73,7 @@ public interface ISectionDocumentService {
    * Get all versions with given resource ID.
    * 
    * @param resourceId Resource ID of METS document.
+   * 
    * @return List holding all versions.
    */
   List<Integer> getAllVersionsByResourceId(String resourceId);
@@ -78,7 +81,9 @@ public interface ISectionDocumentService {
   /**
    * Get prefix of all section documents stored inside the METS document with given
    * resource ID.
+   * 
    * @param resourceId Resource ID of METS document.
+   * 
    * @return List holding all prefixes of selected METS document.
    */
   List<String> getPrefixOfAvailableSectionDocuments(String resourceId);
@@ -88,6 +93,7 @@ public interface ISectionDocumentService {
    * resource ID.
    * 
    * @param resourceId Resource ID of METS document.
+   * 
    * @return List holding all section documents of METS document.
    */
   List<SectionDocument> getAllSectionDocuments(String resourceId);
@@ -98,6 +104,7 @@ public interface ISectionDocumentService {
    * 
    * @param resourceId Resource ID of METS document.
    * @param prefix Prefix of the section document.
+   * 
    * @return Section document of METS document with given prefix.
    */
   SectionDocument getSectionDocument(String resourceId, String prefix);
@@ -107,6 +114,7 @@ public interface ISectionDocumentService {
    * 
    * @param resourceId Resource ID of METS document.
    * @param version Version of METS document.
+   * 
    * @return List holding all files.
    */
   List<MetsFile> getAvailableMetsFiles(String resourceId, Integer version);
@@ -117,7 +125,8 @@ public interface ISectionDocumentService {
    * 
    * @param resourceId Resource ID of METS document.
    * @param use USE of the fileGrp element.
-   * @param groupId GROUPID of the FLocat element
+   * @param groupId GROUPID of the FLocat element.
+   * 
    * @return List holding all files.
    */
   List<MetsFile> getAvailableMetsFilesByUseAndGroupId(String resourceId, String[] use, String[] groupId);
@@ -127,6 +136,7 @@ public interface ISectionDocumentService {
    * 
    * @param resourceId Resource ID of METS document.
    * @param fileId ID of the FLocat element.
+   * 
    * @return Selected file.
    */
   List<MetsFile> getAvailableMetsFilesByFileId(String resourceId, String fileId);

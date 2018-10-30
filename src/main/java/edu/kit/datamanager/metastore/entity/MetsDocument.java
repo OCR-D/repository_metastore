@@ -1,24 +1,19 @@
 /*
- * DISCLAIMER
- *
- * Copyright 2017 ArangoDB GmbH, Cologne, Germany
+ * Copyright 2018 Karlsruhe Institute of Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * Copyright holder is ArangoDB GmbH, Cologne, Germany
  */
 package edu.kit.datamanager.metastore.entity;
-
 
 import org.springframework.data.annotation.Id;
 
@@ -27,30 +22,33 @@ import com.arangodb.springframework.annotation.HashIndex;
 import java.util.Date;
 
 /**
- * This class contains information about the current version of a digital object.
- * These are: <p><ul>
- *    <li>Resource Identifier
- *       <li>Version Number
- *       <li>Date of last modification
- *    </ul><p>
- * 
- * Mets file contains several section documents.
- * These are: <p><ul>
- *    <li>descriptive metadata
- *       <ul><li>dublin core metadata
- *       <li>content metadata
- *       <li>files</ul>
- *    <li>administrative metadata
- *    </ul><p>
- * In case of OCR-D data there may be an optional section document holding
- * all metadata about the Ground-Truth. 
- * 
+ * This class contains information about the current version of a digital
+ * object. These are:
+ * <p>
+ * <ul>
+ * <li>Resource Identifier
+ * <li>Version Number
+ * <li>Date of last modification
+ * </ul><p>
+ *
+ * Mets file contains several section documents. These are:
+ * <p>
+ * <ul>
+ * <li>descriptive metadata
+ * <ul><li>dublin core metadata
+ * <li>content metadata
+ * <li>files</ul>
+ * <li>administrative metadata
+ * </ul><p>
+ * In case of OCR-D data there may be an optional section document holding all
+ * metadata about the Ground-Truth.
+ *
  */
 @Document("metsDocument")
 @HashIndex(fields = {"resourceId", "version"}, unique = true)
 public class MetsDocument implements IBaseEntity {
 
-  /** 
+  /**
    * ID of the document.
    */
   @Id
@@ -63,11 +61,11 @@ public class MetsDocument implements IBaseEntity {
    * Version of the document. (Start with version 1 increment version number.)
    */
   private Integer version;
-  /** 
-   * Date of the last change. 
+  /**
+   * Date of the last change.
    */
   private Date lastModified;
-  /** 
+  /**
    * Is the current version.
    */
   private Boolean current;
@@ -75,16 +73,19 @@ public class MetsDocument implements IBaseEntity {
    * Holds the content of the METS file.
    */
   private String metsContent;
+
   /**
    * Constructor.
    */
   public MetsDocument() {
     super();
   }
+
   /**
    * Constructor with resourceId and the original METS document.
-   * 
-   * @param resourceId ResourceId of the digital object referenced by the METS document. (has to be unique)
+   *
+   * @param resourceId ResourceId of the digital object referenced by the METS
+   * document. (has to be unique)
    * @param metsDocument METS document.
    */
   public MetsDocument(final String resourceId, final String metsDocument) {
@@ -92,9 +93,10 @@ public class MetsDocument implements IBaseEntity {
   }
 
   /**
-   * Constructor with resourceId and the original METS document.
-   * 
-   * @param resourceId ResourceId of the digital object referenced by the METS document. (has to be unique)
+   * Constructor with resourceId, version number and the original METS document.
+   *
+   * @param resourceId ResourceId of the digital object referenced by the METS
+   * document. (has to be unique)
    * @param version Version of the document. Initial version is version 1.
    * @param metsDocument Content of METS file.
    */
@@ -107,7 +109,6 @@ public class MetsDocument implements IBaseEntity {
     this.current = true;
   }
 
-
   @Override
   public String getId() {
     return id;
@@ -116,7 +117,6 @@ public class MetsDocument implements IBaseEntity {
   public void setId(String id) {
     this.id = id;
   }
- 
 
   @Override
   public String getResourceId() {
@@ -140,7 +140,7 @@ public class MetsDocument implements IBaseEntity {
 
   /**
    * Get date of last modification.
-   * 
+   *
    * @return Last modification date.
    */
   public Date getLastModified() {
@@ -149,6 +149,7 @@ public class MetsDocument implements IBaseEntity {
 
   /**
    * Set date of last modification.
+   *
    * @param lastModified Last modification date.
    */
   public void setLastModified(Date lastModified) {
@@ -156,14 +157,17 @@ public class MetsDocument implements IBaseEntity {
   }
 
   /**
-   * I
-   * @return the current
+   * Get flag for current version.
+   *
+   * @return the current version.
    */
   public Boolean getCurrent() {
     return current;
   }
 
   /**
+   * Set flag for current version.
+   *
    * @param current the current to set
    */
   public void setCurrent(Boolean current) {
@@ -172,7 +176,7 @@ public class MetsDocument implements IBaseEntity {
 
   /**
    * Get content of METS file.
-   * 
+   *
    * @return the metsContent
    */
   public String getMetsContent() {
@@ -181,19 +185,19 @@ public class MetsDocument implements IBaseEntity {
 
   /**
    * Set content of METS file.
-   * 
+   *
    * @param metsContent the metsContent to set
    */
   public void setMetsContent(String metsContent) {
     this.metsContent = metsContent;
   }
-  /** 
-   * Update Metsdocument.
-   * Creates a new version of the METS document and increment version number.
-   * Set old version to  be no longer current.
-   * 
+
+  /**
+   * Update Metsdocument. Creates a new version of the METS document and
+   * increment version number. Set old version to be no longer current.
+   *
    * @param metsContent Content of the new METS file.
-   * 
+   *
    * @return Updated METS document.
    */
   public MetsDocument updateMetsContent(String metsContent) {
@@ -201,6 +205,7 @@ public class MetsDocument implements IBaseEntity {
     this.current = false;
     return newMetsDoc;
   }
+
   @Override
   public String toString() {
     StringBuffer sb = new StringBuffer("MetsDocument [");
@@ -213,5 +218,4 @@ public class MetsDocument implements IBaseEntity {
     sb.append("]");
     return sb.toString();
   }
-
 }

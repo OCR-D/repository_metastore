@@ -1,23 +1,18 @@
 /*
- * DISCLAIMER
- *
- * Copyright 2017 ArangoDB GmbH, Cologne, Germany
+ * Copyright 2018 Karlsruhe Institute of Technology.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * Copyright holder is ArangoDB GmbH, Cologne, Germany
  */
-
 package edu.kit.datamanager.metastore;
 
 import org.springframework.context.annotation.Configuration;
@@ -27,17 +22,22 @@ import com.arangodb.ArangoDB.Builder;
 import com.arangodb.Protocol;
 import com.arangodb.springframework.annotation.EnableArangoRepositories;
 import com.arangodb.springframework.config.AbstractArangoConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * @author Volker Hartmann
- *
+ * Configuration of ArangoDB
  */
 @Configuration
 @ConfigurationProperties("arangodb")
 @EnableArangoRepositories(basePackages = { "edu.kit.datamanager.metastore" })
 public class ArangoDBConfiguration extends AbstractArangoConfiguration {
-  
+  /**
+   * Logger for this class.
+   */
+  private static final Logger LOGGER = LoggerFactory.getLogger(ArangoDBConfiguration.class);
+
   /**
    * Hostname of the ArangoDB server.
    */
@@ -65,6 +65,7 @@ public class ArangoDBConfiguration extends AbstractArangoConfiguration {
 
 	@Override
 	public Builder arango() {
+    LOGGER.trace("Create ArangoDB connection (Host:Port= {},{} User: {} Password: {} Database: {}", getHost(), getPort(), getUser(), getPassword(), getDatabase());
 		return new ArangoDB.Builder().useProtocol(Protocol.HTTP_JSON).host(getHost(), getPort()).user(getUser()).password(getPassword());
 	}
 

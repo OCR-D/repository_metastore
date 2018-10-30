@@ -22,17 +22,40 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * Invalid format of data.
  */
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-public class InvalidFormatException  extends RuntimeException {
+public class InvalidFormatException extends RuntimeException {
+
+  /**
+   * Default constructor.
+   */
   public InvalidFormatException() {
     super();
   }
-    public InvalidFormatException(String message, Throwable cause) {
-        super(message, cause);
-    }
-    public InvalidFormatException(String message) {
-        super(message);
-    }
-    public InvalidFormatException(Throwable cause) {
-        super(cause);
-    }
+
+  /**
+   * Constructor with given message and cause.
+   *
+   * @param message Message.
+   * @param cause Cause.
+   */
+  public InvalidFormatException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
+  /**
+   * Constructor with given message.
+   *
+   * @param message Message.
+   */
+  public InvalidFormatException(String message) {
+    super(message);
+  }
+
+  /**
+   * Constructor with given message and cause.
+   *
+   * @param cause Cause.
+   */
+  public InvalidFormatException(Throwable cause) {
+    super(cause);
+  }
 }

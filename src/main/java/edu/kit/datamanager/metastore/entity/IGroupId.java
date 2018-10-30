@@ -17,7 +17,6 @@ package edu.kit.datamanager.metastore.entity;
 
 /**
  * Interface to get and set GroupId of an instance.
- * @author hartmann-v
  */
 public interface IGroupId {
 

@@ -73,11 +73,7 @@ public class BagItUtil {
    * @throws IOException Error accessing files
    */
   public static Bag createBag(File pathToBag) throws IOException {
-    LOGGER.error("Create BagIt error");
-    LOGGER.warn("Create BagIt warn");
-    LOGGER.info("Create BagIt info");
-    LOGGER.debug("Create BagIt debug");
-    System.out.println("Create BagIt sout");
+    LOGGER.debug("Create BagIt...");
     BagFactory bf = new BagFactory();
 
     Bag bag = bf.createBag(pathToBag);
@@ -95,39 +91,17 @@ public class BagItUtil {
    */
   public static boolean validateBagit(Bag bag) {
     boolean valid = false;
-    System.out.println("Validate Bag!");
     LOGGER.debug("Validate Bag!");
     bag.verifyComplete();
-    Bag.BagConstants bc = bag.getBagConstants();
-    BagItTxt bt = bag.getBagItTxt();
-    BagInfoTxt bi = bag.getBagInfoTxt();
-      LOGGER.info("VERSION: {}", bc.getVersion());
-      LOGGER.info("Txt: {}", bt);
-      LOGGER.info("BagInfoText: {}", bi);
-      LOGGER.info("Source Organization: {}", bi.getSourceOrganization());
-      List<String> nonstandardFields1 = bi.getNonstandardFields();
-      LOGGER.info("Non standard fields:");
-      for (String item : nonstandardFields1) {
-        LOGGER.info("- {}", item);
-        LOGGER.info("Value: {}", bi.get(item));
-      }
-    String xOcrdMets = bi.getOrDefault("X-Ocrd-Mets", "data/mets.xml");
-      
-      for (Entry<String, String> entry : bi.entrySet()) {
-        LOGGER.info("{} : {} ", entry.getKey(), entry.getValue());
-      }
-      
-      
 
     if (LOGGER.isTraceEnabled()) {
+      BagInfoTxt bi = bag.getBagInfoTxt();
+      Bag.BagConstants bc = bag.getBagConstants();
+      BagItTxt bt = bag.getBagItTxt();
       LOGGER.trace("VERSION: {}", bc.getVersion());
       LOGGER.trace("Txt: {}", bt);
-      LOGGER.trace("BagInfoText: {}", bi);
-      LOGGER.trace("Source Organization: {}", bi.getSourceOrganization());
-      List<String> nonstandardFields = bi.getNonstandardFields();
-      System.out.println("Non standard fields:");
-      for (String item : nonstandardFields) {
-        System.out.println("- " + item);
+      for (Entry<String, String> entry : bi.entrySet()) {
+        LOGGER.trace("{} : {} ", entry.getKey(), entry.getValue());
       }
     }
     return valid;

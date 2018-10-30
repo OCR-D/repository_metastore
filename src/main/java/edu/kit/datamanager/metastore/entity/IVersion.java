@@ -18,8 +18,6 @@ package edu.kit.datamanager.metastore.entity;
 /**
  * Interface for the version of METS document.
  * The initial version starts by 1 and will be incremented for each new version.
- * 
- * @author hartmann-v
  */
 public interface IVersion {
   /**

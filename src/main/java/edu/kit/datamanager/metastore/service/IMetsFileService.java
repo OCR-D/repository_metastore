@@ -23,8 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Interface defining METS file service.
- * 
- * @author hartmann-v
  */
 public interface IMetsFileService {
   /**

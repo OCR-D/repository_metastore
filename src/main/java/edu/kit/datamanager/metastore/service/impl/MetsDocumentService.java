@@ -40,7 +40,6 @@ import org.springframework.stereotype.Service;
 
 /**
  * Class implementing METS services.
- *
  */
 @Service
 public class MetsDocumentService implements IMetsDocumentService {

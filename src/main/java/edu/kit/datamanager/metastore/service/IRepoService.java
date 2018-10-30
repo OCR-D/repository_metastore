@@ -21,13 +21,16 @@ import java.util.List;
 
 /**
  * Interface defining Repo services.
+ * @TODO
  */
 public interface IRepoService {
-
+  /**
+   * Create Digital Object from zipped BagIt container.
+   * 
+   * @param bagItFile Zipped BagIt container.
+   * 
+   * @return URL to resource. 
+   */
   String createDigitalObject(File bagItFile);
-
-  List<Integer> getBagItByPpn(String ppn);
-
-  MetsDocument getBagItByResourceId(String resourceId);
   
 }

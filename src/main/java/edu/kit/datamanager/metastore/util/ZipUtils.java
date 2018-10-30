@@ -218,21 +218,21 @@ public final class ZipUtils {
                 }
                 
                 if (pFileList1.isDirectory()) {
-                    LOGGER.debug("Adding directory entry");
+                    LOGGER.trace("Adding directory entry");
                     //add empty folders, too
                     pZipOut.putNextEntry(new ZipEntry((entryName + File.separator).replaceAll("\\\\", "/")));
                     pZipOut.closeEntry();
                     File[] fileList = pFileList1.listFiles();
                     if (fileList.length != 0) {
-                        LOGGER.debug("Adding directory content recursively");
+                        LOGGER.trace("Adding directory content recursively");
                         zip(fileList, pBasePath, pZipOut);
                     } else {
-                        LOGGER.debug("Skipping recursive call due to empty directory");
+                        LOGGER.trace("Skipping recursive call due to empty directory");
                     }
                 //should we close the entry here??
                     //pZipOut.closeEntry();
                 } else {
-                    LOGGER.debug("Adding file entry");
+                    LOGGER.trace("Adding file entry");
                     try (final FileInputStream in = new FileInputStream(pFileList1)) {
                         // Add ZIP entry to output stream.
                         pZipOut.putNextEntry(new ZipEntry(entryName.replaceAll("\\\\", "/")));
@@ -242,7 +242,7 @@ public final class ZipUtils {
                             pZipOut.write(buf, 0, len);
                         }
                         // Complete the entry
-                        LOGGER.debug("Closing file entry");
+                        LOGGER.trace("Closing file entry");
                         pZipOut.closeEntry();
                     }
                 }
@@ -383,9 +383,5 @@ public final class ZipUtils {
                 bos.flush();
             }
         }
-    }
-    
-    public static void main(String[] args) throws Exception {
-        ZipUtils.zip(new File("/Users/jejkal/Downloads/omf2097/"), new File("/Users/jejkal/Downloads/omf2097.zip"));
     }
 }

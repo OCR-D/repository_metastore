@@ -68,17 +68,14 @@ public class MetsDocumentUtil {
       Element fileGrpElement = (Element) node;
       String use = JaxenUtil.getAttributeValue(fileGrpElement, "./@USE");
       List fileNodes = JaxenUtil.getNodes(fileGrpElement, "//mets:file", namespaces);
-      LOGGER.info("Found fileGrp with USE: {}", use);
+      LOGGER.trace("Found fileGrp with USE: {}", use);
       for (Object node2 : fileNodes) {
         Element fileElement = (Element) node2;
         String id = JaxenUtil.getAttributeValue(fileElement, "./@ID");
-        LOGGER.info("Found file with id: {}, groupId: {}, mimetype: {}, url: {}", id);
         String groupId = JaxenUtil.getAttributeValue(fileElement, "./@GROUPID");
-        LOGGER.info("Found file with id: {}, groupId: {}, mimetype: {}, url: {}", id, groupId);
         String mimetype = JaxenUtil.getAttributeValue(fileElement, "./@MIMETYPE");
-        LOGGER.info("Found file with id: {}, groupId: {}, mimetype: {}, url: {}", id, groupId, mimetype);
         String url = JaxenUtil.getAttributeValue(fileElement, "./mets:FLocat/@xlink:href", namespaces);
-        LOGGER.info("Found file with id: {}, groupId: {}, mimetype: {}, url: {}", id, groupId, mimetype, url);
+        LOGGER.trace("Found file with id: {}, groupId: {}, mimetype: {}, url: {}", id, groupId, mimetype, url);
         metsFiles.add(new MetsFile(resourceId, version, id, mimetype, groupId, use, url));
       }
     }

@@ -22,17 +22,40 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * Can't find resource with given ID.
  */
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
-public class ResourceNotFoundException  extends RuntimeException {
+public class ResourceNotFoundException extends RuntimeException {
+
+  /**
+   * Default constructor.
+   */
   public ResourceNotFoundException() {
     super();
   }
-    public ResourceNotFoundException(String message, Throwable cause) {
-        super(message, cause);
-    }
-    public ResourceNotFoundException(String message) {
-        super(message);
-    }
-    public ResourceNotFoundException(Throwable cause) {
-        super(cause);
-    }
+
+  /**
+   * Constructor with given message and cause.
+   *
+   * @param message Message.
+   * @param cause Cause.
+   */
+  public ResourceNotFoundException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
+  /**
+   * Constructor with given message.
+   *
+   * @param message Message.
+   */
+  public ResourceNotFoundException(String message) {
+    super(message);
+  }
+
+  /**
+   * Constructor with given message and cause.
+   *
+   * @param cause Cause.
+   */
+  public ResourceNotFoundException(Throwable cause) {
+    super(cause);
+  }
 }

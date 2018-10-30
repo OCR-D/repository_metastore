@@ -17,7 +17,6 @@ package edu.kit.datamanager.metastore.entity;
 
 /**
  * Interface to get and set Mimetype of an instance.
- * @author hartmann-v
  */
 public interface IMimetype {
 

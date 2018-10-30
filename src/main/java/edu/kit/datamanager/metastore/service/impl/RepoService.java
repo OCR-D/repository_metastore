@@ -29,33 +29,22 @@ import org.springframework.stereotype.Service;
 
 /**
  * Class implementing METS services.
- * 
+ *
+ * @TODO
  */
 @Service
 public class RepoService implements IRepoService {
+
+  /**
+   * Repository persisting METS documents.
+   */
   @Autowired
-	private MetsDocumentRepository metsRepository;
+  private MetsDocumentRepository metsRepository;
 
   @Override
   public String createDigitalObject(File bagItFile) {
     Iterator<MetsDocument> metsIterator = metsRepository.findByCurrentTrue().iterator();
     List<MetsDocument> metsList = IteratorUtils.toList(metsIterator);
     return "http://anyURL";
-  }
-
-  @Override
-  public MetsDocument getBagItByResourceId(String resourceId) {
-     MetsDocument metsDocument = metsRepository.findByResourceIdAndCurrentTrue(resourceId);
-    return metsDocument;
-  }
-
-  @Override
-  public List<Integer> getBagItByPpn(String ppn) {
-    List<Integer> versionList = new ArrayList<>();
-    Iterable<IVersion> versionIterator = metsRepository.findVersionByResourceIdOrderByVersionDesc(ppn);
-    for (IVersion indexElement : versionIterator) {
-      versionList.add(indexElement.getVersion());
-    }
-    return versionList;
   }
 }

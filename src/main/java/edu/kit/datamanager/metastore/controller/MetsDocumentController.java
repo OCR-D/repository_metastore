@@ -37,26 +37,32 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
  * REST services for METS documents (fka Metastore).
- *
- * @author hartmann-v
  */
 @Controller
 @RequestMapping("metastore")
 public class MetsDocumentController {
+
   /**
    * Logger for this class.
    */
   private static final Logger LOGGER = LoggerFactory.getLogger(MetsDocumentController.class);
 
+  /**
+   * Services for handling METS documents.
+   */
   @Autowired
   private IMetsDocumentService metastoreService;
 
+  /**
+   * Services for handling properties of METS documents.
+   */
   @Autowired
   private IMetsPropertiesService metastoreResourceService;
-  /** 
+
+  /**
    * Get all METS documents.
-   * 
-   * @return all METS documents. 
+   *
+   * @return all METS documents.
    */
   @GetMapping("mets")
   public ResponseEntity<List<MetsDocument>> getAllDocuments() {
@@ -64,104 +70,105 @@ public class MetsDocumentController {
     LOGGER.trace("Get all METS documents");
     return new ResponseEntity<>(allDocuments, HttpStatus.OK);
   }
+
   /**
    * Get current METS document with given resourceID.
-   * 
+   *
    * @param resourceId ResourceID of the METS document.
-   * 
+   *
    * @return METS document with given resourceID.
    */
   @GetMapping("mets/{resourceId}")
-  public ResponseEntity<MetsDocument> getLatestMetsDocument(@PathVariable("resourceId")String resourceId) {
+  public ResponseEntity<MetsDocument> getLatestMetsDocument(@PathVariable("resourceId") String resourceId) {
     LOGGER.trace("Get latest METS documents with ID " + resourceId);
-    System.out.println("Get latest METS documents with ID " + resourceId);
     MetsDocument metsDoc;
     metsDoc = metastoreService.getMostRecentMetsDocumentByResourceId(resourceId);
     return new ResponseEntity<>(metsDoc, HttpStatus.OK);
   }
+
   /**
    * Get METS document with given resourceID and version.
-   * 
+   *
    * @param resourceId ResourceID of the METS document.
    * @param version Version of the METS document.
-   * 
+   *
    * @return METS document with given resourceID and version.
    */
   @GetMapping("mets/{resourceId}/version/{version}")
-  public ResponseEntity<MetsDocument> getMetsDocumentByVersion(@PathVariable("resourceId")String resourceId, @PathVariable("version")Integer version) {
-    LOGGER.trace("Get METS documents with ID '{}' and version {}",resourceId, version);
-    System.out.println("Get METS documents with ID " + resourceId + " and version " + version);
+  public ResponseEntity<MetsDocument> getMetsDocumentByVersion(@PathVariable("resourceId") String resourceId, @PathVariable("version") Integer version) {
+    LOGGER.trace("Get METS documents with ID '{}' and version {}", resourceId, version);
     MetsDocument metsDoc;
     metsDoc = metastoreService.getDocumentByResourceIdAndVersion(resourceId, version);
     return new ResponseEntity<>(metsDoc, HttpStatus.OK);
   }
+
   /**
    * Create a new resource with a given resourceID.
-   * 
+   *
    * @param resourceId ResourceID of the METS document.
    * @param fileContent Content of the METS document.
-   * 
+   *
    * @return URL to resource.
    */
   @PutMapping("mets/{resourceId}")
-  public ResponseEntity<?> createMetsDocument(@PathVariable("resourceId")String resourceId, @RequestParam("fileContent")String fileContent) {
+  public ResponseEntity<?> createMetsDocument(@PathVariable("resourceId") String resourceId, @RequestParam("fileContent") String fileContent) {
     LOGGER.trace("Create METS document!");
-    System.out.println("Create METS document with id " + resourceId + "!" + fileContent);
     metastoreService.createMetsDocument(resourceId, fileContent);
-               URI location = ServletUriComponentsBuilder
-                    .fromCurrentRequest().build().toUri();
+    URI location = ServletUriComponentsBuilder
+            .fromCurrentRequest().build().toUri();
     return ResponseEntity.created(location).build();
   }
+
   /**
    * Get all versions of METS document with given resourceID.
-   * 
+   *
    * @param resourceId ResourceID of the METS document.
-   * 
+   *
    * @return Versions of the METS document.
    */
   @GetMapping("mets/{resourceId}/version")
-  public ResponseEntity<List<Integer>> getVersionsOfMetsDocument(@PathVariable("resourceId")String resourceId) {
+  public ResponseEntity<List<Integer>> getVersionsOfMetsDocument(@PathVariable("resourceId") String resourceId) {
     LOGGER.trace("Get versions of METS documents with ID " + resourceId);
-    System.out.println("Get versions of METS documents with ID " + resourceId);
     List<Integer> versionList;
     versionList = metastoreService.getAllVersionsByResourceId(resourceId);
     return new ResponseEntity<>(versionList, HttpStatus.OK);
   }
-   /**
+
+  /**
    * Get current METS document with given resourceID.
-   * 
-    * @param title Title of the METS document.
-   * 
+   *
+   * @param title Title of the METS document.
+   *
    * @return Resource ID of METS documents with given title.
    */
   @GetMapping("mets/title")
-  public ResponseEntity<List<String>> getResourceIdByTitle(@RequestParam("title")String title) {
+  public ResponseEntity<List<String>> getResourceIdByTitle(@RequestParam("title") String title) {
     LOGGER.trace("Get resourceID of METS documents with title " + title);
-    System.out.println("Get resourceID of METS documents with title " + title);
     List<String> resourceIdList;
     resourceIdList = metastoreResourceService.getResourceIdsByTitle(title);
     return new ResponseEntity<>(resourceIdList, HttpStatus.OK);
   }
-   /**
+
+  /**
    * Get current METS document with given PPN.
-   * 
+   *
    * @param ppn PPN of the METS document.
-   * 
+   *
    * @return Resource ID of METS documents with given PPN.
    */
   @GetMapping("mets/ppn")
-  public ResponseEntity<List<String>> getResourceIdByPpn(@RequestParam("ppn")String ppn) {
+  public ResponseEntity<List<String>> getResourceIdByPpn(@RequestParam("ppn") String ppn) {
     LOGGER.trace("Get resourceID of METS documents with PPN " + ppn);
-    System.out.println("Get resourceID of METS documents with PPN " + ppn);
     List<String> resourceIdList;
     resourceIdList = metastoreResourceService.getResourceIdsByPpn(ppn);
     return new ResponseEntity<>(resourceIdList, HttpStatus.OK);
   }
+
   /**
    * Handler for Exceptions.
-   * 
+   *
    * @param exc Exception accessing database.
-   * 
+   *
    * @return Error status.
    */
   @ExceptionHandler(ArangoDBException.class)
@@ -169,5 +176,4 @@ public class MetsDocumentController {
     ResponseEntity<?> responseEntity = ResponseEntity.status(ade.getResponseCode()).body(ade.getErrorMessage());
     return responseEntity;
   }
- 
 }

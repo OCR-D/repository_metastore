@@ -15,7 +15,6 @@
  */
 package edu.kit.datamanager.metastore.controller;
 
-import edu.kit.datamanager.metastore.entity.MetsDocument;
 import edu.kit.datamanager.metastore.entity.XmlSchemaDefinition;
 import edu.kit.datamanager.metastore.service.IXsdDocumentService;
 import java.util.List;
@@ -33,8 +32,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * REST services for METS documents (fka Metastore).
- *
- * @author hartmann-v
  */
 @Controller
 @RequestMapping("metastore")
@@ -43,9 +40,12 @@ public class XsdDocumentController {
    * Logger for this class.
    */
   private static final Logger LOGGER = LoggerFactory.getLogger(XsdDocumentController.class);
-
+  /**
+   * Services for handling XSD documents.
+   */
   @Autowired
   private IXsdDocumentService xsdService;
+  
   /**
    * Get all XSD documents.
    * 
@@ -72,6 +72,7 @@ public class XsdDocumentController {
   }
   /** 
    * Get document registered with given prefix.
+   * 
    * @param prefix Prefix of the XSD document.
    * 
    * @return XSD document.
@@ -99,6 +100,14 @@ public class XsdDocumentController {
     xsdDocument = xsdService.getDocumentByNamespace(namespace);
     return new ResponseEntity<>(xsdDocument, HttpStatus.OK);
   }
+  /**
+   * Create new XSD document with given prefix.
+   * 
+   * @param prefix Prefix of the XSD document.
+   * @param fileContent Content of the XSD file.
+   * 
+   * @return Document created.
+   */
   @PutMapping("xsd/prefix/{prefix}")
   public ResponseEntity<?> createMetsDocument(@PathVariable("prefix")String prefix, @RequestParam("fileContent")String fileContent) {
     LOGGER.trace("Create XSD document!");
@@ -106,5 +115,4 @@ public class XsdDocumentController {
     xsdService.createXsdDocument(prefix, fileContent);
     return ResponseEntity.ok("XSD document created!");
   }
-  
 }

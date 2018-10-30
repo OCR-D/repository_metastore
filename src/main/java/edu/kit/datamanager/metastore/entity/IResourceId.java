@@ -17,7 +17,6 @@ package edu.kit.datamanager.metastore.entity;
 
 /**
  * Interface for the resourceId of METS document.
- * @author hartmann-v
  */
 public interface IResourceId {
   /**

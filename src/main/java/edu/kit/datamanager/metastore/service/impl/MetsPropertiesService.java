@@ -30,6 +30,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class MetsPropertiesService implements IMetsPropertiesService {
+  /** 
+   * Repository persisting properties of METS document.
+   */
   @Autowired
 	private MetsPropertiesRepository metsPropertiesRepository;
 
@@ -46,7 +49,13 @@ public class MetsPropertiesService implements IMetsPropertiesService {
     
     return createResourceIdList(allResources);
   }
-  
+  /** 
+   * Create a list of resource IDs.
+   * 
+   * @param allResources Resources implementing IResourceId interface.
+   * 
+   * @return List with resource IDs.
+   */
   private List<String> createResourceIdList(Iterable<IResourceId> allResources) {
     List<String> resourceList = new ArrayList<>();
     allResources.forEach((index) -> {

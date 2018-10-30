@@ -23,11 +23,12 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Utility class for determining namespace and namespace/version
- *
- * @author hartmann-v
  */
 public class XsdUtil {
-  
+
+  /**
+   * Invalid namespace message.
+   */
   public static final String NO_NAMESPACE_DEFINED = "Error: no namespace defined!";
 
   /**
@@ -42,9 +43,12 @@ public class XsdUtil {
    * Namespace + '/' + version.
    */
   String namespacePlusVersion = namespace;
+
   /**
    * Get target namespace and version from XSD file.
+   *
    * @param fileContent Content of XSD file as string.
+   * 
    * @return String containing target namespace and version.
    */
   public String getNamespaceAndVersionFromXsd(String fileContent) {
@@ -65,8 +69,10 @@ public class XsdUtil {
     }
     return namespacePlusVersion;
   }
-  /** 
+
+  /**
    * Get target namespace from parsed XSD file.
+   *
    * @return Target namespace.
    */
   public String getNamespace() {

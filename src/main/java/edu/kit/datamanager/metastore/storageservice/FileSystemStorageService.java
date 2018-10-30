@@ -1,3 +1,18 @@
+*
+ * Copyright 2018 Karlsruhe Institute of Technology.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package edu.kit.datamanager.metastore.storageservice;
 
 import java.io.IOException;
@@ -51,7 +66,7 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public Stream<Path> loadAll() {
+    public Stream<Path> listAll() {
         try {
             return Files.walk(this.rootLocation, 1)
                 .filter(path -> !path.equals(this.rootLocation))
@@ -64,14 +79,14 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public Path load(String filename) {
+    public Path getPath(String filename) {
         return rootLocation.resolve(filename);
     }
 
     @Override
     public Resource loadAsResource(String filename) {
         try {
-            Path file = load(filename);
+            Path file = getPath(filename);
             Resource resource = new UrlResource(file.toUri());
             if (resource.exists() || resource.isReadable()) {
                 return resource;
@@ -85,11 +100,6 @@ public class FileSystemStorageService implements StorageService {
         catch (MalformedURLException e) {
             throw new StorageFileNotFoundException("Could not read file: " + filename, e);
         }
-    }
-
-    @Override
-    public void deleteAll() {
-        FileSystemUtils.deleteRecursively(rootLocation.toFile());
     }
 
     @Override

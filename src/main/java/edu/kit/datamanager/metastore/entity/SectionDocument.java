@@ -22,8 +22,7 @@ import com.arangodb.springframework.annotation.HashIndex;
 import java.util.Date;
 
 /**
- * @author Volker Hartmann
- *
+ * This class holds all information about section documents.
  */
 @Document("sectionDocument")
 @HashIndex(fields = {"resourceId", "prefix"}, unique = true)

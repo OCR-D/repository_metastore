@@ -16,29 +16,62 @@
 package edu.kit.datamanager.metastore.entity;
 
 /**
- *
- * @author hartmann-v
+ * Enumeration of all possible metadata types of a section document inside a
+ * METS document.
  */
 public enum MdType {
-
+  /**
+   * MARC (MAchine-Readable Cataloging)
+   */
   MARC("MARC"),
+  /**
+   * MODS (Metadata Object Description Schema)
+   */
   MODS("MODS"),
+  /**
+   * EAD (Encoded Archival Description )
+   */
   EAD("EAD"),
+  /**
+   * DC (Dublin Core)
+   */
   DC("DC"),
+  /**
+   * NISOIMG (NISO Technical Metadata for Digital Still Images)
+   */
   NISOIMG("NISOIMG"),
+  /**
+   * LC-AV (Library of Congress Audiovisual Metadata)
+   */
   LC_AV("LC-AV"),
+  /**
+   * VRA (VRA Core)
+   */
   VRA("VRA"),
+  /**
+   * TEIHDR (TEI Header)
+   */
   TEIHDR("TEIHDR"),
+  /**
+   * DDI (Data Documentation Initiative)
+   */
   DDI("DDI"),
+  /**
+   * FGDC (Federal Geographic Data Committee Metadata Standard)
+   */
   FGDC("FGDC"),
   LOM("LOM"),
   PREMIS("PREMIS"),
   OTHER("OTHER");
   
+  /**
+   * Text representation of enumeration.
+   */
   private final String textRepresentation;
 
   /**
    * Constructor for enum.
+   *
    * @param pTextRepresentation text representation of enumeration.
    */
   MdType(final String pTextRepresentation) {

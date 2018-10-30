@@ -17,13 +17,12 @@ package edu.kit.datamanager.metastore.entity;
 
 /**
  * Interface to get and set base attributes of all documents.
- * 
- * @author hartmann-v
  */
 public interface IBaseEntity {
 
   /**
    * Get database ID.
+   * 
    * @return the id
    */
   public String getId();
