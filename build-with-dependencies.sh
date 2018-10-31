@@ -1,10 +1,7 @@
 #!/bin/bash
+# Build dependencies
+#   No dependencies yet
 
-echo "Updating submodules"
-git submodule foreach git pull origin master
-echo "Building service-base library"
-cd libraries/service-base 
-./gradlew clean check install
-cd ../../
+# Create test report
 echo "Building project and executing tests"
 ./gradlew clean check jacocoTestReport
