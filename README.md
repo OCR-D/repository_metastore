@@ -87,19 +87,19 @@ user@localhost:/home/user/base-repo$ java -jar build/libs/metastore-service-0.1.
 ## First steps
 1. Upload zipped BagIt container to metastore.
 ```
-curl -F "file=@zippedBagItContainer" http://localhost:8080/metastore/bagit/ 
+curl -F "file=@zippedBagItContainer" http://localhost:8080/api/v1/metastore/bagit/ 
 ```
 2. List all METS files.
 ```
-curl -XGET http://localhost:8080/metastore/mets
+curl -XGET http://localhost:8080/api/v1/metastore/mets
 ```
 3. List all METS files with title 'Der Herold'.
 ```
-curl -H "Accept:application/json" "http://localhost:8080/metastore/mets/title?title=Der Herold"
+curl -H "Accept:application/json" "http://localhost:8080/api/v1/metastore/mets/title?title=Der Herold"
 ```
 4. Download zipped BagIt container to metastore.
 ```
-curl -XGET http://localhost:8080/metastore/bagit/files/zippedBagItContainer > bagDownload.zip
+curl -XGET http://localhost:8080/api/v1/metastore/bagit/files/zippedBagItContainer > bagDownload.zip
 ```
 
 ## More Information

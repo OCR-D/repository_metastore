@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.kit.datamanager.metastore.controller;
+package edu.kit.datamanager.metastore.controller.impl;
 
+import edu.kit.datamanager.metastore.controller.IXsdDocumentController;
 import edu.kit.datamanager.metastore.entity.XmlSchemaDefinition;
 import edu.kit.datamanager.metastore.service.IXsdDocumentService;
+import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,8 +36,9 @@ import org.springframework.web.bind.annotation.RequestParam;
  * REST services for METS documents (fka Metastore).
  */
 @Controller
-@RequestMapping("metastore")
-public class XsdDocumentController {
+@RequestMapping("api/v1/metastore/xsd")
+public class XsdDocumentController implements IXsdDocumentController {
+
   /**
    * Logger for this class.
    */
@@ -45,24 +48,15 @@ public class XsdDocumentController {
    */
   @Autowired
   private IXsdDocumentService xsdService;
-  
-  /**
-   * Get all XSD documents.
-   * 
-   * @return Array holding all XSD documents.
-   */
-  @GetMapping("xsd")
+
+  @Override
   public ResponseEntity<List<XmlSchemaDefinition>> getAllDocuments() {
     List<XmlSchemaDefinition> allDocuments = xsdService.getAllDocuments();
     LOGGER.trace("Get all METS documents");
     return new ResponseEntity<>(allDocuments, HttpStatus.OK);
   }
-  /**
-   * Get all registered prefixes.
-   * 
-   * @return Array with all prefixes.
-   */
-  @GetMapping("xsd/prefix")
+
+  @Override
   public ResponseEntity<List<String>> getAllPrefixes() {
     LOGGER.trace("Get prefixes of  all XSD documents");
     System.out.println("Get prefixes of  all XSD documents.");
@@ -70,46 +64,27 @@ public class XsdDocumentController {
     List<String> allPrefixes = xsdService.getAllPrefixes();
     return new ResponseEntity<>(allPrefixes, HttpStatus.OK);
   }
-  /** 
-   * Get document registered with given prefix.
-   * 
-   * @param prefix Prefix of the XSD document.
-   * 
-   * @return XSD document.
-   */
-  @GetMapping("xsd/prefix/{prefix}")
-  public ResponseEntity<XmlSchemaDefinition> getXsdDocumentByPrefix(@PathVariable("prefix")String prefix) {
+
+  @Override
+  public ResponseEntity<XmlSchemaDefinition> getXsdDocumentByPrefix(@PathVariable("prefix") String prefix) {
     LOGGER.trace("Get XSD document with prefix " + prefix);
     System.out.println("Get XSD document with prefix " + prefix);
     XmlSchemaDefinition xsdDocument;
     xsdDocument = xsdService.getDocumentByPrefix(prefix);
     return new ResponseEntity<>(xsdDocument, HttpStatus.OK);
   }
-  /**
-   * Get document registered with given namespace.
-   * 
-   * @param namespace Namespace of the XSD document.
-   * 
-   * @return XSD document.
-   */
-  @GetMapping("xsd/ns")
-  public ResponseEntity<XmlSchemaDefinition> getXsdDocumentByNamespace(@RequestParam("namespace")String namespace) {
+
+  @Override
+  public ResponseEntity<XmlSchemaDefinition> getXsdDocumentByNamespace(@RequestParam("namespace") String namespace) {
     LOGGER.trace("Get XSD document with namespace " + namespace);
     System.out.println("Get XSD document with namespace " + namespace);
     XmlSchemaDefinition xsdDocument;
     xsdDocument = xsdService.getDocumentByNamespace(namespace);
     return new ResponseEntity<>(xsdDocument, HttpStatus.OK);
   }
-  /**
-   * Create new XSD document with given prefix.
-   * 
-   * @param prefix Prefix of the XSD document.
-   * @param fileContent Content of the XSD file.
-   * 
-   * @return Document created.
-   */
-  @PutMapping("xsd/prefix/{prefix}")
-  public ResponseEntity<?> createMetsDocument(@PathVariable("prefix")String prefix, @RequestParam("fileContent")String fileContent) {
+
+  @Override
+  public ResponseEntity<?> createMetsDocument(@PathVariable("prefix") String prefix, @RequestParam("fileContent") String fileContent) {
     LOGGER.trace("Create XSD document!");
     System.out.println("Create XSD document with id " + prefix + "!" + fileContent);
     xsdService.createXsdDocument(prefix, fileContent);

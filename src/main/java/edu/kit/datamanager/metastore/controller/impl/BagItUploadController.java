@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.kit.datamanager.metastore.controller;
+package edu.kit.datamanager.metastore.controller.impl;
 
 import edu.kit.datamanager.metastore.MetastoreApplication;
 import edu.kit.datamanager.metastore.exception.InvalidFormatException;
@@ -43,24 +43,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import edu.kit.datamanager.metastore.controller.IBagItUploadController;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * REST service handling upload of zipped Bagit containers.
  */
 @Controller
-@RequestMapping("/metastore/bagit")
-public class FileUploadController {
+@RequestMapping("/api/v1/metastore/bagit")
+public class BagItUploadController implements IBagItUploadController {
 
   /**
    * Logger for this class.
@@ -89,40 +89,38 @@ public class FileUploadController {
    * @param archiveService Properties for storing unzipped BagIt container.
    */
   @Autowired
-  public FileUploadController(StorageService storageService, ArchiveService archiveService) {
+  public BagItUploadController(StorageService storageService, ArchiveService archiveService) {
     this.storageService = storageService;
     this.archiveService = archiveService;
   }
 
-  /**
-   * Listing of uploaded files.
-   *
-   * @param model Model holding information about uploaded files.
-   *
-   * @return Website displaying information about uploaded files.
-   * @throws IOException Error while storing/reading file.
-   */
-  @GetMapping("/")
-  public String listUploadedFiles(Model model) throws IOException {
-    LOGGER.info("listUploadedFiles - " + model);
+  @Override
+  public String listUploadedFilesAsHtml(Model model) throws IOException {
+    LOGGER.info("listUploadedFilesAsHtml - " + model);
 
-    model.addAttribute("files", storageService.listAll().map(
-            path -> MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,
+    model.addAttribute("files", storageService.listAll().map(path -> MvcUriComponentsBuilder.fromMethodName(BagItUploadController.class,
                     "serveFile", path.getFileName().toString()).build().toString())
             .collect(Collectors.toList()));
 
     return "uploadForm";
   }
+  @Override
+  public ResponseEntity<List<String>> listUploadedFiles(Model model) throws IOException {
+    LOGGER.info("listUploadedFiles - " + model);
+    List<String> listOfAllUrls = new ArrayList<>();
+    
+    Object[] toArray = storageService.listAll().toArray();
+    for (Object item: toArray) {
+      Path path = (Path)item;
+    String location = ServletUriComponentsBuilder
+            .fromCurrentRequest().path("files/" + path.getFileName()).build().toUri().toString();
+     listOfAllUrls.add(location); 
+    }
 
-  /**
-   * Get file by its filename.
-   *
-   * @param filename Filename of the uploaded file.
-   *
-   * @return Selected file.
-   */
-  @GetMapping("files/{filename:.+}")
-  @ResponseBody
+    return ResponseEntity.ok(listOfAllUrls);
+  }
+
+  @Override
   public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
     LOGGER.info("serveFile - " + filename);
 
@@ -140,7 +138,7 @@ public class FileUploadController {
    * @return Website displaying information about uploaded files.
    * @throws IOException Error during upload.
    */
-  @PostMapping("/")
+  @Override
   public ResponseEntity<?> handleFileUpload(@RequestParam("file") MultipartFile file,
           RedirectAttributes redirectAttributes) throws IOException {
     LOGGER.info("handleFileUpload");

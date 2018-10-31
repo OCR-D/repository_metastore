@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.kit.datamanager.metastore.controller;
+package edu.kit.datamanager.metastore.controller.impl;
 
+import edu.kit.datamanager.metastore.controller.IMetsDocumentController;
 import com.arangodb.ArangoDBException;
 import edu.kit.datamanager.metastore.entity.MetsDocument;
 import edu.kit.datamanager.metastore.service.IMetsDocumentService;
@@ -39,8 +40,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
  * REST services for METS documents (fka Metastore).
  */
 @Controller
-@RequestMapping("metastore")
-public class MetsDocumentController {
+@RequestMapping("api/v1/metastore/mets")
+public class MetsDocumentController implements IMetsDocumentController {
 
   /**
    * Logger for this class.
@@ -59,26 +60,14 @@ public class MetsDocumentController {
   @Autowired
   private IMetsPropertiesService metastoreResourceService;
 
-  /**
-   * Get all METS documents.
-   *
-   * @return all METS documents.
-   */
-  @GetMapping("mets")
+  @Override
   public ResponseEntity<List<MetsDocument>> getAllDocuments() {
     List<MetsDocument> allDocuments = metastoreService.getAllDocuments();
     LOGGER.trace("Get all METS documents");
     return new ResponseEntity<>(allDocuments, HttpStatus.OK);
   }
 
-  /**
-   * Get current METS document with given resourceID.
-   *
-   * @param resourceId ResourceID of the METS document.
-   *
-   * @return METS document with given resourceID.
-   */
-  @GetMapping("mets/{resourceId}")
+  @Override
   public ResponseEntity<MetsDocument> getLatestMetsDocument(@PathVariable("resourceId") String resourceId) {
     LOGGER.trace("Get latest METS documents with ID " + resourceId);
     MetsDocument metsDoc;
@@ -86,15 +75,7 @@ public class MetsDocumentController {
     return new ResponseEntity<>(metsDoc, HttpStatus.OK);
   }
 
-  /**
-   * Get METS document with given resourceID and version.
-   *
-   * @param resourceId ResourceID of the METS document.
-   * @param version Version of the METS document.
-   *
-   * @return METS document with given resourceID and version.
-   */
-  @GetMapping("mets/{resourceId}/version/{version}")
+  @Override
   public ResponseEntity<MetsDocument> getMetsDocumentByVersion(@PathVariable("resourceId") String resourceId, @PathVariable("version") Integer version) {
     LOGGER.trace("Get METS documents with ID '{}' and version {}", resourceId, version);
     MetsDocument metsDoc;
@@ -102,15 +83,7 @@ public class MetsDocumentController {
     return new ResponseEntity<>(metsDoc, HttpStatus.OK);
   }
 
-  /**
-   * Create a new resource with a given resourceID.
-   *
-   * @param resourceId ResourceID of the METS document.
-   * @param fileContent Content of the METS document.
-   *
-   * @return URL to resource.
-   */
-  @PutMapping("mets/{resourceId}")
+  @Override
   public ResponseEntity<?> createMetsDocument(@PathVariable("resourceId") String resourceId, @RequestParam("fileContent") String fileContent) {
     LOGGER.trace("Create METS document!");
     metastoreService.createMetsDocument(resourceId, fileContent);
@@ -119,14 +92,7 @@ public class MetsDocumentController {
     return ResponseEntity.created(location).build();
   }
 
-  /**
-   * Get all versions of METS document with given resourceID.
-   *
-   * @param resourceId ResourceID of the METS document.
-   *
-   * @return Versions of the METS document.
-   */
-  @GetMapping("mets/{resourceId}/version")
+  @Override
   public ResponseEntity<List<Integer>> getVersionsOfMetsDocument(@PathVariable("resourceId") String resourceId) {
     LOGGER.trace("Get versions of METS documents with ID " + resourceId);
     List<Integer> versionList;
@@ -134,14 +100,7 @@ public class MetsDocumentController {
     return new ResponseEntity<>(versionList, HttpStatus.OK);
   }
 
-  /**
-   * Get current METS document with given resourceID.
-   *
-   * @param title Title of the METS document.
-   *
-   * @return Resource ID of METS documents with given title.
-   */
-  @GetMapping("mets/title")
+  @Override
   public ResponseEntity<List<String>> getResourceIdByTitle(@RequestParam("title") String title) {
     LOGGER.trace("Get resourceID of METS documents with title " + title);
     List<String> resourceIdList;
@@ -149,14 +108,7 @@ public class MetsDocumentController {
     return new ResponseEntity<>(resourceIdList, HttpStatus.OK);
   }
 
-  /**
-   * Get current METS document with given PPN.
-   *
-   * @param ppn PPN of the METS document.
-   *
-   * @return Resource ID of METS documents with given PPN.
-   */
-  @GetMapping("mets/ppn")
+  @Override
   public ResponseEntity<List<String>> getResourceIdByPpn(@RequestParam("ppn") String ppn) {
     LOGGER.trace("Get resourceID of METS documents with PPN " + ppn);
     List<String> resourceIdList;
