@@ -28,7 +28,7 @@ import java.util.Date;
 @HashIndex(fields = {"resourceId", "prefix"}, unique = true)
 public class SectionDocument implements IBaseEntity {
 
-  /** 
+  /**
    * ID of the document.
    */
   @Id
@@ -61,17 +61,22 @@ public class SectionDocument implements IBaseEntity {
    * Content of the section document.
    */
   private String sectionDocument;
-  /** 
+
+  /**
    * Default constructor.
    */
   public SectionDocument() {
     super();
+    version = 1;
   }
+
   /**
    * Constructor setting all attributes.
-   * @param resourceId ResourceId of the digital object referenced by the METS document. (has to be unique)
+   *
+   * @param resourceId ResourceId of the digital object referenced by the METS
+   * document. (has to be unique)
    * @param version Version of the document. Initial version is version 1.
-   * @param prefix  Prefix of the registered namespace.
+   * @param prefix Prefix of the registered namespace.
    * @param sectionId ID of the section.
    * @param sectionMdType MDType of the section.
    * @param sectionOtherMdType Special metadata type if MDType is 'OTHER'.
@@ -86,6 +91,11 @@ public class SectionDocument implements IBaseEntity {
     this.sectionMdType = sectionMdType;
     this.sectionOtherMdType = sectionOtherMdType;
     this.sectionDocument = sectionDocument;
+    if (version == null) {
+      this.version = 1;
+    } else {
+      this.version = version;
+    }
   }
 
   @Override
@@ -102,7 +112,7 @@ public class SectionDocument implements IBaseEntity {
   public String getResourceId() {
     return resourceId;
   }
-  
+
   @Override
   public void setResourceId(String resourceId) {
     this.resourceId = resourceId;
@@ -117,10 +127,10 @@ public class SectionDocument implements IBaseEntity {
   public void setVersion(Integer version) {
     this.version = version;
   }
-  
+
   /**
    * Get the prefix of the registered namespace.
-   * 
+   *
    * @return the prefix
    */
   public String getPrefix() {
@@ -129,7 +139,7 @@ public class SectionDocument implements IBaseEntity {
 
   /**
    * Set the prefix of the registered namespace.
-   * 
+   *
    * @param prefix the prefix to set
    */
   public void setPrefix(String prefix) {
@@ -138,7 +148,7 @@ public class SectionDocument implements IBaseEntity {
 
   /**
    * Get the section ID of the document.
-   * 
+   *
    * @return the sectionId
    */
   public String getSectionId() {
@@ -147,7 +157,7 @@ public class SectionDocument implements IBaseEntity {
 
   /**
    * Set the section ID of the document.
-   * 
+   *
    * @param sectionId the sectionId to set
    */
   public void setSectionId(String sectionId) {
@@ -156,7 +166,7 @@ public class SectionDocument implements IBaseEntity {
 
   /**
    * Get the MDTYPE of the section document.
-   * 
+   *
    * @return the sectionMdType
    */
   public MdType getSectionMdType() {
@@ -165,7 +175,7 @@ public class SectionDocument implements IBaseEntity {
 
   /**
    * Set the MDTYPE of the section document.
-   * 
+   *
    * @param sectionMdType the sectionMdType to set
    */
   public void setSectionMdType(MdType sectionMdType) {
@@ -174,7 +184,7 @@ public class SectionDocument implements IBaseEntity {
 
   /**
    * Get special metadata type.
-   * 
+   *
    * @return the sectionOtherMdType
    */
   public String getSectionOtherMdType() {
@@ -183,7 +193,7 @@ public class SectionDocument implements IBaseEntity {
 
   /**
    * Set special metadata type.
-   * 
+   *
    * @param sectionOtherMdType the sectionOtherMdType to set
    */
   public void setSectionOtherMdType(String sectionOtherMdType) {
@@ -192,7 +202,7 @@ public class SectionDocument implements IBaseEntity {
 
   /**
    * Get content of section document.
-   * 
+   *
    * @return the sectionDocument
    */
   public String getSectionDocument() {
@@ -201,28 +211,29 @@ public class SectionDocument implements IBaseEntity {
 
   /**
    * Set content of section document.
-   * 
+   *
    * @param sectionDocument the sectionDocument to set
    */
   public void setSectionDocument(String sectionDocument) {
     this.sectionDocument = sectionDocument;
   }
-  /** 
-   * Update section document.
-   * Creates a new version of the section document and increment version number.
-   * 
+
+  /**
+   * Update section document. Creates a new version of the section document and
+   * increment version number.
+   *
    * @param sectionDocument Content of the new section document.
-   * 
+   *
    * @return Updated section document.
    */
   public SectionDocument updateSectionDocument(String sectionDocument) {
     SectionDocument newSecDoc = new SectionDocument(resourceId, version + 1, prefix, sectionId, sectionMdType, sectionOtherMdType, sectionDocument);
     return newSecDoc;
   }
-  
+
   @Override
   public String toString() {
-     return "SectionDocument [id=" + id + ", prefix=" + prefix + ", resourceId=" + resourceId + ", sectionDocument=" + sectionDocument + ", sectionId=" + sectionId + ", sectionOtherMD=" + sectionOtherMdType + "]";
-    
+    return "SectionDocument [id=" + id + ", prefix=" + prefix + ", version=" + version + ", resourceId=" + resourceId + ", sectionDocument=" + sectionDocument + ", sectionId=" + sectionId + ", sectionMD=" + sectionMdType + ", sectionOtherMD=" + sectionOtherMdType + "]";
+
   }
 }

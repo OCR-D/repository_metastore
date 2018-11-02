@@ -131,13 +131,13 @@ public class MetsDocumentTest {
 
   @Test
   public void testMetsDocumentSetGetLargeContent() {
-  String ALL_POSSIBLE_CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz/,;><!@#$%^&*()_-=+\\:'\"|\n\t";
- SecureRandom rnd = new SecureRandom();
+    String ALL_POSSIBLE_CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz/,;><!@#$%^&*()_-=+\\:'\"|\n\t";
+    SecureRandom rnd = new SecureRandom();
     String resourceId = "testid_0007";
     String content = "old content";
     StringBuffer stringBuffer = new StringBuffer();
     for (int i = 0; i < 20000; i++) {
-      stringBuffer.append(ALL_POSSIBLE_CHARS.charAt( rnd.nextInt(ALL_POSSIBLE_CHARS.length()) ));
+      stringBuffer.append(ALL_POSSIBLE_CHARS.charAt(rnd.nextInt(ALL_POSSIBLE_CHARS.length())));
     }
     String newContent = stringBuffer.toString();
     Date before = new Date();
@@ -198,133 +198,24 @@ public class MetsDocumentTest {
     testAllAttributes(metsFile2, null, Boolean.FALSE, 2, newContent, resourceId, before2, after2);
     testAllAttributes(metsFile3, null, Boolean.TRUE, 3, content, resourceId, before3, after3);
   }
-//
-//  @Test
-//  public void testMetsDocumentSetGetFileId() {
-//    MetsDocument metsFile = new MetsDocument();
-//    metsFile.setFileId(fileId);
-//    assertTrue(metsFile.getFileId().equals(fileId));
-//    assertNull(metsFile.getId());
-//    assertNull(metsFile.getResourceId());
-//    assertNull(metsFile.getMimetype());
-//    assertNull(metsFile.getGroupId());
-//    assertNull(metsFile.getUse());
-//    assertNull(metsFile.getUrl());
-//    assertTrue(metsFile.toString().contains(fileId));
-//  }
-//
-//  @Test
-//  public void testMetsDocumentSetGetResourceId() {
-//    MetsDocument metsFile = new MetsDocument();
-//    metsFile.setResourceId(resourceId);
-//    assertTrue(metsFile.getResourceId().equals(resourceId));
-//    assertNull(metsFile.getId());
-//    assertNull(metsFile.getFileId());
-//    assertNull(metsFile.getMimetype());
-//    assertNull(metsFile.getGroupId());
-//    assertNull(metsFile.getUse());
-//    assertNull(metsFile.getUrl());
-//    assertTrue(metsFile.toString().contains(resourceId));
-//  }
-//
-//  @Test
-//  public void testMetsDocumentSetGetVersion() {
-//    MetsDocument metsFile = new MetsDocument();
-//    metsFile.setVersion(version);
-//    assertTrue(metsFile.getVersion().equals(version));
-//    assertNull(metsFile.getId());
-//    assertNull(metsFile.getResourceId());
-//    assertNull(metsFile.getFileId());
-//    assertNull(metsFile.getMimetype());
-//    assertNull(metsFile.getGroupId());
-//    assertNull(metsFile.getUse());
-//    assertNull(metsFile.getUrl());
-//    assertTrue(metsFile.toString().contains("version=" + version.intValue()));
-//  }
-//
-//  @Test
-//  public void testMetsDocumentSetGetGroupId() {
-//    MetsDocument metsFile = new MetsDocument();
-//    metsFile.setGroupId(groupId);
-//    assertTrue(metsFile.getGroupId().equals(groupId));
-//    assertNull(metsFile.getId());
-//    assertNull(metsFile.getFileId());
-//    assertNull(metsFile.getResourceId());
-//    assertNull(metsFile.getVersion());
-//    assertNull(metsFile.getMimetype());
-//    assertNull(metsFile.getUse());
-//    assertNull(metsFile.getUrl());
-//    assertTrue(metsFile.toString().contains(groupId));
-//  }
-//
-//  @Test
-//  public void testMetsDocumentSetGetMimetype() {
-//    MetsDocument metsFile = new MetsDocument();
-//    metsFile.setMimetype(mimetype);
-//    assertTrue(metsFile.getMimetype().equals(mimetype));
-//    assertNull(metsFile.getId());
-//    assertNull(metsFile.getFileId());
-//    assertNull(metsFile.getResourceId());
-//    assertNull(metsFile.getGroupId());
-//    assertNull(metsFile.getUse());
-//    assertNull(metsFile.getUrl());
-//    assertTrue(metsFile.toString().contains(mimetype));
-//  }
-//
-//  @Test
-//  public void testMetsDocumentSetGetUse() {
-//    MetsDocument metsFile = new MetsDocument();
-//    metsFile.setUse(use);
-//    assertTrue(metsFile.getUse().equals(use));
-//    assertNull(metsFile.getId());
-//    assertNull(metsFile.getFileId());
-//    assertNull(metsFile.getResourceId());
-//    assertNull(metsFile.getGroupId());
-//    assertNull(metsFile.getMimetype());
-//    assertNull(metsFile.getUrl());
-//    assertTrue(metsFile.toString().contains(use));
-//  }
-//
-//  @Test
-//  public void testMetsDocumentSetGetUrl() {
-//    MetsDocument metsFile = new MetsDocument();
-//    metsFile.setUrl(url);
-//    assertTrue(metsFile.getUrl().equals(url));
-//    assertNull(metsFile.getId());
-//    assertNull(metsFile.getFileId());
-//    assertNull(metsFile.getResourceId());
-//    assertNull(metsFile.getGroupId());
-//    assertNull(metsFile.getMimetype());
-//    assertNull(metsFile.getUse());
-//    assertTrue(metsFile.toString().contains(url));
-//  }
-//
-//  @Test
-//  public void testMetsDocumentCompleteConstructorAndToString() {
-//    MetsDocument metsFile = new MetsDocument(resourceId, version, fileId, mimetype, groupId, use, url);
-//    metsFile.setUrl(url);
-//    assertNull(metsFile.getId());
-//    assertTrue(metsFile.toString().contains("null"));
-//    assertTrue(metsFile.getFileId().equals(fileId));
-//    assertTrue(metsFile.toString().contains(fileId));
-//    assertTrue(metsFile.getResourceId().equals(resourceId));
-//    assertTrue(metsFile.toString().contains(resourceId));
-//    assertTrue(metsFile.getVersion().equals(version));
-//    assertTrue(metsFile.toString().contains("version=" + version));
-//    assertTrue(metsFile.getGroupId().equals(groupId));
-//    assertTrue(metsFile.toString().contains(groupId));
-//    assertTrue(metsFile.getMimetype().equals(mimetype));
-//    assertTrue(metsFile.toString().contains(mimetype));
-//    assertTrue(metsFile.getUse().equals(use));
-//    assertTrue(metsFile.toString().contains(use));
-//    assertTrue(metsFile.getUrl().equals(url));
-//    assertTrue(metsFile.toString().contains(url));
-//  }
+
+  /**
+   * Test all attribute at once.
+   *
+   * @param document instance to test.
+   * @param id expected id.
+   * @param current expected current
+   * @param version expected version
+   * @param content expected content
+   * @param resourceId expected resourceId
+   * @param before expected date before this date
+   * @param after expected date after this date
+   */
   public void testAllAttributes(MetsDocument document, String id, Boolean current, Integer version,
           String content, String resourceId, Date before, Date after) {
     assertTrue(document.getCurrent().equals(current));
     if (document.getId() != null) {
-    assertTrue(document.getId().equals(id));
+      assertTrue(document.getId().equals(id));
     } else {
       assertNull(id);
     }
