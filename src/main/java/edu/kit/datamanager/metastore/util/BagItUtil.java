@@ -15,17 +15,29 @@
  */
 package edu.kit.datamanager.metastore.util;
 
-import gov.loc.repository.bagit.Bag;
-import gov.loc.repository.bagit.BagFactory;
-import gov.loc.repository.bagit.BagInfoTxt;
-import gov.loc.repository.bagit.BagItTxt;
-import gov.loc.repository.bagit.PreBag;
-import gov.loc.repository.bagit.writer.impl.FileSystemWriter;
+import edu.kit.datamanager.metastore.exception.BagItException;
+import gov.loc.repository.bagit.creator.BagCreator;
+import gov.loc.repository.bagit.domain.Bag;
+import gov.loc.repository.bagit.exceptions.CorruptChecksumException;
+import gov.loc.repository.bagit.exceptions.FileNotInPayloadDirectoryException;
+import gov.loc.repository.bagit.exceptions.InvalidBagitFileFormatException;
+import gov.loc.repository.bagit.exceptions.InvalidPayloadOxumException;
+import gov.loc.repository.bagit.exceptions.MaliciousPathException;
+import gov.loc.repository.bagit.exceptions.MissingBagitFileException;
+import gov.loc.repository.bagit.exceptions.MissingPayloadDirectoryException;
+import gov.loc.repository.bagit.exceptions.MissingPayloadManifestException;
+import gov.loc.repository.bagit.exceptions.UnparsableVersionException;
+import gov.loc.repository.bagit.exceptions.UnsupportedAlgorithmException;
+import gov.loc.repository.bagit.exceptions.VerificationException;
+import gov.loc.repository.bagit.hash.StandardSupportedAlgorithms;
+import gov.loc.repository.bagit.reader.BagReader;
+import gov.loc.repository.bagit.verify.BagVerifier;
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-import java.util.Map.Entry;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,22 +57,18 @@ public class BagItUtil {
    * @param payLoadPath Path to payload directory.
    * @throws IOException Error accessing files
    */
-  public static Bag buildBag(File payLoadPath) throws IOException {
-    BagFactory bf = new BagFactory();
+  public static Bag buildBag(File payLoadPath) throws BagItException {
+    Bag bag = null;
+    try {
+      Path folder = Paths.get(payLoadPath.getAbsolutePath());
+      StandardSupportedAlgorithms algorithm = StandardSupportedAlgorithms.MD5;
+      boolean includeHiddenFiles = false;
+      bag = BagCreator.bagInPlace(folder, Arrays.asList(algorithm), includeHiddenFiles);
 
-    PreBag pb = bf.createPreBag(payLoadPath);
-    pb.makeBagInPlace(BagFactory.Version.V0_97, false);
-
-    Bag bag = bf.createBag(payLoadPath);
-
-    //adding some optional metadata:
-    Date d = new Date();
-    bag.getBagInfoTxt().putList("createDate", d.toString());
-    bag.getBagInfoTxt().putList("modified", d.toString());
-    bag.getBagInfoTxt().putList("numberOfModifications", Integer.toString(1));
-
-    bag.makeComplete();
-    FileSystemWriter fsw = new FileSystemWriter(bf);
+    } catch (NoSuchAlgorithmException | IOException ex) {
+      LOGGER.error("Can't create Bag!", ex);
+      throw new BagItException(ex.getMessage());
+    }
     return bag;
   }
 
@@ -72,11 +80,16 @@ public class BagItUtil {
    * @return Bag of directory.
    * @throws IOException Error accessing files
    */
-  public static Bag createBag(File pathToBag) throws IOException {
-    LOGGER.debug("Create BagIt...");
-    BagFactory bf = new BagFactory();
-
-    Bag bag = bf.createBag(pathToBag);
+  public static Bag readBag(Path pathToBag) throws BagItException {
+    LOGGER.debug("Read BagIt...");
+    Bag bag = null;
+    BagReader reader = new BagReader();
+    try {
+      bag = reader.read(pathToBag);
+    } catch (IOException | UnparsableVersionException | MaliciousPathException | UnsupportedAlgorithmException | InvalidBagitFileFormatException ex) {
+      LOGGER.error("Can't read Bag!", ex);
+      throw new BagItException(ex.getMessage());
+    }
     validateBagit(bag);
 
     return bag;
@@ -89,21 +102,54 @@ public class BagItUtil {
    *
    * @return true or false
    */
-  public static boolean validateBagit(Bag bag) {
-    boolean valid = false;
+  public static boolean validateBagit(Bag bag) throws BagItException {
+    boolean valid = true;
     LOGGER.debug("Validate Bag!");
-    bag.verifyComplete();
-
-    if (LOGGER.isTraceEnabled()) {
-      BagInfoTxt bi = bag.getBagInfoTxt();
-      Bag.BagConstants bc = bag.getBagConstants();
-      BagItTxt bt = bag.getBagItTxt();
-      LOGGER.trace("VERSION: {}", bc.getVersion());
-      LOGGER.trace("Txt: {}", bt);
-      for (Entry<String, String> entry : bi.entrySet()) {
-        LOGGER.trace("{} : {} ", entry.getKey(), entry.getValue());
+    if (BagVerifier.canQuickVerify(bag)) {
+      try {
+        BagVerifier.quicklyVerify(bag);
+      } catch (IOException | InvalidPayloadOxumException ex) {
+        LOGGER.error("PayLoadOxum is invalid: ", ex);
+        throw new BagItException(ex.getMessage());
       }
     }
+    /////////////////////////////////////////////////////////////////
+    // Verify completeness
+    /////////////////////////////////////////////////////////////////
+    boolean ignoreHiddenFiles = false;
+    BagVerifier verifierCompleteness = new BagVerifier();
+    try {
+      verifierCompleteness.isComplete(bag, ignoreHiddenFiles);
+    } catch (IOException | MissingPayloadManifestException | MissingBagitFileException | MissingPayloadDirectoryException | FileNotInPayloadDirectoryException | InterruptedException | MaliciousPathException | UnsupportedAlgorithmException | InvalidBagitFileFormatException ex) {
+      LOGGER.error("Bag is not complete!", ex);
+      throw new BagItException(ex.getMessage());
+    }
+    /////////////////////////////////////////////////////////////////
+    // Verify validity
+    /////////////////////////////////////////////////////////////////
+    BagVerifier verifierValidity = new BagVerifier();
+
+    try {
+      verifierValidity.isValid(bag, ignoreHiddenFiles);
+    } catch (IOException | MissingPayloadManifestException | MissingBagitFileException | MissingPayloadDirectoryException | FileNotInPayloadDirectoryException | InterruptedException | MaliciousPathException | CorruptChecksumException | VerificationException | UnsupportedAlgorithmException | InvalidBagitFileFormatException ex) {
+      LOGGER.error("Bag is not valid!", ex);
+      throw new BagItException(ex.getMessage());
+    }
+    printBagItInformation(bag);
     return valid;
+  }
+
+  /**
+   * Print some information about the BagIt container.
+   *
+   * @param bag Instance holding BagIt container.
+   */
+  public static void printBagItInformation(Bag bag) {
+    if (LOGGER.isDebugEnabled()) {
+      LOGGER.debug("Version: {}", bag.getVersion());
+      bag.getMetadata().getAll().forEach((entry) -> {
+        LOGGER.debug("{} : {}", entry.getKey(), entry.getValue());
+      });
+    }
   }
 }

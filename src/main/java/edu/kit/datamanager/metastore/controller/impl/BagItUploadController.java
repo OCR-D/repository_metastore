@@ -23,7 +23,6 @@ import edu.kit.datamanager.metastore.storageservice.StorageFileNotFoundException
 import edu.kit.datamanager.metastore.storageservice.StorageService;
 import edu.kit.datamanager.metastore.util.BagItUtil;
 import edu.kit.datamanager.metastore.util.ZipUtils;
-import gov.loc.repository.bagit.Bag;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -52,8 +51,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import edu.kit.datamanager.metastore.controller.IBagItUploadController;
+import edu.kit.datamanager.metastore.exception.BagItException;
+import edu.kit.datamanager.metastore.exception.ResourceAlreadyExistsException;
+import gov.loc.repository.bagit.domain.Bag;
+import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.apache.tomcat.util.http.fileupload.FileUploadBase.FileSizeLimitExceededException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 /**
  * REST service handling upload of zipped Bagit containers.
@@ -66,6 +73,14 @@ public class BagItUploadController implements IBagItUploadController {
    * Logger for this class.
    */
   private static final Logger LOGGER = LoggerFactory.getLogger(MetastoreApplication.class);
+  /** 
+   * Key inside Bagit container defining location of the METS file.
+   */
+  public static final String X_OCRD_METS = "X-Ocrd-Mets";
+  /** 
+   * Default location of the METS file.
+   */
+  public static final String METS_LOCATION_DEFAULT = "data/mets.xml";
 
   /**
    * Services for handling METS documents.
@@ -140,7 +155,7 @@ public class BagItUploadController implements IBagItUploadController {
    */
   @Override
   public ResponseEntity<?> handleFileUpload(@RequestParam("file") MultipartFile file,
-          RedirectAttributes redirectAttributes) throws IOException {
+          RedirectAttributes redirectAttributes) throws IOException, BagItException {
     LOGGER.info("handleFileUpload");
     storageService.store(file);
     redirectAttributes.addFlashAttribute("message",
@@ -152,10 +167,16 @@ public class BagItUploadController implements IBagItUploadController {
     if (file.getOriginalFilename().endsWith(".zip")) {
       String baseName = FilenameUtils.getBaseName(file.getOriginalFilename());
       Path pathToArchive = Paths.get(archiveService.getBasePath(), baseName);
-      Path createDirectory = Files.createDirectory(pathToArchive);
+      Path createDirectory;
+      try {
+      createDirectory = Files.createDirectory(pathToArchive);
+      } catch (FileAlreadyExistsException faee) {
+        LOGGER.error("File '{}' already exists!", baseName, faee);
+        throw new ResourceAlreadyExistsException("File '" + baseName + "' already exists!");
+      }
       ZipUtils.unzip(storageService.getPath(file.getOriginalFilename()).toFile(), createDirectory.toFile());
-      Bag bag = BagItUtil.createBag(pathToArchive.toFile());
-      String xOcrdMets = bag.getBagInfoTxt().getOrDefault("X-Ocrd-Mets", "data/mets.xml");
+      Bag bag = BagItUtil.readBag(pathToArchive);
+      String xOcrdMets = getPathToMets(bag);
       File metsFile = Paths.get(pathToArchive.toString(), xOcrdMets).toFile();
       if (metsFile.exists()) {
         String metsFileAsString = FileUtils.readFileToString(metsFile, "UTF-8");
@@ -170,16 +191,22 @@ public class BagItUploadController implements IBagItUploadController {
     LOGGER.info(location.toString());
     return ResponseEntity.created(location).build();
   }
-
-  /**
-   * Handler for Exceptions.
-   *
-   * @param exc Exception reading/writing file.
-   *
-   * @return Error status.
+ /**
+   * Determines the path to the METS file.
+   * 
+   * @param bag BagIt container.
+   * 
+   * @return Relative path to METS file.
    */
-  @ExceptionHandler(StorageFileNotFoundException.class)
-  public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
-    return ResponseEntity.notFound().build();
+  private String getPathToMets(Bag bag) {
+    List<String> listOfEntries = bag.getMetadata().get(X_OCRD_METS);
+    String pathToMets = METS_LOCATION_DEFAULT;
+    if (listOfEntries != null) {
+      if (listOfEntries.size() > 1) {
+        LOGGER.warn("There are multiple location for METS defined!");
+      }
+      pathToMets = listOfEntries.get(0);
+    }
+    return pathToMets;
   }
 }

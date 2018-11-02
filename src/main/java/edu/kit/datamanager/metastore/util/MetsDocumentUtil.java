@@ -17,15 +17,8 @@ package edu.kit.datamanager.metastore.util;
 
 import edu.kit.datamanager.metastore.entity.MetsFile;
 import edu.kit.datamanager.metastore.entity.MetsProperties;
-import gov.loc.repository.bagit.Bag;
-import gov.loc.repository.bagit.BagFactory;
-import gov.loc.repository.bagit.BagInfoTxt;
-import gov.loc.repository.bagit.BagItTxt;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
 import org.fzk.tools.xml.JaxenUtil;
 import org.jdom.Document;
 import org.jdom.Element;
