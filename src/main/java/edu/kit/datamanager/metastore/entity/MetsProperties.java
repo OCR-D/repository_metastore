@@ -41,6 +41,18 @@ public class MetsProperties {
    * Logger.
    */
   private static final Logger LOGGER = LoggerFactory.getLogger(MetsProperties.class);
+  /** 
+   * Placeholder if no title is available.
+   */
+  public static final String NO_TITLE = "No title available!";
+  /**
+   * X-Path expression for title of document.
+   */
+  private static final String X_PATH_TITLE = "//mods:mods/mods:titleInfo/mods:title[1]";
+  /** 
+   * X-Path expression for identifier.
+   */
+  private static final String X_PATH_PPN = "//mods:mods/mods:recordInfo/mods:recordIdentifier[1]";
 
   /**
    * ID of the document.
@@ -85,11 +97,11 @@ public class MetsProperties {
   private void extractProperties(org.jdom.Document metsDocument) {
     LOGGER.info("Extract properties from METS document.");
     Namespace[] namespaces = MetsDocumentUtil.getNamespaces();
-    title = JaxenUtil.getNodeValue(metsDocument, "//mods:title[1]", namespaces);
+    title = JaxenUtil.getNodeValue(metsDocument, X_PATH_TITLE, namespaces);
     if (title == null) {
-      title = "No title available";
+      title = NO_TITLE;
     }
-    ppn = JaxenUtil.getNodeValue(metsDocument, "//mods:recordIdentifier[1]", namespaces);
+    ppn = JaxenUtil.getNodeValue(metsDocument, X_PATH_PPN, namespaces);
     LOGGER.info("Properties:\nTitle: {}\nPPN: {}", title, ppn);
   }
 
