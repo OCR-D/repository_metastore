@@ -17,26 +17,27 @@ package edu.kit.datamanager.metastore.kitdm;
 
 import io.swagger.client.ApiClient;
 import io.swagger.client.ApiException;
+import io.swagger.client.ApiResponse;
 import io.swagger.client.Configuration;
 import io.swagger.client.api.DataResourceControllerApi;
 import io.swagger.client.model.Agent;
 import io.swagger.client.model.DataResource;
+import io.swagger.client.model.Identifier;
 import io.swagger.client.model.PrimaryIdentifier;
 import io.swagger.client.model.ResourceType;
+import io.swagger.client.model.ResponseEntity;
 import io.swagger.client.model.Title;
 import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.UUID;
 
 /**
  *
  * @author hartmann-v
  */
 public class TestRestAccess2KitDM {
-
+  
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setVerifyingSsl(false);
     defaultClient.setBasePath("http://127.0.0.1:8090");
     defaultClient.setDebugging(true);
 
@@ -46,13 +47,14 @@ public class TestRestAccess2KitDM {
     // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
     //Authorization.setApiKeyPrefix("Token");
     DataResourceControllerApi apiInstance = new DataResourceControllerApi(defaultClient);
-
+    
     try {
-
+      
       DataResource resource = new DataResource(); // DataResource | resource
       resource.addCreatorsItem(new Agent().familyName("OCR-D").givenName("Repo"));
 //        resource.setEmbargoDate(new Date().toString());
-      resource.setIdentifier(new PrimaryIdentifier().identifierType(PrimaryIdentifier.IdentifierTypeEnum.OTHER).value("myFifthResource"));
+//      resource.addAlternateIdentifiersItem(new Identifier().identifierType(Identifier.IdentifierTypeEnum.INTERNAL).value(UUID.randomUUID().toString()));
+//      resource.setIdentifier(new PrimaryIdentifier().identifierType(PrimaryIdentifier.IdentifierTypeEnum.PURL).value("http://ocr-d.de/kant_aufklärung2"));
 //        resource.setPublicationYear("2018");
 //        resource.setPublisher("OCR-D Softwareframework");
       resource.setResourceType(new ResourceType().typeGeneral(ResourceType.TypeGeneralEnum.DATASET).value("OCR-D data"));
@@ -66,15 +68,22 @@ public class TestRestAccess2KitDM {
 //            System.out.println(e.getMessage());
 //            e.printStackTrace();
 //        }
-      DataResource result = apiInstance.createUsingPOST(resource);
-      System.out.println(result);
-      apiInstance.handleFileUploadUsingPOST(result.getId(), new File("/tmp/bag/test/bagit.txt"), Boolean.FALSE, "test/bagit.txt");
+      ApiResponse<DataResource> result;
+      result = apiInstance.createUsingPOSTWithHttpInfo(resource);
+      System.out.println(result.getData());
+      String location = result.getHeaders().get("Location").get(0);
+      System.out.println("Header->location: " + location);
+//     apiInstance.handleFileUploadUsingPOST(result.getData().getId(), new File("/tmp/bag/bagValid.zip"), Boolean.FALSE, "test/bagValid.zip");
+      ApiResponse<ResponseEntity> handleFileUploadUsingPOSTWithHttpInfo = apiInstance.handleFileUploadUsingPOSTWithHttpInfo(result.getData().getId(), new File("/tmp/bag/test/bagit.txt"), Boolean.FALSE, "test/bagit.txt");
+      for (String key : handleFileUploadUsingPOSTWithHttpInfo.getHeaders().keySet()) {
+        System.out.println(key  + ": " + handleFileUploadUsingPOSTWithHttpInfo.getHeaders().get(key).get(0));
+      }
     } catch (ApiException e) {
       System.err.println("Exception when calling DataResourceControllerApi#createUsingPOST");
       System.out.println(e.getMessage());
       e.printStackTrace();
     }
-
+    
   }
-
+  
 }

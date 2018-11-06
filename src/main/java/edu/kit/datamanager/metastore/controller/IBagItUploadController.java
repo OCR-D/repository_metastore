@@ -17,12 +17,12 @@ package edu.kit.datamanager.metastore.controller;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.client.ApiException;
 import java.io.IOException;
 import java.util.List;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -51,7 +51,7 @@ public interface IBagItUploadController {
   @RequestMapping(path = "/", method = RequestMethod.POST)
   @ResponseBody
   ResponseEntity<?> handleFileUpload(@ApiParam(value = "Zipped BagIt container.")@RequestParam(value = "file") MultipartFile file, 
-          RedirectAttributes redirectAttributes) throws IOException;
+          RedirectAttributes redirectAttributes) throws IOException, ApiException;
 
 
   /**
