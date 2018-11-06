@@ -85,7 +85,7 @@ public class CrudRunner implements CommandLineRunner {
     if (argumentList.contains(DROP_DATABASE)) {
       return;
     }
-
+    
     System.out.println("# CRUD operations");
 
     // save a single entity in the database
