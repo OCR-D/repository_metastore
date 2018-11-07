@@ -25,6 +25,15 @@ import edu.kit.datamanager.metastore.entity.MetsProperties;
 public interface MetsPropertiesRepository extends ArangoRepository<MetsProperties, String> {
 
   /**
+   * Find METS documents by ResourceIdentifier.
+   *
+   * @param resourceId ResourceIdentifier of the resource.
+   *
+   * @return List of METS documents with given resourceIdentifier.
+   */
+  Iterable<MetsProperties> findByResourceId(String resourceId);
+
+  /**
    * Find METS documents by Title.
    *
    * @param title Title of the resource.

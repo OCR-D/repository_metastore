@@ -48,13 +48,22 @@ public class MetsDocumentService implements IMetsDocumentService {
    * Logger.
    */
   private static final Logger LOGGER = LoggerFactory.getLogger(MetsDocumentService.class);
-
+  
+  /**
+   * Repository persisting Mets documents.
+   */
   @Autowired
   private MetsDocumentRepository metsRepository;
-
+  
+  /**
+   * Repository persisting METS files.
+   */
   @Autowired
   private MetsFileRepository metsFileRepository;
 
+  /**
+   * Repository persisting METS properties.
+   */
   @Autowired
   private MetsPropertiesRepository metsPropertiesRepository;
 
@@ -132,11 +141,10 @@ public class MetsDocumentService implements IMetsDocumentService {
     // ****************************************************
     MetsProperties metsProperties = new MetsProperties(metsDocument);
     metsProperties.setResourceId(resourceId);
-    LOGGER.info(metsProperties.toString());
-    metsPropertiesRepository.save(metsProperties);
-    for (MetsProperties item : metsPropertiesRepository.findAll()) {
-      System.out.println(item.toString());
+    if (LOGGER.isTraceEnabled()) {
+      LOGGER.trace(metsProperties.toString());
     }
+    metsPropertiesRepository.save(metsProperties);
 
     // ****************************************************
     //   Change URL if neccessary

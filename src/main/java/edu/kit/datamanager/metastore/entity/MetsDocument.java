@@ -58,6 +58,10 @@ public class MetsDocument implements IBaseEntity {
    */
   private String resourceId;
   /**
+   * Id inside KITDM repo for Document.
+   */
+  private String repoId;
+  /**
    * Version of the document. (Start with version 1 increment version number.)
    */
   private Integer version;
@@ -126,6 +130,24 @@ public class MetsDocument implements IBaseEntity {
   @Override
   public void setResourceId(String resourceId) {
     this.resourceId = resourceId;
+  }
+
+  /**
+   * Get the id of the KIT DM repository.
+   * 
+   * @return the repoId
+   */
+  public String getRepoId() {
+    return repoId;
+  }
+
+  /**
+   * Set the id of the KIT DM repository.
+   * 
+   * @param repoId the repoId to set
+   */
+  public void setRepoId(String repoId) {
+    this.repoId = repoId;
   }
 
   @Override

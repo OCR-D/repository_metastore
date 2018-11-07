@@ -15,11 +15,12 @@
  */
 package edu.kit.datamanager.metastore.kitdm;
 
-import edu.kit.datamanager.metastore.storageservice.*;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 /**
  * Storing configuration of upload directory.
  */
+@Configuration
 @ConfigurationProperties("kitdm20")
 public class KitDmProperties {
 

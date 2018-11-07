@@ -51,6 +51,10 @@ public class MetsProperties {
    * Resource Identifier for Document.
    */
   private String resourceId;
+  /**
+   * Id inside KITDM repo for Document.
+   */
+  private String repoId;
 
   /**
    * Title of resource.
@@ -85,12 +89,25 @@ public class MetsProperties {
   private void extractProperties(org.jdom.Document metsDocument) {
     LOGGER.info("Extract properties from METS document.");
     Namespace[] namespaces = MetsDocumentUtil.getNamespaces();
+    try {
     title = JaxenUtil.getNodeValue(metsDocument, "//mods:title[1]", namespaces);
+    } catch (Exception ex) {
+      LOGGER.trace(ex.getMessage());
+      title = null;
+    }
     if (title == null) {
       title = "No title available";
     }
+    try {
     ppn = JaxenUtil.getNodeValue(metsDocument, "//mods:recordIdentifier[1]", namespaces);
-    LOGGER.info("Properties:\nTitle: {}\nPPN: {}", title, ppn);
+    } catch (Exception ex) {
+      LOGGER.trace(ex.getMessage());
+      ppn = null;
+    }
+    if (ppn == null) {
+      ppn = "No PPN available";
+    }
+   LOGGER.info("Properties:\nTitle: {}\nPPN: {}", title, ppn);
   }
 
   /**
@@ -127,6 +144,24 @@ public class MetsProperties {
    */
   public void setResourceId(String resourceId) {
     this.resourceId = resourceId;
+  }
+
+  /**
+   * Get the id of the KIT DM repository.
+   * 
+   * @return the repoId
+   */
+  public String getRepoId() {
+    return repoId;
+  }
+
+  /**
+   * Set the id of the KIT DM repository.
+   * 
+   * @param repoId the repoId to set
+   */
+  public void setRepoId(String repoId) {
+    this.repoId = repoId;
   }
 
   /**

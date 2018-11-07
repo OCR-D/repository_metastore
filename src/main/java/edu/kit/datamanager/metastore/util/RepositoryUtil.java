@@ -15,22 +15,7 @@
  */
 package edu.kit.datamanager.metastore.util;
 
-import edu.kit.datamanager.metastore.exception.BagItException;
 import edu.kit.datamanager.metastore.kitdm.KitDmProperties;
-import gov.loc.repository.bagit.domain.Bag;
-import gov.loc.repository.bagit.exceptions.CorruptChecksumException;
-import gov.loc.repository.bagit.exceptions.FileNotInPayloadDirectoryException;
-import gov.loc.repository.bagit.exceptions.InvalidBagitFileFormatException;
-import gov.loc.repository.bagit.exceptions.InvalidPayloadOxumException;
-import gov.loc.repository.bagit.exceptions.MaliciousPathException;
-import gov.loc.repository.bagit.exceptions.MissingBagitFileException;
-import gov.loc.repository.bagit.exceptions.MissingPayloadDirectoryException;
-import gov.loc.repository.bagit.exceptions.MissingPayloadManifestException;
-import gov.loc.repository.bagit.exceptions.UnparsableVersionException;
-import gov.loc.repository.bagit.exceptions.UnsupportedAlgorithmException;
-import gov.loc.repository.bagit.exceptions.VerificationException;
-import gov.loc.repository.bagit.reader.BagReader;
-import gov.loc.repository.bagit.verify.BagVerifier;
 import io.swagger.client.ApiClient;
 import io.swagger.client.ApiException;
 import io.swagger.client.ApiResponse;
@@ -42,8 +27,12 @@ import io.swagger.client.model.ResourceType;
 import io.swagger.client.model.ResponseEntity;
 import io.swagger.client.model.Title;
 import java.io.File;
-import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.logging.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,8 +45,14 @@ public class RepositoryUtil {
    * Logger.
    */
   private static final Logger LOGGER = LoggerFactory.getLogger(RepositoryUtil.class);
-
+  /**
+   * Constant for accessing location in http header.
+   */
   public static final String LOCATION_HEADER = "Location";
+  /**
+   * Constant defining non existing resourceIdentifier.
+   */
+  public static final long NO_RESOURCE_IDENTIFIER = -1l;
   /**
    * Instance for talking with repository.
    */
@@ -94,7 +89,7 @@ public class RepositoryUtil {
 //    defaultClient.setUsername(username);
 //    defaultClient.setWriteTimeout(0);
     LOGGER.trace("Base path: '{}', Debug: '{}'", defaultClient.getBasePath(), defaultClient.isDebugging());
-    DataResourceControllerApi apiInstance = new DataResourceControllerApi(defaultClient);
+    apiInstance = new DataResourceControllerApi(defaultClient);
   }
 
   /**
@@ -139,9 +134,79 @@ public class RepositoryUtil {
   public ApiResponse<ResponseEntity> postFileToResource(Long idOfResource, Boolean force, Path relativePath, File uploadFile) throws ApiException {
     LOGGER.trace("Post file '{}' to resource with ID '{}'", relativePath.toString(), idOfResource);
     ApiResponse<ResponseEntity> handleFileUpload = apiInstance.handleFileUploadUsingPOSTWithHttpInfo(idOfResource, uploadFile, force, relativePath.toString());
-    LOGGER.trace("Status code: '{}' - '{}'", handleFileUpload.getData().getStatusCodeValue(), handleFileUpload.getData().getStatusCode());
+    LOGGER.trace("Status code: '{}'", handleFileUpload.getStatusCode());
 
     return handleFileUpload;
+  }
+
+  /**
+   * Test if given resourceIdentifier already exists.
+   *
+   * @param resourceIdentifier resourceIdentifier of the data resource.
+   *
+   * @return true if resourceIdentifier already exists.
+   */
+  public boolean existsResourceIdentifier(String resourceIdentifier) {
+    boolean resourceExists = true;
+    DataResource resource = new DataResource(); // DataResource | resource
+    resource.setResourceIdentifier(resourceIdentifier);
+    List<DataResource> findByExampleUsingPOST;
+    try {
+      findByExampleUsingPOST = apiInstance.findByExampleUsingPOST(resource, null, null, null);
+      resourceExists = !findByExampleUsingPOST.isEmpty();
+    } catch (ApiException ex) {
+      LOGGER.error("Test for resourceIdentifier failed!", ex);
+    }
+    return resourceExists;
+  }
+
+  /**
+   * Test if given resourceIdentifier already exists.
+   *
+   * @param resourceIdentifier resourceIdentifier of the data resource.
+   *
+   * @return true if resourceIdentifier already exists.
+   */
+  public long getIdOfResourceIdentifier(String resourceIdentifier) {
+    long resourceId = NO_RESOURCE_IDENTIFIER;
+    DataResource resource = new DataResource(); // DataResource | resource
+    resource.setResourceIdentifier(resourceIdentifier);
+    List<DataResource> findByExampleUsingPOST;
+    try {
+      findByExampleUsingPOST = apiInstance.findByExampleUsingPOST(resource, null, null, null);
+      if (findByExampleUsingPOST.size() == 1) {
+        resourceId = findByExampleUsingPOST.get(0).getId();
+      }
+    } catch (ApiException ex) {
+      LOGGER.error("Test for resourceIdentifier failed!", ex);
+    }
+    return resourceId;
+  }
+
+  /**
+   * Create Download URL from relative data path and id of resource.
+   *
+   * @param id ID of resource in KIT DM repo.
+   * @param dataPath Relative data path.
+   *
+   * @return URL for downloading resource.
+   */
+  public String toDownloadUrl(Long id, Path dataPath) {
+    Path downloadPath = null;
+     String downloadString = "Can't create URL";
+
+    try {
+      LOGGER.trace("create Download URL from id '{}' and path '{}'", id, dataPath);
+      downloadPath = Paths.get("api/v1/dataresources", id.toString(), "data", dataPath.toString());
+      URL baseUrl = new URL(properties.getBasePath());
+      URL downloadUrl = new URL(baseUrl, downloadPath.toString());
+      downloadString = downloadUrl.toString();
+    } catch (MalformedURLException ex) {
+      LOGGER.error("create Download URL from id '{}' and path '{}'", id, dataPath);
+      LOGGER.error("path '{}'", downloadPath.toString());
+      LOGGER.error("Error creating URL", ex);
+    }
+    return downloadString;
   }
 
 }

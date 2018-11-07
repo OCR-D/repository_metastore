@@ -56,6 +56,8 @@ public interface IMetsDocumentService {
   
   /**
    * Create METS document.
+   * Extracts also MetsProperties and MetsFiles and persists them in the 
+   * local repositories.
    * 
    * @param resourceId Resource ID of the document.
    * @param fileContent METS file holding all information.

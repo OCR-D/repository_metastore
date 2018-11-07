@@ -19,52 +19,29 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * Storing configuration of upload directory.
  */
-@ConfigurationProperties("storage")
+@ConfigurationProperties("metastore")
 public class StorageProperties {
 
   /**
-   * Folder location for storing files
+   * Folder uploadDir for storing files
    */
-  private String location = "/tmp/upload";
-  /**
-   * Folder location for archiving uploaded files
-   */
-  private String archive = "/tmp/archive";
+  private String uploadDir = "/tmp/metastore/upload";
 
   /**
    * Get the base path for uploading files.
    *
    * @return base path as string.
    */
-  public String getLocation() {
-    return location;
+  public String getUploadDir() {
+    return uploadDir;
   }
 
   /**
    * Set the base path for uploading files.
    *
-   * @param location base path as string.
+   * @param uploadDir base path as string.
    */
-  public void setLocation(String location) {
-    this.location = location;
+  public void setUploadDir(String uploadDir) {
+    this.uploadDir = uploadDir;
   }
-
-  /**
-   * Get the path for archiving data.
-   *
-   * @return the archive
-   */
-  public String getArchive() {
-    return archive;
-  }
-
-  /**
-   * Set the path for archiving data.
-   *
-   * @param archive the archive to set
-   */
-  public void setArchive(String archive) {
-    this.archive = archive;
-  }
-
 }

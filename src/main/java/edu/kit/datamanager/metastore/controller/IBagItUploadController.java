@@ -79,17 +79,5 @@ public interface IBagItUploadController {
   @RequestMapping(path = "/", method = RequestMethod.GET, produces = "application/json")
   @ResponseBody
   ResponseEntity<List<String>> listUploadedFiles(Model model) throws IOException;
-
-  /**
-   * Get file by its filename.
-   *
-   * @param filename Filename of the uploaded file.
-   *
-   * @return Selected file.
-   */
-  @ApiOperation(value = "Download BagIt container.")
-  @RequestMapping(path = "/files/{filename:.+}", method = RequestMethod.GET)
-  @ResponseBody
-  ResponseEntity<Resource> serveFile(@ApiParam(value = "Filename of the BagIt container.")@PathVariable String filename);
   
 }

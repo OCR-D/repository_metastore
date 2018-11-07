@@ -36,6 +36,15 @@ public interface MetsFileRepository extends ArangoRepository<MetsFile, String> {
   MetsFile findTop1DistinctByResourceIdAndFileIdOrderByVersionDesc(String resourceId, String fileId);
 
   /**
+   * Find all files of a METS document.
+   *
+   * @param resourceId ID of the METS document.
+   *
+   * @return Iterator holding all files.
+   */
+  Iterable<MetsFile> findByResourceId(String resourceId);
+
+  /**
    * Find all files of a METS document within the same fileGrp.
    *
    * @param resourceId ID of the METS document.

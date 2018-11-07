@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.kit.datamanager.metastore.storageservice;
+package edu.kit.datamanager.metastore.repository;
+
+import com.arangodb.springframework.repository.ArangoRepository;
+import edu.kit.datamanager.metastore.entity.ZippedBagit;
 
 /**
- * Interface for the archive.
+ * Repository holding all zipped BagIt containers.
  */
-public interface ArchiveService {
+public interface ZippedBagitRepository extends ArangoRepository<ZippedBagit, String> {
 
   /**
-   * Initialize archive.
-   */
-  void init();
-
-  /**
-   * Get root directory of archive.
+   * Find bagIt containers by ResourceIdentifier.
    *
-   * @return root directory as String.
+   * @param resourceId ResourceIdentifier of the resource.
+   *
+   * @return List of bagIt containers with given resourceIdentifier.
    */
-  String getBasePath();
+  Iterable<ZippedBagit> findByResourceId(String resourceId);
 }

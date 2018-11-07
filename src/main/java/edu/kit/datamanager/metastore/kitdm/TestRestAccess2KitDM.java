@@ -23,12 +23,10 @@ import io.swagger.client.api.DataResourceControllerApi;
 import io.swagger.client.model.Agent;
 import io.swagger.client.model.DataResource;
 import io.swagger.client.model.Identifier;
-import io.swagger.client.model.PrimaryIdentifier;
 import io.swagger.client.model.ResourceType;
-import io.swagger.client.model.ResponseEntity;
 import io.swagger.client.model.Title;
-import java.io.File;
-import java.util.UUID;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  *
@@ -47,13 +45,32 @@ public class TestRestAccess2KitDM {
     // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
     //Authorization.setApiKeyPrefix("Token");
     DataResourceControllerApi apiInstance = new DataResourceControllerApi(defaultClient);
-    
+    Path get = Paths.get("/tmp/anydir");
+    Path path = Paths.get("first", "second");
+    System.out.println(path);
+    System.out.println(get.resolve(path));
+    path = Paths.get("", "second");
+    System.out.println(path);
+    System.out.println(get.resolve(path));
+if (args.length < 10)
+return;    
     try {
       
       DataResource resource = new DataResource(); // DataResource | resource
+      resource.setResourceIdentifier("blablub");
+//      List<DataResource> findByExampleUsingPOST = apiInstance.findByExampleUsingPOST(resource, null, null, null);
+//      System.out.println("Find known UUID: " + findByExampleUsingPOST.size());
+//      System.out.println(resource);
+//      resource = new DataResource(); 
+//      resource.setResourceIdentifier("Bla blub");
+//    findByExampleUsingPOST = apiInstance.findByExampleUsingPOST(resource, null, null, null);
+//      System.out.println("Find unknown UUID: " + findByExampleUsingPOST.size());
+//      System.out.println(resource);
+//if (args.length < 10)
+//return;
       resource.addCreatorsItem(new Agent().familyName("OCR-D").givenName("Repo"));
 //        resource.setEmbargoDate(new Date().toString());
-//      resource.addAlternateIdentifiersItem(new Identifier().identifierType(Identifier.IdentifierTypeEnum.INTERNAL).value(UUID.randomUUID().toString()));
+      resource.addAlternateIdentifiersItem(new Identifier().identifierType(Identifier.IdentifierTypeEnum.INTERNAL).value("affeaffe"));
 //      resource.setIdentifier(new PrimaryIdentifier().identifierType(PrimaryIdentifier.IdentifierTypeEnum.PURL).value("http://ocr-d.de/kant_aufklärung2"));
 //        resource.setPublicationYear("2018");
 //        resource.setPublisher("OCR-D Softwareframework");
@@ -71,13 +88,13 @@ public class TestRestAccess2KitDM {
       ApiResponse<DataResource> result;
       result = apiInstance.createUsingPOSTWithHttpInfo(resource);
       System.out.println(result.getData());
-      String location = result.getHeaders().get("Location").get(0);
-      System.out.println("Header->location: " + location);
-//     apiInstance.handleFileUploadUsingPOST(result.getData().getId(), new File("/tmp/bag/bagValid.zip"), Boolean.FALSE, "test/bagValid.zip");
-      ApiResponse<ResponseEntity> handleFileUploadUsingPOSTWithHttpInfo = apiInstance.handleFileUploadUsingPOSTWithHttpInfo(result.getData().getId(), new File("/tmp/bag/test/bagit.txt"), Boolean.FALSE, "test/bagit.txt");
-      for (String key : handleFileUploadUsingPOSTWithHttpInfo.getHeaders().keySet()) {
-        System.out.println(key  + ": " + handleFileUploadUsingPOSTWithHttpInfo.getHeaders().get(key).get(0));
-      }
+//      String location = result.getHeaders().get("Location").get(0);
+//      System.out.println("Header->location: " + location);
+////     apiInstance.handleFileUploadUsingPOST(result.getData().getId(), new File("/tmp/bag/bagValid.zip"), Boolean.FALSE, "test/bagValid.zip");
+//      ApiResponse<ResponseEntity> handleFileUploadUsingPOSTWithHttpInfo = apiInstance.handleFileUploadUsingPOSTWithHttpInfo(result.getData().getId(), new File("/tmp/bag/test/bagit.txt"), Boolean.FALSE, "test/bagit.txt");
+//      for (String key : handleFileUploadUsingPOSTWithHttpInfo.getHeaders().keySet()) {
+//        System.out.println(key  + ": " + handleFileUploadUsingPOSTWithHttpInfo.getHeaders().get(key).get(0));
+//      }
     } catch (ApiException e) {
       System.err.println("Exception when calling DataResourceControllerApi#createUsingPOST");
       System.out.println(e.getMessage());
