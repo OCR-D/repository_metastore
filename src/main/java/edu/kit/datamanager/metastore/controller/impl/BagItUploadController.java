@@ -15,7 +15,6 @@
  */
 package edu.kit.datamanager.metastore.controller.impl;
 
-import edu.kit.datamanager.metastore.MetastoreApplication;
 import edu.kit.datamanager.metastore.exception.InvalidFormatException;
 import edu.kit.datamanager.metastore.service.IMetsDocumentService;
 import edu.kit.datamanager.metastore.storageservice.StorageService;
@@ -61,6 +60,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.util.FileSystemUtils;
 
 /**
  * REST service handling upload of zipped Bagit containers.
@@ -173,7 +173,6 @@ public class BagItUploadController implements IBagItUploadController {
           RedirectAttributes redirectAttributes) throws IOException, BagItException, ApiException {
     URI location = null;
     LOGGER.info("handleFileUpload");
-    storageService.store(file);
     redirectAttributes.addFlashAttribute("message",
             "You successfully uploaded " + file.getOriginalFilename() + "!");
 
@@ -259,7 +258,8 @@ public class BagItUploadController implements IBagItUploadController {
               System.out.println(item.toString());
             }
             System.out.println("***********************************************************");
-            // 10. Remove local files.
+            // 10. Remove local temporary files.
+            FileSystemUtils.deleteRecursively(pathToResource);
             // 11. Create download URL for zipped file.
             Path metsPath = Paths.get(file.getOriginalFilename());
             String locationString = repository.toDownloadUrl(repoId, metsPath);
