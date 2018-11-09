@@ -3,9 +3,10 @@
 This project contains metastore service microservice used by the KIT DM infrastructure. The service provides
 metadata management, e.g. register xsd files, validate xml files, store/access/update metadata.
 
-## Requirements
-In order to run the microservice an ArangoDB server is needed. Alternatively a docker image
-could be used.
+## Prerequisites
+- [KIT DM 2.0](https://github.com/kit-data-manager/base-repo.git) 
+- PostGresSQL 9.1 or higher
+- ArangoDB 3.3 or higher
 
 ## How to build
 
@@ -13,13 +14,14 @@ In order to build this microservice you'll need:
 
 * Java SE Development Kit 8 or higher
 
-After obtaining the sources change to the folder where the sources are located perform the following steps:
-
-```
-user@localhost:/home/user/metastore-service$./gradlew build
+You have to install KIT DM 2.0 first.
+```bash=bash
+# Build metastore service
+user@localhost:/home/user/$git clone https://github.com/OCR-D/repository_metastore.git
+user@localhost:/home/user/$cd repository_metastore
+user@localhost:/home/user/repository_metastore/$./gradlew build
 BUILD SUCCESSFUL in 3s
 6 actionable tasks: 6 executed
-user@localhost:/home/user/metastore-service$
 ```
 
 As a result, a fat jar containing the entire service is created at 'build/libs/metastore-service-0.1.0.jar'.
@@ -35,9 +37,8 @@ properties in the 'arangodb' section.
 As soon as 'application.properties' is completed, you may start the repository microservice by executing the following command inside the project folder, 
 e.g. where the service has been built before:
 
-```
-user@localhost:/home/user/base-repo$ 
-user@localhost:/home/user/base-repo$ java -jar build/libs/metastore-service-0.1.0.jar
+```bash=bash
+user@localhost:/home/user/repository_metastore/$ java -jar build/libs/metastore-service-0.1.0.jar
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -56,22 +57,82 @@ As soon as the microservice is started, you can browse to
 
 http://localhost:8080/swagger-ui.html
 
-in order to see available RESTful endpoints and their documentation. Furthermore, you can use this Web interface to test single API calls in order to get familiar with the 
-service.
+in order to see available RESTful endpoints and their documentation. Furthermore, you can use this Web interface to test single API calls in order to get familiar with the service.
 
 ### Quick start using docker (Only for tests!)
-1. Start ArangoDB using docker
-
+#### Install KIT DM 2.0 
+```bash=bash
+# Build KIT DM 2.0
+user@localhost:/home/user/$git clone https://github.com/kit-data-manager/base-repo.git
+user@localhost:/home/user/$cd base-repo
+user@localhost:/home/user/$git submodule init
+user@localhost:/home/user/$git submodule update --remote --merge 
+user@localhost:/home/user/$cd libraries/service-base/
+user@localhost:/home/user/libraries/service-base/$gradlew install
+user@localhost:/home/user/libraries/service-base/$cd ../../
+user@localhost:/home/user/$gradlew build
+# Configure KIT DM 2.0
+user@localhost:/home/user/$cp conf/application.yml .
 ```
+##### Edit application.yml.
+a) Configure connection to database:
+```
+spring:
+    datasource:
+       url: jdbc:postgresql://localhost:5555/postgres
+       username: postgres
+       password: postgres
+       driverClassName: org.postgresql.Driver
+    jpa:
+      database: POSTGRESQL
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+      properties:
+        #hibernate:
+          #show_sql: true
+          #use_sql_comments: true
+          #format_sql: true
+    ###########################################################################
+    ###                  MAX file size for up-/download                     ###
+    ###########################################################################
+    servlet:
+      # Max file size.   
+      multipart.max-file-size: 10MB
+      # Max request size.
+      multipart.max-request-size: 10MB
+```      
+b) Change basepath for archive, disable authentication and messaging
+```
+repo:
+   auth:
+      jwtSecret: test123
+      enabled: false
+   basepath:  file:///tmp/kitdm2.0/ 
+   messaging:
+      enabled: false 
+```
+##### Build and start docker container with postGreSQL
+First time you have to build docker container:
+```bash=bash
+user@localhost:/home/user/$docker run -p 5555:5432 --name postgres4kitdm -e POSTGRES_PASSWORD=postgres -d postgres
+```
+To start/stop docker container afterwards use
+```bash=bash
+user@localhost:/home/user/$docker stop postgres4kitdm
+user@localhost:/home/user/$docker start postgres4kitdm
+```
+#### Start ArangoDB using docker
+
+```bash=bash
 user@localhost:/home/user/$docker run -p 8578:8529 -e ARANGO_ROOT_PASSWORD=ocrd-testOnly arangodb/arangodb
 [...]
 2018-10-30T07:55:29Z [1] INFO ArangoDB (version 3.3.19 [linux]) is ready for business. Have fun!
 ```
-2. Start metastore service microservice
+#### Start metastore service microservice
 
-```
-user@localhost:/home/user/base-repo$ 
-user@localhost:/home/user/base-repo$ java -jar build/libs/metastore-service-0.1.0.jar
+```bash=
+user@localhost:/home/user/metastore-service$ java -jar build/libs/metastore-service-0.1.0.jar
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -86,24 +147,31 @@ user@localhost:/home/user/base-repo$ java -jar build/libs/metastore-service-0.1.
 ```
 ## First steps
 1. Upload zipped BagIt container to metastore.
+```bash=bash
+user@localhost:/home/user/$curl -v -F "file=@zippedBagItContainer" http://localhost:8080/api/v1/metastore/bagit 
 ```
-curl -F "file=@zippedBagItContainer" http://localhost:8080/api/v1/metastore/bagit/ 
+2. List all BagIt containers.
+```bash=bash
+user@localhost:/home/user/$curl -XGET -H "Accept:application/json"  http://localhost:8080/api/v1/metastore/bagit 
 ```
-2. List all METS files.
+3. List all METS files.
+```bash=bash
+user@localhost:/home/user/$curl -XGET http://localhost:8080/api/v1/metastore/mets
 ```
-curl -XGET http://localhost:8080/api/v1/metastore/mets
+4. List all METS files with title 'Der Herold'.
+```bash=bash
+user@localhost:/home/user/$curl -XGET -H "Accept:application/json" "http://localhost:8080/api/v1/metastore/mets/title?title=Der%20Herold"
 ```
-3. List all METS files with title 'Der Herold'.
+5. Download zipped BagIt container to metastore.
+```bash=bash
+user@localhost:/home/user/$curl -XGET http://localhost:8080/api/v1/metastore/bagit/files/zippedBagItContainer > bagDownload.zip
 ```
-curl -H "Accept:application/json" "http://localhost:8080/api/v1/metastore/mets/title?title=Der Herold"
-```
-4. Download zipped BagIt container to metastore.
-```
-curl -XGET http://localhost:8080/api/v1/metastore/bagit/files/zippedBagItContainer > bagDownload.zip
-```
+You may also try these URLs in a browser. (http://localhost:8080/api/v1/metastore/bagit)
+
 
 ## More Information
 
+* [KIT DM 2.0](https://github.com/kit-data-manager/base-repo.git)
 * [Docker](https://www.docker.com/)
 * [ArangoDB](https://www.arangodb.com/)
 * [ArangoDB(Docker)](https://hub.docker.com/r/arangodb/arangodb/)
