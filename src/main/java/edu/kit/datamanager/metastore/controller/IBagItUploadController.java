@@ -48,7 +48,7 @@ public interface IBagItUploadController {
   @ApiOperation(value = "Upload zipped BagIt container.",
           notes = "This endpoint allows to upload zipped BagIt container holding"
                   + "OCR-D data.")
-  @RequestMapping(path = "/", method = RequestMethod.POST)
+  @RequestMapping(path = "", method = RequestMethod.POST)
   @ResponseBody
   ResponseEntity<?> handleFileUpload(@ApiParam(value = "Zipped BagIt container.")@RequestParam(value = "file") MultipartFile file, 
           RedirectAttributes redirectAttributes) throws IOException, ApiException;
@@ -64,7 +64,7 @@ public interface IBagItUploadController {
    */
   @ApiOperation(value = "List all uploaded containers.",
           notes = "List of all zipped BagIt containers with Form to upload new BagIt container.")
-  @RequestMapping(path = "/", method = RequestMethod.GET)
+  @RequestMapping(path = "", method = RequestMethod.GET)
   String listUploadedFilesAsHtml(Model model) throws IOException;
   /**
    * Listing of uploaded files.
@@ -76,7 +76,7 @@ public interface IBagItUploadController {
    */
   @ApiOperation(value = "List all uploaded containers.",
           notes = "List with URLs of all zipped BagIt containers.")
-  @RequestMapping(path = "/", method = RequestMethod.GET, produces = "application/json")
+  @RequestMapping(path = "", method = RequestMethod.GET, produces = "application/json")
   @ResponseBody
   ResponseEntity<List<String>> listUploadedFiles(Model model) throws IOException;
   
