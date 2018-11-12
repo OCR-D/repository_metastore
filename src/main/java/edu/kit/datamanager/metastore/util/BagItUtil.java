@@ -15,7 +15,10 @@
  */
 package edu.kit.datamanager.metastore.util;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import edu.kit.datamanager.metastore.exception.BagItException;
+import gov.loc.repository.bagit.conformance.BagLinter;
 import gov.loc.repository.bagit.creator.BagCreator;
 import gov.loc.repository.bagit.domain.Bag;
 import gov.loc.repository.bagit.exceptions.CorruptChecksumException;
@@ -29,15 +32,27 @@ import gov.loc.repository.bagit.exceptions.MissingPayloadManifestException;
 import gov.loc.repository.bagit.exceptions.UnparsableVersionException;
 import gov.loc.repository.bagit.exceptions.UnsupportedAlgorithmException;
 import gov.loc.repository.bagit.exceptions.VerificationException;
+import gov.loc.repository.bagit.exceptions.conformance.BagitVersionIsNotAcceptableException;
+import gov.loc.repository.bagit.exceptions.conformance.FetchFileNotAllowedException;
+import gov.loc.repository.bagit.exceptions.conformance.MetatdataValueIsNotAcceptableException;
+import gov.loc.repository.bagit.exceptions.conformance.MetatdataValueIsNotRepeatableException;
+import gov.loc.repository.bagit.exceptions.conformance.RequiredManifestNotPresentException;
+import gov.loc.repository.bagit.exceptions.conformance.RequiredMetadataFieldNotPresentException;
+import gov.loc.repository.bagit.exceptions.conformance.RequiredTagFileNotPresentException;
 import gov.loc.repository.bagit.hash.StandardSupportedAlgorithms;
 import gov.loc.repository.bagit.reader.BagReader;
 import gov.loc.repository.bagit.verify.BagVerifier;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -112,6 +127,20 @@ public class BagItUtil {
         LOGGER.error("PayLoadOxum is invalid: ", ex);
         throw new BagItException(ex.getMessage());
       }
+    }
+    /////////////////////////////////////////////////////////////////
+    // Check for Profile and validate it
+    /////////////////////////////////////////////////////////////////
+    List<String> url2Profile = bag.getMetadata().get("BagIt-Profile-Identifier");
+    Iterator<String> profileIterator = url2Profile.iterator();
+    try {
+      if (profileIterator.hasNext()) {
+        InputStream input = new URL(profileIterator.next()).openStream();
+        BagLinter.checkAgainstProfile(input, bag);
+      }
+    } catch (Exception ex) {
+      LOGGER.error("Container does not match the defined profile!", ex);
+      throw new BagItException(ex.getMessage());
     }
     /////////////////////////////////////////////////////////////////
     // Verify completeness
