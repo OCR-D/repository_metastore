@@ -52,7 +52,7 @@ public class RepositoryUtil {
   /**
    * Constant defining non existing resourceIdentifier.
    */
-  public static final long NO_RESOURCE_IDENTIFIER = -1l;
+  public static final long NO_RESOURCE_IDENTIFIER = -1L;
   /**
    * Instance for talking with repository.
    */
