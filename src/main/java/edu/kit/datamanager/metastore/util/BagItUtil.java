@@ -135,8 +135,8 @@ public class BagItUtil {
     Iterator<String> profileIterator = url2Profile.iterator();
     try {
       if (profileIterator.hasNext()) {
-        InputStream input = new URL(profileIterator.next()).openStream();
-        BagLinter.checkAgainstProfile(input, bag);
+        InputStream inputStream4Profile = new URL(profileIterator.next()).openStream();
+        BagLinter.checkAgainstProfile(inputStream4Profile, bag);
       }
     } catch (Exception ex) {
       LOGGER.error("Container does not match the defined profile!", ex);
