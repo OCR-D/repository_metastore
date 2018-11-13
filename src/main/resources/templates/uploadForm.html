@@ -2,7 +2,7 @@
 <body>
 
 	<div th:if="${message}">
-		<h2 th:text="${message}"/>
+		<h2 th:text="${message}"></h2>
 	</div>
 
 	<div>
@@ -17,7 +17,7 @@
 	<div>
 		<ul>
 			<li th:each="file : ${files}">
-				<a th:href="${file}" th:text="${file}" />
+				<a th:href="${file}" th:text="${file}" ></a>
 			</li>
 		</ul>
 	</div>
