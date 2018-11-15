@@ -145,8 +145,10 @@ public class BagItUploadController implements IBagItUploadController {
   public String listUploadedFilesAsHtml(Model model) throws IOException {
     LOGGER.info("listUploadedFilesAsHtml - " + model);
 
-    List<String> listOfAllUrls = getAllUrlsOfBagItContainers();
-    model.addAttribute("files", listOfAllUrls);
+    Iterable<ZippedBagit> findAllZippedFiles = bagitRepository.findAll();
+    List<ZippedBagit> allZippedFiles = new ArrayList<>();
+    findAllZippedFiles.forEach(allZippedFiles::add);
+    model.addAttribute("bagitFiles", allZippedFiles);
 
     return "uploadForm";
   }
@@ -212,7 +214,7 @@ public class BagItUploadController implements IBagItUploadController {
         LOGGER.error("Directory'{}' already exists!", pathToBagIt.toString());
         throw new ResourceAlreadyExistsException("Directory '" + pathToBagIt.toString() + "' already exists!");
       }
-      ZipUtils.unzip(storageService.getPath(file.getOriginalFilename()).toFile(), pathToBagIt.toFile());
+      ZipUtils.unzip(storageService.getPath(file.getOriginalFilename(), resourceId).toFile(), pathToBagIt.toFile());
       // 5. validate BagIt container 
       Bag bag = BagItUtil.readBag(pathToBagIt);
       // 6. extract METS and properties and files (resourceIdentifier needed)
@@ -235,7 +237,7 @@ public class BagItUploadController implements IBagItUploadController {
             RegisterFilesInRepo registerFilesInRepo = new RegisterFilesInRepo(repository, pathToResource, repoId, Boolean.FALSE);
             Files.walkFileTree(pathToResource, registerFilesInRepo);
             // 9. Adapt download URLs for metsfiles and repoId.
-            Iterable<MetsFile> findMetsFilesByResourceId = metsFileRepository.findByResourceId(resourceId);
+            Iterable<MetsFile> findMetsFilesByResourceId = metsFileRepository.findByResourceIdAndCurrentTrue(resourceId);
             System.out.println("***********************************************************");
             for (MetsFile item : findMetsFilesByResourceId) {
               URI uri = new URI(item.getUrl());
@@ -253,7 +255,7 @@ public class BagItUploadController implements IBagItUploadController {
             metsFileRepository.saveAll(findMetsFilesByResourceId);
 
             System.out.println("***********************************************************");
-            findMetsFilesByResourceId = metsFileRepository.findByResourceId(resourceId);
+            findMetsFilesByResourceId = metsFileRepository.findByResourceIdAndCurrentTrue(resourceId);
             for (MetsFile item : findMetsFilesByResourceId) {
               System.out.println(item.toString());
             }

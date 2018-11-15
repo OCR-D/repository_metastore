@@ -64,7 +64,7 @@ public interface IBagItUploadController {
    */
   @ApiOperation(value = "List all uploaded containers.",
           notes = "List of all zipped BagIt containers with Form to upload new BagIt container.")
-  @RequestMapping(path = "", method = RequestMethod.GET)
+  @RequestMapping(path = "", method = RequestMethod.GET, produces = "text/html")
   String listUploadedFilesAsHtml(Model model) throws IOException;
   /**
    * Listing of uploaded files.

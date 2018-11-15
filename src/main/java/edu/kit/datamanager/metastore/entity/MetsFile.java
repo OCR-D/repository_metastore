@@ -50,6 +50,10 @@ public class MetsFile implements IBaseEntity, IMimetype, IGroupId, IUrl, IUse {
    */
   private String repoId;
   /**
+   * Is the current version.
+   */
+  private Boolean current;
+  /**
    * Version of the document. (Start with version 1 increment version number.)
    */
   private Integer version;
@@ -102,6 +106,7 @@ public class MetsFile implements IBaseEntity, IMimetype, IGroupId, IUrl, IUse {
     this.groupId = groupId;
     this.use = use;
     this.url = url;
+    current = Boolean.TRUE;
   }
 
   @Override
@@ -122,6 +127,24 @@ public class MetsFile implements IBaseEntity, IMimetype, IGroupId, IUrl, IUse {
   @Override
   public void setResourceId(String resourceId) {
     this.resourceId = resourceId;
+  }
+
+  /**
+   * Get flag for current version.
+   *
+   * @return the current version.
+   */
+  public Boolean getCurrent() {
+    return current;
+  }
+
+  /**
+   * Set flag for current version.
+   *
+   * @param current the current to set
+   */
+  public void setCurrent(Boolean current) {
+    this.current = current;
   }
 
   /**
@@ -251,6 +274,7 @@ public class MetsFile implements IBaseEntity, IMimetype, IGroupId, IUrl, IUse {
    */
   public MetsFile updateMetsFile(String url) {
     MetsFile newMetsFile = new MetsFile(resourceId, version + 1, fileId, mimetype, groupId, use, url);
+    current = Boolean.FALSE;
     return newMetsFile;
   }
   
