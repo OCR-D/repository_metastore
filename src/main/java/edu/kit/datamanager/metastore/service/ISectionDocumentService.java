@@ -25,58 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
  * Interface defining section document service.
  */
 public interface ISectionDocumentService {
-  /**
-   * Get all MetsDocuments/DigitalObjects.
-   * 
-   * @return List holding all METS Documents. 
-   */
-  List<MetsDocument> getAllDocuments();
-  
-  /**
-   * Get most recent content of METS document with given resource ID.
-   * 
-   * @param resourceId Resource ID of METS document.
-   * 
-   * @return METS document.
-   */
-  MetsDocument getMostRecentMetsDocumentByResourceId(String resourceId);
-  
-  /**
-   * Get most recent METS document with given resource ID.
-   * 
-   * @param resourceId Resource ID of METS document.
-   * 
-   * @return METS document.
-   */
-  MetsDocument getMostRecentDocumentByResourceId(String resourceId);
-
-  /**
-   * Get all versions of METS document with given resource ID.
-   * 
-   * @param resourceId Resource ID of METS document.
-   * 
-   * @return List holding all versions of METS document.
-   */
-  List<MetsDocument> getDocumentByResourceId(String resourceId);
-
-  /**
-   * Get METS document with given resource ID and version.
-   * 
-   * @param resourceId Resource ID of METS document.
-   * @param version Version of METS document.
-   * 
-   * @return List holding all versions of METS document.
-   */
-  MetsDocument getDocumentByResourceIdAndVersion(String resourceId, Integer version);
-
-  /**
-   * Get all versions with given resource ID.
-   * 
-   * @param resourceId Resource ID of METS document.
-   * 
-   * @return List holding all versions.
-   */
-  List<Integer> getAllVersionsByResourceId(String resourceId);
 
   /**
    * Get prefix of all section documents stored inside the METS document with given
@@ -108,43 +56,4 @@ public interface ISectionDocumentService {
    * @return Section document of METS document with given prefix.
    */
   SectionDocument getSectionDocument(String resourceId, String prefix);
-  
-  /**
-   * Get all files referenced in the fileGrps inside METS.
-   * 
-   * @param resourceId Resource ID of METS document.
-   * @param version Version of METS document.
-   * 
-   * @return List holding all files.
-   */
-  List<MetsFile> getAvailableMetsFiles(String resourceId, Integer version);
-  
-  /**
-   * Get all files referenced in the fileGrps inside METS filtered by
-   * USE and GROUPID.
-   * 
-   * @param resourceId Resource ID of METS document.
-   * @param use USE of the fileGrp element.
-   * @param groupId GROUPID of the FLocat element.
-   * 
-   * @return List holding all files.
-   */
-  List<MetsFile> getAvailableMetsFilesByUseAndGroupId(String resourceId, String[] use, String[] groupId);
-    
-  /**
-   * Get file referenced by its ID inside METS.
-   * 
-   * @param resourceId Resource ID of METS document.
-   * @param fileId ID of the FLocat element.
-   * 
-   * @return Selected file.
-   */
-  List<MetsFile> getAvailableMetsFilesByFileId(String resourceId, String fileId);
-  
-  /**
-   * Create METS document.
-   * 
-   * @param file METS file holding all information.
-   */
-  void createMetsDocument(MultipartFile file);
 }

@@ -63,7 +63,7 @@ public class MetsDocumentTest {
     MetsDocument metsFile = new MetsDocument(resourceId, content);
     assertTrue(true);
     Date after = new Date();
-    testAllAttributes(metsFile, null, Boolean.TRUE, 1, content, resourceId, before, after);
+    testAllAttributes(metsFile, null, null, Boolean.TRUE, 1, content, resourceId, before, after);
   }
 
   @Test
@@ -74,7 +74,7 @@ public class MetsDocumentTest {
     MetsDocument metsFile = new MetsDocument(resourceId, 4, content);
     assertTrue(true);
     Date after = new Date();
-    testAllAttributes(metsFile, null, Boolean.TRUE, 4, content, resourceId, before, after);
+    testAllAttributes(metsFile, null, null, Boolean.TRUE, 4, content, resourceId, before, after);
   }
 
   @Test
@@ -87,7 +87,20 @@ public class MetsDocumentTest {
     metsFile.setId(id);
     assertTrue(true);
     Date after = new Date();
-    testAllAttributes(metsFile, id, Boolean.TRUE, 1, content, resourceId, before, after);
+    testAllAttributes(metsFile, id, null, Boolean.TRUE, 1, content, resourceId, before, after);
+  }
+
+  @Test
+  public void testMetsDocumentSetGetRepoId() {
+    String resourceId = "testid_0003a";
+    String content = "repoid content";
+    String repoId = "repoId";
+    Date before = new Date();
+    MetsDocument metsFile = new MetsDocument(resourceId, content);
+    metsFile.setRepoId(repoId);
+    assertTrue(true);
+    Date after = new Date();
+    testAllAttributes(metsFile, null, repoId, Boolean.TRUE, 1, content, resourceId, before, after);
   }
 
   @Test
@@ -100,7 +113,7 @@ public class MetsDocumentTest {
     metsFile.setCurrent(current);
     assertTrue(true);
     Date after = new Date();
-    testAllAttributes(metsFile, null, current, 1, content, resourceId, before, after);
+    testAllAttributes(metsFile, null, null, current, 1, content, resourceId, before, after);
   }
 
   @Test
@@ -113,7 +126,7 @@ public class MetsDocumentTest {
     metsFile.setLastModified(lastModified);
     assertTrue(true);
     Date after = lastModified;
-    testAllAttributes(metsFile, null, Boolean.TRUE, 1, content, resourceId, before, after);
+    testAllAttributes(metsFile, null, null, Boolean.TRUE, 1, content, resourceId, before, after);
   }
 
   @Test
@@ -126,7 +139,7 @@ public class MetsDocumentTest {
     metsFile.setMetsContent(newContent);
     assertTrue(true);
     Date after = new Date();
-    testAllAttributes(metsFile, null, Boolean.TRUE, 1, newContent, resourceId, before, after);
+    testAllAttributes(metsFile, null, null, Boolean.TRUE, 1, newContent, resourceId, before, after);
   }
 
   @Test
@@ -135,7 +148,7 @@ public class MetsDocumentTest {
     SecureRandom rnd = new SecureRandom();
     String resourceId = "testid_0007";
     String content = "old content";
-    StringBuffer stringBuffer = new StringBuffer();
+    StringBuilder stringBuffer = new StringBuilder();
     for (int i = 0; i < 20000; i++) {
       stringBuffer.append(ALL_POSSIBLE_CHARS.charAt(rnd.nextInt(ALL_POSSIBLE_CHARS.length())));
     }
@@ -145,7 +158,7 @@ public class MetsDocumentTest {
     metsFile.setMetsContent(newContent);
     assertTrue(true);
     Date after = new Date();
-    testAllAttributes(metsFile, null, Boolean.TRUE, 1, newContent, resourceId, before, after);
+    testAllAttributes(metsFile, null, null, Boolean.TRUE, 1, newContent, resourceId, before, after);
   }
 
   @Test
@@ -158,7 +171,7 @@ public class MetsDocumentTest {
     metsFile.setResourceId(newResourceId);
     assertTrue(true);
     Date after = new Date();
-    testAllAttributes(metsFile, null, Boolean.TRUE, 1, content, newResourceId, before, after);
+    testAllAttributes(metsFile, null, null, Boolean.TRUE, 1, content, newResourceId, before, after);
   }
 
   @Test
@@ -171,7 +184,7 @@ public class MetsDocumentTest {
     metsFile.setVersion(version);
     Date after = new Date();
     assertTrue(true);
-    testAllAttributes(metsFile, null, Boolean.TRUE, version, content, resourceId, before, after);
+    testAllAttributes(metsFile, null, null, Boolean.TRUE, version, content, resourceId, before, after);
   }
 
   @Test
@@ -187,16 +200,16 @@ public class MetsDocumentTest {
     MetsDocument metsFile2 = metsFile.updateMetsContent(newContent);
     assertTrue(true);
     Date after2 = new Date();
-    testAllAttributes(metsFile, null, Boolean.FALSE, 1, content, resourceId, before, after);
-    testAllAttributes(metsFile2, null, Boolean.TRUE, 2, newContent, resourceId, before2, after2);
+    testAllAttributes(metsFile, null, null, Boolean.FALSE, 1, content, resourceId, before, after);
+    testAllAttributes(metsFile2, null, null, Boolean.TRUE, 2, newContent, resourceId, before2, after2);
     Thread.sleep(1000);
     Date before3 = new Date();
     MetsDocument metsFile3 = metsFile2.updateMetsContent(content);
     assertTrue(true);
     Date after3 = new Date();
-    testAllAttributes(metsFile, null, Boolean.FALSE, 1, content, resourceId, before, after);
-    testAllAttributes(metsFile2, null, Boolean.FALSE, 2, newContent, resourceId, before2, after2);
-    testAllAttributes(metsFile3, null, Boolean.TRUE, 3, content, resourceId, before3, after3);
+    testAllAttributes(metsFile, null, null, Boolean.FALSE, 1, content, resourceId, before, after);
+    testAllAttributes(metsFile2, null, null, Boolean.FALSE, 2, newContent, resourceId, before2, after2);
+    testAllAttributes(metsFile3, null, null, Boolean.TRUE, 3, content, resourceId, before3, after3);
   }
 
   /**
@@ -204,6 +217,7 @@ public class MetsDocumentTest {
    *
    * @param document instance to test.
    * @param id expected id.
+   * @param repoId expected repoId
    * @param current expected current
    * @param version expected version
    * @param content expected content
@@ -211,7 +225,7 @@ public class MetsDocumentTest {
    * @param before expected date before this date
    * @param after expected date after this date
    */
-  public void testAllAttributes(MetsDocument document, String id, Boolean current, Integer version,
+  public void testAllAttributes(MetsDocument document, String id, String repoId, Boolean current, Integer version,
           String content, String resourceId, Date before, Date after) {
     assertTrue(document.getCurrent().equals(current));
     if (document.getId() != null) {

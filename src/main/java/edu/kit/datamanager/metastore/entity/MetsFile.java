@@ -46,6 +46,14 @@ public class MetsFile implements IBaseEntity, IMimetype, IGroupId, IUrl, IUse {
    */
   private String resourceId;
   /**
+   * Id inside KITDM repo for Document.
+   */
+  private String repoId;
+  /**
+   * Is the current version.
+   */
+  private Boolean current;
+  /**
    * Version of the document. (Start with version 1 increment version number.)
    */
   private Integer version;
@@ -98,6 +106,7 @@ public class MetsFile implements IBaseEntity, IMimetype, IGroupId, IUrl, IUse {
     this.groupId = groupId;
     this.use = use;
     this.url = url;
+    current = Boolean.TRUE;
   }
 
   @Override
@@ -118,6 +127,42 @@ public class MetsFile implements IBaseEntity, IMimetype, IGroupId, IUrl, IUse {
   @Override
   public void setResourceId(String resourceId) {
     this.resourceId = resourceId;
+  }
+
+  /**
+   * Get flag for current version.
+   *
+   * @return the current version.
+   */
+  public Boolean getCurrent() {
+    return current;
+  }
+
+  /**
+   * Set flag for current version.
+   *
+   * @param current the current to set
+   */
+  public void setCurrent(Boolean current) {
+    this.current = current;
+  }
+
+  /**
+   * Get the id of the KIT DM repository.
+   * 
+   * @return the repoId
+   */
+  public String getRepoId() {
+    return repoId;
+  }
+
+  /**
+   * Set the id of the KIT DM repository.
+   * 
+   * @param repoId the repoId to set
+   */
+  public void setRepoId(String repoId) {
+    this.repoId = repoId;
   }
 
   @Override
@@ -229,11 +274,12 @@ public class MetsFile implements IBaseEntity, IMimetype, IGroupId, IUrl, IUse {
    */
   public MetsFile updateMetsFile(String url) {
     MetsFile newMetsFile = new MetsFile(resourceId, version + 1, fileId, mimetype, groupId, use, url);
+    current = Boolean.FALSE;
     return newMetsFile;
   }
   
   @Override
   public String toString() {
-     return "MetsFile [id=" + id + ", resourceId=" + resourceId + ", version=" + version + ", fileId=" + fileId + ", groupId=" + groupId + ", mimetype=" + mimetype + ", use=" + use + ", url=" + url + "]";
+     return "MetsFile [id=" + id + ", resourceId=" + resourceId + ", repoId=" + repoId + ", version=" + version + ", fileId=" + fileId + ", groupId=" + groupId + ", mimetype=" + mimetype + ", use=" + use + ", url=" + url + "]";
   }
 }

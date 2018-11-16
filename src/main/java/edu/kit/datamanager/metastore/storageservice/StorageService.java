@@ -39,13 +39,14 @@ public interface StorageService {
   void store(MultipartFile file);
 
   /**
-   * List all files in upload directory.
+   * Storing single file in subdirectory of upload directory.
    *
-   * @return Stream with all Paths.
+   * @param file File to store.
+   * @param subDir Subdirectory to store in.
    */
-  Stream<Path> listAll();
+  void store(MultipartFile file, String subDir);
 
-  /**
+   /**
    * Get location of given file.
    *
    * @param filename filename
@@ -53,11 +54,20 @@ public interface StorageService {
    */
   Path getPath(String filename);
 
-  /**
-   * Get file as resource.
+   /**
+   * Get location of given file.
    *
-   * @param filename Filename of the file.
-   * @return Resource of file.
+   * @param filename filename
+   * @param subDir subdirectory of the file.
+   * 
+   * @return Path to file.
    */
-  Resource loadAsResource(String filename);
+  Path getPath(String filename, String subDir);
+
+  /**
+   * Get root directory of upload directory.
+   *
+   * @return root directory as String.
+   */
+  String getBasePath();
 }

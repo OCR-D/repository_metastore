@@ -92,6 +92,8 @@ dependencies {
   compile("jaxen:jaxen:1.1.6")
   compile("org.jdom:jdom:1.1")
 
+  // Stub for KIT DM 2.0
+  compile("io.swagger:swagger-java-client:1.0.0")
   //compile("org.eclipse.persistence:javax.persistence:2.1.0")
    
   compileOnly('org.projectlombok:lombok')
@@ -105,8 +107,10 @@ dependencies {
 
 
 jacocoTestReport {
+    group = "Reporting"
   reports {
     xml.enabled true
     html.enabled true
+    html.destination "${buildDir}/reports/coverage"
   }
 }

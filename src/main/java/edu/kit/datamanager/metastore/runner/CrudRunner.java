@@ -85,7 +85,7 @@ public class CrudRunner implements CommandLineRunner {
     if (argumentList.contains(DROP_DATABASE)) {
       return;
     }
-
+    
     System.out.println("# CRUD operations");
 
     // save a single entity in the database
@@ -275,7 +275,7 @@ public class CrudRunner implements CommandLineRunner {
       System.out.println("************************      Find MetsFile by resourceId and USE      *********************************************");
       System.out.println("********************************************************************************************************************");
       System.out.println("metsFileRepository.findByResourceIdAndUse(\"id_0002\", \"OCR-D-GT-IMG-BIN\")");
-      metsFile = metsFileRepository.findByResourceIdAndUse("id_0002", "OCR-D-GT-IMG-BIN");
+      metsFile = metsFileRepository.findByResourceIdAndUseAndCurrentTrue("id_0002", "OCR-D-GT-IMG-BIN");
       metsFileIterator = metsFile.iterator();
       while (metsFileIterator.hasNext()) {
         System.out.println(metsFileIterator.next());
@@ -284,7 +284,7 @@ public class CrudRunner implements CommandLineRunner {
       System.out.println("************************      Find MetsFile by resourceId and USE IN      ******************************************");
       System.out.println("********************************************************************************************************************");
       System.out.println("metsFileRepository.findByResourceIdAndUseIn(\"id_0002\", Arrays.asList(\"OCR-D-GT-IMG-BIN\", \"OCR-D-GT-IMG-CROP\")");
-      metsFile = metsFileRepository.findByResourceIdAndUseIn("id_0002", Arrays.asList("OCR-D-GT-IMG-BIN", "OCR-D-GT-IMG-CROP"));
+      metsFile = metsFileRepository.findByResourceIdAndUseInAndCurrentTrue("id_0002", Arrays.asList("OCR-D-GT-IMG-BIN", "OCR-D-GT-IMG-CROP"));
       metsFileIterator = metsFile.iterator();
       while (metsFileIterator.hasNext()) {
         System.out.println(metsFileIterator.next());
@@ -293,7 +293,7 @@ public class CrudRunner implements CommandLineRunner {
       System.out.println("************************      Find MetsFile URL by resourceId and USE      *****************************************");
       System.out.println("********************************************************************************************************************");
       System.out.println("metsFileRepository.findUrlByResourceIdAndUse(\"id_0002\", \"OCR-D-GT-IMG-BIN\")");
-      urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndUse("id_0002", "OCR-D-GT-IMG-BIN");
+      urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndUseAndCurrentTrue("id_0002", "OCR-D-GT-IMG-BIN");
       urlIterator = urlOfMetsFile.iterator();
       while (urlIterator.hasNext()) {
         System.out.println(urlIterator.next().getUrl());
@@ -302,7 +302,7 @@ public class CrudRunner implements CommandLineRunner {
       System.out.println("************************      Find MetsFile URL by resourceId and USE IN      **************************************");
       System.out.println("********************************************************************************************************************");
       System.out.println("metsFileRepository.findUrlByResourceIdAndUseIn(\"id_0002\", Arrays.asList(\"OCR-D-GT-IMG-BIN\", \"OCR-D-GT-IMG-CROP\")");
-      urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndUseIn("id_0002", Arrays.asList("OCR-D-GT-IMG-BIN", "OCR-D-GT-IMG-CROP"));
+      urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndUseInAndCurrentTrue("id_0002", Arrays.asList("OCR-D-GT-IMG-BIN", "OCR-D-GT-IMG-CROP"));
       urlIterator = urlOfMetsFile.iterator();
       while (urlIterator.hasNext()) {
         System.out.println(urlIterator.next().getUrl());
@@ -311,7 +311,7 @@ public class CrudRunner implements CommandLineRunner {
       System.out.println("************************      Find MetsFile by resourceId and GROUPID     ******************************************");
       System.out.println("********************************************************************************************************************");
       System.out.println("metsFileRepository.findByResourceIdAndGroupId(\"id_0002\", \"PAGE-0001\")");
-      metsFile = metsFileRepository.findByResourceIdAndGroupId("id_0002", "PAGE-0001");
+      metsFile = metsFileRepository.findByResourceIdAndGroupIdAndCurrentTrue("id_0002", "PAGE-0001");
       metsFileIterator = metsFile.iterator();
       while (metsFileIterator.hasNext()) {
         System.out.println(metsFileIterator.next());
@@ -320,7 +320,7 @@ public class CrudRunner implements CommandLineRunner {
       System.out.println("************************      Find MetsFile by resourceId and GROUPID IN      **************************************");
       System.out.println("********************************************************************************************************************");
       System.out.println("metsFileRepository.findByResourceIdAndGroupIdIn(\"id_0002\", Arrays.asList(\"PAGE-0001\", \"PAGE-0002\")");
-      metsFile = metsFileRepository.findByResourceIdAndGroupIdIn("id_0002", Arrays.asList("PAGE-0001", "PAGE-0002"));
+      metsFile = metsFileRepository.findByResourceIdAndGroupIdInAndCurrentTrue("id_0002", Arrays.asList("PAGE-0001", "PAGE-0002"));
       metsFileIterator = metsFile.iterator();
       while (metsFileIterator.hasNext()) {
         System.out.println(metsFileIterator.next());
@@ -329,7 +329,7 @@ public class CrudRunner implements CommandLineRunner {
       System.out.println("************************      Find MetsFile URL by resourceId and GROUPID      *************************************");
       System.out.println("********************************************************************************************************************");
       System.out.println("metsFileRepository.findUrlByResourceIdAndGroupId(\"id_0002\", \"PAGE-0001\")");
-      urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndGroupId("id_0002", "PAGE-0001");
+      urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndGroupIdAndCurrentTrue("id_0002", "PAGE-0001");
       urlIterator = urlOfMetsFile.iterator();
       while (urlIterator.hasNext()) {
         System.out.println(urlIterator.next().getUrl());
@@ -338,7 +338,7 @@ public class CrudRunner implements CommandLineRunner {
       System.out.println("************************      Find MetsFile URL by resourceId and GROUPID IN      **********************************");
       System.out.println("********************************************************************************************************************");
       System.out.println("metsFileRepository.findUrlByResourceIdAndGroupIdIn(\"id_0002\", Arrays.asList(\"PAGE-0001\", \"PAGE-0002\")");
-      urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndGroupIdIn("id_0002", Arrays.asList("PAGE-0001", "PAGE-0002"));
+      urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndGroupIdInAndCurrentTrue("id_0002", Arrays.asList("PAGE-0001", "PAGE-0002"));
       urlIterator = urlOfMetsFile.iterator();
       while (urlIterator.hasNext()) {
         System.out.println(urlIterator.next().getUrl());
@@ -347,7 +347,7 @@ public class CrudRunner implements CommandLineRunner {
       System.out.println("************************      Find MetsFile by resourceId and USE AND GROUPID     **********************************");
       System.out.println("********************************************************************************************************************");
       System.out.println("metsFileRepository.findByResourceIdAndUseAndGroupId(\"id_0002\", \"OCR-D-GT-IMG-BIN\", \"PAGE-0001\")");
-      metsFile = metsFileRepository.findByResourceIdAndUseAndGroupId("id_0002", "OCR-D-GT-IMG-BIN", "PAGE-0001");
+      metsFile = metsFileRepository.findByResourceIdAndUseAndGroupIdAndCurrentTrue("id_0002", "OCR-D-GT-IMG-BIN", "PAGE-0001");
       metsFileIterator = metsFile.iterator();
       while (metsFileIterator.hasNext()) {
         System.out.println(metsFileIterator.next());
@@ -356,7 +356,7 @@ public class CrudRunner implements CommandLineRunner {
       System.out.println("************************      Find MetsFile by resourceId and USE AND GROUPID IN      ******************************");
       System.out.println("********************************************************************************************************************");
       System.out.println("metsFileRepository.findByResourceIdAndUseInAndGroupIdIn(\"id_0002\", Arrays.asList(\"OCR-D-GT-IMG-BIN\", \"OCR-D-GT-IMG-DESPEC\"), Arrays.asList(\"PAGE-0001\", \"PAGE-0002\")");
-      metsFile = metsFileRepository.findByResourceIdAndUseInAndGroupIdIn("id_0002", Arrays.asList("OCR-D-GT-IMG-BIN", "OCR-D-GT-IMG-DESPEC"), Arrays.asList("PAGE-0001", "PAGE-0002"));
+      metsFile = metsFileRepository.findByResourceIdAndUseInAndGroupIdInAndCurrentTrue("id_0002", Arrays.asList("OCR-D-GT-IMG-BIN", "OCR-D-GT-IMG-DESPEC"), Arrays.asList("PAGE-0001", "PAGE-0002"));
       metsFileIterator = metsFile.iterator();
       while (metsFileIterator.hasNext()) {
         System.out.println(metsFileIterator.next());
@@ -365,7 +365,7 @@ public class CrudRunner implements CommandLineRunner {
       System.out.println("************************      Find MetsFile URL by resourceId USE AND and GROUPID      *****************************");
       System.out.println("********************************************************************************************************************");
       System.out.println("metsFileRepository.findUrlByResourceIdAndUseAndGroupId(\"id_0002\", \"OCR-D-GT-IMG-BIN\", \"PAGE-0001\")");
-      urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndUseAndGroupId("id_0002", "OCR-D-GT-IMG-BIN", "PAGE-0001");
+      urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndUseAndGroupIdAndCurrentTrue("id_0002", "OCR-D-GT-IMG-BIN", "PAGE-0001");
       urlIterator = urlOfMetsFile.iterator();
       while (urlIterator.hasNext()) {
         System.out.println(urlIterator.next().getUrl());
@@ -374,7 +374,7 @@ public class CrudRunner implements CommandLineRunner {
       System.out.println("************************      Find MetsFile URL by resourceId USE AND and GROUPID IN      **************************");
       System.out.println("********************************************************************************************************************");
       System.out.println("metsFileRepository.findUrlByResourceIdAndUseInAndGroupIdIn(\"id_0002\", Arrays.asList(\"OCR-D-GT-IMG-BIN\", \"OCR-D-GT-IMG-DESPEC\"), Arrays.asList(\"PAGE-0001\", \"PAGE-0002\")");
-      urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndUseInAndGroupIdIn("id_0002", Arrays.asList("OCR-D-GT-IMG-BIN", "OCR-D-GT-IMG-DESPEC"), Arrays.asList("PAGE-0001", "PAGE-0002"));
+      urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndUseInAndGroupIdInAndCurrentTrue("id_0002", Arrays.asList("OCR-D-GT-IMG-BIN", "OCR-D-GT-IMG-DESPEC"), Arrays.asList("PAGE-0001", "PAGE-0002"));
       urlIterator = urlOfMetsFile.iterator();
       while (urlIterator.hasNext()) {
         System.out.println(urlIterator.next().getUrl());
