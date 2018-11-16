@@ -45,6 +45,10 @@ public class MetsProperties {
    * Placeholder if no title is available.
    */
   public static final String NO_TITLE = "No title available!";
+  /** 
+   * Placeholder if no PPN is available.
+   */
+  public static final String NO_PPN = "No PPN available!";
   /**
    * X-Path expression for title of document.
    */
@@ -102,7 +106,7 @@ public class MetsProperties {
     LOGGER.info("Extract properties from METS document.");
     Namespace[] namespaces = MetsDocumentUtil.getNamespaces();
     try {
-    title = JaxenUtil.getNodeValue(metsDocument, "//mods:title[1]", namespaces);
+    title = JaxenUtil.getNodeValue(metsDocument, X_PATH_TITLE, namespaces);
     } catch (Exception ex) {
       LOGGER.trace(ex.getMessage());
       title = null;
@@ -111,13 +115,13 @@ public class MetsProperties {
       title = NO_TITLE;
     }
     try {
-    ppn = JaxenUtil.getNodeValue(metsDocument, "//mods:recordIdentifier[1]", namespaces);
+    ppn = JaxenUtil.getNodeValue(metsDocument, X_PATH_PPN, namespaces);
     } catch (Exception ex) {
       LOGGER.trace(ex.getMessage());
       ppn = null;
     }
     if (ppn == null) {
-      ppn = "No PPN available";
+      ppn = NO_PPN;
     }
    LOGGER.info("Properties:\nTitle: {}\nPPN: {}", title, ppn);
   }

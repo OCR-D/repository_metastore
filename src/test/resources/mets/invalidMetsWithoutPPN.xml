@@ -12,9 +12,12 @@
         <mods:mods xmlns:mods="http://www.loc.gov/mods/v3">
           <mods:relatedItem type="series">
             <mods:titleInfo>
-              <mods:title>First title</mods:title>
+              <mods:title>Alternative title</mods:title>
             </mods:titleInfo>
           </mods:relatedItem>
+            <mods:titleInfo>
+              <mods:title>First title</mods:title>
+            </mods:titleInfo>
         </mods:mods>
       </mets:xmlData>
     </mets:mdWrap>

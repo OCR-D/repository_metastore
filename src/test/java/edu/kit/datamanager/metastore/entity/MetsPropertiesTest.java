@@ -78,15 +78,15 @@ public class MetsPropertiesTest {
     assertTrue(metsProperties.getPpn().equalsIgnoreCase("PPN767137728"));
   }
 
-  @Test(expected = IndexOutOfBoundsException.class)
+  @Test
   public void testMetsPropertiesWithDocument_invalidMets() throws Exception {
     System.out.println("Test with invalid METS file");
     File file = new File("src/test/resources/mets/invalidMetsWithoutPPN.xml");
     assertTrue("File exists!", file.exists());
     Document document = JaxenUtil.getDocument(file);
     MetsProperties metsProperties = new MetsProperties(document);
-    assertTrue(metsProperties.getTitle().equalsIgnoreCase("Der Herold"));
-    assertTrue(metsProperties.getPpn().equalsIgnoreCase("PPN767137728"));
+    assertEquals(metsProperties.getTitle(), "First title");
+    assertEquals(metsProperties.getPpn(), MetsProperties.NO_PPN);
   }
 
   @Test
