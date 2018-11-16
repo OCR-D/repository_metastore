@@ -16,10 +16,10 @@
       </thead>
       <tbody>
         <tr th:each="file: ${metsFiles}">
-          <td th:text="${file.resourceId}" />
-          <td th:text="${file.use}"/> 
-          <td th:text="${file.groupId}"/> 
-          <td th:text="${file.mimetype}"/> 
+          <td th:text="${file.resourceId}"></td>
+          <td th:text="${file.use}"></td>
+          <td th:text="${file.groupId}"></td> 
+          <td th:text="${file.mimetype}"></td> 
           <td><a th:href="${file.url}" th:text="${file.url}"</td> 
         </tr>
       </tbody>

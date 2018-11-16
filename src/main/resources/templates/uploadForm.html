@@ -1,43 +1,43 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
-     <style>
+    <style>
 
       th,td { padding: 10px; }
 
     </style>   
   </head>
-<body>
+  <body>
 
-	<div th:if="${message}">
-		<h2 th:text="${message}"/>
-	</div>
+    <div th:if="${message}">
+      <h2 th:text="${message}"></h2>
+    </div>
 
-	<div>
-		<form method="POST" enctype="multipart/form-data" action=".">
-			<table>
-				<tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
-				<tr><td></td><td><input type="submit" value="Upload" /></td></tr>
-			</table>
-		</form>
-	</div>
+    <div>
+      <form method="POST" enctype="multipart/form-data" action=".">
+        <table>
+          <tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
+          <tr><td></td><td><input type="submit" value="Upload" /></td></tr>
+        </table>
+      </form>
+    </div>
 
-	<div>
-    <h3>List of all zipped Bagit Containers</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Resource ID</th><th>URL</th><th>Files</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr th:each="file: ${bagitFiles}">
-          <td th:text="${file.resourceId}" />
-          <td><a th:href="${file.url}" th:text="${file.url}"</td> 
-          <td><a th:href="'mets/' + ${file.resourceId} + '/files'" th:text="'List of referenced files'"/></td>
-        </tr>
-      </tbody>
-</table>
-	</div>
+    <div>
+      <h3>List of all zipped Bagit Containers</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Resource ID</th><th>URL</th><th>Files</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="file: ${bagitFiles}">
+            <td th:text="${file.resourceId}"></td>
+            <td><a th:href="${file.url}" th:text="${file.url}"></a></td> 
+            <td><a th:href="'mets/' + ${file.resourceId} + '/files'" th:text="'List of referenced files'"></a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-</body>
+  </body>
 </html>
