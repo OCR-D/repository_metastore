@@ -230,7 +230,7 @@ public class MetsDocument implements IBaseEntity {
 
   @Override
   public String toString() {
-    StringBuffer sb = new StringBuffer("MetsDocument [");
+    StringBuilder sb = new StringBuilder("MetsDocument [");
     sb.append("id=").append(id).append(", ");
     sb.append("resourceId=").append(resourceId).append(", ");
     sb.append("version=").append(version).append(", ");

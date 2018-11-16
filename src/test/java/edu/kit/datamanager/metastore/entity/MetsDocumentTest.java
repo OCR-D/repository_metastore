@@ -135,7 +135,7 @@ public class MetsDocumentTest {
  SecureRandom rnd = new SecureRandom();
     String resourceId = "testid_0007";
     String content = "old content";
-    StringBuffer stringBuffer = new StringBuffer();
+    StringBuilder stringBuffer = new StringBuilder();
     for (int i = 0; i < 20000; i++) {
       stringBuffer.append(ALL_POSSIBLE_CHARS.charAt( rnd.nextInt(ALL_POSSIBLE_CHARS.length()) ));
     }
