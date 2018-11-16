@@ -80,6 +80,11 @@ public class FileSystemStorageService implements StorageService {
   }
 
   @Override
+  public Path getPath(String filename, String subDir) {
+    return rootLocation.resolve(Paths.get(subDir, filename));
+  }
+
+  @Override
   public String getBasePath() {
     return rootLocation.toString();
   }

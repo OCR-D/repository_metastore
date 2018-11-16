@@ -1,0 +1,30 @@
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+     <style>
+
+      th,td { padding: 10px; }
+
+    </style>   
+  </head>
+<body>
+    <h3>List of all Files for ResourceID</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Resource ID</th><th>USE</th><th>GROUPID</th><th>MIMETYPE</th><th>URL</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="file: ${metsFiles}">
+          <td th:text="${file.resourceId}" />
+          <td th:text="${file.use}"/> 
+          <td th:text="${file.groupId}"/> 
+          <td th:text="${file.mimetype}"/> 
+          <td><a th:href="${file.url}" th:text="${file.url}"</td> 
+        </tr>
+      </tbody>
+</table>
+
+</body>
+</html>
+

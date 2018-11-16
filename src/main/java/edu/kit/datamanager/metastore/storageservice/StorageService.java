@@ -54,6 +54,16 @@ public interface StorageService {
    */
   Path getPath(String filename);
 
+   /**
+   * Get location of given file.
+   *
+   * @param filename filename
+   * @param subDir subdirectory of the file.
+   * 
+   * @return Path to file.
+   */
+  Path getPath(String filename, String subDir);
+
   /**
    * Get root directory of upload directory.
    *

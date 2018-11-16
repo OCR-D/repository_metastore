@@ -34,6 +34,15 @@ public interface MetsFileRepository extends ArangoRepository<MetsFile, String> {
    * @return Instance holding selected file.
    */
   MetsFile findTop1DistinctByResourceIdAndFileIdOrderByVersionDesc(String resourceId, String fileId);
+  /**
+   * Find files of a METS document with given IDs.
+   *
+   * @param resourceId ID of the METS document.
+   * @param fileId IDs of the files.
+   *
+   * @return Instance holding selected file.
+   */
+  Iterable<MetsFile> findByResourceIdAndFileIdInAndCurrentTrue(String resourceId, String[] fileId);
 
   /**
    * Find all files of a METS document.
@@ -42,7 +51,7 @@ public interface MetsFileRepository extends ArangoRepository<MetsFile, String> {
    *
    * @return Iterator holding all files.
    */
-  Iterable<MetsFile> findByResourceId(String resourceId);
+  Iterable<MetsFile> findByResourceIdAndCurrentTrue(String resourceId);
 
   /**
    * Find all files of a METS document within the same fileGrp.
@@ -52,7 +61,7 @@ public interface MetsFileRepository extends ArangoRepository<MetsFile, String> {
    *
    * @return Iterator holding all files.
    */
-  Iterable<MetsFile> findByResourceIdAndUse(String resourceId, String use);
+  Iterable<MetsFile> findByResourceIdAndUseAndCurrentTrue(String resourceId, String use);
 
   /**
    * Find all files of a METS document within the given fileGrps.
@@ -62,7 +71,7 @@ public interface MetsFileRepository extends ArangoRepository<MetsFile, String> {
    *
    * @return Iterator holding all files.
    */
-  Iterable<MetsFile> findByResourceIdAndUseIn(String resourceId, Collection<String> use);
+  Iterable<MetsFile> findByResourceIdAndUseInAndCurrentTrue(String resourceId, Collection<String> use);
 
   /**
    * Find all file URLs of a METS document within the same fileGrp.
@@ -72,7 +81,7 @@ public interface MetsFileRepository extends ArangoRepository<MetsFile, String> {
    *
    * @return Iterator holding all file URLs.
    */
-  Iterable<IUrl> findUrlByResourceIdAndUse(String resourceId, String use);
+  Iterable<IUrl> findUrlByResourceIdAndUseAndCurrentTrue(String resourceId, String use);
 
   /**
    * Find all file URLs of a METS document within the given fileGrps.
@@ -82,7 +91,7 @@ public interface MetsFileRepository extends ArangoRepository<MetsFile, String> {
    *
    * @return Iterator holding all file URLs.
    */
-  Iterable<IUrl> findUrlByResourceIdAndUseIn(String resourceId, Collection<String> use);
+  Iterable<IUrl> findUrlByResourceIdAndUseInAndCurrentTrue(String resourceId, Collection<String> use);
 
   /**
    * Find all files of a METS document with the same GROUPID.
@@ -92,7 +101,7 @@ public interface MetsFileRepository extends ArangoRepository<MetsFile, String> {
    *
    * @return Iterator holding all files.
    */
-  Iterable<MetsFile> findByResourceIdAndGroupId(String resourceId, String groupId);
+  Iterable<MetsFile> findByResourceIdAndGroupIdAndCurrentTrue(String resourceId, String groupId);
 
   /**
    * Find all files of a METS document with the same GROUPID.
@@ -102,7 +111,7 @@ public interface MetsFileRepository extends ArangoRepository<MetsFile, String> {
    *
    * @return Iterator holding all files.
    */
-  Iterable<MetsFile> findByResourceIdAndGroupIdIn(String resourceId, Collection<String> groupId);
+  Iterable<MetsFile> findByResourceIdAndGroupIdInAndCurrentTrue(String resourceId, Collection<String> groupId);
 
   /**
    * Find all file URLs of a METS document with the same GROUPID.
@@ -112,7 +121,7 @@ public interface MetsFileRepository extends ArangoRepository<MetsFile, String> {
    *
    * @return Iterator holding all files.
    */
-  Iterable<IUrl> findUrlByResourceIdAndGroupId(String resourceId, String groupId);
+  Iterable<IUrl> findUrlByResourceIdAndGroupIdAndCurrentTrue(String resourceId, String groupId);
 
   /**
    * Find all file URLs of a METS document with the same GROUPID.
@@ -122,7 +131,7 @@ public interface MetsFileRepository extends ArangoRepository<MetsFile, String> {
    *
    * @return Iterator holding all file URLs.
    */
-  Iterable<IUrl> findUrlByResourceIdAndGroupIdIn(String resourceId, Collection<String> groupId);
+  Iterable<IUrl> findUrlByResourceIdAndGroupIdInAndCurrentTrue(String resourceId, Collection<String> groupId);
 
   /**
    * Find all files of a METS document with the same USE and GROUPID.
@@ -133,7 +142,7 @@ public interface MetsFileRepository extends ArangoRepository<MetsFile, String> {
    *
    * @return Iterator holding all files.
    */
-  Iterable<MetsFile> findByResourceIdAndUseAndGroupId(String resourceId, String use, String groupId);
+  Iterable<MetsFile> findByResourceIdAndUseAndGroupIdAndCurrentTrue(String resourceId, String use, String groupId);
 
   /**
    * Find all files of a METS document with the same USE and GROUPID.
@@ -144,7 +153,7 @@ public interface MetsFileRepository extends ArangoRepository<MetsFile, String> {
    *
    * @return Iterator holding all files.
    */
-  Iterable<MetsFile> findByResourceIdAndUseInAndGroupIdIn(String resourceId, Collection<String> use, Collection<String> groupId);
+  Iterable<MetsFile> findByResourceIdAndUseInAndGroupIdInAndCurrentTrue(String resourceId, Collection<String> use, Collection<String> groupId);
 
   /**
    * Find all file URLs of a METS document with the same USE and GROUPID.
@@ -155,7 +164,7 @@ public interface MetsFileRepository extends ArangoRepository<MetsFile, String> {
    *
    * @return Iterator holding all files.
    */
-  Iterable<IUrl> findUrlByResourceIdAndUseAndGroupId(String resourceId, String use, String groupId);
+  Iterable<IUrl> findUrlByResourceIdAndUseAndGroupIdAndCurrentTrue(String resourceId, String use, String groupId);
 
   /**
    * Find all file URLs of a METS document with the same USE and GROUPID.
@@ -166,5 +175,5 @@ public interface MetsFileRepository extends ArangoRepository<MetsFile, String> {
    *
    * @return Iterator holding all file URLs.
    */
-  Iterable<IUrl> findUrlByResourceIdAndUseInAndGroupIdIn(String resourceId, Collection<String> use, Collection<String> groupId);
+  Iterable<IUrl> findUrlByResourceIdAndUseInAndGroupIdInAndCurrentTrue(String resourceId, Collection<String> use, Collection<String> groupId);
 }

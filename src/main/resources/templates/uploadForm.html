@@ -1,4 +1,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
+  <head>
+     <style>
+
+      th,td { padding: 10px; }
+
+    </style>   
+  </head>
 <body>
 
 	<div th:if="${message}">
@@ -15,11 +22,21 @@
 	</div>
 
 	<div>
-		<ul>
-			<li th:each="file : ${files}">
-				<a th:href="${file}" th:text="${file}" ></a>
-			</li>
-		</ul>
+    <h3>List of all zipped Bagit Containers</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Resource ID</th><th>URL</th><th>Files</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="file: ${bagitFiles}">
+          <td th:text="${file.resourceId}"></td>
+          <td><a th:href="${file.url}" th:text="${file.url}"></a></td> 
+          <td><a th:href="'mets/' + ${file.resourceId} + '/files'" th:text="'List of referenced files'"></a></td>
+        </tr>
+      </tbody>
+     </table>
 	</div>
 
 </body>

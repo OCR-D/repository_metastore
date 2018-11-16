@@ -57,11 +57,12 @@ public class MetsDocumentUtil {
     LOGGER.info("Extract files from METS document. ResourceID: {}, Version: {}", resourceId, version);
     List<MetsFile> metsFiles = new ArrayList<>();
     List nodes = JaxenUtil.getNodes(metsDocument, "//mets:fileGrp", namespaces);
+    LOGGER.trace("Found {} fileGrp(s)", nodes.size());
     for (Object node : nodes) {
       Element fileGrpElement = (Element) node;
       String use = JaxenUtil.getAttributeValue(fileGrpElement, "./@USE");
-      List fileNodes = JaxenUtil.getNodes(fileGrpElement, "//mets:file", namespaces);
-      LOGGER.trace("Found fileGrp with USE: {}", use);
+      List fileNodes = JaxenUtil.getNodes(fileGrpElement, "./mets:file", namespaces);
+      LOGGER.trace("Found fileGrp with USE: {} containing {} file(s)", use, fileNodes.size());
       for (Object node2 : fileNodes) {
         Element fileElement = (Element) node2;
         String id = JaxenUtil.getAttributeValue(fileElement, "./@ID");
