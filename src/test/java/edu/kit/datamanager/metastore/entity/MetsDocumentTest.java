@@ -233,6 +233,11 @@ public class MetsDocumentTest {
     } else {
       assertNull(id);
     }
+    if (document.getRepoId() != null) {
+      assertTrue(document.getRepoId().equals(repoId));
+    } else {
+      assertNull(repoId);
+    }
     assertTrue(document.getMetsContent().equals(content));
     assertTrue(document.getResourceId().equals(resourceId));
     if (before != null) {

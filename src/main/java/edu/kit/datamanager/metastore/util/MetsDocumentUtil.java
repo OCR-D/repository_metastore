@@ -88,8 +88,10 @@ public class MetsDocumentUtil {
   public static MetsProperties extractProperties(Document metsDocument, String resourceId, Integer version) {
     LOGGER.info("Extract MetsProperties from METS document. ResourceID: {}, Version: {}", resourceId, version);
     
-
-    return new MetsProperties();
+    MetsProperties metsProperties = new MetsProperties(metsDocument);
+    metsProperties.setResourceId(resourceId);
+    
+    return metsProperties;
   }
   /**
    * Get all namespaces used inside METS document.

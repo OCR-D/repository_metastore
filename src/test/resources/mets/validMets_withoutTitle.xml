@@ -73,9 +73,11 @@
     <mets:mdWrap MDTYPE="MODS">
       <mets:xmlData>
         <mods:mods xmlns:mods="http://www.loc.gov/mods/v3">
+          <mods:relatedItem type="series">
           <mods:titleInfo>
             <mods:title>4. Januar-30. November = No. 1-20</mods:title>
           </mods:titleInfo>
+          </mods:relatedItem>
         </mods:mods>
       </mets:xmlData>
     </mets:mdWrap>
@@ -151,10 +153,10 @@
     -->
     <mets:fileGrp USE="OCR-D-IMG">
       <mets:file ID="FILE_0001_IMAGE" GROUPID="FILE_0001_IMAGE" MIMETYPE="image/tiff">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001.tif" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001.tif" />
       </mets:file>
       <mets:file ID="FILE_0002_IMAGE" GROUPID="FILE_0002_IMAGE" MIMETYPE="image/tiff">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002.tif" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002.tif" />
       </mets:file>
     </mets:fileGrp>
     <!--
@@ -162,10 +164,10 @@
     -->
     <mets:fileGrp USE="OCR-D-IMG-DESKEW">
       <mets:file ID="FILE_0001_IMAGE_DESKEW" GROUPID="FILE_0001_IMAGE" MIMETYPE="image/tiff">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_DESKEW.tif" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_DESKEW.tif" />
       </mets:file>
       <mets:file ID="FILE_0002_IMAGE_DESKEW" GROUPID="FILE_0002_IMAGE" MIMETYPE="image/tiff">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_DESKEW.tif" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_DESKEW.tif" />
       </mets:file>
     </mets:fileGrp>
     <!-- 
@@ -173,10 +175,10 @@
     -->
     <mets:fileGrp USE="OCR-D-IMG-DESPECK">
       <mets:file ID="FILE_0001_IMAGE_DESPECK" GROUPID="FILE_0001_IMAGE" MIMETYPE="image/tiff">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_DESPECK.tif" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_DESPECK.tif" />
       </mets:file>
       <mets:file ID="FILE_0002_IMAGE_DESPECK" GROUPID="FILE_0002_IMAGE" MIMETYPE="image/tiff">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_DESPECK.tif" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_DESPECK.tif" />
       </mets:file>
     </mets:fileGrp>
     <!-- 
@@ -184,21 +186,21 @@
     -->
     <mets:fileGrp USE="OCR-D-IMG-DEWARP">
       <mets:file ID="FILE_0001_IMAGE_DEWARP" GROUPID="FILE_0001_IMAGE" MIMETYPE="image/tiff">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_DEWARP.tif" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_DEWARP.tif" />
       </mets:file>
       <mets:file ID="FILE_0002_IMAGE_DEWARP" GROUPID="FILE_0002_IMAGE" MIMETYPE="image/tiff">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_DEWARP.tif" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_DEWARP.tif" />
       </mets:file>
     </mets:fileGrp>
     <!-- 
                ”OCR-D-IMG-CROP”,     Cropped images. (Module 1, submodule B: image optimization)
     -->
-<mets:fileGrp USE="OCR-D-IMG-CROP">
+    <mets:fileGrp USE="OCR-D-IMG-CROP">
       <mets:file ID="FILE_0001_IMAGE_CROP" GROUPID="FILE_0001_IMAGE" MIMETYPE="image/tiff">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_CROP.tif" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_CROP.tif" />
       </mets:file>
       <mets:file ID="FILE_0002_IMAGE_CROP" GROUPID="FILE_0002_IMAGE" MIMETYPE="image/tiff">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_CROP.tif" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_CROP.tif" />
       </mets:file>
     </mets:fileGrp>
     <!--
@@ -206,10 +208,10 @@
     -->
     <mets:fileGrp USE="OCR-D-IMG-BIN">
       <mets:file ID="FILE_0001_IMAGE_BIN" GROUPID="FILE_0001_IMAGE" MIMETYPE="image/tiff">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_BIN.tif" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_BIN.tif" />
       </mets:file>
       <mets:file ID="FILE_0002_IMAGE_BIN" GROUPID="FILE_0002_IMAGE" MIMETYPE="image/tiff">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_BIN.tif" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_BIN.tif" />
       </mets:file>
     </mets:fileGrp>
     <!-- 
@@ -217,10 +219,10 @@
     -->
     <mets:fileGrp USE="OCR-D-SEG-PAGE">
       <mets:file ID="FILE_0001_SEG_PAGE" GROUPID="FILE_0001_IMAGE" MIMETYPE="application/vnd.prima.page+xml">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_SEG_PAGE.xml" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_SEG_PAGE.xml" />
       </mets:file>
       <mets:file ID="FILE_0002_SEG_PAGE" GROUPID="FILE_0002_IMAGE" MIMETYPE="application/vnd.prima.page+xml">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_SEG_PAGE.xml" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_SEG_PAGE.xml" />
       </mets:file>
     </mets:fileGrp>
     <!-- 
@@ -228,10 +230,10 @@
     -->
     <mets:fileGrp USE="OCR-D-SEG-BLOCK">
       <mets:file ID="FILE_0001_SEG_BLOCK" GROUPID="FILE_0001_IMAGE" MIMETYPE="application/vnd.prima.page+xml">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_SEG_BLOCK.xml" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_SEG_BLOCK.xml" />
       </mets:file>
       <mets:file ID="FILE_0002_SEG_BLOCK" GROUPID="FILE_0002_IMAGE" MIMETYPE="application/vnd.prima.page+xml">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_SEG_BLOCK.xml" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_SEG_BLOCK.xml" />
       </mets:file>
     </mets:fileGrp>
     <!-- 
@@ -239,10 +241,10 @@
     -->
     <mets:fileGrp USE="OCR-D-SEG-LINE">
       <mets:file ID="FILE_0001_SEG_LINE" GROUPID="FILE_0001_IMAGE" MIMETYPE="application/vnd.prima.page+xml">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_SEG_LINE.xml" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_SEG_LINE.xml" />
       </mets:file>
       <mets:file ID="FILE_0002_SEG_LINE" GROUPID="FILE_0002_IMAGE" MIMETYPE="application/vnd.prima.page+xml">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_SEG_LINE.xml" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_SEG_LINE.xml" />
       </mets:file>
     </mets:fileGrp>
     <!-- 
@@ -250,87 +252,87 @@
     -->
     <mets:fileGrp USE="OCR-D-SEG-CLASS">
       <mets:file ID="FILE_0001_SEG_CLASS" GROUPID="FILE_0001_IMAGE" MIMETYPE="application/vnd.prima.page+xml">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_SEG_CLASS.xml" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_SEG_CLASS.xml" />
       </mets:file>
       <mets:file ID="FILE_0002_SEG_CLASS" GROUPID="FILE_0002_IMAGE" MIMETYPE="application/vnd.prima.page+xml">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_SEG_CLASS.xml" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_SEG_CLASS.xml" />
       </mets:file>
     </mets:fileGrp>
-     <!-- 
-               ”OCR-D-SEG-DOC”       Document analysis. (Module 2, submodule D: document analysis)
-     -->
-   <mets:fileGrp USE="OCR-D-SEG-DOC">
+    <!-- 
+              ”OCR-D-SEG-DOC”       Document analysis. (Module 2, submodule D: document analysis)
+    -->
+    <mets:fileGrp USE="OCR-D-SEG-DOC">
       <mets:file ID="FILE_0001_SEG_DOC" GROUPID="FILE_0001_IMAGE" MIMETYPE="application/vnd.prima.page+xml">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_SEG_DOC.xml" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_SEG_DOC.xml" />
       </mets:file>
       <mets:file ID="FILE_0002_SEG_DOC" GROUPID="FILE_0002_IMAGE" MIMETYPE="application/vnd.prima.page+xml">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_SEG_DOC.xml" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_SEG_DOC.xml" />
       </mets:file>
     </mets:fileGrp>
-     <!-- 
+    <!-- 
                ”OCR-D-OCR-TESS"      OCR with Tesseract. (Module 3, submodule A: OCR)
     -->
     <mets:fileGrp USE="OCR-D-OCR-TESS">
       <mets:file ID="FILE_0001_OCR_TESS" GROUPID="FILE_0001_IMAGE" MIMETYPE="application/vnd.prima.page+xml">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_OCR_TESS.xml" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_OCR_TESS.xml" />
       </mets:file>
       <mets:file ID="FILE_0002_OCR_TESS" GROUPID="FILE_0002_IMAGE" MIMETYPE="application/vnd.prima.page+xml">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_OCR_TESS.xml" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_OCR_TESS.xml" />
       </mets:file>
     </mets:fileGrp>
-     <!-- 
+    <!-- 
                "OCR-D-OCR-ANY"       OCR with anyOCR. (Module 3, submodule A: OCR)
     -->
     <mets:fileGrp USE="OCR-D-OCR-ANY">
       <mets:file ID="FILE_0001_OCR_ANY" GROUPID="FILE_0001_IMAGE" MIMETYPE="application/vnd.prima.page+xml">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_OCR_ANY.xml" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_OCR_ANY.xml" />
       </mets:file>
       <mets:file ID="FILE_0002_OCR_ANY" GROUPID="FILE_0002_IMAGE" MIMETYPE="application/vnd.prima.page+xml">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_OCR_ANY.xml" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_OCR_ANY.xml" />
       </mets:file>
     </mets:fileGrp>
-     <!-- 
+    <!-- 
                "OCR-D-COR-CIS"       CIS (Centrum für Informations- und Sprachverarbeitung) post correction. (Module 3, submodule B: OCR)
     -->
     <mets:fileGrp USE="OCR-D-COR-CIS">
       <mets:file ID="FILE_0001_COR_CIS" GROUPID="FILE_0001_IMAGE" MIMETYPE="application/vnd.prima.page+xml">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_COR_CIS.xml" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_COR_CIS.xml" />
       </mets:file>
       <mets:file ID="FILE_0002_COR_CIS" GROUPID="FILE_0002_IMAGE" MIMETYPE="application/vnd.prima.page+xml">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_COR_CIS.xml" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_COR_CIS.xml" />
       </mets:file>
     </mets:fileGrp>
-     <!-- 
+    <!-- 
                "OCR-D-COR-ASV"       ASV (Institut für Automatische Sprachverarbeitung) post correction. (Module 3, submodule B: OCR)
     -->
     <mets:fileGrp USE="OCR-D-COR-ASV">
       <mets:file ID="FILE_0001_COR_ASV" GROUPID="FILE_0001_IMAGE" MIMETYPE="application/vnd.prima.page+xml">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_COR_ASV.xml" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_COR_ASV.xml" />
       </mets:file>
       <mets:file ID="FILE_0002_COR_ASV" GROUPID="FILE_0002_IMAGE" MIMETYPE="application/vnd.prima.page+xml">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_COR_ASV.xml" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_COR_ASV.xml" />
       </mets:file>
     </mets:fileGrp>
-     <!-- 
+    <!-- 
                "OCR-D-GT-PAGE"       Ground Truth data in PAGE XML format.
     -->
     <mets:fileGrp USE="OCR-D-GT-PAGE">
       <mets:file ID="FILE_0001_FULLTEXT" GROUPID="FILE_0001_IMAGE" MIMETYPE="application/vnd.prima.page+xml">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001.xml" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001.xml" />
       </mets:file>
       <mets:file ID="FILE_0002_FULLTEXT" GROUPID="FILE_0002_IMAGE" MIMETYPE="application/vnd.prima.page+xml">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002.xml" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002.xml" />
       </mets:file>
     </mets:fileGrp>
-     <!-- 
+    <!-- 
                "OCR-D-GT-ALTO"       Ground Truth data in ALTO format.
     -->
     <mets:fileGrp USE="OCR-D-GT-ALTO">
-        <mets:file ID="FILE_0001_FULLTEXT_ALTO" GROUPID="FILE_0001_IMAGE" MIMETYPE="application/alto+xml">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_GT_ALTO.xml" />
+      <mets:file ID="FILE_0001_FULLTEXT_ALTO" GROUPID="FILE_0001_IMAGE" MIMETYPE="application/alto+xml">
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000001_GT_ALTO.xml" />
       </mets:file>
       <mets:file ID="FILE_0002_FULLTEXT_ALTO" GROUPID="FILE_0002_IMAGE" MIMETYPE="application/alto+xml">
-          <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_GT_ALTO.xml" />
+        <mets:FLocat LOCTYPE="URL" xlink:href="https://github.com/OCR-D/assets/raw/master/data/SBB0000F29300010000/00000002_GT_ALTO.xml" />
       </mets:file>
     </mets:fileGrp>
   </mets:fileSec>

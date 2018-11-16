@@ -74,7 +74,7 @@ public class MetsPropertiesTest {
     assertTrue("File exists!", file.exists());
     Document document = JaxenUtil.getDocument(file);
     MetsProperties metsProperties = new MetsProperties(document);
-    assertTrue(metsProperties.getTitle().equalsIgnoreCase("4. Januar-30. November = No. 1-20"));
+    assertTrue(metsProperties.getTitle().equalsIgnoreCase(MetsProperties.NO_TITLE));
     assertTrue(metsProperties.getPpn().equalsIgnoreCase("PPN767137728"));
   }
 
@@ -121,6 +121,19 @@ public class MetsPropertiesTest {
     String expResult = "id_0001";
     instance.setId(expResult);
     String result = instance.getId();
+    assertEquals(expResult, result);
+  }
+
+  /**
+   * Test of geRepotId method, of class MetsProperties.
+   */
+  @Test
+  public void testSetGetRepoId() {
+    System.out.println("setGetRepoId");
+    MetsProperties instance = new MetsProperties();
+    String expResult = "repoId_01";
+    instance.setRepoId(expResult);
+    String result = instance.getRepoId();
     assertEquals(expResult, result);
   }
 

@@ -31,11 +31,13 @@ public class MetsFileTest {
   String id = "ThisIsAnID";
   String fileId = "ThisIsAnFileID";
   String resourceId = "ThisIsAResourceID";
+  String repoId = "ThisIsARepoID";
   Integer version = 1;
   String groupId = "ThisIsAGroupID";
   String mimetype = "ThisIsAMimetype";
   String use = "ThisIsAnUse";
   String url = "ThisIsAnURL";
+  Boolean current = Boolean.FALSE;
 
   public MetsFileTest() {
   }
@@ -67,6 +69,7 @@ public class MetsFileTest {
     MetsFile metsFile = new MetsFile();
     metsFile.setId(id);
     assertTrue(metsFile.getId().equals(id));
+    assertTrue(metsFile.getCurrent());
     assertNull(metsFile.getFileId());
     assertNull(metsFile.getResourceId());
     assertNull(metsFile.getMimetype());
@@ -81,6 +84,7 @@ public class MetsFileTest {
     MetsFile metsFile = new MetsFile();
     metsFile.setFileId(fileId);
     assertTrue(metsFile.getFileId().equals(fileId));
+    assertTrue(metsFile.getCurrent());
     assertNull(metsFile.getId());
     assertNull(metsFile.getResourceId());
     assertNull(metsFile.getMimetype());
@@ -95,6 +99,8 @@ public class MetsFileTest {
     MetsFile metsFile = new MetsFile();
     metsFile.setResourceId(resourceId);
     assertTrue(metsFile.getResourceId().equals(resourceId));
+    assertTrue(metsFile.getCurrent());
+    assertNull(metsFile.getRepoId());
     assertNull(metsFile.getId());
     assertNull(metsFile.getFileId());
     assertNull(metsFile.getMimetype());
@@ -105,12 +111,45 @@ public class MetsFileTest {
   }
 
   @Test
+  public void testMetsFileSetGetRepoId() {
+    MetsFile metsFile = new MetsFile();
+    metsFile.setRepoId(repoId);
+    assertNull(metsFile.getResourceId());
+    assertTrue(metsFile.getCurrent());
+    assertTrue(metsFile.getRepoId().equals(repoId));
+    assertNull(metsFile.getId());
+    assertNull(metsFile.getFileId());
+    assertNull(metsFile.getMimetype());
+    assertNull(metsFile.getGroupId());
+    assertNull(metsFile.getUse());
+    assertNull(metsFile.getUrl());
+  }
+
+  @Test
+  public void testMetsFileSetGetCurrent() {
+    MetsFile metsFile = new MetsFile();
+    metsFile.setCurrent(Boolean.FALSE);
+    assertTrue(metsFile.getVersion().equals(1));
+    assertFalse(metsFile.getCurrent());
+    assertNull(metsFile.getResourceId());
+    assertNull(metsFile.getId());
+    assertNull(metsFile.getRepoId());
+    assertNull(metsFile.getFileId());
+    assertNull(metsFile.getMimetype());
+    assertNull(metsFile.getGroupId());
+    assertNull(metsFile.getUse());
+    assertNull(metsFile.getUrl());
+  }
+
+  @Test
   public void testMetsFileSetGetVersion() {
     MetsFile metsFile = new MetsFile();
     metsFile.setVersion(version);
     assertTrue(metsFile.getVersion().equals(version));
+    assertTrue(metsFile.getCurrent());
     assertNull(metsFile.getId());
     assertNull(metsFile.getResourceId());
+    assertNull(metsFile.getRepoId());
     assertNull(metsFile.getFileId());
     assertNull(metsFile.getMimetype());
     assertNull(metsFile.getGroupId());
@@ -124,10 +163,12 @@ public class MetsFileTest {
     MetsFile metsFile = new MetsFile();
     metsFile.setGroupId(groupId);
     assertTrue(metsFile.getGroupId().equals(groupId));
+    assertTrue(metsFile.getCurrent());
     assertNull(metsFile.getId());
     assertNull(metsFile.getFileId());
     assertNull(metsFile.getResourceId());
-    assertNull(metsFile.getVersion());
+    assertNull(metsFile.getRepoId());
+    assertTrue(metsFile.getVersion() == 1);
     assertNull(metsFile.getMimetype());
     assertNull(metsFile.getUse());
     assertNull(metsFile.getUrl());
@@ -139,9 +180,11 @@ public class MetsFileTest {
     MetsFile metsFile = new MetsFile();
     metsFile.setMimetype(mimetype);
     assertTrue(metsFile.getMimetype().equals(mimetype));
+    assertTrue(metsFile.getCurrent());
     assertNull(metsFile.getId());
     assertNull(metsFile.getFileId());
     assertNull(metsFile.getResourceId());
+    assertNull(metsFile.getRepoId());
     assertNull(metsFile.getGroupId());
     assertNull(metsFile.getUse());
     assertNull(metsFile.getUrl());
@@ -153,9 +196,11 @@ public class MetsFileTest {
     MetsFile metsFile = new MetsFile();
     metsFile.setUse(use);
     assertTrue(metsFile.getUse().equals(use));
+    assertTrue(metsFile.getCurrent());
     assertNull(metsFile.getId());
     assertNull(metsFile.getFileId());
     assertNull(metsFile.getResourceId());
+    assertNull(metsFile.getRepoId());
     assertNull(metsFile.getGroupId());
     assertNull(metsFile.getMimetype());
     assertNull(metsFile.getUrl());
@@ -167,9 +212,11 @@ public class MetsFileTest {
     MetsFile metsFile = new MetsFile();
     metsFile.setUrl(url);
     assertTrue(metsFile.getUrl().equals(url));
+    assertTrue(metsFile.getCurrent());
     assertNull(metsFile.getId());
     assertNull(metsFile.getFileId());
     assertNull(metsFile.getResourceId());
+    assertNull(metsFile.getRepoId());
     assertNull(metsFile.getGroupId());
     assertNull(metsFile.getMimetype());
     assertNull(metsFile.getUse());
@@ -181,6 +228,8 @@ public class MetsFileTest {
     MetsFile metsFile = new MetsFile(resourceId, version, fileId, mimetype, groupId, use, url);
     metsFile.setUrl(url);
     assertNull(metsFile.getId());
+    assertNull(metsFile.getRepoId());
+    assertTrue(metsFile.getCurrent());
     assertTrue(metsFile.toString().contains("null"));
     assertTrue(metsFile.getFileId().equals(fileId));
     assertTrue(metsFile.toString().contains(fileId));
@@ -196,6 +245,54 @@ public class MetsFileTest {
     assertTrue(metsFile.toString().contains(use));
     assertTrue(metsFile.getUrl().equals(url));
     assertTrue(metsFile.toString().contains(url));
+  }
+
+  @Test
+  public void testUpdateMetsFile() {
+    MetsFile metsFile = new MetsFile(resourceId, version, fileId, mimetype, groupId, use, url);
+    metsFile.setUrl(url);
+    String url2 = "new URL";
+    MetsFile metsFile2 = metsFile.updateMetsFile(url2);
+    // Old version            
+    assertNull(metsFile.getId());
+    assertNull(metsFile.getRepoId());
+    assertFalse(metsFile.getCurrent());
+    assertTrue(metsFile.toString().contains("null"));
+    assertTrue(metsFile.getFileId().equals(fileId));
+    assertTrue(metsFile.toString().contains(fileId));
+    assertTrue(metsFile.getResourceId().equals(resourceId));
+    assertTrue(metsFile.toString().contains(resourceId));
+    assertTrue(metsFile.getVersion().equals(version));
+    assertTrue(metsFile.toString().contains("version=" + version));
+    assertTrue(metsFile.getGroupId().equals(groupId));
+    assertTrue(metsFile.toString().contains(groupId));
+    assertTrue(metsFile.getMimetype().equals(mimetype));
+    assertTrue(metsFile.toString().contains(mimetype));
+    assertTrue(metsFile.getUse().equals(use));
+    assertTrue(metsFile.toString().contains(use));
+    assertTrue(metsFile.getUrl().equals(url));
+    assertTrue(metsFile.toString().contains(url));
+    // New version
+    Integer version2 = new Integer(version + 1);
+    assertNull(metsFile2.getId());
+    assertNull(metsFile2.getRepoId());
+    assertTrue(metsFile2.getCurrent());
+    assertTrue(metsFile2.toString().contains("null"));
+    assertTrue(metsFile2.getFileId().equals(fileId));
+    assertTrue(metsFile2.toString().contains(fileId));
+    assertTrue(metsFile2.getResourceId().equals(resourceId));
+    assertTrue(metsFile2.toString().contains(resourceId));
+    assertTrue(metsFile2.getVersion().equals(version2));
+    assertTrue(metsFile2.toString().contains("version=" + version2));
+    assertTrue(metsFile2.getGroupId().equals(groupId));
+    assertTrue(metsFile2.toString().contains(groupId));
+    assertTrue(metsFile2.getMimetype().equals(mimetype));
+    assertTrue(metsFile2.toString().contains(mimetype));
+    assertTrue(metsFile2.getUse().equals(use));
+    assertTrue(metsFile2.toString().contains(use));
+    assertTrue(metsFile2.getUrl().equals(url2));
+    assertTrue(metsFile2.toString().contains(url2));
+
   }
 
 }

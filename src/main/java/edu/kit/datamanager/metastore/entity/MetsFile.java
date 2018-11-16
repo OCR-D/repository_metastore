@@ -82,6 +82,8 @@ public class MetsFile implements IBaseEntity, IMimetype, IGroupId, IUrl, IUse {
    */
   public MetsFile() {
     super();
+    version = 1;
+    current = Boolean.TRUE;
   }
 
   /**
