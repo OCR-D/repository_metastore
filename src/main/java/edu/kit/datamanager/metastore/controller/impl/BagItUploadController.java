@@ -19,7 +19,7 @@ import edu.kit.datamanager.metastore.exception.InvalidFormatException;
 import edu.kit.datamanager.metastore.service.IMetsDocumentService;
 import edu.kit.datamanager.metastore.storageservice.StorageService;
 import edu.kit.datamanager.metastore.util.BagItUtil;
-import edu.kit.datamanager.metastore.util.ZipUtils;
+import edu.kit.datamanager.util.ZipUtils;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;

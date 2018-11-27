@@ -95,7 +95,9 @@ dependencies {
   // Stub for KIT DM 2.0
   compile("io.swagger:swagger-java-client:1.0.0")
   //compile("org.eclipse.persistence:javax.persistence:2.1.0")
-   
+  compile("edu.kit.datamanager:service-base:0.1") { 
+    exclude group: '*'    
+  } 
   compileOnly('org.projectlombok:lombok')
 
   testCompile("junit:junit:4.12")
