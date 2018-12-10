@@ -14,7 +14,7 @@ In order to build this microservice you'll need:
 
 * Java SE Development Kit 8 or higher
 
-You have to install KIT DM 2.0 first.
+You have to (install KIT DM 2.0)[#Install KIT DM 2.0]first.
 ```bash=bash
 # Build metastore service
 user@localhost:/home/user/$git clone https://github.com/OCR-D/repository_metastore.git
@@ -65,14 +65,14 @@ in order to see available RESTful endpoints and their documentation. Furthermore
 # Build KIT DM 2.0
 user@localhost:/home/user/$git clone https://github.com/kit-data-manager/base-repo.git
 user@localhost:/home/user/$cd base-repo
-user@localhost:/home/user/$git submodule init
-user@localhost:/home/user/$git submodule update --remote --merge 
-user@localhost:/home/user/$cd libraries/service-base/
-user@localhost:/home/user/libraries/service-base/$gradlew install
-user@localhost:/home/user/libraries/service-base/$cd ../../
-user@localhost:/home/user/$gradlew build
+user@localhost:/home/user/base-repo/$git submodule init
+user@localhost:/home/user/base-repo/$git submodule update --remote --merge 
+user@localhost:/home/user/base-repo/$cd libraries/service-base/
+user@localhost:/home/user/base-repo/libraries/service-base/$gradlew install
+user@localhost:/home/user/base-repo/libraries/service-base/$cd ../../
+user@localhost:/home/user/base-repo/$gradlew build
 # Configure KIT DM 2.0
-user@localhost:/home/user/$cp conf/application.yml .
+user@localhost:/home/user/base-repo/$cp conf/application.yml .
 ```
 ##### Edit application.yml.
 a) Configure connection to database:
@@ -121,6 +121,11 @@ To start/stop docker container afterwards use
 ```bash=bash
 user@localhost:/home/user/$docker stop postgres4kitdm
 user@localhost:/home/user/$docker start postgres4kitdm
+```
+##### Start KIT DM 2.0
+After starting the database, the repository can be started.
+```bash=bash
+user@localhost:/home/user/base-repo/$java -jar build/libs/base-repo.jar 
 ```
 #### Start ArangoDB using docker
 
