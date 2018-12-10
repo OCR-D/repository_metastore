@@ -40,10 +40,6 @@ public class ZippedBagit {
    */
   private String resourceId;
   /**
-   * Id inside KITDM repo for Document.
-   */
-  private Long repoId;
-  /**
    * URL of zipped Bagit container.
    */
   private String url;
@@ -55,10 +51,9 @@ public class ZippedBagit {
    * @param repoId Id inside KITDM repo for Document.
    * @param url URL of zipped Bagit container.
    */
-  public ZippedBagit(final String resourceId, final Long repoId, final String url) {
+  public ZippedBagit(final String resourceId, final String url) {
     super();
     this.resourceId = resourceId;
-    this.repoId = repoId;
     this.url = url;
   }
 
@@ -96,24 +91,6 @@ public class ZippedBagit {
    */
   public void setResourceId(String resourceId) {
     this.resourceId = resourceId;
-  }
-
-  /**
-   * Get the id of the KIT DM repository.
-   *
-   * @return the repoId
-   */
-  public Long getRepoId() {
-    return repoId;
-  }
-
-  /**
-   * Set the id of the KIT DM repository.
-   *
-   * @param repoId the repoId to set
-   */
-  public void setRepoId(Long repoId) {
-    this.repoId = repoId;
   }
 
   /**

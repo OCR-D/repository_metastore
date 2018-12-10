@@ -46,10 +46,6 @@ public class MetsFile implements IBaseEntity, IMimetype, IGroupId, IUrl, IUse {
    */
   private String resourceId;
   /**
-   * Id inside KITDM repo for Document.
-   */
-  private String repoId;
-  /**
    * Is the current version.
    */
   private Boolean current;
@@ -147,24 +143,6 @@ public class MetsFile implements IBaseEntity, IMimetype, IGroupId, IUrl, IUse {
    */
   public void setCurrent(Boolean current) {
     this.current = current;
-  }
-
-  /**
-   * Get the id of the KIT DM repository.
-   * 
-   * @return the repoId
-   */
-  public String getRepoId() {
-    return repoId;
-  }
-
-  /**
-   * Set the id of the KIT DM repository.
-   * 
-   * @param repoId the repoId to set
-   */
-  public void setRepoId(String repoId) {
-    this.repoId = repoId;
   }
 
   @Override
@@ -282,6 +260,6 @@ public class MetsFile implements IBaseEntity, IMimetype, IGroupId, IUrl, IUse {
   
   @Override
   public String toString() {
-     return "MetsFile [id=" + id + ", resourceId=" + resourceId + ", repoId=" + repoId + ", version=" + version + ", fileId=" + fileId + ", groupId=" + groupId + ", mimetype=" + mimetype + ", use=" + use + ", url=" + url + "]";
+     return "MetsFile [id=" + id + ", resourceId=" + resourceId + ", version=" + version + ", fileId=" + fileId + ", groupId=" + groupId + ", mimetype=" + mimetype + ", use=" + use + ", url=" + url + "]";
   }
 }

@@ -46,7 +46,7 @@ public class RegisterFilesInRepo extends SimpleFileVisitor<Path> {
   /**
    * RepoID of data source.
    */
-  Long repoId = RepositoryUtil.NO_RESOURCE_IDENTIFIER;
+  String repoId = RepositoryUtil.NO_RESOURCE_IDENTIFIER;
   /**
    * Force overwriting existing files.
    */
@@ -60,7 +60,7 @@ public class RegisterFilesInRepo extends SimpleFileVisitor<Path> {
    * @param repoId ID of resource in the repository.
    * @param force Overwrite files (default: false)
    */
-  public RegisterFilesInRepo(RepositoryUtil repo, Path basePath, Long repoId, Boolean force) {
+  public RegisterFilesInRepo(RepositoryUtil repo, Path basePath, String repoId, Boolean force) {
     this.repository = repo;
     this.basePath = basePath;
     this.repoId = repoId;

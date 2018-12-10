@@ -23,6 +23,8 @@ import io.swagger.client.Configuration;
 import io.swagger.client.api.DataResourceControllerApi;
 import io.swagger.client.model.Agent;
 import io.swagger.client.model.DataResource;
+import io.swagger.client.model.Identifier;
+import io.swagger.client.model.PrimaryIdentifier;
 import io.swagger.client.model.ResourceType;
 import io.swagger.client.model.ResponseEntity;
 import io.swagger.client.model.Title;
@@ -52,7 +54,7 @@ public class RepositoryUtil {
   /**
    * Constant defining non existing resourceIdentifier.
    */
-  public static final long NO_RESOURCE_IDENTIFIER = -1L;
+  public static final String NO_RESOURCE_IDENTIFIER = "No resource identifier";
   /**
    * Instance for talking with repository.
    */
@@ -95,25 +97,27 @@ public class RepositoryUtil {
   /**
    * Create resource with given identifier.
    *
+   * @param idOfResource Identifier of data resource.
    * @param title Title of the document
    * @param resourceType Type of the resource.
    *
    * @return Data resource.
    * @throws ApiException Error during execution.
    */
-  public DataResource createDataResource(String title, String resourceType) throws ApiException {
+  public DataResource createDataResource(String idOfResource, String title, String resourceType) throws ApiException {
     LOGGER.trace("Create data resource with title '{}'", title);
 
     DataResource dataResource = null;
     DataResource resource = new DataResource(); // DataResource | resource
     resource.addCreatorsItem(new Agent().familyName("Softwareframework").givenName("OCR-D"));
     resource.setResourceType(new ResourceType().typeGeneral(ResourceType.TypeGeneralEnum.DATASET).value(resourceType));
+    resource.addAlternateIdentifiersItem(new Identifier().identifierType(Identifier.IdentifierTypeEnum.INTERNAL).value(idOfResource));
     resource.addTitlesItem(new Title().value(title));
     ApiResponse<DataResource> result;
     result = apiInstance.createUsingPOSTWithHttpInfo(resource);
     dataResource = result.getData();
 
-    LOGGER.debug("ID of data resource: '{}'", dataResource.getId());
+    LOGGER.debug("ID of data resource: '{}'", dataResource.getIdentifier().getValue());
     LOGGER.trace("Data resource: '{}'", dataResource);
 
     return dataResource;
@@ -131,7 +135,7 @@ public class RepositoryUtil {
    *
    * @throws ApiException Error during execution.
    */
-  public ApiResponse<ResponseEntity> postFileToResource(Long idOfResource, Boolean force, Path relativePath, File uploadFile) throws ApiException {
+  public ApiResponse<ResponseEntity> postFileToResource(String idOfResource, Boolean force, Path relativePath, File uploadFile) throws ApiException {
     LOGGER.trace("Post file '{}' to resource with ID '{}'", relativePath.toString(), idOfResource);
     ApiResponse<ResponseEntity> handleFileUpload = apiInstance.handleFileUploadUsingPOSTWithHttpInfo(idOfResource, uploadFile, force, relativePath.toString());
     LOGGER.trace("Status code: '{}'", handleFileUpload.getStatusCode());
@@ -148,39 +152,17 @@ public class RepositoryUtil {
    */
   public boolean existsResourceIdentifier(String resourceIdentifier) {
     boolean resourceExists = true;
-    DataResource resource = new DataResource(); // DataResource | resource
-    resource.setResourceIdentifier(resourceIdentifier);
-    List<DataResource> findByExampleUsingPOST;
+    DataResource resource = null; // DataResource | resource
     try {
-      findByExampleUsingPOST = apiInstance.findByExampleUsingPOST(resource, null, null, null);
-      resourceExists = !findByExampleUsingPOST.isEmpty();
-    } catch (ApiException ex) {
-      LOGGER.error("Test for resourceIdentifier failed!", ex);
-    }
-    return resourceExists;
-  }
-
-  /**
-   * Test if given resourceIdentifier already exists.
-   *
-   * @param resourceIdentifier resourceIdentifier of the data resource.
-   *
-   * @return true if resourceIdentifier already exists.
-   */
-  public long getIdOfResourceIdentifier(String resourceIdentifier) {
-    long resourceId = NO_RESOURCE_IDENTIFIER;
-    DataResource resource = new DataResource(); // DataResource | resource
-    resource.setResourceIdentifier(resourceIdentifier);
-    List<DataResource> findByExampleUsingPOST;
-    try {
-      findByExampleUsingPOST = apiInstance.findByExampleUsingPOST(resource, null, null, null);
-      if (findByExampleUsingPOST.size() == 1) {
-        resourceId = findByExampleUsingPOST.get(0).getId();
+      resource = apiInstance.getByIdUsingGET(resourceIdentifier);
+      if (resource == null) {
+        resourceExists = false;
       }
     } catch (ApiException ex) {
       LOGGER.error("Test for resourceIdentifier failed!", ex);
+      resourceExists = false;
     }
-    return resourceId;
+    return resourceExists;
   }
 
   /**
@@ -191,9 +173,9 @@ public class RepositoryUtil {
    *
    * @return URL for downloading resource.
    */
-  public String toDownloadUrl(Long id, Path dataPath) {
+  public String toDownloadUrl(String id, Path dataPath) {
     Path downloadPath = null;
-     String downloadString = "Can't create URL";
+    String downloadString = "Can't create URL";
 
     try {
       LOGGER.trace("create Download URL from id '{}' and path '{}'", id, dataPath);

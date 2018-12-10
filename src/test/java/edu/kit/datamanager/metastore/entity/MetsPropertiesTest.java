@@ -125,20 +125,6 @@ public class MetsPropertiesTest {
   }
 
   /**
-   * Test of geRepotId method, of class MetsProperties.
-   */
-  @Test
-  public void testSetGetRepoId() {
-    System.out.println("setGetRepoId");
-    MetsProperties instance = new MetsProperties();
-    String expResult = "repoId_01";
-    instance.setRepoId(expResult);
-    String result = instance.getRepoId();
-    assertEquals(expResult, result);
-  }
-
-
-  /**
    * Test of getResourceId method, of class MetsProperties.
    */
   @Test

@@ -229,26 +229,24 @@ public class BagItUploadController implements IBagItUploadController {
           Iterator<MetsProperties> iterator = findByResourceId.iterator();
           DataResource dataResource = null;
           if (iterator.hasNext()) {
-            dataResource = repository.createDataResource(iterator.next().getTitle(), OCR_D_DATA_TYPE);
+            dataResource = repository.createDataResource(resourceId, iterator.next().getTitle(), OCR_D_DATA_TYPE);
           }
           if (dataResource != null) {
-            long repoId = dataResource.getId();
+            String repoIdentifier = dataResource.getIdentifier().getValue();
             // 8. Upload files to repo
-            RegisterFilesInRepo registerFilesInRepo = new RegisterFilesInRepo(repository, pathToResource, repoId, Boolean.FALSE);
+            RegisterFilesInRepo registerFilesInRepo = new RegisterFilesInRepo(repository, pathToResource, repoIdentifier, Boolean.FALSE);
             Files.walkFileTree(pathToResource, registerFilesInRepo);
             // 9. Adapt download URLs for metsfiles and repoId.
             Iterable<MetsFile> findMetsFilesByResourceId = metsFileRepository.findByResourceIdAndCurrentTrue(resourceId);
             System.out.println("***********************************************************");
             for (MetsFile item : findMetsFilesByResourceId) {
               URI uri = new URI(item.getUrl());
-              System.out.println(item.toString());
-              System.out.println(uri.isAbsolute());
               if (!uri.isAbsolute()) {
                 Path pathToFile = Paths.get(SUB_DIR_UNZIP, "data", item.getUrl());
-                String downloadUrl = repository.toDownloadUrl(repoId, pathToFile);
+                String downloadUrl = repository.toDownloadUrl(repoIdentifier, pathToFile);
                 LOGGER.trace("Change URL for Metsfile from '{}' to '{}'", item.getUrl(), downloadUrl);
                 item.setUrl(downloadUrl);
-                item.setRepoId(Long.toString(repoId));
+                item.setResourceId(repoIdentifier);
               }
             }
             System.out.println("***********************************************************");
@@ -264,10 +262,10 @@ public class BagItUploadController implements IBagItUploadController {
             FileSystemUtils.deleteRecursively(pathToResource);
             // 11. Create download URL for zipped file.
             Path metsPath = Paths.get(file.getOriginalFilename());
-            String locationString = repository.toDownloadUrl(repoId, metsPath);
+            String locationString = repository.toDownloadUrl(repoIdentifier, metsPath);
             location = new URI(locationString);
             // 12. Register Bagit container
-            ZippedBagit bagit = new ZippedBagit(resourceId, repoId, locationString);
+            ZippedBagit bagit = new ZippedBagit(resourceId, locationString);
             bagitRepository.save(bagit);
           }
 

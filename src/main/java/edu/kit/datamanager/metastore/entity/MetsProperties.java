@@ -67,10 +67,6 @@ public class MetsProperties {
    * Resource Identifier for Document.
    */
   private String resourceId;
-  /**
-   * Id inside KITDM repo for Document.
-   */
-  private String repoId;
 
   /**
    * Title of resource.
@@ -160,24 +156,6 @@ public class MetsProperties {
    */
   public void setResourceId(String resourceId) {
     this.resourceId = resourceId;
-  }
-
-  /**
-   * Get the id of the KIT DM repository.
-   * 
-   * @return the repoId
-   */
-  public String getRepoId() {
-    return repoId;
-  }
-
-  /**
-   * Set the id of the KIT DM repository.
-   * 
-   * @param repoId the repoId to set
-   */
-  public void setRepoId(String repoId) {
-    this.repoId = repoId;
   }
 
   /**
