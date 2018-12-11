@@ -183,6 +183,7 @@ You may also try these URLs in a browser. (http://localhost:8080/api/v1/metastor
 * [Docker](https://www.docker.com/)
 * [ArangoDB](https://www.arangodb.com/)
 * [ArangoDB(Docker)](https://hub.docker.com/r/arangodb/arangodb/)
+* [Spring Boot Security](https://docs.spring.io/spring-boot/docs/2.0.5.RELEASE/reference/htmlsingle/#boot-features-security)
 
 ## License
 
