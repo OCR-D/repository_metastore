@@ -82,7 +82,10 @@ public class RegisterFilesInRepo extends SimpleFileVisitor<Path> {
       } catch (ApiException ex) {
         LOGGER.error("Regular file: '{}'", file);
         LOGGER.error("Relative path: '{}'", relativePath);
+        LOGGER.error("Code: {}, Message: {}", ex.getCode(), ex.getMessage());
+        LOGGER.error("Body: {}", ex.getResponseBody());
         LOGGER.error("Error writing file to repository", ex);
+        
       }
     }
     return CONTINUE;

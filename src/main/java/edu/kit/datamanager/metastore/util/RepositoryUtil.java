@@ -33,8 +33,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.logging.Level;
+import java.util.GregorianCalendar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -111,7 +110,9 @@ public class RepositoryUtil {
     DataResource resource = new DataResource(); // DataResource | resource
     resource.addCreatorsItem(new Agent().familyName("Softwareframework").givenName("OCR-D"));
     resource.setResourceType(new ResourceType().typeGeneral(ResourceType.TypeGeneralEnum.DATASET).value(resourceType));
-    resource.addAlternateIdentifiersItem(new Identifier().identifierType(Identifier.IdentifierTypeEnum.INTERNAL).value(idOfResource));
+    resource.identifier(new PrimaryIdentifier().identifierType(PrimaryIdentifier.IdentifierTypeEnum.INTERNAL).value(idOfResource));
+    resource.setPublisher("OCR-D");
+    resource.setEmbargoDate(new GregorianCalendar(2099,11,31,0,0,0).toInstant().toString());
     resource.addTitlesItem(new Title().value(title));
     ApiResponse<DataResource> result;
     result = apiInstance.createUsingPOSTWithHttpInfo(resource);
