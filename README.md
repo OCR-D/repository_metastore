@@ -149,11 +149,14 @@ user@localhost:/home/user/metastore-service$ java -jar build/libs/metastore-serv
 [...]
 1970-01-01 00:00:00.000  INFO 56918 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
 [...]
+Using generated security password: GENERATED_PASSWORD
+[...]
 ```
 ## First steps
+The write access to the service is secured with a password, which is regenerated every time the service is started. There is an 'ingest' user for ingesting files.
 1. Upload zipped BagIt container to metastore.
 ```bash=bash
-user@localhost:/home/user/$curl -v -F "file=@zippedBagItContainer" http://localhost:8080/api/v1/metastore/bagit 
+user@localhost:/home/user/$curl -u ingest:GENERATED_PASSWORD -v -F "file=@zippedBagItContainer" http://localhost:8080/api/v1/metastore/bagit 
 ```
 2. List all BagIt containers.
 ```bash=bash
