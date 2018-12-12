@@ -110,7 +110,7 @@ public class RepositoryUtil {
     DataResource resource = new DataResource(); // DataResource | resource
     resource.addCreatorsItem(new Agent().familyName("Softwareframework").givenName("OCR-D"));
     resource.setResourceType(new ResourceType().typeGeneral(ResourceType.TypeGeneralEnum.DATASET).value(resourceType));
-    resource.identifier(new PrimaryIdentifier().identifierType(PrimaryIdentifier.IdentifierTypeEnum.INTERNAL).value(idOfResource));
+    resource.addAlternateIdentifiersItem(new Identifier().identifierType(Identifier.IdentifierTypeEnum.INTERNAL).value(idOfResource));
     resource.setPublisher("OCR-D");
     resource.setEmbargoDate(new GregorianCalendar(2099,11,31,0,0,0).toInstant().toString());
     resource.addTitlesItem(new Title().value(title));

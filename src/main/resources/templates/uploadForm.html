@@ -14,7 +14,7 @@
     </div>
 
     <div>
-      <form method="POST" enctype="multipart/form-data" action=".">
+      <form method="POST" enctype="multipart/form-data" action="/api/v1/metastore/bagit/">
         <table>
           <tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
           <tr><td></td><td><input type="submit" value="Upload" /></td></tr>
@@ -34,7 +34,7 @@
           <tr th:each="file: ${bagitFiles}">
             <td th:text="${file.resourceId}"></td>
             <td><a th:href="${file.url}" th:text="${file.url}"></a></td> 
-            <td><a th:href="'mets/' + ${file.resourceId} + '/files'" th:text="'List of referenced files'"></a></td>
+            <td><a th:href="'/api/v1/metastore/mets/' + ${file.resourceId} + '/files'" th:text="'List of referenced files'"></a></td>
           </tr>
         </tbody>
       </table>

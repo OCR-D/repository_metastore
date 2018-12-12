@@ -232,7 +232,7 @@ public class BagItUploadController implements IBagItUploadController {
             dataResource = repository.createDataResource(resourceId, iterator.next().getTitle(), OCR_D_DATA_TYPE);
           }
           if (dataResource != null) {
-            String repoIdentifier = dataResource.getIdentifier().getValue();
+            String repoIdentifier = resourceId;
             // 8. Upload files to repo
             RegisterFilesInRepo registerFilesInRepo = new RegisterFilesInRepo(repository, pathToResource, repoIdentifier, Boolean.FALSE);
             Files.walkFileTree(pathToResource, registerFilesInRepo);
