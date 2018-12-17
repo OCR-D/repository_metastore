@@ -129,6 +129,7 @@ public class RepositoryUtil {
    *
    * @param idOfResource Identifier of data resource.
    * @param force Force overwriting existing files.
+   * @param metadata Metadata related to file.
    * @param relativePath Relative Path to file.
    * @param uploadFile File to upload.
    *
@@ -136,9 +137,9 @@ public class RepositoryUtil {
    *
    * @throws ApiException Error during execution.
    */
-  public ApiResponse<ResponseEntity> postFileToResource(String idOfResource, Boolean force, Path relativePath, File uploadFile) throws ApiException {
+  public ApiResponse<ResponseEntity> postFileToResource(String idOfResource, Boolean force, String metadata, Path relativePath, File uploadFile) throws ApiException {
     LOGGER.trace("Post file '{}' to resource with ID '{}'", relativePath.toString(), idOfResource);
-    ApiResponse<ResponseEntity> handleFileUpload = apiInstance.handleFileUploadUsingPOSTWithHttpInfo(idOfResource, uploadFile, force, relativePath.toString());
+    ApiResponse<ResponseEntity> handleFileUpload = apiInstance.handleFileUploadUsingPOSTWithHttpInfo(idOfResource, uploadFile, force, metadata, relativePath.toString());
     LOGGER.trace("Status code: '{}'", handleFileUpload.getStatusCode());
 
     return handleFileUpload;

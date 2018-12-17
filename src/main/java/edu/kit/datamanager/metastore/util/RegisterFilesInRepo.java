@@ -78,7 +78,7 @@ public class RegisterFilesInRepo extends SimpleFileVisitor<Path> {
       }
 
       try {
-        repository.postFileToResource(repoId, force, relativePath, file.toFile());
+        repository.postFileToResource(repoId, force, null, relativePath, file.toFile());
       } catch (ApiException ex) {
         LOGGER.error("Regular file: '{}'", file);
         LOGGER.error("Relative path: '{}'", relativePath);
