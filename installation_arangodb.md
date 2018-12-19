@@ -1,10 +1,10 @@
-# Installation ArangoDB
+# Installation ArangoDB (using Docker)
 
 ## Prerequisites
 - Docker version 18.06 or higher
 
 ## Build and start docker container with ArangoDB
-First time you have to build docker container:
+First time you have to build docker container. Port 8539 is used to avoid overlap.:
 ```bash=bash
 # Create directory for database
 user@localhost:/home/user/$mkdir -p server/arangodb
@@ -26,7 +26,7 @@ user@localhost:/home/user/$docker start arangodb4kitdm
 ### Backup ArangoDB
 ```bash=bash
 # Backup ArangoDB
-ArangoDBuser@localhost:/home/user/$docker exec -ti arangodb4kitdm sh -c "arangodump --include-system-collections true --server.database metastore-OCR-D --output-directory /dump/dump_`date +%Y_%m_%dt%H_%M`"
+user@localhost:/home/user/$docker exec -ti arangodb4kitdm sh -c "arangodump --include-system-collections true --server.database metastore-OCR-D --output-directory /dump/dump_`date +%Y_%m_%dt%H_%M`"
 ```
 
 ## More Information

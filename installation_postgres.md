@@ -1,18 +1,17 @@
-# Installation Postgres
+# Installation Authentication
 
 ## Prerequisites
 - Docker version 18.06 or higher
 
 ##### Build and start docker container with postGreSQL
-First time you have to build docker container:
+First time you have to build docker container. Port 5555 is used to avoid overlap.
 ```bash=bash
-user@localhost:/home/user/$docker run -p 5555:5432 --name postgres4kitdm -e POSTGRES_PASSWORD=YOUR_ADMIN_PASSWORD -d postgres
+# Create directory for database dumps
+user@localhost:/home/user/$mkdir -p server/backup/postgres
+user@localhost:/home/user/$docker run -p 5555:5432 --name postgres4kitdm -e POSTGRES_PASSWORD=YOUR_ADMIN_PASSWORD -d  -v /home/user/server/backup/postgres:/dump postgres
 123.....
-user@localhost:/home/user/$psql postgres -p 5555 -h localhost -d postgres
-Password for user postgres: (YOUR_ADMIN_PASSWORD)
-psql (9.6.10, server 11.0 (Debian 11.0-1.pgdg90+2))
-WARNING: psql major version 9.6, server major version 11.
-         Some psql features might not work.
+user@localhost:/home/user/$docker exec -ti postgres4kitdm sh -c "psql postgres -h localhost -d postgres"
+psql (11.0 (Debian 11.0-1.pgdg90+2))
 Type "help" for help.
 
 postgres=# CREATE DATABASE kitdm20;
@@ -27,13 +26,20 @@ postgres=# GRANT ALL PRIVILEGES ON DATABASE kitdm20_auth TO kitdm_admin;
 GRANT
 postgres=# \q
 user@localhost:/home/user/$
-
-
 ```
+Now postGreSQL is available on localhost via port 5555.
+
 To start/stop docker container afterwards use
 ```bash=bash
 user@localhost:/home/user/$docker stop postgres4kitdm
 user@localhost:/home/user/$docker start postgres4kitdm
+```
+### Backup PostgreSQL
+```bash=bash
+# Backup kitdm20
+user@localhost:/home/user/$docker exec -ti postgres4kitdm sh -c "pg_dump -U postgres -h 127.0.0.1 kitdm20 > /dump/database_dump_kitdm20_`date +%Y_%m_%dt%H_%M`.sql"
+# Backup kitdm20 Authentication
+user@localhost:/home/user/$docker exec -ti postgres4kitdm sh -c "pg_dump -U postgres -h 127.0.0.1 kitdm20_auth > /dump/database_dump_kitdm20_auth_`date +%Y_%m_%dt%H_%M`.sql"
 ```
 
 

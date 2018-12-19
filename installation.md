@@ -1,15 +1,25 @@
 # Installation KIT Data Manager - Metastore Service
 
-## How to build
+## Prerequisites
 
 In order to build this microservice you'll need:
 
 * Java SE Development Kit 8 or higher
+* PostgreSQL
+* ArangoDB 
+* KITDM 2.0
+* KITDM 2.0 Authentication Service (optional)
 
-You have to (install KIT DM 2.0)[#Install KIT DM 2.0]first.
+## Install KIT Data Manager 
+First you have to install [KIT Data Manager](installation_KIT_DM_2.0.md)
+
+## Install Metastore Service 
 ```bash=bash
 # Build metastore service
 user@localhost:/home/user/$git clone https://github.com/OCR-D/repository_metastore.git
+Cloning into 'repository_metastore'...
+[...]
+Resolving deltas: 100% (451/451), done.
 user@localhost:/home/user/$cd repository_metastore
 user@localhost:/home/user/repository_metastore/$./gradlew build
 BUILD SUCCESSFUL in 3s
