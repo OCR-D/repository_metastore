@@ -29,9 +29,25 @@ public class KitDmProperties {
    */
   private String basePath = "http://localhost:8090";
   /**
+   * Folder basePath for authentication
+   */
+  private String basePathAuth = "http://localhost:8070";
+  /**
+   * Folder basePath for authentication
+   */
+  private String username = "ocrd";
+  /**
+   * Folder basePath for authentication
+   */
+  private String password = "setPasswordViaConfig";
+  /**
    * Show debug messages.
    */
   private String debug = "false";
+  /** 
+   * Use authentication or not.
+   */
+  private String authentication = "false";
 
   /**
    * Get the base path for KIT DM 2.0.
@@ -52,6 +68,24 @@ public class KitDmProperties {
   }
 
   /**
+   * Get the base path for Authentication.
+   *
+   * @return base path as string.
+   */
+  public String getBasePathAuth() {
+    return basePathAuth;
+  }
+
+  /**
+   * Set the base path for Authentication.
+   *
+   * @param basePath base path as string.
+   */
+  public void setBasePathAuth(String basePathAuth) {
+    this.basePathAuth = basePathAuth;
+  }
+
+  /**
    * Get debug status.
    * 
    * @return the debug
@@ -67,5 +101,58 @@ public class KitDmProperties {
    */
   public void setDebug(String debug) {
     this.debug = debug;
+  }
+
+  /**
+   * Get authentication flag.
+   * 
+   * @return the authentication
+   */
+  public String getAuthentication() {
+    return authentication;
+  }
+
+  /**
+   * Set authentication (true/false).
+   * 
+   * @param authentication the authentication to set
+   */
+  public void setAuthentication(String authentication) {
+    this.authentication = authentication;
+  }
+
+  /**
+   * Get name of the user for authentication.
+   * 
+   * @return the username
+   */
+  public String getUsername() {
+    return username;
+  }
+
+  /**
+   * Set name of the user for authentication.
+   * 
+   * @param username the username to set
+   */
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  /**
+   * Get password of the user for authentication.
+   * 
+   * @return the password
+   */
+  public String getPassword() {
+    return password;
+  }
+
+  /**
+   * Set password of the user for authentication.
+   * @param password the password to set
+   */
+  public void setPassword(String password) {
+    this.password = password;
   }
 }

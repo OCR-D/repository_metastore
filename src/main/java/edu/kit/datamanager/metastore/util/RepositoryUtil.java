@@ -21,19 +21,22 @@ import io.swagger.client.ApiException;
 import io.swagger.client.ApiResponse;
 import io.swagger.client.Configuration;
 import io.swagger.client.api.DataResourceControllerApi;
+import io.swagger.client.api.LoginControllerApi;
 import io.swagger.client.model.Agent;
 import io.swagger.client.model.DataResource;
 import io.swagger.client.model.Identifier;
-import io.swagger.client.model.PrimaryIdentifier;
 import io.swagger.client.model.ResourceType;
 import io.swagger.client.model.ResponseEntity;
 import io.swagger.client.model.Title;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.GregorianCalendar;
+import java.util.List;
+import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,6 +58,10 @@ public class RepositoryUtil {
    */
   public static final String NO_RESOURCE_IDENTIFIER = "No resource identifier";
   /**
+   * Constant defining status code of unauthorized access.
+   */
+  public static final int UNAUTHORIZED = 401;
+  /**
    * Instance for talking with repository.
    */
   KitDmProperties properties = null;
@@ -64,6 +71,8 @@ public class RepositoryUtil {
    */
   DataResourceControllerApi apiInstance;
 
+  LoginControllerApi api4Login;
+
   /**
    * Constructor initializing connection to repository.
    *
@@ -72,6 +81,14 @@ public class RepositoryUtil {
   public RepositoryUtil(KitDmProperties properties) {
     this.properties = properties;
     initConnection();
+    if (LOGGER.isInfoEnabled()) {
+      LOGGER.info("basepath: {}", properties.getBasePath());
+      LOGGER.info("debug: {}", properties.getDebug());
+      LOGGER.info("authentication: {}", properties.getAuthentication());
+      LOGGER.info("basepath(auth): {}", properties.getBasePathAuth());
+      LOGGER.info("username: {}", properties.getUsername());
+      LOGGER.info("password: {}", properties.getPassword());
+    }
   }
 
   /**
@@ -89,8 +106,37 @@ public class RepositoryUtil {
 //    defaultClient.setPassword(password);
 //    defaultClient.setUsername(username);
 //    defaultClient.setWriteTimeout(0);
-    LOGGER.trace("Base path: '{}', Debug: '{}'", defaultClient.getBasePath(), defaultClient.isDebugging());
     apiInstance = new DataResourceControllerApi(defaultClient);
+    // Initialize connection for login (if authentication is enabled)
+    if (Boolean.valueOf(properties.getAuthentication())) {
+      ApiClient loginClient = Configuration.getDefaultApiClient();
+      loginClient.setDebugging(Boolean.getBoolean(properties.getDebug()));
+      loginClient.setBasePath(properties.getBasePathAuth());
+      api4Login = new LoginControllerApi(loginClient);
+
+      authorizeConnection();
+    }
+  }
+
+  /**
+   * Login for KIT DM 2.0 and set bearer token for REST client.
+   */
+  private void authorizeConnection() {
+    if (Boolean.valueOf(properties.getAuthentication())) {
+      String auth = properties.getUsername() + ":" + properties.getPassword();
+
+      byte[] encodedAuth = Base64.encodeBase64(
+              auth.getBytes(StandardCharsets.ISO_8859_1));
+      String authHeader = "Basic " + new String(encodedAuth);
+      try {
+      api4Login.getApiClient().addDefaultHeader("Authorization", authHeader);
+      String bearerToken = "Bearer " + api4Login.loginUsingPOST("OCRD");
+      LOGGER.trace("Create bearer token for user '{}': {}", properties.getUsername(), bearerToken);
+      apiInstance.getApiClient().addDefaultHeader("Authorization", bearerToken);
+      } catch (ApiException ae) {
+        LOGGER.error("Error during authorization!", ae);
+      }
+    }
   }
 
   /**
@@ -112,10 +158,20 @@ public class RepositoryUtil {
     resource.setResourceType(new ResourceType().typeGeneral(ResourceType.TypeGeneralEnum.DATASET).value(resourceType));
     resource.addAlternateIdentifiersItem(new Identifier().identifierType(Identifier.IdentifierTypeEnum.INTERNAL).value(idOfResource));
     resource.setPublisher("OCR-D");
-    resource.setEmbargoDate(new GregorianCalendar(2099,11,31,0,0,0).toInstant().toString());
+    resource.setEmbargoDate(new GregorianCalendar(2099, 11, 31, 0, 0, 0).toInstant().toString());
     resource.addTitlesItem(new Title().value(title));
-    ApiResponse<DataResource> result;
-    result = apiInstance.createUsingPOSTWithHttpInfo(resource);
+    ApiResponse<DataResource> result = null;
+    try {
+      result = apiInstance.createUsingPOSTWithHttpInfo(resource);
+    } catch (ApiException ae) {
+      if (ae.getCode() == UNAUTHORIZED) {
+        LOGGER.warn("Unauthorized access! Create new token and try it once again!");
+        // refresh bearer token and then...
+        authorizeConnection();
+        // ...try once again
+        result = apiInstance.createUsingPOSTWithHttpInfo(resource);
+      }
+    }
     dataResource = result.getData();
 
     LOGGER.debug("ID of data resource: '{}'", dataResource.getIdentifier().getValue());
@@ -139,7 +195,17 @@ public class RepositoryUtil {
    */
   public ApiResponse<ResponseEntity> postFileToResource(String idOfResource, Boolean force, String metadata, Path relativePath, File uploadFile) throws ApiException {
     LOGGER.trace("Post file '{}' to resource with ID '{}'", relativePath.toString(), idOfResource);
-    ApiResponse<ResponseEntity> handleFileUpload = apiInstance.handleFileUploadUsingPOSTWithHttpInfo(idOfResource, uploadFile, force, metadata, relativePath.toString());
+    ApiResponse<ResponseEntity> handleFileUpload = null;
+    try {
+      handleFileUpload = apiInstance.handleFileUploadUsingPOSTWithHttpInfo(idOfResource, uploadFile, force, metadata, relativePath.toString());
+    } catch (ApiException ae) {
+      if (ae.getCode() == UNAUTHORIZED) {
+        // refresh bearer token and then...
+        authorizeConnection();
+        // ...try once again
+        handleFileUpload = apiInstance.handleFileUploadUsingPOSTWithHttpInfo(idOfResource, uploadFile, force, metadata, relativePath.toString());
+      }
+    }
     LOGGER.trace("Status code: '{}'", handleFileUpload.getStatusCode());
 
     return handleFileUpload;
@@ -161,7 +227,20 @@ public class RepositoryUtil {
         resourceExists = false;
       }
     } catch (ApiException ex) {
-      LOGGER.error("Test for resourceIdentifier failed!", ex);
+      if (ex.getCode() == UNAUTHORIZED) {
+        // refresh bearer token and then...
+        authorizeConnection();
+        // ...try once again
+        try {
+          resource = apiInstance.getByIdUsingGET(resourceIdentifier);
+          if (resource == null) {
+            resourceExists = false;
+          }
+        } catch (ApiException ae) {
+          LOGGER.error("Test for resourceIdentifier failed!", ae);
+          resourceExists = false;
+        }
+      }
       resourceExists = false;
     }
     return resourceExists;
