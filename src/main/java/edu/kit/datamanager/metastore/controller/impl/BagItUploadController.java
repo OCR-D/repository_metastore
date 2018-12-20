@@ -238,7 +238,6 @@ public class BagItUploadController implements IBagItUploadController {
             Files.walkFileTree(pathToResource, registerFilesInRepo);
             // 9. Adapt download URLs for metsfiles and repoId.
             Iterable<MetsFile> findMetsFilesByResourceId = metsFileRepository.findByResourceIdAndCurrentTrue(resourceId);
-            System.out.println("***********************************************************");
             for (MetsFile item : findMetsFilesByResourceId) {
               URI uri = new URI(item.getUrl());
               if (!uri.isAbsolute()) {
@@ -249,15 +248,16 @@ public class BagItUploadController implements IBagItUploadController {
                 item.setResourceId(repoIdentifier);
               }
             }
-            System.out.println("***********************************************************");
             metsFileRepository.saveAll(findMetsFilesByResourceId);
 
-            System.out.println("***********************************************************");
             findMetsFilesByResourceId = metsFileRepository.findByResourceIdAndCurrentTrue(resourceId);
-            for (MetsFile item : findMetsFilesByResourceId) {
-              System.out.println(item.toString());
+            if (LOGGER.isTraceEnabled()) {
+              LOGGER.trace("***********************************************************");
+              for (MetsFile item : findMetsFilesByResourceId) {
+                LOGGER.trace(item.toString());
+              }
+              LOGGER.trace("***********************************************************");
             }
-            System.out.println("***********************************************************");
             // 10. Remove local temporary files.
             FileSystemUtils.deleteRecursively(pathToResource);
             // 11. Create download URL for zipped file.
