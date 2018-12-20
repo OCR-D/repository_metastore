@@ -41,7 +41,7 @@ BUILD SUCCESSFUL in 45s
 user@localhost:/home/user/auth_service/$cp conf/application.properties .
 ```
 #### Edit application.properties
-a) Configure port of auth service, connection to database and jwtSecret:
+##### Configure port of auth service, connection to database and jwtSecret:
 ```
 #server settings
 server.port: 8070

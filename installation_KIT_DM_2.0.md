@@ -1,6 +1,6 @@
 # Installation KIT Data Manager
 
-## How to build
+## Prerequisites
 
 In order to build this microservice you'll need:
 
@@ -61,8 +61,8 @@ spring.datasource.password: KITDM_ADMIN_PASSWORD
 [...]
 ```      
 ##### Change basepath for archive, disable or enable authentication, set jwtSecret.
-jwtSecret should be a random string. (Please generate it with a tool: e.g.: 'uuidgen' or 'pwgen -y 36 1') 
-JwtSecret is only needed when authentication is enabled.
+'jwtSecret' should be a random string. (Please generate it with a tool: e.g.: 'uuidgen' or 'pwgen -y 36 1') 
+'jwtSecret' is only needed when authentication is enabled.
 ```
 [...]
 #kit dm settings

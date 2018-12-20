@@ -23,6 +23,8 @@ To start/stop docker container afterwards use
 user@localhost:/home/user/$docker stop arangodb4kitdm
 user@localhost:/home/user/$docker start arangodb4kitdm
 ```
+:NOTE: Please remember the password 'GENERATED_ROOT_PASSWORD'. It is used by the metastore service and for the backup of the database.
+
 ### Backup ArangoDB
 ```bash=bash
 # Backup ArangoDB
