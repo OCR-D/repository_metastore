@@ -70,7 +70,9 @@ public class RepositoryUtil {
    * Client for accessing repository.
    */
   DataResourceControllerApi apiInstance;
-
+  /** 
+   * Client for authentication.
+   */
   LoginControllerApi api4Login;
 
   /**
@@ -170,6 +172,8 @@ public class RepositoryUtil {
         authorizeConnection();
         // ...try once again
         result = apiInstance.createUsingPOSTWithHttpInfo(resource);
+      } else {
+        throw ae;
       }
     }
     dataResource = result.getData();
@@ -204,6 +208,8 @@ public class RepositoryUtil {
         authorizeConnection();
         // ...try once again
         handleFileUpload = apiInstance.handleFileUploadUsingPOSTWithHttpInfo(idOfResource, uploadFile, force, metadata, relativePath.toString());
+      } else {
+        throw ae;
       }
     }
     LOGGER.trace("Status code: '{}'", handleFileUpload.getStatusCode());
