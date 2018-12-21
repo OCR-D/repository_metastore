@@ -130,9 +130,9 @@ user@localhost:/home/user/$curl -XGET http://localhost:8080/api/v1/metastore/met
 ```bash=bash
 user@localhost:/home/user/$curl -XGET -H "Accept:application/json" "http://localhost:8080/api/v1/metastore/mets/title?title=Der%20Herold"
 ```
-5. Download zipped BagIt container to metastore.
+5. Download zipped BagIt container from metastore. (use one URL of the list printed above) 
 ```bash=bash
-user@localhost:/home/user/$curl -XGET http://localhost:8080/api/v1/metastore/bagit/files/zippedBagItContainer > bagDownload.zip
+user@localhost:/home/user/$curl -XGET http://localhost:8090/api/v1/dataresources/123..../data/zippedBagItContainer > bagDownload.zip
 ```
 You may also try these URLs in a browser. (http://localhost:8080/api/v1/metastore/bagit)
 
@@ -140,6 +140,7 @@ You may also try these URLs in a browser. (http://localhost:8080/api/v1/metastor
 ## More Information
 
 * [KIT DM 2.0](https://github.com/kit-data-manager/base-repo.git)
+* [Authentication Service](https://github.com/kit-data-manager/auth-service)
 * [Docker](https://www.docker.com/)
 * [ArangoDB](https://www.arangodb.com/)
 * [ArangoDB(Docker)](https://hub.docker.com/r/arangodb/arangodb/)
