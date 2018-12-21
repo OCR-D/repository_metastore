@@ -15,6 +15,10 @@
  */
 package edu.kit.datamanager.metastore.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jackson.jsonpointer.JsonPointer;
+import com.github.fge.jsonpatch.AddOperation;
+import com.github.fge.jsonpatch.JsonPatch;
 import edu.kit.datamanager.metastore.kitdm.KitDmProperties;
 import io.swagger.client.ApiClient;
 import io.swagger.client.ApiException;
@@ -22,6 +26,7 @@ import io.swagger.client.ApiResponse;
 import io.swagger.client.Configuration;
 import io.swagger.client.api.DataResourceControllerApi;
 import io.swagger.client.api.LoginControllerApi;
+import io.swagger.client.model.AclEntry;
 import io.swagger.client.model.Agent;
 import io.swagger.client.model.DataResource;
 import io.swagger.client.model.Identifier;
@@ -29,13 +34,16 @@ import io.swagger.client.model.ResourceType;
 import io.swagger.client.model.ResponseEntity;
 import io.swagger.client.model.Title;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.logging.Level;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,6 +70,19 @@ public class RepositoryUtil {
    */
   public static final int UNAUTHORIZED = 401;
   /**
+   * SID of group USERS
+   */
+  public static final String USERS_GROUP = "USERS";
+  /**
+   * SID of anonymous user.
+   */
+  public static final String ANONYMOUS_USER = "anonymousUser";
+
+  /**
+   * IF-Match header
+   */
+  private static final String IF_MATCH_HEADER = "If-Match";
+  /**
    * Instance for talking with repository.
    */
   KitDmProperties properties = null;
@@ -70,7 +91,7 @@ public class RepositoryUtil {
    * Client for accessing repository.
    */
   DataResourceControllerApi apiInstance;
-  /** 
+  /**
    * Client for authentication.
    */
   LoginControllerApi api4Login;
@@ -111,12 +132,19 @@ public class RepositoryUtil {
     apiInstance = new DataResourceControllerApi(defaultClient);
     // Initialize connection for login (if authentication is enabled)
     if (Boolean.valueOf(properties.getAuthentication())) {
-      ApiClient loginClient = Configuration.getDefaultApiClient();
+      ApiClient loginClient = new ApiClient();
       loginClient.setDebugging(Boolean.getBoolean(properties.getDebug()));
       loginClient.setBasePath(properties.getBasePathAuth());
+      // Build authentication header
+      String auth = properties.getUsername() + ":" + properties.getPassword();
+      byte[] encodedAuth = Base64.encodeBase64(
+              auth.getBytes(StandardCharsets.ISO_8859_1));
+      String authHeader = "Basic " + new String(encodedAuth);
+      loginClient.addDefaultHeader("Authorization", authHeader);
+
       api4Login = new LoginControllerApi(loginClient);
 
-      authorizeConnection();
+      authorizeConnection(defaultClient);
     }
   }
 
@@ -124,19 +152,22 @@ public class RepositoryUtil {
    * Login for KIT DM 2.0 and set bearer token for REST client.
    */
   private void authorizeConnection() {
-    if (Boolean.valueOf(properties.getAuthentication())) {
-      String auth = properties.getUsername() + ":" + properties.getPassword();
+    authorizeConnection(apiInstance.getApiClient());
+  }
 
-      byte[] encodedAuth = Base64.encodeBase64(
-              auth.getBytes(StandardCharsets.ISO_8859_1));
-      String authHeader = "Basic " + new String(encodedAuth);
+  /**
+   * Login for KIT DM 2.0 and set bearer token for REST client.
+   *
+   * @param apiClient apiClient to add bearer token.
+   */
+  private void authorizeConnection(ApiClient apiClient) {
+    if (Boolean.valueOf(properties.getAuthentication())) {
       try {
-      api4Login.getApiClient().addDefaultHeader("Authorization", authHeader);
-      String bearerToken = "Bearer " + api4Login.loginUsingPOST("OCRD");
-      LOGGER.trace("Create bearer token for user '{}': {}", properties.getUsername(), bearerToken);
-      apiInstance.getApiClient().addDefaultHeader("Authorization", bearerToken);
+        String bearerToken = "Bearer " + api4Login.loginUsingPOST("OCRD");
+        LOGGER.trace("Create bearer token for user '{}': {}", properties.getUsername(), bearerToken);
+        apiClient.addDefaultHeader("Authorization", bearerToken);
       } catch (ApiException ae) {
-        LOGGER.error("Error during authorization!", ae);
+        logApiException("Error during authorization!", ae);
       }
     }
   }
@@ -162,9 +193,14 @@ public class RepositoryUtil {
     resource.setPublisher("OCR-D");
     resource.setEmbargoDate(new GregorianCalendar(2099, 11, 31, 0, 0, 0).toInstant().toString());
     resource.addTitlesItem(new Title().value(title));
+
     ApiResponse<DataResource> result = null;
     try {
       result = apiInstance.createUsingPOSTWithHttpInfo(resource);
+      String etag = getEtagFromHeader(result);
+      if (etag != null) {
+        setAnonymousAccess(idOfResource, etag);
+      }
     } catch (ApiException ae) {
       if (ae.getCode() == UNAUTHORIZED) {
         LOGGER.warn("Unauthorized access! Create new token and try it once again!");
@@ -173,6 +209,8 @@ public class RepositoryUtil {
         // ...try once again
         result = apiInstance.createUsingPOSTWithHttpInfo(resource);
       } else {
+        String message = String.format("Create data resource with title '%1s'", title);
+        logApiException(message, ae);
         throw ae;
       }
     }
@@ -209,6 +247,8 @@ public class RepositoryUtil {
         // ...try once again
         handleFileUpload = apiInstance.handleFileUploadUsingPOSTWithHttpInfo(idOfResource, uploadFile, force, metadata, relativePath.toString());
       } else {
+        String message = String.format("Post file '%1s' to resource with ID '%2s'", relativePath.toString(), idOfResource);
+        logApiException(message, ae);
         throw ae;
       }
     }
@@ -278,4 +318,71 @@ public class RepositoryUtil {
     return downloadString;
   }
 
+  /**
+   * Read ETag from Header.
+   *
+   * @param response Response from server.
+   *
+   * @return ETag or null if not present.
+   */
+  private <T> String getEtagFromHeader(ApiResponse<T> response) {
+    String etag = null;
+    List<String> etagList = response.getHeaders().get("ETag");
+    if (etagList != null) {
+      if (!etagList.isEmpty()) {
+        etag = etagList.get(0);
+      }
+    }
+    return etag;
+  }
+
+  /**
+   * Patch digital object to allow anonymous access.
+   *
+   * @param resourceId resource ID of digital object.
+   * @param etag ETag of digital object.
+   */
+  private void setAnonymousAccess(String resourceId, String etag) {
+    ApiClient defaultClient = new ApiClient();
+    defaultClient.setBasePath(properties.getBasePath());
+    defaultClient.setDebugging(Boolean.getBoolean(properties.getDebug()));
+    defaultClient.addDefaultHeader(IF_MATCH_HEADER, etag);
+    authorizeConnection(defaultClient);
+    DataResourceControllerApi patchInstance = new DataResourceControllerApi(defaultClient);
+
+    try {
+      // Set access for all authenticated users
+      AclEntry aclUser = new AclEntry();
+      aclUser.setSid(USERS_GROUP);
+      aclUser.setPermission(AclEntry.PermissionEnum.READ);
+      AclEntry aclAnonymousUser = new AclEntry();
+      aclAnonymousUser.setSid(ANONYMOUS_USER);
+      aclAnonymousUser.setPermission(AclEntry.PermissionEnum.READ);
+      ObjectMapper mapper = new ObjectMapper();
+      //build patch operation
+      AddOperation op = new AddOperation(JsonPointer.of("acls", "1"), mapper.readTree(mapper.writeValueAsString(aclUser)));
+      AddOperation op2 = new AddOperation(JsonPointer.of("acls", "2"), mapper.readTree(mapper.writeValueAsString(aclAnonymousUser)));
+      JsonPatch patch_add = new JsonPatch(Arrays.asList(op, op2));
+      patchInstance.patchUsingPATCHWithHttpInfo(resourceId, mapper.writeValueAsString(patch_add));
+    } catch (ApiException ex) {
+      String message = String.format("Error patching digital Object '%1s' with ETag '%2s'", resourceId, etag);
+      logApiException(message, ex);
+    } catch (IOException ex) {
+      LOGGER.error("Error while patching digital Object '{}' with ETag '{}'", resourceId, etag);
+      LOGGER.error("Stacktrace: ", ex);
+    }
+
+  }
+
+  /**
+   * Log exception.
+   *
+   * @param message Additional message
+   * @param ae Exception.
+   */
+  private void logApiException(String message, ApiException ae) {
+    LOGGER.error(message);
+    LOGGER.error("ApiException: Status code: {} - Message: {}", ae.getCode(), ae.getMessage());
+    LOGGER.error("Response body: {}", ae.getResponseBody());
+  }
 }
