@@ -8,7 +8,7 @@ In order to build this microservice you'll need:
 * PostgreSQL
 * KITDM 2.0 Authentication Service (optional)
 
-## Install PostGreSQL 
+## Install PostgreSQL 
 [Install PostgreSQL with docker](installation_postgres.md)
 
 ## Install KIT DM 2.0 

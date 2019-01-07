@@ -5,13 +5,16 @@
 In order to build this microservice you'll need:
 
 * Java SE Development Kit 8 or higher
-* PostgreSQL
-* ArangoDB 
+* PostgreSQL [Installation using docker](installation_postgres.md)
+* ArangoDB [Installation using docker](installation_arangodb.md)
 * KITDM 2.0
 * KITDM 2.0 Authentication Service (optional)
 
 ## Install KIT Data Manager 
 First you have to install [KIT Data Manager](installation_KIT_DM_2.0.md)
+
+## Install ArangoDB  
+If ArangoDB is not already installed you also have to [install ArangoDB](installation_arangodb.md). 
 
 ## Install Metastore Service 
 ```bash=bash

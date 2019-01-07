@@ -55,7 +55,7 @@ spring.datasource.password: KITDM_ADMIN_PASSWORD
 repo.auth.jwtSecret: ANY_JWT_SECRET
 
 ```      
-:NOTE: jwtSecret has to be the same as the one used in KIT DM 2.0.
+:information_source: jwtSecret has to be the same as the one used in KIT DM 2.0.
 
 ## Start authentication service
 ```bash=bash

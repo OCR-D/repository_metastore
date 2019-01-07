@@ -14,18 +14,8 @@ In order to build this microservice you'll need:
 
 * Java SE Development Kit 8 or higher
 
-You have to (install KIT DM 2.0)[#Install KIT DM 2.0]first.
-```bash=bash
-# Build metastore service
-user@localhost:/home/user/$git clone https://github.com/OCR-D/repository_metastore.git
-user@localhost:/home/user/$cd repository_metastore
-user@localhost:/home/user/repository_metastore/$./gradlew build
-BUILD SUCCESSFUL in 3s
-6 actionable tasks: 6 executed
-```
-
-As a result, a fat jar containing the entire service is created at 'build/libs/metastore-service-0.1.0.jar'.
-
+To build and install the microservice, please follow the installation manual:
+[Installation KIT Data Manager - Metastore Service](installation.md)
 
 ## How to start
 
@@ -112,7 +102,7 @@ repo:
    messaging:
       enabled: false 
 ```
-##### Build and start docker container with postGreSQL
+##### Build and start docker container with postgreSQL
 First time you have to build docker container:
 ```bash=bash
 user@localhost:/home/user/$docker run -p 5555:5432 --name postgres4kitdm -e POSTGRES_PASSWORD=postgres -d postgres
