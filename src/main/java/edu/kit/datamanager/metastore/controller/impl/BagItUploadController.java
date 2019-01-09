@@ -246,9 +246,9 @@ public class BagItUploadController implements IBagItUploadController {
                 LOGGER.trace("Change URL for Metsfile from '{}' to '{}'", item.getUrl(), downloadUrl);
                 item.setUrl(downloadUrl);
                 item.setResourceId(repoIdentifier);
+                metsFileRepository.save(item);
               }
             }
-            metsFileRepository.saveAll(findMetsFilesByResourceId);
 
             findMetsFilesByResourceId = metsFileRepository.findByResourceIdAndCurrentTrue(resourceId);
             if (LOGGER.isTraceEnabled()) {
