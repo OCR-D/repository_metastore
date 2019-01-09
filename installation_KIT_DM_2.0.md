@@ -27,15 +27,13 @@ user@localhost:/home/user/base-repo/$git submodule update --remote --merge
 Cloning into '/home/user/base-repo/libraries/service-base'...
 Submodule path 'libraries/service-base': checked out '0c...'
 user@localhost:/home/user/base-repo/$cd libraries/service-base/
-user@localhost:/home/user/base-repo/libraries/service-base/$gradlew install
+user@localhost:/home/user/base-repo/libraries/service-base/$./gradlew install
 Starting a Gradle Daemon (subsequent builds will be faster)
 [...]
 BUILD SUCCESSFUL in 10s
 3 actionable tasks: 3 executed
 user@localhost:/home/user/base-repo/libraries/service-base/$cd ../../
-user@localhost:/home/user/base-repo/$gradlew build
-Directory: /home/user/base-repo
-user/base-repo> gradlew build
+user@localhost:/home/user/base-repo/$./gradlew build
 [...]
 BUILD SUCCESSFUL in 51s
 7 actionable tasks: 7 executed
@@ -67,11 +65,13 @@ spring.datasource.password: KITDM_ADMIN_PASSWORD
 [...]
 #kit dm settings
 repo.auth.enabled: false (in case of authentication set this value to true)
-repo.auth.jwtSecret: ANY_JWT_SECRET
+repo.auth.jwtSecret:ANY_JWT_SECRET
 repo.basepath:  file:///home/user/server/kitdm2.0/archive
 repo.messaging.enabled: false
 [...]
 ```
+:information_source: Please avoid any whitespaces in front or behind 'ANY_JWT_SECRET'
+
 ##### Set logging to INFO or WARN
 ```
 [...]

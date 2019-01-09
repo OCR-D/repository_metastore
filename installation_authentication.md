@@ -6,6 +6,7 @@ In order to build this microservice you'll need:
 
 * Java SE Development Kit 8 or higher
 * PostgreSQL
+* curl
 
 ## What do you need?
 * Connection string to database (e.g.: jdbc:postgresql://localhost:5555/kitdm20_auth)
@@ -26,12 +27,12 @@ user@localhost:/home/user/auth_service/$git submodule update --remote --merge
 Cloning into '/home/user/auth-service/libraries/service-base'...
 Submodule path 'libraries/service-base': checked out '0c...'
 user@localhost:/home/user/auth_service/$cd libraries/service-base/
-user@localhost:/home/user/auth_service/libraries/service-base/$gradlew install
+user@localhost:/home/user/auth_service/libraries/service-base/$./gradlew install
 [...]
 BUILD SUCCESSFUL in 5s
 3 actionable tasks: 3 executed
 user@localhost:/home/user/auth_service/libraries/service-base/$cd ../../
-user@localhost:/home/user/auth_service/$gradlew build
+user@localhost:/home/user/auth_service/$./gradlew build
 [...]
 BUILD SUCCESSFUL in 45s
 5 actionable tasks: 5 executed
@@ -52,10 +53,11 @@ spring.datasource.username: kitdm_admin
 spring.datasource.password: KITDM_ADMIN_PASSWORD
 [...]
 #kit dm settings
-repo.auth.jwtSecret: ANY_JWT_SECRET
+repo.auth.jwtSecret:ANY_JWT_SECRET
 
 ```      
 :information_source: jwtSecret has to be the same as the one used in KIT DM 2.0.
+:information_source: Please avoid any whitespaces in front or behind 'ANY_JWT_SECRET'
 
 ## Start authentication service
 ```bash=bash

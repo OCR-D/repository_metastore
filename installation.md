@@ -56,7 +56,7 @@ spring.security.user.password=e.g.:eeedfaf4-61ba-4a7a-8d4e-8b2a3342d4a1
 [...]
 kitdm20.authentication=false   (set this according to settings at KIT_DM2.0)
 [...]
-kitdm20.password=KITDM_ADMIN_PASSWORD
+kitdm20.password=PASSWORD_OCRD_USER
 [...]
 ```      
 
