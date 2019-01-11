@@ -121,7 +121,8 @@ public class RepositoryUtil {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
     defaultClient.setBasePath(properties.getBasePath());
     defaultClient.setDebugging(Boolean.getBoolean(properties.getDebug()));
-//    defaultClient.setAccessToken(accessToken);
+    defaultClient.setVerifyingSsl(false);
+ //    defaultClient.setAccessToken(accessToken);
 //    defaultClient.setApiKey(apiKey);
 //    defaultClient.setApiKeyPrefix(apiKeyPrefix);
 //    defaultClient.setConnectTimeout(0);
@@ -347,6 +348,7 @@ public class RepositoryUtil {
     defaultClient.setBasePath(properties.getBasePath());
     defaultClient.setDebugging(Boolean.getBoolean(properties.getDebug()));
     defaultClient.addDefaultHeader(IF_MATCH_HEADER, etag);
+    defaultClient.setVerifyingSsl(false);
     authorizeConnection(defaultClient);
     DataResourceControllerApi patchInstance = new DataResourceControllerApi(defaultClient);
 
