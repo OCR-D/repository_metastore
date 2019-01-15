@@ -66,7 +66,13 @@ public class MetsDocumentUtil {
       for (Object node2 : fileNodes) {
         Element fileElement = (Element) node2;
         String id = JaxenUtil.getAttributeValue(fileElement, "./@ID");
-        String groupId = JaxenUtil.getAttributeValue(fileElement, "./@GROUPID");
+        String groupId;
+        try {
+          groupId = JaxenUtil.getAttributeValue(metsDocument, "//mets:div[./mets:fptr/@FILEID='" + id + "']/@ID", namespaces);
+        } catch (ArrayIndexOutOfBoundsException aioobe) {
+          // Try to find groupId using old style
+         groupId = JaxenUtil.getAttributeValue(fileElement, "./@GROUPID");
+        }
         String mimetype = JaxenUtil.getAttributeValue(fileElement, "./@MIMETYPE");
         String url = JaxenUtil.getAttributeValue(fileElement, "./mets:FLocat/@xlink:href", namespaces);
         LOGGER.trace("Found file with id: {}, groupId: {}, mimetype: {}, url: {}", id, groupId, mimetype, url);
