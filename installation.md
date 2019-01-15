@@ -140,6 +140,12 @@ user@localhost:/home/user/$curl -XGET http://localhost:8090/api/v1/dataresources
 You may also try these URLs in a browser. (http://localhost:8080/api/v1/metastore/bagit)
 
 
+## Installing Spring Boot Applications
+To start all services during startup, please have a look at this site: 
+[Installing Spring Boot Applications](https://docs.spring.io/spring-boot/docs/current/reference/html/deployment-install.html)
+If there is no root access you may start the job via cronjob:
+[Execute Cron Job After System Reboot](https://www.cyberciti.biz/faq/linux-execute-cron-job-after-system-reboot/)
+
 ## More Information
 
 * [KIT DM 2.0](https://github.com/kit-data-manager/base-repo.git)
@@ -148,6 +154,8 @@ You may also try these URLs in a browser. (http://localhost:8080/api/v1/metastor
 * [ArangoDB](https://www.arangodb.com/)
 * [ArangoDB(Docker)](https://hub.docker.com/r/arangodb/arangodb/)
 * [Spring Boot Security](https://docs.spring.io/spring-boot/docs/2.0.5.RELEASE/reference/htmlsingle/#boot-features-security)
+* [Installing Spring Boot Applications](https://docs.spring.io/spring-boot/docs/current/reference/html/deployment-install.html)
+* [Execute Cron Job After System Reboot](https://www.cyberciti.biz/faq/linux-execute-cron-job-after-system-reboot/)
 
 ## License
 
