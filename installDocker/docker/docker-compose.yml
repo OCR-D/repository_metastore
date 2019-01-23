@@ -1,0 +1,50 @@
+version: "3"
+services:
+  proxydns:
+    image: defreitas/dns-proxy-server
+    hostname: dns.mageddo
+    ports:
+      - "5380:5380"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/etc/resolv.conf:/etc/resolv.conf"
+    restart: always
+  postgres4kitdm:
+    build: postgres
+    environment:
+      - POSTGRES_PASSWORD=postgres4Docker
+    ports:
+      - "5432:5432"
+    volumes:
+      - "${PWD}/server/backup/postgres:/dump"
+      - "${PWD}/server/postgres:/var/lib/postgresql/data"
+    network_mode: bridge 
+  arangodb4kitdm:
+    image: arangodb
+    environment:
+      - ARANGO_ROOT_PASSWORD=arangodb4Docker
+    ports:
+      - "8529:8529"
+    volumes:
+      - "${PWD}/server/backup/arangodb:/dump"
+      - "${PWD}/server/arangodb:/var/lib/arangodb3"
+    network_mode: bridge 
+  kitdm20:
+    build: base-repo
+    hostname: kitdm20.docker
+    links: 
+      - postgres4kitdm
+    ports:
+      - "8090:8090"
+    volumes:
+      - "${PWD}/server/kitdm:/kitdm/archive"    
+    network_mode: bridge 
+  metastore:
+    build: metastore
+    links: 
+      - postgres4kitdm
+      - arangodb4kitdm
+      - kitdm20
+    ports:
+      - "8080:8080"
+    network_mode: bridge 
