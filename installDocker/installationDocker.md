@@ -17,7 +17,7 @@ user@localhost:/home/user/$sudo add-apt-repository \
 user@localhost:/home/user/$sudo apt-get update
 user@localhost:/home/user/$apt-get install docker-ce
 ```
-## Installation Docker
+## Installation Docker Compose
 ```bash=bash
 # Build metastore service
 user@localhost:/home/user/$sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
