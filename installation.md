@@ -92,7 +92,7 @@ spring.servlet.multipart.max-file-size=1000MB
 spring.servlet.multipart.max-request-size=1000MB
 ```      
 
-## Start metastore service microservice
+## Start Metastore Service Microservice
 The following services should be available and running:
 * PostgreSQL
 * ArangoDB
@@ -115,7 +115,7 @@ user@localhost:/home/user/metastore-service$ java -jar build/libs/metastore-serv
 Using generated security password: GENERATED_PASSWORD
 [...]
 ```
-## First steps
+## First Steps
 The write access to the service is secured with a password, which is regenerated every time the service is started. There is an 'ingest' user for ingesting files.
 1. Upload zipped BagIt container to metastore.
 ```bash=bash
