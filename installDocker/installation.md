@@ -65,6 +65,9 @@ user@localhost:/home/user/$docker exec -ti docker_postgres4kitdm_1 sh -c "pg_dum
 # Backup arangodb
 user@localhost:/home/user/$sudo su
 user@localhost:/home/user/$docker exec -ti docker_arangodb4kitdm_1 sh -c "arangodump --include-system-collections true --server.database metastore-OCR-D --output-directory /dump/dump_`date +%Y_%m_%dt%H_%M`"
+Please specify a password: arangodb4Docker
+[...]
+Wrote xxxx byte(s) into datafiles, sent 9 batch(es)
 ```
 
 ## First Steps
