@@ -53,7 +53,7 @@ public class MetsFileService implements IMetsFileService {
 
     Set<String> setOfGroupIds = new HashSet<>();
     for (MetsFile metsFile : metsFileIterator) {
-      setOfGroupIds.add(metsFile.getGroupId());
+      setOfGroupIds.add(metsFile.getDmdId());
     }
     List<String> listOfGroupIds = new ArrayList<>(setOfGroupIds);
 

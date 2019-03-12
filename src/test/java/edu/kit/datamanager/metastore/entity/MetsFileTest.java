@@ -72,7 +72,7 @@ public class MetsFileTest {
     assertNull(metsFile.getFileId());
     assertNull(metsFile.getResourceId());
     assertNull(metsFile.getMimetype());
-    assertNull(metsFile.getGroupId());
+    assertNull(metsFile.getDmdId());
     assertNull(metsFile.getUse());
     assertNull(metsFile.getUrl());
     assertTrue(metsFile.toString().contains(id));
@@ -87,7 +87,7 @@ public class MetsFileTest {
     assertNull(metsFile.getId());
     assertNull(metsFile.getResourceId());
     assertNull(metsFile.getMimetype());
-    assertNull(metsFile.getGroupId());
+    assertNull(metsFile.getDmdId());
     assertNull(metsFile.getUse());
     assertNull(metsFile.getUrl());
     assertTrue(metsFile.toString().contains(fileId));
@@ -102,7 +102,7 @@ public class MetsFileTest {
     assertNull(metsFile.getId());
     assertNull(metsFile.getFileId());
     assertNull(metsFile.getMimetype());
-    assertNull(metsFile.getGroupId());
+    assertNull(metsFile.getDmdId());
     assertNull(metsFile.getUse());
     assertNull(metsFile.getUrl());
     assertTrue(metsFile.toString().contains(resourceId));
@@ -118,7 +118,7 @@ public class MetsFileTest {
     assertNull(metsFile.getId());
     assertNull(metsFile.getFileId());
     assertNull(metsFile.getMimetype());
-    assertNull(metsFile.getGroupId());
+    assertNull(metsFile.getDmdId());
     assertNull(metsFile.getUse());
     assertNull(metsFile.getUrl());
   }
@@ -133,7 +133,7 @@ public class MetsFileTest {
     assertNull(metsFile.getResourceId());
     assertNull(metsFile.getFileId());
     assertNull(metsFile.getMimetype());
-    assertNull(metsFile.getGroupId());
+    assertNull(metsFile.getDmdId());
     assertNull(metsFile.getUse());
     assertNull(metsFile.getUrl());
     assertTrue(metsFile.toString().contains("version=" + version.intValue()));
@@ -142,8 +142,8 @@ public class MetsFileTest {
   @Test
   public void testMetsFileSetGetGroupId() {
     MetsFile metsFile = new MetsFile();
-    metsFile.setGroupId(groupId);
-    assertTrue(metsFile.getGroupId().equals(groupId));
+    metsFile.setDmdId(groupId);
+    assertTrue(metsFile.getDmdId().equals(groupId));
     assertTrue(metsFile.getCurrent());
     assertNull(metsFile.getId());
     assertNull(metsFile.getFileId());
@@ -164,7 +164,7 @@ public class MetsFileTest {
     assertNull(metsFile.getId());
     assertNull(metsFile.getFileId());
     assertNull(metsFile.getResourceId());
-    assertNull(metsFile.getGroupId());
+    assertNull(metsFile.getDmdId());
     assertNull(metsFile.getUse());
     assertNull(metsFile.getUrl());
     assertTrue(metsFile.toString().contains(mimetype));
@@ -179,7 +179,7 @@ public class MetsFileTest {
     assertNull(metsFile.getId());
     assertNull(metsFile.getFileId());
     assertNull(metsFile.getResourceId());
-    assertNull(metsFile.getGroupId());
+    assertNull(metsFile.getDmdId());
     assertNull(metsFile.getMimetype());
     assertNull(metsFile.getUrl());
     assertTrue(metsFile.toString().contains(use));
@@ -194,7 +194,7 @@ public class MetsFileTest {
     assertNull(metsFile.getId());
     assertNull(metsFile.getFileId());
     assertNull(metsFile.getResourceId());
-    assertNull(metsFile.getGroupId());
+    assertNull(metsFile.getDmdId());
     assertNull(metsFile.getMimetype());
     assertNull(metsFile.getUse());
     assertTrue(metsFile.toString().contains(url));
@@ -213,7 +213,7 @@ public class MetsFileTest {
     assertTrue(metsFile.toString().contains(resourceId));
     assertTrue(metsFile.getVersion().equals(version));
     assertTrue(metsFile.toString().contains("version=" + version));
-    assertTrue(metsFile.getGroupId().equals(groupId));
+    assertTrue(metsFile.getDmdId().equals(groupId));
     assertTrue(metsFile.toString().contains(groupId));
     assertTrue(metsFile.getMimetype().equals(mimetype));
     assertTrue(metsFile.toString().contains(mimetype));
@@ -239,7 +239,7 @@ public class MetsFileTest {
     assertTrue(metsFile.toString().contains(resourceId));
     assertTrue(metsFile.getVersion().equals(version));
     assertTrue(metsFile.toString().contains("version=" + version));
-    assertTrue(metsFile.getGroupId().equals(groupId));
+    assertTrue(metsFile.getDmdId().equals(groupId));
     assertTrue(metsFile.toString().contains(groupId));
     assertTrue(metsFile.getMimetype().equals(mimetype));
     assertTrue(metsFile.toString().contains(mimetype));
@@ -258,7 +258,7 @@ public class MetsFileTest {
     assertTrue(metsFile2.toString().contains(resourceId));
     assertTrue(metsFile2.getVersion().equals(version2));
     assertTrue(metsFile2.toString().contains("version=" + version2));
-    assertTrue(metsFile2.getGroupId().equals(groupId));
+    assertTrue(metsFile2.getDmdId().equals(groupId));
     assertTrue(metsFile2.toString().contains(groupId));
     assertTrue(metsFile2.getMimetype().equals(mimetype));
     assertTrue(metsFile2.toString().contains(mimetype));

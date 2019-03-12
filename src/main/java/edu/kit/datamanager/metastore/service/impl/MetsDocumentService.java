@@ -16,15 +16,24 @@
 package edu.kit.datamanager.metastore.service.impl;
 
 import com.arangodb.ArangoDBException;
+import edu.kit.datamanager.metastore.entity.ClassificationMetadata;
+import edu.kit.datamanager.metastore.entity.GenreMetadata;
 import edu.kit.datamanager.metastore.entity.IVersion;
+import edu.kit.datamanager.metastore.entity.LanguageMetadata;
 import edu.kit.datamanager.metastore.entity.MetsDocument;
 import edu.kit.datamanager.metastore.entity.MetsFile;
+import edu.kit.datamanager.metastore.entity.MetsIdentifier;
 import edu.kit.datamanager.metastore.entity.MetsProperties;
 import edu.kit.datamanager.metastore.exception.InvalidFormatException;
 import edu.kit.datamanager.metastore.exception.ResourceAlreadyExistsException;
+import edu.kit.datamanager.metastore.repository.ClassificationMetadataRepository;
+import edu.kit.datamanager.metastore.repository.GenreMetadataRepository;
+import edu.kit.datamanager.metastore.repository.LanguageMetadataRepository;
 import edu.kit.datamanager.metastore.repository.MetsDocumentRepository;
 import edu.kit.datamanager.metastore.repository.MetsFileRepository;
+import edu.kit.datamanager.metastore.repository.MetsIdentifierRepository;
 import edu.kit.datamanager.metastore.repository.MetsPropertiesRepository;
+import edu.kit.datamanager.metastore.repository.PageMetadataRepository;
 import edu.kit.datamanager.metastore.service.IMetsDocumentService;
 import edu.kit.datamanager.metastore.util.MetsDocumentUtil;
 import java.util.ArrayList;
@@ -48,13 +57,13 @@ public class MetsDocumentService implements IMetsDocumentService {
    * Logger.
    */
   private static final Logger LOGGER = LoggerFactory.getLogger(MetsDocumentService.class);
-  
+
   /**
    * Repository persisting Mets documents.
    */
   @Autowired
   private MetsDocumentRepository metsRepository;
-  
+
   /**
    * Repository persisting METS files.
    */
@@ -66,6 +75,36 @@ public class MetsDocumentService implements IMetsDocumentService {
    */
   @Autowired
   private MetsPropertiesRepository metsPropertiesRepository;
+
+  /**
+   * Repository persisting METS identifiers.
+   */
+  @Autowired
+  private MetsIdentifierRepository metsIdentifierRepository;
+
+  /**
+   * Repository persisting page metadata..
+   */
+  @Autowired
+  private PageMetadataRepository pageMetadataRepository;
+
+  /**
+   * Repository persisting classification metadata.
+   */
+  @Autowired
+  private ClassificationMetadataRepository classificationMetadataRepository;
+
+  /**
+   * Repository persisting genre metadata.
+   */
+  @Autowired
+  private GenreMetadataRepository genreMetadataRepository;
+
+  /**
+   * Repository persisting language metadata.
+   */
+  @Autowired
+  private LanguageMetadataRepository languageMetadataRepository;
 
   @Override
   public List<MetsDocument> getAllDocuments() {
@@ -117,34 +156,76 @@ public class MetsDocumentService implements IMetsDocumentService {
       // METS to XML Document
       // ****************************************************
       metsDocument = JaxenUtil.getDocument(fileContent);
+      // ****************************************************
+      // Validate METS (priority low)
+      // ****************************************************
+      // ****************************************************
+      // Extract section documents (priority low)
+      // ****************************************************
+      // ****************************************************
+      //   Validate section documents (priority low)
+      // ****************************************************
+      // ****************************************************
+      // Extract fileGrps
+      // ****************************************************
+      List<MetsFile> extractMetsFiles = MetsDocumentUtil.extractMetsFiles(metsDocument, resourceId, 1);
+      metsFileRepository.saveAll(extractMetsFiles);
+      // ****************************************************
+      // Extract METS properties 
+      // ****************************************************
+      MetsProperties metsProperties;
+      metsProperties = MetsDocumentUtil.extractMetadataFromMets(metsDocument, resourceId);
+      if (LOGGER.isTraceEnabled()) {
+        LOGGER.trace(metsProperties.toString());
+      }
+      metsPropertiesRepository.save(metsProperties);
+      // ****************************************************
+      // Extract METS identifiers 
+      // ****************************************************
+      List<MetsIdentifier> metsIdentifierList;
+      metsIdentifierList = MetsDocumentUtil.extractIdentifierFromMets(metsDocument, resourceId);
+      if (LOGGER.isTraceEnabled()) {
+        for (MetsIdentifier identifier : metsIdentifierList) {
+          LOGGER.trace(identifier.toString());
+        }
+      }
+      metsIdentifierRepository.saveAll(metsIdentifierList);
+      // ****************************************************
+      // Extract METS languages 
+      // ****************************************************
+      List<LanguageMetadata> languageMetadataList;
+      languageMetadataList = MetsDocumentUtil.extractLanguageMetadataFromMets(metsDocument, resourceId);
+      if (LOGGER.isTraceEnabled()) {
+        for (LanguageMetadata languageMetadata : languageMetadataList) {
+          LOGGER.trace(languageMetadata.toString());
+        }
+      }
+      languageMetadataRepository.saveAll(languageMetadataList);
+      // ****************************************************
+      // Extract METS classifications 
+      // ****************************************************
+      List<ClassificationMetadata> classificationMetadataList;
+      classificationMetadataList = MetsDocumentUtil.extractClassificationMetadataFromMets(metsDocument, resourceId);
+      if (LOGGER.isTraceEnabled()) {
+        for (ClassificationMetadata classificationMetadata : classificationMetadataList) {
+          LOGGER.trace(classificationMetadata.toString());
+        }
+      }
+      classificationMetadataRepository.saveAll(classificationMetadataList);
+      // ****************************************************
+      // Extract METS genres 
+      // ****************************************************
+      List<GenreMetadata> genreMetadataList = MetsDocumentUtil.extractGenreMetadataFromMets(metsDocument, resourceId);
+      if (LOGGER.isTraceEnabled()) {
+        for (GenreMetadata genreMetadata : genreMetadataList) {
+          LOGGER.trace(genreMetadata.toString());
+        }
+      }
+      genreMetadataRepository.saveAll(genreMetadataList);
     } catch (Exception ex) {
       LOGGER.error("Invalid METS file", ex);
       throw new InvalidFormatException("Invalid METS file!");
     }
-    // ****************************************************
-    // Validate METS (priority low)
-    // ****************************************************
-    // ****************************************************
-    // Extract section documents (priority low)
-    // ****************************************************
-    // ****************************************************
-    //   Validate section documents (priority low)
-    // ****************************************************
-    // ****************************************************
-    // Extract fileGrps
-    // ****************************************************
-    List<MetsFile> extractMetsFiles = MetsDocumentUtil.extractMetsFiles(metsDocument, resourceId, 1);
-    metsFileRepository.saveAll(extractMetsFiles);
-
-    // ****************************************************
-    // Extract METS properties 
-    // ****************************************************
-    MetsProperties metsProperties = new MetsProperties(metsDocument);
-    metsProperties.setResourceId(resourceId);
-    if (LOGGER.isTraceEnabled()) {
-      LOGGER.trace(metsProperties.toString());
-    }
-    metsPropertiesRepository.save(metsProperties);
 
     // ****************************************************
     //   Change URL if neccessary

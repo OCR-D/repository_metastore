@@ -16,21 +16,21 @@
 package edu.kit.datamanager.metastore.entity;
 
 /**
- * Interface to get and set GroupId of an instance.
+ * Interface to get and set DMDId of an instance.
  */
-public interface IGroupId {
+public interface IDmdId {
 
   /**
    * Set GROUPID of a file.
    *
    * @param groupId GROUPID to set.
    */
-  public void setGroupId(String groupId);
+  public void setDmdId(String groupId);
 
   /**
    * Get GROUPID of a file.
    *
    * @return GROUPID of the file.
    */
-  public String getGroupId();
+  public String getDmdId();
 }

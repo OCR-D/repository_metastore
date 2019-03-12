@@ -1,0 +1,57 @@
+/*
+ * Copyright 2018 Karlsruhe Institute of Technology.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package edu.kit.datamanager.metastore.repository;
+
+import com.arangodb.springframework.repository.ArangoRepository;
+import edu.kit.datamanager.metastore.entity.GroundTruthProperties;
+import edu.kit.datamanager.metastore.entity.IResourceId;
+import edu.kit.datamanager.metastore.entity.MetsProperties;
+import edu.kit.datamanager.metastore.entity.PageMetadata;
+
+/**
+ * Repository holding all PageMetadata.
+ */
+public interface PageMetadataRepository extends ArangoRepository<PageMetadata, String> {
+
+  /**
+   * Find PageMetadata by ResourceIdentifier.
+   *
+   * @param resourceId ResourceIdentifier of the resource.
+   *
+   * @return List of PageMetadata with given resourceIdentifier.
+   */
+  Iterable<PageMetadata> findByResourceId(String resourceId);
+
+  /**
+   * Find PageMetadata by ResourceIdentifier.
+   *
+   * @param resourceId ResourceIdentifier of the resource.
+   * @param dmdId DMDID of the page.
+   *
+   * @return List of PageMetadata with given resourceIdentifier and DMDID.
+   */
+  Iterable<PageMetadata> findByResourceIdAndDmdId(String resourceId, String dmdId);
+
+  /**
+   * Find PageMetadata by feature.
+   *
+   * @param feature Feature of the resource.
+   *
+   * @return List of PageMetadata with given feature.
+   */
+  Iterable<PageMetadata> findByFeature(GroundTruthProperties feature);
+
+}

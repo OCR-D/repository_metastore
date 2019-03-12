@@ -35,7 +35,7 @@ import com.arangodb.springframework.annotation.HashIndex;
  */
 @Document("metsFile")
 @HashIndex(fields = {"resourceId", "version", "fileId"}, unique = true)
-public class MetsFile implements IBaseEntity, IMimetype, IGroupId, IUrl, IUse {
+public class MetsFile implements IBaseEntity, IMimetype, IDmdId, IUrl, IUse {
   /** 
    * ID of the document.
    */
@@ -196,7 +196,7 @@ public class MetsFile implements IBaseEntity, IMimetype, IGroupId, IUrl, IUse {
    * 
    * @return the groupId
    */
-  public String getGroupId() {
+  public String getDmdId() {
     return groupId;
   }
 
@@ -205,7 +205,7 @@ public class MetsFile implements IBaseEntity, IMimetype, IGroupId, IUrl, IUse {
    * 
    * @param groupId the groupId to set
    */
-  public void setGroupId(String groupId) {
+  public void setDmdId(String groupId) {
     this.groupId = groupId;
   }
 

@@ -91,9 +91,8 @@ public class MetsDocumentUtilTest {
     File file = new File("src/test/resources/mets/validMets.xml");
     assertTrue("File exists!", file.exists());
     String resourceId = "resourceId";
-    Integer version = 3;
     Document metsDocument = JaxenUtil.getDocument(file);
-    MetsProperties metsProperties = MetsDocumentUtil.extractProperties(metsDocument, resourceId, version);
+    MetsProperties metsProperties = MetsDocumentUtil.extractMetadataFromMets(metsDocument,resourceId);
     assertEquals(metsProperties.getTitle(),"Der Herold");
     assertEquals(metsProperties.getPpn(),"PPN767137728");
     assertEquals(metsProperties.getResourceId(), resourceId);
