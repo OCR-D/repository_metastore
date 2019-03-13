@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Contains all metadata of a single page.
  */
-public class Page {
+public class PageFeatures {
    /**
     * Order of the page.
     */

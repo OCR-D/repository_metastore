@@ -18,6 +18,7 @@ package edu.kit.datamanager.metastore.controller.impl;
 import edu.kit.datamanager.metastore.controller.IMetsDocumentController;
 import com.arangodb.ArangoDBException;
 import edu.kit.datamanager.metastore.controller.IMetsFileController;
+import edu.kit.datamanager.metastore.dao.MetsMetadata;
 import edu.kit.datamanager.metastore.entity.MetsDocument;
 import edu.kit.datamanager.metastore.entity.MetsFile;
 import edu.kit.datamanager.metastore.service.IMetsDocumentService;
@@ -117,6 +118,21 @@ public class MetsDocumentController implements IMetsDocumentController {
     List<String> resourceIdList;
     resourceIdList = metastoreResourceService.getResourceIdsByPpn(ppn);
     return new ResponseEntity<>(resourceIdList, HttpStatus.OK);
+  }
+
+  @Override
+  public ResponseEntity<MetsMetadata> getLatestMetadataOfDocument(String resourceId) {
+    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  }
+
+  @Override
+  public ResponseEntity<MetsMetadata> getLatestMetadataOfDocumentAsHtml(String resourceId) {
+    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  }
+
+  @Override
+  public ResponseEntity<MetsMetadata> getLatestGroundTruthMetadataOfDocumentAsHtml(String resourceId) {
+    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
 
   /**

@@ -17,7 +17,7 @@ package edu.kit.datamanager.metastore.util;
 
 import edu.kit.datamanager.metastore.dao.MetsMetadata;
 import edu.kit.datamanager.metastore.dao.ModsIdentifier;
-import edu.kit.datamanager.metastore.dao.Page;
+import edu.kit.datamanager.metastore.dao.PageFeatures;
 import edu.kit.datamanager.metastore.entity.ClassificationMetadata;
 import edu.kit.datamanager.metastore.entity.GenreMetadata;
 import edu.kit.datamanager.metastore.entity.LanguageMetadata;
@@ -360,12 +360,12 @@ public class MetsDocumentUtil {
       dao.setLanguage(genreList);
     }
     if (pages != null) {
-      List<Page> pageList = new ArrayList<>();
-      Map<String, Page> pageMap = new HashMap<>();
+      List<PageFeatures> pageList = new ArrayList<>();
+      Map<String, PageFeatures> pageMap = new HashMap<>();
       pages.forEach((page) -> {
-        Page item = pageMap.get(page.getDmdId());
+        PageFeatures item = pageMap.get(page.getDmdId());
         if (item == null) {
-          item = new Page();
+          item = new PageFeatures();
           item.setDmdId(page.getDmdId());
           item.setOrder(page.getOrder());
           pageMap.put(page.getDmdId(), item);

@@ -45,7 +45,7 @@ public class MetsMetadata {
   /**
    * List of metadata of the pages.
    */
-  private List<Page> pages = new ArrayList<>();
+  private List<PageFeatures> pages = new ArrayList<>();
 
   /**
    * Licence of document.
@@ -148,7 +148,7 @@ public class MetsMetadata {
    *
    * @return the pages
    */
-  public List<Page> getPages() {
+  public List<PageFeatures> getPages() {
     return pages;
   }
 
@@ -157,7 +157,7 @@ public class MetsMetadata {
    *
    * @param pages the pages to set
    */
-  public void setPages(List<Page> pages) {
+  public void setPages(List<PageFeatures> pages) {
     this.pages = pages;
   }
 
