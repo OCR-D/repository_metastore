@@ -189,7 +189,9 @@ public class MetsDocumentService implements IMetsDocumentService {
           LOGGER.trace(identifier.toString());
         }
       }
-      metsIdentifierRepository.saveAll(metsIdentifierList);
+      if (!metsIdentifierList.isEmpty()) {
+        metsIdentifierRepository.saveAll(metsIdentifierList);
+      }
       // ****************************************************
       // Extract METS languages 
       // ****************************************************
@@ -200,7 +202,9 @@ public class MetsDocumentService implements IMetsDocumentService {
           LOGGER.trace(languageMetadata.toString());
         }
       }
-      languageMetadataRepository.saveAll(languageMetadataList);
+      if (!languageMetadataList.isEmpty()) {
+        languageMetadataRepository.saveAll(languageMetadataList);
+      }
       // ****************************************************
       // Extract METS classifications 
       // ****************************************************
@@ -211,7 +215,9 @@ public class MetsDocumentService implements IMetsDocumentService {
           LOGGER.trace(classificationMetadata.toString());
         }
       }
-      classificationMetadataRepository.saveAll(classificationMetadataList);
+      if (!classificationMetadataList.isEmpty()) {
+        classificationMetadataRepository.saveAll(classificationMetadataList);
+      }
       // ****************************************************
       // Extract METS genres 
       // ****************************************************
@@ -221,7 +227,9 @@ public class MetsDocumentService implements IMetsDocumentService {
           LOGGER.trace(genreMetadata.toString());
         }
       }
-      genreMetadataRepository.saveAll(genreMetadataList);
+      if (!genreMetadataList.isEmpty()) {
+        genreMetadataRepository.saveAll(genreMetadataList);
+      }
     } catch (Exception ex) {
       LOGGER.error("Invalid METS file", ex);
       throw new InvalidFormatException("Invalid METS file!");

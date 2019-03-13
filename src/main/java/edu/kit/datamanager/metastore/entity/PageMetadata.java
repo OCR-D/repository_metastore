@@ -25,12 +25,12 @@ import com.arangodb.springframework.annotation.HashIndex;
  * These are: <p><ul>
  *    <li>Resource Identifier</li>
  *    <li>Order</li>
- *    <li>DMDID of page</li>
+ *    <li>PAGEID of page</li>
  *    <li>FEATURE of page</li>
  *    </ul></p>
  */
 @Document("pageMetadata")
-@HashIndex(fields = {"resourceId", "dmdId"})
+@HashIndex(fields = {"resourceId", "pageId"})
 @HashIndex(fields = {"feature"})
 public class PageMetadata {
   /** 
@@ -47,9 +47,9 @@ public class PageMetadata {
    */
   private String order;
   /**
-   * DMDID of the page. 
+   * PAGEID of the page. 
    */
-  private String dmdId;
+  private String pageId;
   
   /** 
    * Feature of the page.
@@ -68,14 +68,14 @@ public class PageMetadata {
    * 
    * @param resourceId ResourceID of the METS document.
    * @param order Order of the page.
-   * @param dmdId ID of the page.
+   * @param pageId ID of the page.
    * @param feature One Feature of the page.
    */
   public PageMetadata(final String resourceId,final String order,  
-          final String dmdId, final GroundTruthProperties feature) {
+          final String pageId, final GroundTruthProperties feature) {
     super();
     this.resourceId = resourceId;
-    this.dmdId = dmdId;
+    this.pageId = pageId;
     this.order = order;
     this.feature = feature;
   }
@@ -110,21 +110,21 @@ public class PageMetadata {
   }
 
   /**
-   * Get DMDID of page.
+   * Get PAGEID of page.
    * 
-   * @return the dmdId
+   * @return the pageId
    */
-  public String getDmdId() {
-    return dmdId;
+  public String getPageId() {
+    return pageId;
   }
 
   /**
-   * Set DMDID of page.
+   * Set PAGEID of page.
    * 
-   * @param dmdId the dmdId to set
+   * @param pageId the pageId to set
    */
-  public void setDmdId(String dmdId) {
-    this.dmdId = dmdId;
+  public void setPageId(String pageId) {
+    this.pageId = pageId;
   }
 
   /**
@@ -163,6 +163,6 @@ public class PageMetadata {
   
   @Override
   public String toString() {
-     return "PageMetadata [id=" + id + ", resourceId=" + resourceId + ", DMDID=" + dmdId + ", order=" + order + ", feature=" + feature + "]";
+     return "PageMetadata [id=" + id + ", resourceId=" + resourceId + ", PAGEID=" + pageId + ", order=" + order + ", feature=" + feature + "]";
   }
 }

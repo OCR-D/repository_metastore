@@ -11,14 +11,14 @@
     <table>
       <thead>
         <tr>
-          <th>Resource ID</th><th>USE</th><th>GROUPID</th><th>MIMETYPE</th><th>URL</th>
+          <th>Resource ID</th><th>USE</th><th>PAGEID</th><th>MIMETYPE</th><th>URL</th>
         </tr>
       </thead>
       <tbody>
         <tr th:each="file: ${metsFiles}">
           <td th:text="${file.resourceId}"></td>
           <td th:text="${file.use}"></td>
-          <td th:text="${file.groupId}"></td> 
+          <td th:text="${file.pageId}"></td> 
           <td th:text="${file.mimetype}"></td> 
           <td><a th:href="${file.url}" th:text="${file.url}"</td> 
         </tr>

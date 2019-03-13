@@ -27,9 +27,9 @@ public class PageFeatures {
    private String order;
    
   /** 
-   * DMDID of the page.
+   * PAGEID of the page.
    */ 
-  private String dmdId;
+  private String pageId;
    
   /** 
    * Number of images/graphics.
@@ -89,19 +89,19 @@ public class PageFeatures {
   }
 
   /**
-   * Get DMDID of page.
-   * @return the dmdId
+   * Get PAGEID of page.
+   * @return the pageId
    */
-  public String getDmdId() {
-    return dmdId;
+  public String getPageId() {
+    return pageId;
   }
 
   /**
-   * Set DMDID of page.
-   * @param dmdId the dmdId to set
+   * Set PAGEID of page.
+   * @param pageId the pageId to set
    */
-  public void setDmdId(String dmdId) {
-    this.dmdId = dmdId;
+  public void setPageId(String pageId) {
+    this.pageId = pageId;
   }
   
   

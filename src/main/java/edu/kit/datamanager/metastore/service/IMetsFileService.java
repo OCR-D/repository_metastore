@@ -27,12 +27,12 @@ import org.springframework.web.multipart.MultipartFile;
 public interface IMetsFileService {
   
   /**
-   * Get all GROUPIDs defined inside METS.
+   * Get all PAGEIDs defined inside METS.
    * 
    * @param resourceId Resource ID of METS document.
-   * @return List holding all GROUPIDs.
+   * @return List holding all PAGEIDs.
    */
-  List<String> getAllGroupIds(String resourceId);
+  List<String> getAllPageIds(String resourceId);
   
   /**
    * Get all USEs defined inside METS.
@@ -52,14 +52,14 @@ public interface IMetsFileService {
   
   /**
    * Get all files referenced in the fileGrps inside METS filtered by
-   * USE and GROUPID.
+   * USE and PAGEID.
    * 
    * @param resourceId Resource ID of METS document.
    * @param use USEs of the fileGrp element.
-   * @param groupId GROUPIDs of the FLocat element
+   * @param pageId PAGEID of the FLocat element
    * @return List holding all files.
    */
-  List<MetsFile> getAvailableMetsFilesByUseAndGroupId(String resourceId, String[] use, String[] groupId);
+  List<MetsFile> getAvailableMetsFilesByUseAndPageId(String resourceId, String[] use, String[] pageId);
     
   /**
    * Get file referenced by its IDs inside METS.

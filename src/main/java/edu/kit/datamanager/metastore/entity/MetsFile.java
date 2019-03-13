@@ -27,7 +27,7 @@ import com.arangodb.springframework.annotation.HashIndex;
  *    <li>Resource Identifier
  *    <li>Version Number
  *    <li>ID of file
- *    <li>GROUPID of file
+ *    <li>PAGEID of file
  *    <li>USE of file
  *    <li>MIMETYPE of file
  *    <li>URL of file
@@ -35,7 +35,7 @@ import com.arangodb.springframework.annotation.HashIndex;
  */
 @Document("metsFile")
 @HashIndex(fields = {"resourceId", "version", "fileId"}, unique = true)
-public class MetsFile implements IBaseEntity, IMimetype, IDmdId, IUrl, IUse {
+public class MetsFile implements IBaseEntity, IMimetype, IPageId, IUrl, IUse {
   /** 
    * ID of the document.
    */
@@ -61,9 +61,9 @@ public class MetsFile implements IBaseEntity, IMimetype, IDmdId, IUrl, IUse {
    */
   private String mimetype;
   /**
-   * GROUPID of the file.
+   * PAGEID of the file.
    */
-  private String groupId;
+  private String pageId;
   /**
    * USE of the fileGrp.
    */
@@ -89,19 +89,19 @@ public class MetsFile implements IBaseEntity, IMimetype, IDmdId, IUrl, IUse {
    * @param version Version of the METS document.
    * @param fileId ID of the file.
    * @param mimetype Mimetype of the file.
-   * @param groupId GROUPID of the file.
+   * @param pageId PAGEID of the file.
    * @param use USE of the fileGrp.
    * @param url URL of the file (maybe relative to METS document)
    */
   public MetsFile(final String resourceId, final Integer version,final String fileId,  
-          final String mimetype, final String groupId, final String use, 
+          final String mimetype, final String pageId, final String use, 
           final String url) {
     super();
     this.resourceId = resourceId;
     this.version = version;
     this.fileId = fileId;
     this.mimetype = mimetype;
-    this.groupId = groupId;
+    this.pageId = pageId;
     this.use = use;
     this.url = url;
     current = Boolean.TRUE;
@@ -192,21 +192,21 @@ public class MetsFile implements IBaseEntity, IMimetype, IDmdId, IUrl, IUse {
   }
 
   /**
-   * Get GROUPID of file.
+   * Get PAGEID of file.
    * 
-   * @return the groupId
+   * @return the pageId
    */
-  public String getDmdId() {
-    return groupId;
+  public String getPageId() {
+    return pageId;
   }
 
   /**
-   * Set GROUPID of file.
+   * Set PAGEID of file.
    * 
-   * @param groupId the groupId to set
+   * @param pageId the pageId to set
    */
-  public void setDmdId(String groupId) {
-    this.groupId = groupId;
+  public void setPageId(String pageId) {
+    this.pageId = pageId;
   }
 
   /**
@@ -253,13 +253,13 @@ public class MetsFile implements IBaseEntity, IMimetype, IDmdId, IUrl, IUse {
    * @return Updated mets file.
    */
   public MetsFile updateMetsFile(String url) {
-    MetsFile newMetsFile = new MetsFile(resourceId, version + 1, fileId, mimetype, groupId, use, url);
+    MetsFile newMetsFile = new MetsFile(resourceId, version + 1, fileId, mimetype, pageId, use, url);
     current = Boolean.FALSE;
     return newMetsFile;
   }
   
   @Override
   public String toString() {
-     return "MetsFile [id=" + id + ", resourceId=" + resourceId + ", version=" + version + ", fileId=" + fileId + ", groupId=" + groupId + ", mimetype=" + mimetype + ", use=" + use + ", url=" + url + "]";
+     return "MetsFile [id=" + id + ", resourceId=" + resourceId + ", version=" + version + ", fileId=" + fileId + ", pageId=" + pageId + ", mimetype=" + mimetype + ", use=" + use + ", url=" + url + "]";
   }
 }

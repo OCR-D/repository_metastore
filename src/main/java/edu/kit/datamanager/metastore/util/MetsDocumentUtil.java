@@ -126,17 +126,17 @@ public class MetsDocumentUtil {
       for (Object node2 : fileNodes) {
         Element fileElement = (Element) node2;
         String id = JaxenUtil.getAttributeValue(fileElement, "./@ID");
-        String groupId;
+        String pageId;
         try {
-          groupId = JaxenUtil.getAttributeValue(metsDocument, "//mets:div[./mets:fptr/@FILEID='" + id + "']/@ID", namespaces);
+          pageId = JaxenUtil.getAttributeValue(metsDocument, "//mets:div[./mets:fptr/@FILEID='" + id + "']/@ID", namespaces);
         } catch (ArrayIndexOutOfBoundsException aioobe) {
-          // Try to find groupId using old style
-          groupId = JaxenUtil.getAttributeValue(fileElement, "./@GROUPID");
+          // Try to find pageId using old style
+          pageId = JaxenUtil.getAttributeValue(fileElement, "./@GROUPID");
         }
         String mimetype = JaxenUtil.getAttributeValue(fileElement, "./@MIMETYPE");
         String url = JaxenUtil.getAttributeValue(fileElement, "./mets:FLocat/@xlink:href", namespaces);
-        LOGGER.trace("Found file with id: {}, groupId: {}, mimetype: {}, url: {}", id, groupId, mimetype, url);
-        metsFiles.add(new MetsFile(resourceId, version, id, mimetype, groupId, use, url));
+        LOGGER.trace("Found file with id: {}, pageId: {}, mimetype: {}, url: {}", id, pageId, mimetype, url);
+        metsFiles.add(new MetsFile(resourceId, version, id, mimetype, pageId, use, url));
       }
     }
     return metsFiles;
@@ -363,12 +363,12 @@ public class MetsDocumentUtil {
       List<PageFeatures> pageList = new ArrayList<>();
       Map<String, PageFeatures> pageMap = new HashMap<>();
       pages.forEach((page) -> {
-        PageFeatures item = pageMap.get(page.getDmdId());
+        PageFeatures item = pageMap.get(page.getPageId());
         if (item == null) {
           item = new PageFeatures();
-          item.setDmdId(page.getDmdId());
+          item.setPageId(page.getPageId());
           item.setOrder(page.getOrder());
-          pageMap.put(page.getDmdId(), item);
+          pageMap.put(page.getPageId(), item);
           item.setFeatures(new ArrayList<>());
         }
         item.getFeatures().add(page.getFeature().toString());

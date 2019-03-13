@@ -242,6 +242,12 @@ public class CrudRunner implements CommandLineRunner {
       System.out.println("********************************************************************************************************************");
       System.out.println("*******************************          MetsProperties         ***************************************************");
       System.out.println("********************************************************************************************************************");
+      System.out.println("metsPropertiesRepository.findByResourceId(\"id_4\")");
+      Iterable<MetsProperties> findByResourceId = metsPropertiesRepository.findByResourceId("id_4");
+      for (Iterator<MetsProperties> it = findByResourceId.iterator(); it.hasNext();) {
+        MetsProperties index = it.next();
+        System.out.println(index.toString());
+      }
       System.out.println("metsPropertiesRepository.findResourceIdByPpn(\"ppn2\")");
       Iterable<IResourceId> findResourceIdByPpn = metsPropertiesRepository.findResourceIdByPpn("ppn2");
       for (Iterator<IResourceId> it = findResourceIdByPpn.iterator(); it.hasNext();) {
@@ -394,73 +400,73 @@ public class CrudRunner implements CommandLineRunner {
         System.out.println(urlIterator.next().getUrl());
       }
       System.out.println("********************************************************************************************************************");
-      System.out.println("************************      Find MetsFile by resourceId and GROUPID     ******************************************");
+      System.out.println("************************      Find MetsFile by resourceId and PAGEID     ******************************************");
       System.out.println("********************************************************************************************************************");
-      System.out.println("metsFileRepository.findByResourceIdAndGroupId(\"id_0002\", \"PAGE-0001\")");
-      metsFile = metsFileRepository.findByResourceIdAndGroupIdAndCurrentTrue("id_0002", "PAGE-0001");
+      System.out.println("metsFileRepository.findByResourceIdAndPageId(\"id_0002\", \"PAGE-0001\")");
+      metsFile = metsFileRepository.findByResourceIdAndPageIdAndCurrentTrue("id_0002", "PAGE-0001");
       metsFileIterator = metsFile.iterator();
       while (metsFileIterator.hasNext()) {
         System.out.println(metsFileIterator.next());
       }
       System.out.println("********************************************************************************************************************");
-      System.out.println("************************      Find MetsFile by resourceId and GROUPID IN      **************************************");
+      System.out.println("************************      Find MetsFile by resourceId and PAGEID IN      **************************************");
       System.out.println("********************************************************************************************************************");
-      System.out.println("metsFileRepository.findByResourceIdAndGroupIdIn(\"id_0002\", Arrays.asList(\"PAGE-0001\", \"PAGE-0002\")");
-      metsFile = metsFileRepository.findByResourceIdAndGroupIdInAndCurrentTrue("id_0002", Arrays.asList("PAGE-0001", "PAGE-0002"));
+      System.out.println("metsFileRepository.findByResourceIdAndPageIdIn(\"id_0002\", Arrays.asList(\"PAGE-0001\", \"PAGE-0002\")");
+      metsFile = metsFileRepository.findByResourceIdAndPageIdInAndCurrentTrue("id_0002", Arrays.asList("PAGE-0001", "PAGE-0002"));
       metsFileIterator = metsFile.iterator();
       while (metsFileIterator.hasNext()) {
         System.out.println(metsFileIterator.next());
       }
       System.out.println("********************************************************************************************************************");
-      System.out.println("************************      Find MetsFile URL by resourceId and GROUPID      *************************************");
+      System.out.println("************************      Find MetsFile URL by resourceId and PAGEID      *************************************");
       System.out.println("********************************************************************************************************************");
-      System.out.println("metsFileRepository.findUrlByResourceIdAndGroupId(\"id_0002\", \"PAGE-0001\")");
-      urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndGroupIdAndCurrentTrue("id_0002", "PAGE-0001");
+      System.out.println("metsFileRepository.findUrlByResourceIdAndPageId(\"id_0002\", \"PAGE-0001\")");
+      urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndPageIdAndCurrentTrue("id_0002", "PAGE-0001");
       urlIterator = urlOfMetsFile.iterator();
       while (urlIterator.hasNext()) {
         System.out.println(urlIterator.next().getUrl());
       }
       System.out.println("********************************************************************************************************************");
-      System.out.println("************************      Find MetsFile URL by resourceId and GROUPID IN      **********************************");
+      System.out.println("************************      Find MetsFile URL by resourceId and PAGEID IN      **********************************");
       System.out.println("********************************************************************************************************************");
-      System.out.println("metsFileRepository.findUrlByResourceIdAndGroupIdIn(\"id_0002\", Arrays.asList(\"PAGE-0001\", \"PAGE-0002\")");
-      urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndGroupIdInAndCurrentTrue("id_0002", Arrays.asList("PAGE-0001", "PAGE-0002"));
+      System.out.println("metsFileRepository.findUrlByResourceIdAndPageIdIn(\"id_0002\", Arrays.asList(\"PAGE-0001\", \"PAGE-0002\")");
+      urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndPageIdInAndCurrentTrue("id_0002", Arrays.asList("PAGE-0001", "PAGE-0002"));
       urlIterator = urlOfMetsFile.iterator();
       while (urlIterator.hasNext()) {
         System.out.println(urlIterator.next().getUrl());
       }
       System.out.println("********************************************************************************************************************");
-      System.out.println("************************      Find MetsFile by resourceId and USE AND GROUPID     **********************************");
+      System.out.println("************************      Find MetsFile by resourceId and USE AND PAGEID     **********************************");
       System.out.println("********************************************************************************************************************");
-      System.out.println("metsFileRepository.findByResourceIdAndUseAndGroupId(\"id_0002\", \"OCR-D-GT-IMG-BIN\", \"PAGE-0001\")");
-      metsFile = metsFileRepository.findByResourceIdAndUseAndGroupIdAndCurrentTrue("id_0002", "OCR-D-GT-IMG-BIN", "PAGE-0001");
+      System.out.println("metsFileRepository.findByResourceIdAndUseAndPageId(\"id_0002\", \"OCR-D-GT-IMG-BIN\", \"PAGE-0001\")");
+      metsFile = metsFileRepository.findByResourceIdAndUseAndPageIdAndCurrentTrue("id_0002", "OCR-D-GT-IMG-BIN", "PAGE-0001");
       metsFileIterator = metsFile.iterator();
       while (metsFileIterator.hasNext()) {
         System.out.println(metsFileIterator.next());
       }
       System.out.println("********************************************************************************************************************");
-      System.out.println("************************      Find MetsFile by resourceId and USE AND GROUPID IN      ******************************");
+      System.out.println("************************      Find MetsFile by resourceId and USE AND PAGEID IN      ******************************");
       System.out.println("********************************************************************************************************************");
-      System.out.println("metsFileRepository.findByResourceIdAndUseInAndGroupIdIn(\"id_0002\", Arrays.asList(\"OCR-D-GT-IMG-BIN\", \"OCR-D-GT-IMG-DESPEC\"), Arrays.asList(\"PAGE-0001\", \"PAGE-0002\")");
-      metsFile = metsFileRepository.findByResourceIdAndUseInAndGroupIdInAndCurrentTrue("id_0002", Arrays.asList("OCR-D-GT-IMG-BIN", "OCR-D-GT-IMG-DESPEC"), Arrays.asList("PAGE-0001", "PAGE-0002"));
+      System.out.println("metsFileRepository.findByResourceIdAndUseInAndPageIdIn(\"id_0002\", Arrays.asList(\"OCR-D-GT-IMG-BIN\", \"OCR-D-GT-IMG-DESPEC\"), Arrays.asList(\"PAGE-0001\", \"PAGE-0002\")");
+      metsFile = metsFileRepository.findByResourceIdAndUseInAndPageIdInAndCurrentTrue("id_0002", Arrays.asList("OCR-D-GT-IMG-BIN", "OCR-D-GT-IMG-DESPEC"), Arrays.asList("PAGE-0001", "PAGE-0002"));
       metsFileIterator = metsFile.iterator();
       while (metsFileIterator.hasNext()) {
         System.out.println(metsFileIterator.next());
       }
       System.out.println("********************************************************************************************************************");
-      System.out.println("************************      Find MetsFile URL by resourceId USE AND and GROUPID      *****************************");
+      System.out.println("************************      Find MetsFile URL by resourceId USE AND and PAGEID      *****************************");
       System.out.println("********************************************************************************************************************");
-      System.out.println("metsFileRepository.findUrlByResourceIdAndUseAndGroupId(\"id_0002\", \"OCR-D-GT-IMG-BIN\", \"PAGE-0001\")");
-      urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndUseAndGroupIdAndCurrentTrue("id_0002", "OCR-D-GT-IMG-BIN", "PAGE-0001");
+      System.out.println("metsFileRepository.findUrlByResourceIdAndUseAndPageId(\"id_0002\", \"OCR-D-GT-IMG-BIN\", \"PAGE-0001\")");
+      urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndUseAndPageIdAndCurrentTrue("id_0002", "OCR-D-GT-IMG-BIN", "PAGE-0001");
       urlIterator = urlOfMetsFile.iterator();
       while (urlIterator.hasNext()) {
         System.out.println(urlIterator.next().getUrl());
       }
       System.out.println("********************************************************************************************************************");
-      System.out.println("************************      Find MetsFile URL by resourceId USE AND and GROUPID IN      **************************");
+      System.out.println("************************      Find MetsFile URL by resourceId USE AND and PAGEID IN      **************************");
       System.out.println("********************************************************************************************************************");
-      System.out.println("metsFileRepository.findUrlByResourceIdAndUseInAndGroupIdIn(\"id_0002\", Arrays.asList(\"OCR-D-GT-IMG-BIN\", \"OCR-D-GT-IMG-DESPEC\"), Arrays.asList(\"PAGE-0001\", \"PAGE-0002\")");
-      urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndUseInAndGroupIdInAndCurrentTrue("id_0002", Arrays.asList("OCR-D-GT-IMG-BIN", "OCR-D-GT-IMG-DESPEC"), Arrays.asList("PAGE-0001", "PAGE-0002"));
+      System.out.println("metsFileRepository.findUrlByResourceIdAndUseInAndPageIdIn(\"id_0002\", Arrays.asList(\"OCR-D-GT-IMG-BIN\", \"OCR-D-GT-IMG-DESPEC\"), Arrays.asList(\"PAGE-0001\", \"PAGE-0002\")");
+      urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndUseInAndPageIdInAndCurrentTrue("id_0002", Arrays.asList("OCR-D-GT-IMG-BIN", "OCR-D-GT-IMG-DESPEC"), Arrays.asList("PAGE-0001", "PAGE-0002"));
       urlIterator = urlOfMetsFile.iterator();
       while (urlIterator.hasNext()) {
         System.out.println(urlIterator.next().getUrl());
@@ -557,7 +563,7 @@ public class CrudRunner implements CommandLineRunner {
         System.out.println(iteratorPage.next().toString());
       }
       System.out.println("pageMetadataRepository.findByResourceId(\"id_0002\")");
-      pageList = pageMetadataRepository.findByResourceIdAndDmdId("id_0002", "phys_0001");
+      pageList = pageMetadataRepository.findByResourceIdAndPageId("id_0002", "phys_0001");
       iteratorPage = pageList.iterator();
       while (iteratorPage.hasNext()) {
         System.out.println(iteratorPage.next().toString());

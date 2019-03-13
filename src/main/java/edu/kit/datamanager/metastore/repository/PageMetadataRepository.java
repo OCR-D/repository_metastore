@@ -39,11 +39,11 @@ public interface PageMetadataRepository extends ArangoRepository<PageMetadata, S
    * Find PageMetadata by ResourceIdentifier.
    *
    * @param resourceId ResourceIdentifier of the resource.
-   * @param dmdId DMDID of the page.
+   * @param pageId PAGEID of the page.
    *
-   * @return List of PageMetadata with given resourceIdentifier and DMDID.
+   * @return List of PageMetadata with given resourceIdentifier and PAGEID.
    */
-  Iterable<PageMetadata> findByResourceIdAndDmdId(String resourceId, String dmdId);
+  Iterable<PageMetadata> findByResourceIdAndPageId(String resourceId, String pageId);
 
   /**
    * Find PageMetadata by feature.
