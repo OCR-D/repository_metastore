@@ -162,22 +162,6 @@ public class MetsMetadata {
   }
 
   /**
-   * Get ID of the document.
-   * @return the id
-   */
-  public String getId() {
-    return id;
-  }
-
-  /**
-   * Set ID of the document.
-   * @param id the id to set
-   */
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  /**
    * Get year of publication.
    * @return the year
    */
