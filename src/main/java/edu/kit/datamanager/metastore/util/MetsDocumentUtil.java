@@ -15,6 +15,9 @@
  */
 package edu.kit.datamanager.metastore.util;
 
+import edu.kit.datamanager.metastore.dao.MetsMetadata;
+import edu.kit.datamanager.metastore.dao.ModsIdentifier;
+import edu.kit.datamanager.metastore.dao.Page;
 import edu.kit.datamanager.metastore.entity.ClassificationMetadata;
 import edu.kit.datamanager.metastore.entity.GenreMetadata;
 import edu.kit.datamanager.metastore.entity.LanguageMetadata;
@@ -23,7 +26,6 @@ import edu.kit.datamanager.metastore.entity.MetsIdentifier;
 import edu.kit.datamanager.metastore.entity.MetsProperties;
 import edu.kit.datamanager.metastore.entity.PageMetadata;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,7 +69,7 @@ public class MetsDocumentUtil {
   private static final String AUTHOR = "author";
   /**
    * License of document.
-   */ 
+   */
   private static final String LICENSE = "license";
   /**
    * Language of document.
@@ -306,6 +308,84 @@ public class MetsDocumentUtil {
       }
     }
     return classificationList;
+  }
+
+  /**
+   * Convert entities to dao served to client.
+   *
+   * @param metadataEntity Metadata of METS document.
+   * @param languages List with all languages of document.
+   * @param classifications List of all classifications of document.
+   * @param genres List of all genres of document.
+   * @param pages List of all ground truth features of document.
+   * @param identifiers List of all identifiers of document.
+   * @return Metadata as a DAO
+   */
+  public static MetsMetadata convertEntityToDao(MetsProperties metadataEntity,
+          List<LanguageMetadata> languages,
+          List<ClassificationMetadata> classifications,
+          List<GenreMetadata> genres,
+          List<PageMetadata> pages,
+          List<MetsIdentifier> identifiers) {
+    MetsMetadata dao = new MetsMetadata();
+    if (metadataEntity != null) {
+      dao.setTitle(metadataEntity.getTitle());
+      dao.setSubTitle(metadataEntity.getSubTitle());
+      dao.setYear(metadataEntity.getYear());
+      dao.setAuthor(metadataEntity.getAuthor());
+      dao.setPublisher(metadataEntity.getPublisher());
+      dao.setLicence(metadataEntity.getLicense());
+      dao.setNoOfPages(metadataEntity.getNoOfPages());
+      dao.setPhysicalDescription(metadataEntity.getPhysicalDescription());
+    }
+    if (languages != null) {
+      List<String> languageList = new ArrayList<>();
+      languages.forEach((language) -> {
+        languageList.add(language.getLanguage());
+      });
+      dao.setLanguage(languageList);
+    }
+    if (classifications != null) {
+      List<String> classificationList = new ArrayList<>();
+      classifications.forEach((classification) -> {
+        classificationList.add(classification.getClassification());
+      });
+      dao.setLanguage(classificationList);
+    }
+    if (genres != null) {
+      List<String> genreList = new ArrayList<>();
+      genres.forEach((genre) -> {
+        genreList.add(genre.getGenre());
+      });
+      dao.setLanguage(genreList);
+    }
+    if (pages != null) {
+      List<Page> pageList = new ArrayList<>();
+      Map<String, Page> pageMap = new HashMap<>();
+      pages.forEach((page) -> {
+        Page item = pageMap.get(page.getDmdId());
+        if (item == null) {
+          item = new Page();
+          item.setDmdId(page.getDmdId());
+          item.setOrder(page.getOrder());
+          pageMap.put(page.getDmdId(), item);
+          item.setFeatures(new ArrayList<>());
+        }
+        item.getFeatures().add(page.getFeature().toString());
+      });
+      pageMap.values().forEach((item) -> {
+        pageList.add(item);
+      });
+      dao.setPages(pageList);
+    }
+    if (identifiers != null) {
+      List<ModsIdentifier> modsIdentifierList = new ArrayList<>();
+      identifiers.forEach((identifier) -> {
+        modsIdentifierList.add(new ModsIdentifier(identifier.getType(), identifier.getIdentifier()));
+      });
+      dao.setModsIdentifier(modsIdentifierList);
+    }
+    return dao;
   }
 
   /**
