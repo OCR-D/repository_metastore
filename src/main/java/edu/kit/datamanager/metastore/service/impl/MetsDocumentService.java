@@ -24,6 +24,7 @@ import edu.kit.datamanager.metastore.entity.MetsDocument;
 import edu.kit.datamanager.metastore.entity.MetsFile;
 import edu.kit.datamanager.metastore.entity.MetsIdentifier;
 import edu.kit.datamanager.metastore.entity.MetsProperties;
+import edu.kit.datamanager.metastore.entity.PageMetadata;
 import edu.kit.datamanager.metastore.exception.InvalidFormatException;
 import edu.kit.datamanager.metastore.exception.ResourceAlreadyExistsException;
 import edu.kit.datamanager.metastore.repository.ClassificationMetadataRepository;
@@ -229,6 +230,18 @@ public class MetsDocumentService implements IMetsDocumentService {
       }
       if (!genreMetadataList.isEmpty()) {
         genreMetadataRepository.saveAll(genreMetadataList);
+      }
+      // ****************************************************
+      // Extract Ground Truth 
+      // ****************************************************
+      List<PageMetadata> pageMetadataList = MetsDocumentUtil.extractGroundTruthFeaturesFromMets(metsDocument, resourceId);
+      if (LOGGER.isTraceEnabled()) {
+        for (PageMetadata pageMetadata : pageMetadataList) {
+          LOGGER.trace(pageMetadata.toString());
+        }
+      }
+      if (!pageMetadataList.isEmpty()) {
+        pageMetadataRepository.saveAll(pageMetadataList);
       }
     } catch (Exception ex) {
       LOGGER.error("Invalid METS file", ex);

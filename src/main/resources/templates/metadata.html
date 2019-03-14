@@ -37,7 +37,7 @@ limitations under the License.
         </tr>
         <tr>
           <td> Subtitle</td>
-          <td th:text="${metsMetadata.subtitle}"></td>
+          <td th:text="${metsMetadata.subTitle}"></td>
         </tr>
         <tr>
           <td> Author</td>
@@ -49,7 +49,7 @@ limitations under the License.
         </tr>
         <tr>
           <td> No of Pages</td>
-          <td th:text="${metsMetadata.numberOfPages}"></td>
+          <td th:text="${metsMetadata.noOfPages}"></td>
         </tr>
         <tr>
           <td> License</td>
@@ -57,44 +57,52 @@ limitations under the License.
         </tr>
       </tbody>
     </table>
-    <table>
-      <thead>
-        <tr>
-          <th colspan=2>Identifier</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr th:each="identifier: ${metsIdentifier}">
-          <td th:text="${identifier.type}"></td>
-          <td th:text="${identifier.identifier}"></td>
-        </tr>
-      </tbody>
-    </table>
-    <table>
-      <thead>
-        <tr>
-          <th colspan=2>Languages</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr th:each="language: ${metsLanguages}">
-          <td th:text="${language.type}"></td>
-          <td th:text="${language.identifier}"></td>
-        </tr>
-      </tbody>
-    </table>
-    <table>
-      <thead>
-        <tr>
-          <th colspan=2>Classifications</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr th:each="classification: ${metsClassifications}">
-          <td> - </td>
-          <td th:text="${classification.classification}"></td>
-        </tr>
-      </tbody>
+    <div th:if="${not #lists.isEmpty(metsIdentifier)}">
+      <table>
+        <thead>
+          <tr>
+            <th colspan=2>Identifier</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="identifier: ${metsIdentifier}">
+            <td th:text="${identifier.type}"></td>
+            <td th:text="${identifier.identifier}"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div th:if="${not #lists.isEmpty(metsLanguages)}">
+      <table>
+        <thead>
+          <tr>
+            <th colspan=2>Languages</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="language: ${metsLanguages}">
+            <td> language </td>
+            <td th:text="${language.language}"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div th:if="${not #lists.isEmpty(metsClassifications)}">
+      <table>
+        <thead>
+          <tr>
+            <th colspan=2>Classifications</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="classification: ${metsClassifications}">
+            <td> class </td>
+            <td th:text="${classification.classification}"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div th:if="${not #lists.isEmpty(metsGenres)}">
       <table>
         <thead>
           <tr>
@@ -103,13 +111,12 @@ limitations under the License.
         </thead>
         <tbody>
           <tr th:each="genre: ${metsGenres}">
-            <td> - </td>
+            <td> genre </td>
             <td th:text="${genre.genre}"></td>
           </tr>
         </tbody>
       </table>
-    </table>
-
+    </div>
   </body>
 </html>
 

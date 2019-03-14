@@ -16,7 +16,6 @@
 package edu.kit.datamanager.metastore.controller;
 
 import edu.kit.datamanager.metastore.dao.MetsMetadata;
-import edu.kit.datamanager.metastore.dao.PageFeatures;
 import edu.kit.datamanager.metastore.entity.MetsDocument;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -24,6 +23,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;

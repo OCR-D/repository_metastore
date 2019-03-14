@@ -20,12 +20,14 @@ import edu.kit.datamanager.metastore.dao.ModsIdentifier;
 import edu.kit.datamanager.metastore.dao.PageFeatures;
 import edu.kit.datamanager.metastore.entity.ClassificationMetadata;
 import edu.kit.datamanager.metastore.entity.GenreMetadata;
+import edu.kit.datamanager.metastore.entity.GroundTruthProperties;
 import edu.kit.datamanager.metastore.entity.LanguageMetadata;
 import edu.kit.datamanager.metastore.entity.MetsFile;
 import edu.kit.datamanager.metastore.entity.MetsIdentifier;
 import edu.kit.datamanager.metastore.entity.MetsProperties;
 import edu.kit.datamanager.metastore.entity.PageMetadata;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -256,7 +258,9 @@ public class MetsDocumentUtil {
     String[] values = JaxenUtil.getValues(root, metsMap.get(LANGUAGE), namespaces);
     if (values.length >= 1) {
       for (String language : values) {
-        languageList.add(new LanguageMetadata(resourceId, language));
+        if (language.trim().length() > 1) {
+          languageList.add(new LanguageMetadata(resourceId, language.trim()));
+        }
       }
     }
     return languageList;
@@ -280,7 +284,9 @@ public class MetsDocumentUtil {
     String[] values = JaxenUtil.getValues(root, metsMap.get(CLASSIFICATION), namespaces);
     if (values.length >= 1) {
       for (String classification : values) {
-        classificationList.add(new ClassificationMetadata(resourceId, classification));
+        if (classification.trim().length() > 1) {
+          classificationList.add(new ClassificationMetadata(resourceId, classification.trim()));
+        }
       }
     }
     return classificationList;
@@ -304,10 +310,45 @@ public class MetsDocumentUtil {
     String[] values = JaxenUtil.getValues(root, metsMap.get(GENRE), namespaces);
     if (values.length >= 1) {
       for (String genre : values) {
-        classificationList.add(new GenreMetadata(resourceId, genre));
+        if (genre.trim().length() > 1) {
+          classificationList.add(new GenreMetadata(resourceId, genre.trim()));
+        }
       }
     }
     return classificationList;
+  }
+
+  /**
+   * Extract all ground truth metadata from METS.
+   *
+   * @param metsDocument METS file.
+   * @param resourceId Resource ID of METS document.
+   * @return List of PageMetadata holding all ground truth metadata.
+   *
+   * @throws Exception An error occurred during parsing METS file.
+   */
+  public static List<PageMetadata> extractGroundTruthFeaturesFromMets(final Document metsDocument, final String resourceId) throws Exception {
+    List<PageMetadata> pageMetadataList = new ArrayList<>();
+    Element root = metsDocument.getRootElement();
+    List physicalList = JaxenUtil.getNodes(root, "//mets:structMap[@TYPE='PHYSICAL']", namespaces);
+    if (!physicalList.isEmpty()) {
+      Element structMap = (Element) physicalList.get(0);
+      List pageList = JaxenUtil.getNodes(structMap, "//mets:div[@TYPE='page']", namespaces);
+      if (!pageList.isEmpty()) {
+        for (Object pageObject : pageList) {
+          // Determine order, id and dmdid. 
+          Element pageNode = (Element) pageObject;
+          String order = pageNode.getAttribute("ORDER").getValue();
+          String id = pageNode.getAttribute("ID").getValue();
+          String dmdId = pageNode.getAttribute("DMDID").getValue();
+          String[] features = JaxenUtil.getValues(root, "//mets:dmdSec[@ID='" + dmdId + "']/mets:mdWrap[@OTHERMDTYPE='GT']/mets:xmlData/gt:gt/gt:state/@prop", namespaces);
+          for (String feature : features) {
+            pageMetadataList.add(new PageMetadata(resourceId, order, id, GroundTruthProperties.get(feature)));
+          }
+        }
+      }
+    }
+    return pageMetadataList;
   }
 
   /**

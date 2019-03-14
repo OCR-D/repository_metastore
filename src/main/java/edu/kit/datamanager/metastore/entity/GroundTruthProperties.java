@@ -15,6 +15,9 @@
  */
 package edu.kit.datamanager.metastore.entity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Enumeration of all possible metadata types of a section document inside a
  * METS document.
@@ -373,10 +376,18 @@ public enum GroundTruthProperties {
   DIA("user-groups/domain-experts/dia"),
   LIBRARIANS("user-groups/domain-experts/librarians");
 
+  // Reverse lookup map for getting enum from its text representation
+  private static final Map<String, GroundTruthProperties> lookup = new HashMap<String, GroundTruthProperties>();
   /**
    * Text representation of enumeration.
    */
   private final String textRepresentation;
+
+  static {
+    for (GroundTruthProperties gtp : GroundTruthProperties.values()) {
+      lookup.put(gtp.textRepresentation, gtp);
+    }
+  }
 
   /**
    * Constructor for enum.
@@ -391,4 +402,16 @@ public enum GroundTruthProperties {
   public String toString() {
     return textRepresentation;
   }
+
+  /**
+   * Get Enum from text representation.
+   * 
+   * @param textRepresentation Text representation.
+   * 
+   * @return 
+   */ 
+   public static GroundTruthProperties get(String textRepresentation) {
+    return lookup.get(textRepresentation);
+  }
+
 }

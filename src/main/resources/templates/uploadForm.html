@@ -27,7 +27,7 @@
       <table>
         <thead>
           <tr>
-            <th>Resource ID</th><th>URL</th><th>Files</th><th>Metadata</th>
+            <th>Resource ID</th><th>URL</th><th>Files</th><th>Metadata</th><th>Ground Truth</th>
           </tr>
         </thead>
         <tbody>
@@ -36,6 +36,7 @@
             <td><a th:href="${file.url}" th:text="${file.url}"></a></td> 
             <td><a th:href="'/api/v1/metastore/mets/' + ${file.resourceId} + '/files'" th:text="'List of referenced files'"></a></td>
             <td><a th:href="'/api/v1/metastore/mets/' + ${file.resourceId} + '/metadata'" th:text="'Metadata'"></a></td>
+            <td><a th:href="'/api/v1/metastore/mets/' + ${file.resourceId} + '/groundtruth'" th:text="'Ground Truth'"></a></td>
           </tr>
         </tbody>
       </table>

@@ -18,7 +18,6 @@ package edu.kit.datamanager.metastore.controller.impl;
 import edu.kit.datamanager.metastore.controller.IMetsDocumentController;
 import com.arangodb.ArangoDBException;
 import edu.kit.datamanager.metastore.dao.MetsMetadata;
-import edu.kit.datamanager.metastore.dao.PageFeatures;
 import edu.kit.datamanager.metastore.entity.ClassificationMetadata;
 import edu.kit.datamanager.metastore.entity.GenreMetadata;
 import edu.kit.datamanager.metastore.entity.LanguageMetadata;
@@ -125,9 +124,9 @@ public class MetsDocumentController implements IMetsDocumentController {
   }
 
   @Override
-  public ResponseEntity<MetsMetadata> getLatestMetadataOfDocument(String resourceId, Model model) {
+  public ResponseEntity<MetsMetadata> getLatestMetadataOfDocument(@PathVariable("resourceId")String resourceId, Model model) {
     LOGGER.trace("Get metadata of METS documents with resourceID '{}'", resourceId);
-    
+
     MetsMetadata metsMetadata;
     MetsProperties metsProperties = metastoreResourceService.getMetadataByResourceId(resourceId);
     List<ClassificationMetadata> classifications = metastoreResourceService.getClassificationMetadataByResourceId(resourceId);
@@ -135,39 +134,40 @@ public class MetsDocumentController implements IMetsDocumentController {
     List<MetsIdentifier> identifiers = metastoreResourceService.getIdentifierByResourceId(resourceId);
     List<LanguageMetadata> languages = metastoreResourceService.getLanguageMetadataByResourceId(resourceId);
     List<PageMetadata> pages = metastoreResourceService.getPageMetadataByResourceId(resourceId);
-    
+
     metsMetadata = MetsDocumentUtil.convertEntityToDao(metsProperties, languages, classifications, genres, pages, identifiers);
-    
+
     return new ResponseEntity<>(metsMetadata, HttpStatus.OK);
   }
 
   @Override
-  public String getLatestMetadataOfDocumentAsHtml(String resourceId, Model model) {
+  public String getLatestMetadataOfDocumentAsHtml(@PathVariable("resourceId")String resourceId, Model model) {
     LOGGER.trace("Get metadata of METS documents with resourceID '{}' as HTML", resourceId);
     // Collect metadata
     MetsProperties metsProperties = metastoreResourceService.getMetadataByResourceId(resourceId);
-     List<MetsIdentifier> identifiers = metastoreResourceService.getIdentifierByResourceId(resourceId);
+    List<MetsIdentifier> identifiers = metastoreResourceService.getIdentifierByResourceId(resourceId);
     List<LanguageMetadata> languages = metastoreResourceService.getLanguageMetadataByResourceId(resourceId);
     List<ClassificationMetadata> classifications = metastoreResourceService.getClassificationMetadataByResourceId(resourceId);
     List<GenreMetadata> genres = metastoreResourceService.getGenreMetadataByResourceId(resourceId);
+    
     // Add all to model 
     model.addAttribute("metsMetadata", metsProperties);
     model.addAttribute("metsIdentifier", identifiers);
     model.addAttribute("metsLanguages", languages);
     model.addAttribute("metsClassifications", classifications);
     model.addAttribute("metsGenres", genres);
-     
+
     return "metadata";
   }
 
   @Override
-  public String getLatestGroundTruthMetadataOfDocumentAsHtml(String resourceId, Model model) {
-     LOGGER.trace("Get ground truth of METS documents with resourceID '{}' as HTML", resourceId);
+  public String getLatestGroundTruthMetadataOfDocumentAsHtml(@PathVariable("resourceId")String resourceId, Model model) {
+    LOGGER.trace("Get ground truth of METS documents with resourceID '{}' as HTML", resourceId);
     // Collect metadata
     List<PageMetadata> pages = metastoreResourceService.getPageMetadataByResourceId(resourceId);
-    // Add all to model 
+    // Add all to model
     model.addAttribute("pageMetadata", pages);
-     
+
     return "groundTruth";
   }
 
