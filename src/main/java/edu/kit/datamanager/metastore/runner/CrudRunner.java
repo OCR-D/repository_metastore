@@ -27,18 +27,29 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.ComponentScan;
 
 import com.arangodb.springframework.core.ArangoOperations;
+import edu.kit.datamanager.metastore.entity.ClassificationMetadata;
+import edu.kit.datamanager.metastore.entity.GenreMetadata;
+import edu.kit.datamanager.metastore.entity.GroundTruthProperties;
 import edu.kit.datamanager.metastore.entity.IResourceId;
 import edu.kit.datamanager.metastore.entity.IUrl;
 import edu.kit.datamanager.metastore.entity.IVersion;
+import edu.kit.datamanager.metastore.entity.LanguageMetadata;
 import edu.kit.datamanager.metastore.entity.MdType;
 import edu.kit.datamanager.metastore.entity.MetsDocument;
 import edu.kit.datamanager.metastore.entity.MetsFile;
+import edu.kit.datamanager.metastore.entity.MetsIdentifier;
 import edu.kit.datamanager.metastore.entity.MetsProperties;
+import edu.kit.datamanager.metastore.entity.PageMetadata;
 import edu.kit.datamanager.metastore.entity.SectionDocument;
 import edu.kit.datamanager.metastore.entity.XmlSchemaDefinition;
+import edu.kit.datamanager.metastore.repository.ClassificationMetadataRepository;
+import edu.kit.datamanager.metastore.repository.GenreMetadataRepository;
+import edu.kit.datamanager.metastore.repository.LanguageMetadataRepository;
 import edu.kit.datamanager.metastore.repository.MetsDocumentRepository;
 import edu.kit.datamanager.metastore.repository.MetsFileRepository;
+import edu.kit.datamanager.metastore.repository.MetsIdentifierRepository;
 import edu.kit.datamanager.metastore.repository.MetsPropertiesRepository;
+import edu.kit.datamanager.metastore.repository.PageMetadataRepository;
 import edu.kit.datamanager.metastore.repository.SectionDocumentRepository;
 import edu.kit.datamanager.metastore.repository.XmlSchemaDefinitionRepository;
 import java.util.Iterator;
@@ -64,6 +75,35 @@ public class CrudRunner implements CommandLineRunner {
   private MetsFileRepository metsFileRepository;
   @Autowired
   private MetsPropertiesRepository metsPropertiesRepository;
+  /**
+   * Repository persisting METS identifiers.
+   */
+  @Autowired
+  private MetsIdentifierRepository metsIdentifierRepository;
+
+  /**
+   * Repository persisting page metadata..
+   */
+  @Autowired
+  private PageMetadataRepository pageMetadataRepository;
+
+  /**
+   * Repository persisting classification metadata.
+   */
+  @Autowired
+  private ClassificationMetadataRepository classificationMetadataRepository;
+
+  /**
+   * Repository persisting genre metadata.
+   */
+  @Autowired
+  private GenreMetadataRepository genreMetadataRepository;
+
+  /**
+   * Repository persisting language metadata.
+   */
+  @Autowired
+  private LanguageMetadataRepository languageMetadataRepository;
 
   @Override
   public void run(final String... args) throws Exception {
@@ -72,6 +112,11 @@ public class CrudRunner implements CommandLineRunner {
     final String METS_FILES = "file";
     final String XSD = "xsd";
     final String METS_PROPERTIES = "prop";
+    final String CLASSIFICATION = "class";
+    final String GENRE = "genre";
+    final String LANGUAGE = "lang";
+    final String IDENTIFIER = "ident";
+    final String PAGE = "page";
     final String DROP_DATABASE = "dropArangoDBOnly";
     List<String> argumentList = Arrays.asList(args);
     System.out.println("Run CRUD Runner!");
@@ -85,7 +130,7 @@ public class CrudRunner implements CommandLineRunner {
     if (argumentList.contains(DROP_DATABASE)) {
       return;
     }
-    
+
     System.out.println("# CRUD operations");
 
     // save a single entity in the database
@@ -143,9 +188,50 @@ public class CrudRunner implements CommandLineRunner {
       }
     }
     if (argumentList.contains(XSD)) {
+      System.out.println("*******************************          XSD         ***************************************************");
       for (XmlSchemaDefinition document : createSchemaDefinitions()) {
         xsdRepository.save(document);
         System.out.println(String.format("xsdDocument saved in the database with id: '%s' with prefix: '%s' namespace %s", document.getId(), document.getPrefix(), document.getNamespace()));
+      }
+    }
+    if (argumentList.contains(CLASSIFICATION)) {
+      System.out.println("*******************************          Classification  Metadata         ***************************************************");
+      Collection<ClassificationMetadata> classificationMD = createClassifications();
+      for (ClassificationMetadata classificationMetadata : classificationMD) {
+        classificationMetadataRepository.save(classificationMetadata);
+        System.out.println("ClassificationMetadata saved! " + classificationMetadata);
+      }
+    }
+    if (argumentList.contains(GENRE)) {
+      System.out.println("*******************************          Genre  Metadata         ***************************************************");
+      Collection<GenreMetadata> classificationMD = createGenre();
+      for (GenreMetadata genreMetadata : classificationMD) {
+        genreMetadataRepository.save(genreMetadata);
+        System.out.println("GenreMetadata saved! " + genreMetadata);
+      }
+    }
+    if (argumentList.contains(LANGUAGE)) {
+      System.out.println("*******************************          Language  Metadata         ***************************************************");
+      Collection<LanguageMetadata> languageMD = createLanguageMetadata();
+      for (LanguageMetadata languageMetadata : languageMD) {
+        languageMetadataRepository.save(languageMetadata);
+        System.out.println("LanguageMetadata saved! " + languageMetadata);
+      }
+    }
+    if (argumentList.contains(IDENTIFIER)) {
+      System.out.println("*******************************          Identifier  Metadata         ***************************************************");
+      Collection<MetsIdentifier> metsIdentifierList = createMetsIdentifier();
+      for (MetsIdentifier metsIdentifier : metsIdentifierList) {
+        metsIdentifierRepository.save(metsIdentifier);
+        System.out.println("MetsIdentifier saved! " + metsIdentifier);
+      }
+    }
+    if (argumentList.contains(PAGE)) {
+      System.out.println("*******************************          Page  Metadata         ***************************************************");
+      Collection<PageMetadata> pageMetadataList = createPageMetadata();
+      for (PageMetadata pageMetadata : pageMetadataList) {
+        pageMetadataRepository.save(pageMetadata);
+        System.out.println("PageMetadata saved! " + pageMetadata);
       }
     }
     System.out.println("********************************************************************************************************************");
@@ -156,6 +242,12 @@ public class CrudRunner implements CommandLineRunner {
       System.out.println("********************************************************************************************************************");
       System.out.println("*******************************          MetsProperties         ***************************************************");
       System.out.println("********************************************************************************************************************");
+      System.out.println("metsPropertiesRepository.findByResourceId(\"id_4\")");
+      Iterable<MetsProperties> findByResourceId = metsPropertiesRepository.findByResourceId("id_4");
+      for (Iterator<MetsProperties> it = findByResourceId.iterator(); it.hasNext();) {
+        MetsProperties index = it.next();
+        System.out.println(index.toString());
+      }
       System.out.println("metsPropertiesRepository.findResourceIdByPpn(\"ppn2\")");
       Iterable<IResourceId> findResourceIdByPpn = metsPropertiesRepository.findResourceIdByPpn("ppn2");
       for (Iterator<IResourceId> it = findResourceIdByPpn.iterator(); it.hasNext();) {
@@ -249,7 +341,7 @@ public class CrudRunner implements CommandLineRunner {
 
       System.out.println(metsDocSingle);
     }
-    
+
     if (argumentList.contains(METS_FILES)) {
       System.out.println("********************************************************************************************************************");
       System.out.println("*********** METSFILE METSFILE METSFILE METSFILE METSFILE METSFILE METSFILE *****************************************");
@@ -308,76 +400,173 @@ public class CrudRunner implements CommandLineRunner {
         System.out.println(urlIterator.next().getUrl());
       }
       System.out.println("********************************************************************************************************************");
-      System.out.println("************************      Find MetsFile by resourceId and GROUPID     ******************************************");
+      System.out.println("************************      Find MetsFile by resourceId and PAGEID     ******************************************");
       System.out.println("********************************************************************************************************************");
-      System.out.println("metsFileRepository.findByResourceIdAndGroupId(\"id_0002\", \"PAGE-0001\")");
-      metsFile = metsFileRepository.findByResourceIdAndGroupIdAndCurrentTrue("id_0002", "PAGE-0001");
+      System.out.println("metsFileRepository.findByResourceIdAndPageId(\"id_0002\", \"PAGE-0001\")");
+      metsFile = metsFileRepository.findByResourceIdAndPageIdAndCurrentTrue("id_0002", "PAGE-0001");
       metsFileIterator = metsFile.iterator();
       while (metsFileIterator.hasNext()) {
         System.out.println(metsFileIterator.next());
       }
       System.out.println("********************************************************************************************************************");
-      System.out.println("************************      Find MetsFile by resourceId and GROUPID IN      **************************************");
+      System.out.println("************************      Find MetsFile by resourceId and PAGEID IN      **************************************");
       System.out.println("********************************************************************************************************************");
-      System.out.println("metsFileRepository.findByResourceIdAndGroupIdIn(\"id_0002\", Arrays.asList(\"PAGE-0001\", \"PAGE-0002\")");
-      metsFile = metsFileRepository.findByResourceIdAndGroupIdInAndCurrentTrue("id_0002", Arrays.asList("PAGE-0001", "PAGE-0002"));
+      System.out.println("metsFileRepository.findByResourceIdAndPageIdIn(\"id_0002\", Arrays.asList(\"PAGE-0001\", \"PAGE-0002\")");
+      metsFile = metsFileRepository.findByResourceIdAndPageIdInAndCurrentTrue("id_0002", Arrays.asList("PAGE-0001", "PAGE-0002"));
       metsFileIterator = metsFile.iterator();
       while (metsFileIterator.hasNext()) {
         System.out.println(metsFileIterator.next());
       }
       System.out.println("********************************************************************************************************************");
-      System.out.println("************************      Find MetsFile URL by resourceId and GROUPID      *************************************");
+      System.out.println("************************      Find MetsFile URL by resourceId and PAGEID      *************************************");
       System.out.println("********************************************************************************************************************");
-      System.out.println("metsFileRepository.findUrlByResourceIdAndGroupId(\"id_0002\", \"PAGE-0001\")");
-      urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndGroupIdAndCurrentTrue("id_0002", "PAGE-0001");
+      System.out.println("metsFileRepository.findUrlByResourceIdAndPageId(\"id_0002\", \"PAGE-0001\")");
+      urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndPageIdAndCurrentTrue("id_0002", "PAGE-0001");
       urlIterator = urlOfMetsFile.iterator();
       while (urlIterator.hasNext()) {
         System.out.println(urlIterator.next().getUrl());
       }
       System.out.println("********************************************************************************************************************");
-      System.out.println("************************      Find MetsFile URL by resourceId and GROUPID IN      **********************************");
+      System.out.println("************************      Find MetsFile URL by resourceId and PAGEID IN      **********************************");
       System.out.println("********************************************************************************************************************");
-      System.out.println("metsFileRepository.findUrlByResourceIdAndGroupIdIn(\"id_0002\", Arrays.asList(\"PAGE-0001\", \"PAGE-0002\")");
-      urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndGroupIdInAndCurrentTrue("id_0002", Arrays.asList("PAGE-0001", "PAGE-0002"));
+      System.out.println("metsFileRepository.findUrlByResourceIdAndPageIdIn(\"id_0002\", Arrays.asList(\"PAGE-0001\", \"PAGE-0002\")");
+      urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndPageIdInAndCurrentTrue("id_0002", Arrays.asList("PAGE-0001", "PAGE-0002"));
       urlIterator = urlOfMetsFile.iterator();
       while (urlIterator.hasNext()) {
         System.out.println(urlIterator.next().getUrl());
       }
       System.out.println("********************************************************************************************************************");
-      System.out.println("************************      Find MetsFile by resourceId and USE AND GROUPID     **********************************");
+      System.out.println("************************      Find MetsFile by resourceId and USE AND PAGEID     **********************************");
       System.out.println("********************************************************************************************************************");
-      System.out.println("metsFileRepository.findByResourceIdAndUseAndGroupId(\"id_0002\", \"OCR-D-GT-IMG-BIN\", \"PAGE-0001\")");
-      metsFile = metsFileRepository.findByResourceIdAndUseAndGroupIdAndCurrentTrue("id_0002", "OCR-D-GT-IMG-BIN", "PAGE-0001");
+      System.out.println("metsFileRepository.findByResourceIdAndUseAndPageId(\"id_0002\", \"OCR-D-GT-IMG-BIN\", \"PAGE-0001\")");
+      metsFile = metsFileRepository.findByResourceIdAndUseAndPageIdAndCurrentTrue("id_0002", "OCR-D-GT-IMG-BIN", "PAGE-0001");
       metsFileIterator = metsFile.iterator();
       while (metsFileIterator.hasNext()) {
         System.out.println(metsFileIterator.next());
       }
       System.out.println("********************************************************************************************************************");
-      System.out.println("************************      Find MetsFile by resourceId and USE AND GROUPID IN      ******************************");
+      System.out.println("************************      Find MetsFile by resourceId and USE AND PAGEID IN      ******************************");
       System.out.println("********************************************************************************************************************");
-      System.out.println("metsFileRepository.findByResourceIdAndUseInAndGroupIdIn(\"id_0002\", Arrays.asList(\"OCR-D-GT-IMG-BIN\", \"OCR-D-GT-IMG-DESPEC\"), Arrays.asList(\"PAGE-0001\", \"PAGE-0002\")");
-      metsFile = metsFileRepository.findByResourceIdAndUseInAndGroupIdInAndCurrentTrue("id_0002", Arrays.asList("OCR-D-GT-IMG-BIN", "OCR-D-GT-IMG-DESPEC"), Arrays.asList("PAGE-0001", "PAGE-0002"));
+      System.out.println("metsFileRepository.findByResourceIdAndUseInAndPageIdIn(\"id_0002\", Arrays.asList(\"OCR-D-GT-IMG-BIN\", \"OCR-D-GT-IMG-DESPEC\"), Arrays.asList(\"PAGE-0001\", \"PAGE-0002\")");
+      metsFile = metsFileRepository.findByResourceIdAndUseInAndPageIdInAndCurrentTrue("id_0002", Arrays.asList("OCR-D-GT-IMG-BIN", "OCR-D-GT-IMG-DESPEC"), Arrays.asList("PAGE-0001", "PAGE-0002"));
       metsFileIterator = metsFile.iterator();
       while (metsFileIterator.hasNext()) {
         System.out.println(metsFileIterator.next());
       }
       System.out.println("********************************************************************************************************************");
-      System.out.println("************************      Find MetsFile URL by resourceId USE AND and GROUPID      *****************************");
+      System.out.println("************************      Find MetsFile URL by resourceId USE AND and PAGEID      *****************************");
       System.out.println("********************************************************************************************************************");
-      System.out.println("metsFileRepository.findUrlByResourceIdAndUseAndGroupId(\"id_0002\", \"OCR-D-GT-IMG-BIN\", \"PAGE-0001\")");
-      urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndUseAndGroupIdAndCurrentTrue("id_0002", "OCR-D-GT-IMG-BIN", "PAGE-0001");
+      System.out.println("metsFileRepository.findUrlByResourceIdAndUseAndPageId(\"id_0002\", \"OCR-D-GT-IMG-BIN\", \"PAGE-0001\")");
+      urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndUseAndPageIdAndCurrentTrue("id_0002", "OCR-D-GT-IMG-BIN", "PAGE-0001");
       urlIterator = urlOfMetsFile.iterator();
       while (urlIterator.hasNext()) {
         System.out.println(urlIterator.next().getUrl());
       }
       System.out.println("********************************************************************************************************************");
-      System.out.println("************************      Find MetsFile URL by resourceId USE AND and GROUPID IN      **************************");
+      System.out.println("************************      Find MetsFile URL by resourceId USE AND and PAGEID IN      **************************");
       System.out.println("********************************************************************************************************************");
-      System.out.println("metsFileRepository.findUrlByResourceIdAndUseInAndGroupIdIn(\"id_0002\", Arrays.asList(\"OCR-D-GT-IMG-BIN\", \"OCR-D-GT-IMG-DESPEC\"), Arrays.asList(\"PAGE-0001\", \"PAGE-0002\")");
-      urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndUseInAndGroupIdInAndCurrentTrue("id_0002", Arrays.asList("OCR-D-GT-IMG-BIN", "OCR-D-GT-IMG-DESPEC"), Arrays.asList("PAGE-0001", "PAGE-0002"));
+      System.out.println("metsFileRepository.findUrlByResourceIdAndUseInAndPageIdIn(\"id_0002\", Arrays.asList(\"OCR-D-GT-IMG-BIN\", \"OCR-D-GT-IMG-DESPEC\"), Arrays.asList(\"PAGE-0001\", \"PAGE-0002\")");
+      urlOfMetsFile = metsFileRepository.findUrlByResourceIdAndUseInAndPageIdInAndCurrentTrue("id_0002", Arrays.asList("OCR-D-GT-IMG-BIN", "OCR-D-GT-IMG-DESPEC"), Arrays.asList("PAGE-0001", "PAGE-0002"));
       urlIterator = urlOfMetsFile.iterator();
       while (urlIterator.hasNext()) {
         System.out.println(urlIterator.next().getUrl());
+      }
+    }
+    if (argumentList.contains(CLASSIFICATION)) {
+      System.out.println("********************************************************************************************************************");
+      System.out.println("*******************************          Classification  Metadata         ***************************************************");
+      System.out.println("********************************************************************************************************************");
+      System.out.println("classificationMetadataRepository.findByClassification(\"Geburtstag\")");
+      Iterable<ClassificationMetadata> classificationList = classificationMetadataRepository.findByClassification("Geburtstag");
+      Iterator<ClassificationMetadata> iteratorClassification = classificationList.iterator();
+      while (iteratorClassification.hasNext()) {
+        System.out.println(iteratorClassification.next().toString());
+      }
+      System.out.println("classificationMetadataRepository.findByResourceId(\"id_0015\")");
+      classificationList = classificationMetadataRepository.findByResourceId("id_0015");
+      iteratorClassification = classificationList.iterator();
+      while (iteratorClassification.hasNext()) {
+        System.out.println(iteratorClassification.next().toString());
+      }
+    }
+    if (argumentList.contains(GENRE)) {
+      System.out.println("********************************************************************************************************************");
+      System.out.println("*******************************          Genre  Metadata         ***************************************************");
+      System.out.println("********************************************************************************************************************");
+      System.out.println("genreMetadataRepository.findByGenre(\"Horror\")");
+      Iterable<GenreMetadata> genreList = genreMetadataRepository.findByGenre("Horror");
+      Iterator<GenreMetadata> iteratorGenre = genreList.iterator();
+      while (iteratorGenre.hasNext()) {
+        System.out.println(iteratorGenre.next().toString());
+      }
+      System.out.println("genreMetadataRepository.findByResourceId(\"id_0018\")");
+      genreList = genreMetadataRepository.findByResourceId("id_0018");
+      iteratorGenre = genreList.iterator();
+      while (iteratorGenre.hasNext()) {
+        System.out.println(iteratorGenre.next().toString());
+      }
+    }
+    if (argumentList.contains(LANGUAGE)) {
+      System.out.println("********************************************************************************************************************");
+      System.out.println("*******************************          Language  Metadata         ***************************************************");
+      System.out.println("********************************************************************************************************************");
+      System.out.println("languageMetadataRepository.findByLanguage(\"en\")");
+      Iterable<LanguageMetadata> languageList = languageMetadataRepository.findByLanguage("en");
+      Iterator<LanguageMetadata> iteratorLanguage = languageList.iterator();
+      while (iteratorLanguage.hasNext()) {
+        System.out.println(iteratorLanguage.next().toString());
+      }
+      System.out.println("languageMetadataRepository.findByResourceId(\"id_0016\")");
+      languageList = languageMetadataRepository.findByResourceId("id_0016");
+      iteratorLanguage = languageList.iterator();
+      while (iteratorLanguage.hasNext()) {
+        System.out.println(iteratorLanguage.next().toString());
+      }
+    }
+    if (argumentList.contains(IDENTIFIER)) {
+      System.out.println("********************************************************************************************************************");
+      System.out.println("*******************************          Identifier  Metadata         ***************************************************");
+      System.out.println("********************************************************************************************************************");
+      System.out.println("metsIdentifierRepository.findByLanguage(\"url1\")");
+      Iterable<MetsIdentifier> metsIdentifierList = metsIdentifierRepository.findByIdentifier("url1");
+      Iterator<MetsIdentifier> metsIdentifierIterator = metsIdentifierList.iterator();
+      while (metsIdentifierIterator.hasNext()) {
+        System.out.println(metsIdentifierIterator.next().toString());
+      }
+      System.out.println("metsIdentifierRepository.findByResourceId(\"id_0002\")");
+      metsIdentifierList = metsIdentifierRepository.findByResourceId("id_0002");
+      metsIdentifierIterator = metsIdentifierList.iterator();
+      while (metsIdentifierIterator.hasNext()) {
+        System.out.println(metsIdentifierIterator.next().toString());
+      }
+      System.out.println("metsIdentifierRepository.findByResourceIdAndType(\"id_0017\", \"handle\")");
+      metsIdentifierList = metsIdentifierRepository.findByResourceIdAndType("id_0017", "handle");
+      metsIdentifierIterator = metsIdentifierList.iterator();
+      while (metsIdentifierIterator.hasNext()) {
+        System.out.println(metsIdentifierIterator.next().toString());
+      }
+    }
+    if (argumentList.contains(PAGE)) {
+      System.out.println("********************************************************************************************************************");
+      System.out.println("*******************************          Page  Metadata         ***************************************************");
+      System.out.println("********************************************************************************************************************");
+      System.out.println("pageMetadataRepository.findByFeature(\"" + GroundTruthProperties.ADMINS.toString() + "\")");
+      Iterable<PageMetadata> pageList = pageMetadataRepository.findByFeature(GroundTruthProperties.ADMINS);
+      Iterator<PageMetadata> iteratorPage = pageList.iterator();
+      while (iteratorPage.hasNext()) {
+        System.out.println(iteratorPage.next().toString());
+      }
+      System.out.println("pageMetadataRepository.findByResourceId(\"id_0002\")");
+      pageList = pageMetadataRepository.findByResourceId("id_0002");
+      iteratorPage = pageList.iterator();
+      while (iteratorPage.hasNext()) {
+        System.out.println(iteratorPage.next().toString());
+      }
+      System.out.println("pageMetadataRepository.findByResourceId(\"id_0002\")");
+      pageList = pageMetadataRepository.findByResourceIdAndPageId("id_0002", "phys_0001");
+      iteratorPage = pageList.iterator();
+      while (iteratorPage.hasNext()) {
+        System.out.println(iteratorPage.next().toString());
       }
     }
     //
@@ -419,7 +608,7 @@ public class CrudRunner implements CommandLineRunner {
     return Arrays.asList(
             eins,
             zwei,
-            drei, 
+            drei,
             vier,
             new MetsDocument("id_0003me", "Lannister"),
             new MetsDocument("id_0004sei", "Lannister"),
@@ -482,34 +671,99 @@ public class CrudRunner implements CommandLineRunner {
 
   public static Collection<MetsFile> createMetsFiles() {
     return Arrays.asList(
-            new MetsFile("id_0002", 1, "PAGE-0001_IMG_BIN",    "image/png", "PAGE-0001", "OCR-D-GT-IMG-BIN",    "url1"),
-            new MetsFile("id_0002", 1, "PAGE-0001_IMG-CROP",   "image/png", "PAGE-0001", "OCR-D-GT-IMG-CROP",   "url2"),
+            new MetsFile("id_0002", 1, "PAGE-0001_IMG_BIN", "image/png", "PAGE-0001", "OCR-D-GT-IMG-BIN", "url1"),
+            new MetsFile("id_0002", 1, "PAGE-0001_IMG-CROP", "image/png", "PAGE-0001", "OCR-D-GT-IMG-CROP", "url2"),
             new MetsFile("id_0002", 1, "PAGE-0001_IMG-DESPEC", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DESPEC", "url3"),
             new MetsFile("id_0002", 1, "PAGE-0001_IMG-DEWARP", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DEWARP", "url4"),
-            new MetsFile("id_0002", 2, "PAGE-0001_IMG_BIN",    "image/png", "PAGE-0001", "OCR-D-GT-IMG-BIN",    "url1_v2"),
-            new MetsFile("id_0002", 2, "PAGE-0001_IMG-CROP",   "image/png", "PAGE-0001", "OCR-D-GT-IMG-CROP",   "url2_v2"),
+            new MetsFile("id_0002", 2, "PAGE-0001_IMG_BIN", "image/png", "PAGE-0001", "OCR-D-GT-IMG-BIN", "url1_v2"),
+            new MetsFile("id_0002", 2, "PAGE-0001_IMG-CROP", "image/png", "PAGE-0001", "OCR-D-GT-IMG-CROP", "url2_v2"),
             new MetsFile("id_0002", 2, "PAGE-0001_IMG-DESPEC", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DESPEC", "url3_v2"),
             new MetsFile("id_0002", 2, "PAGE-0001_IMG-DEWARP", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DEWARP", "url4_v2"),
-            new MetsFile("id_0015", 1, "PAGE-0001_IMG_BIN",    "image/png", "PAGE-0001", "OCR-D-GT-IMG-BIN",    "url11"),
-            new MetsFile("id_0015", 1, "PAGE-0001_IMG-CROP",   "image/png", "PAGE-0001", "OCR-D-GT-IMG-CROP",   "url21"),
+            new MetsFile("id_0015", 1, "PAGE-0001_IMG_BIN", "image/png", "PAGE-0001", "OCR-D-GT-IMG-BIN", "url11"),
+            new MetsFile("id_0015", 1, "PAGE-0001_IMG-CROP", "image/png", "PAGE-0001", "OCR-D-GT-IMG-CROP", "url21"),
             new MetsFile("id_0015", 1, "PAGE-0001_IMG-DESPEC", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DESPEC", "url31"),
             new MetsFile("id_0015", 1, "PAGE-0001_IMG-DEWARP", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DEWARP", "url41"),
-            new MetsFile("id_0016", 1, "PAGE-0001_IMG_BIN",    "image/png", "PAGE-0001", "OCR-D-GT-IMG-BIN",    "url16"),
-            new MetsFile("id_0017", 1, "PAGE-0001_IMG-CROP",   "image/png", "PAGE-0001", "OCR-D-GT-IMG-CROP",   "url17"),
+            new MetsFile("id_0016", 1, "PAGE-0001_IMG_BIN", "image/png", "PAGE-0001", "OCR-D-GT-IMG-BIN", "url16"),
+            new MetsFile("id_0017", 1, "PAGE-0001_IMG-CROP", "image/png", "PAGE-0001", "OCR-D-GT-IMG-CROP", "url17"),
             new MetsFile("id_0018", 1, "PAGE-0001_IMG-DESPEC", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DESPEC", "url18"),
             new MetsFile("id_0019", 1, "PAGE-0001_IMG-DEWARP", "image/png", "PAGE-0001", "OCR-D-GT-IMG-DEWARP", "url19"),
-            new MetsFile("id_0002", 1, "PAGE-0002_IMG_BIN",    "image/png", "PAGE-0002", "OCR-D-GT-IMG-BIN",    "url2_1"),
-            new MetsFile("id_0002", 1, "PAGE-0002_IMG-CROP",   "image/png", "PAGE-0002", "OCR-D-GT-IMG-CROP",   "url2_2"),
+            new MetsFile("id_0002", 1, "PAGE-0002_IMG_BIN", "image/png", "PAGE-0002", "OCR-D-GT-IMG-BIN", "url2_1"),
+            new MetsFile("id_0002", 1, "PAGE-0002_IMG-CROP", "image/png", "PAGE-0002", "OCR-D-GT-IMG-CROP", "url2_2"),
             new MetsFile("id_0002", 1, "PAGE-0002_IMG-DESPEC", "image/png", "PAGE-0002", "OCR-D-GT-IMG-DESPEC", "url2_3"),
             new MetsFile("id_0002", 1, "PAGE-0002_IMG-DEWARP", "image/png", "PAGE-0002", "OCR-D-GT-IMG-DEWARP", "url2_4"),
-            new MetsFile("id_0015", 1, "PAGE-0002_IMG_BIN",    "image/png", "PAGE-0002", "OCR-D-GT-IMG-BIN",    "url2_11"),
-            new MetsFile("id_0015", 1, "PAGE-0002_IMG-CROP",   "image/png", "PAGE-0002", "OCR-D-GT-IMG-CROP",   "url2_21"),
+            new MetsFile("id_0015", 1, "PAGE-0002_IMG_BIN", "image/png", "PAGE-0002", "OCR-D-GT-IMG-BIN", "url2_11"),
+            new MetsFile("id_0015", 1, "PAGE-0002_IMG-CROP", "image/png", "PAGE-0002", "OCR-D-GT-IMG-CROP", "url2_21"),
             new MetsFile("id_0015", 1, "PAGE-0002_IMG-DESPEC", "image/png", "PAGE-0002", "OCR-D-GT-IMG-DESPEC", "url2_31"),
             new MetsFile("id_0015", 1, "PAGE-0002_IMG-DEWARP", "image/png", "PAGE-0002", "OCR-D-GT-IMG-DEWARP", "url2_41"),
-            new MetsFile("id_0016", 1, "PAGE-0002_IMG_BIN",    "image/png", "PAGE-0002", "OCR-D-GT-IMG-BIN",    "url2_16"),
-            new MetsFile("id_0017", 1, "PAGE-0002_IMG-CROP",   "image/png", "PAGE-0002", "OCR-D-GT-IMG-CROP",   "url2_17"),
+            new MetsFile("id_0016", 1, "PAGE-0002_IMG_BIN", "image/png", "PAGE-0002", "OCR-D-GT-IMG-BIN", "url2_16"),
+            new MetsFile("id_0017", 1, "PAGE-0002_IMG-CROP", "image/png", "PAGE-0002", "OCR-D-GT-IMG-CROP", "url2_17"),
             new MetsFile("id_0018", 1, "PAGE-0002_IMG-DESPEC", "image/png", "PAGE-0002", "OCR-D-GT-IMG-DESPEC", "url2_18"),
             new MetsFile("id_0019", 1, "PAGE-0002_IMG-DEWARP", "image/png", "PAGE-0002", "OCR-D-GT-IMG-DEWARP", "url2_19"));
+  }
+
+  public static Collection<ClassificationMetadata> createClassifications() {
+    return Arrays.asList(
+            new ClassificationMetadata("id_0002", "Geburtstag"),
+            new ClassificationMetadata("id_0002", "Jahrestag"),
+            new ClassificationMetadata("id_0015", "Tagebuch"),
+            new ClassificationMetadata("id_0015", "Geburtstag"),
+            new ClassificationMetadata("id_0015", "Krimi"),
+            new ClassificationMetadata("id_0015", "url41"),
+            new ClassificationMetadata("id_0016", "Novelle"),
+            new ClassificationMetadata("id_0017", "Gedicht"),
+            new ClassificationMetadata("id_0018", "Geburtstag"),
+            new ClassificationMetadata("id_0019", "Gedicht"));
+  }
+
+  public static Collection<GenreMetadata> createGenre() {
+    return Arrays.asList(
+            new GenreMetadata("id_0002", "Drama"),
+            new GenreMetadata("id_0002", "Musical"),
+            new GenreMetadata("id_0015", "Western"),
+            new GenreMetadata("id_0015", "Drama"),
+            new GenreMetadata("id_0015", "Horror"),
+            new GenreMetadata("id_0015", "Action"),
+            new GenreMetadata("id_0016", "Thriller"),
+            new GenreMetadata("id_0017", "Krimi"),
+            new GenreMetadata("id_0018", "Drama"),
+            new GenreMetadata("id_0019", "Krimi"));
+  }
+
+  public static Collection<LanguageMetadata> createLanguageMetadata() {
+    return Arrays.asList(
+            new LanguageMetadata("id_0002", "en"),
+            new LanguageMetadata("id_0002", "deu"),
+            new LanguageMetadata("id_0015", "deu"),
+            new LanguageMetadata("id_0016", "deu"),
+            new LanguageMetadata("id_0017", "deu"),
+            new LanguageMetadata("id_0017", "en"),
+            new LanguageMetadata("id_0018", "en"),
+            new LanguageMetadata("id_0019", "en"));
+  }
+
+  public static Collection<MetsIdentifier> createMetsIdentifier() {
+    return Arrays.asList(
+            new MetsIdentifier("id_0002", "purl", "purl1"),
+            new MetsIdentifier("id_0002", "url", "url1"),
+            new MetsIdentifier("id_0015", "urn", "urn1"),
+            new MetsIdentifier("id_0016", "handle", "handle1"),
+            new MetsIdentifier("id_0017", "url", "url2"),
+            new MetsIdentifier("id_0017", "handle", "handle2"),
+            new MetsIdentifier("id_0018", "urn", "urn2"),
+            new MetsIdentifier("id_0019", "url", "url3"));
+  }
+
+  public static Collection<PageMetadata> createPageMetadata() {
+    return Arrays.asList(
+            new PageMetadata("id_0002", "1", "phys_000l", GroundTruthProperties.ACQUISITION),
+            new PageMetadata("id_0002", "1", "phys_000l", GroundTruthProperties.ADMINS),
+            new PageMetadata("id_0002", "2", "phys_0002", GroundTruthProperties.ADMINS),
+            new PageMetadata("id_0015", "1", "phys_0001", GroundTruthProperties.ANDROID),
+            new PageMetadata("id_0016", "1", "phys_0001", GroundTruthProperties.TOC),
+            new PageMetadata("id_0017", "1", "phys_0001", GroundTruthProperties.FAX),
+            new PageMetadata("id_0017", "2", "phys_0002", GroundTruthProperties.DIA),
+            new PageMetadata("id_0018", "1", "phys_0001", GroundTruthProperties.ADMINS),
+            new PageMetadata("id_0019", "1", "phys_0001", GroundTruthProperties.LATIN));
   }
 
 }

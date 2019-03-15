@@ -55,25 +55,25 @@ public class MetsFileController implements IMetsFileController {
 
   @Override
   public ResponseEntity<List<MetsFile>> getAllFilesOfMetsDocument(@PathVariable("resourceId") String resourceId,
-          @RequestParam(name = "groupId", required = false) String[] groupId,
+          @RequestParam(name = "pageId", required = false) String[] pageId,
           @RequestParam(name = "use", required = false) String[] use,
           @RequestParam(name = "fileId", required = false) String[] fileId) {
     LOGGER.trace("Get METS files...");
 
-    List<MetsFile> allFiles = getListOfAllFilesOfMetsDocument(resourceId, groupId, use, fileId);
+    List<MetsFile> allFiles = getListOfAllFilesOfMetsDocument(resourceId, pageId, use, fileId);
 
     return new ResponseEntity<>(allFiles, HttpStatus.OK);
   }
 
   @Override
   public String getAllFilesOfMetsDocumentAsHtml(@PathVariable("resourceId") String resourceId,
-          @RequestParam(name = "groupId", required = false) String[] groupId,
+          @RequestParam(name = "pageId", required = false) String[] pageId,
           @RequestParam(name = "use", required = false) String[] use,
           @RequestParam(name = "fileId", required = false) String[] fileId,
           Model model) {
     LOGGER.trace("Get METS files as HTML...");
 
-    List<MetsFile> allFiles = getListOfAllFilesOfMetsDocument(resourceId, groupId, use, fileId);
+    List<MetsFile> allFiles = getListOfAllFilesOfMetsDocument(resourceId, pageId, use, fileId);
     model.addAttribute("metsFiles", allFiles);
 
     return "listOfFiles";
@@ -81,12 +81,12 @@ public class MetsFileController implements IMetsFileController {
 
   @Override
   public ResponseEntity<List<String>> getUrlOfAllFilesOfMetsDocument(@PathVariable("resourceId") String resourceId,
-          @RequestParam(name = "groupId", required = false) String[] groupId,
+          @RequestParam(name = "pageId", required = false) String[] pageId,
           @RequestParam(name = "use", required = false) String[] use,
           @RequestParam(name = "fileId", required = false) String[] fileId) {
     LOGGER.trace("Get URL of METS files...");
 
-    List<MetsFile> allFiles = getListOfAllFilesOfMetsDocument(resourceId, groupId, use, fileId);
+    List<MetsFile> allFiles = getListOfAllFilesOfMetsDocument(resourceId, pageId, use, fileId);
     List<String> urlOfAllFiles = new ArrayList<>();
     for (MetsFile metsFile : allFiles) {
       urlOfAllFiles.add(metsFile.getUrl());
@@ -96,47 +96,47 @@ public class MetsFileController implements IMetsFileController {
   }
 
   @Override
-  public ResponseEntity<List<String>> getAllGroupIdsOfMetsDocument(@PathVariable("resourceId") String resourceId) {
-    LOGGER.trace("Get all GROUPIDs of METS files");
+  public ResponseEntity<List<String>> getAllPageIdsOfMetsDocument(@PathVariable("resourceId") String resourceId) {
+    LOGGER.trace("Get all PAGEIDs of METS files");
 
-    List<String> allGroupIds = metastoreFileService.getAllGroupIds(resourceId);
+    List<String> allPageIds = metastoreFileService.getAllPageIds(resourceId);
 
-    return new ResponseEntity<>(allGroupIds, HttpStatus.OK);
+    return new ResponseEntity<>(allPageIds, HttpStatus.OK);
   }
 
   @Override
   public ResponseEntity<List<String>> getAllUsesOfMetsDocument(@PathVariable("resourceId") String resourceId) {
     LOGGER.trace("Get all USEs of METS files");
 
-    List<String> allUses = metastoreFileService.getAllGroupIds(resourceId);
+    List<String> allUses = metastoreFileService.getAllPageIds(resourceId);
 
     return new ResponseEntity<>(allUses, HttpStatus.OK);
   }
 
   /**
-   * Get referenced files of a METS document optionally filtered by GROUPID
+   * Get referenced files of a METS document optionally filtered by PAGEID
    * AND/OR USE or ID.
    *
    *
    * @param resourceId ResourceID of the METS document.
-   * @param groupId GROUPIDs of the files.
+   * @param pageId PAGEIDs of the files.
    * @param use USEs of the files.
    * @param fileId fileIds of the file.
    *
    * @return all METS documents as List.
    */
-  private List<MetsFile> getListOfAllFilesOfMetsDocument(String resourceId, String[] groupId, String[] use, String[] fileId) {
+  private List<MetsFile> getListOfAllFilesOfMetsDocument(String resourceId, String[] pageId, String[] use, String[] fileId) {
     List<MetsFile> allFiles;
     if (fileId != null) {
       LOGGER.trace("...filtered by fileIDs: '{}'", Arrays.toString(fileId));
       allFiles = metastoreFileService.getAvailableMetsFilesByFileIds(resourceId, fileId);
 
     } else {
-      if ((use != null) || (groupId != null)) {
-        LOGGER.trace("...filtered by GROUPID: '{}' and USE: '{}'", Arrays.toString(groupId), Arrays.toString(use));
-        allFiles = metastoreFileService.getAvailableMetsFilesByUseAndGroupId(resourceId, use, groupId);
+      if ((use != null) || (pageId != null)) {
+        LOGGER.trace("...filtered by PAGEID: '{}' and USE: '{}'", Arrays.toString(pageId), Arrays.toString(use));
+        allFiles = metastoreFileService.getAvailableMetsFilesByUseAndPageId(resourceId, use, pageId);
       } else {
-        LOGGER.trace("...without any filter.", groupId, use);
+        LOGGER.trace("...without any filter.", pageId, use);
         allFiles = metastoreFileService.getAvailableMetsFilesOfCurrentVersion(resourceId);
       }
     }

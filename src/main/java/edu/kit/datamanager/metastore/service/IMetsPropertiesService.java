@@ -15,6 +15,12 @@
  */
 package edu.kit.datamanager.metastore.service;
 
+import edu.kit.datamanager.metastore.entity.ClassificationMetadata;
+import edu.kit.datamanager.metastore.entity.GenreMetadata;
+import edu.kit.datamanager.metastore.entity.LanguageMetadata;
+import edu.kit.datamanager.metastore.entity.MetsIdentifier;
+import edu.kit.datamanager.metastore.entity.MetsProperties;
+import edu.kit.datamanager.metastore.entity.PageMetadata;
 import java.util.List;
 
 /**
@@ -22,20 +28,75 @@ import java.util.List;
  */
 public interface IMetsPropertiesService {
   /**
-   * Get all resource Identifiers of METS document with given
+   * Get all resource identifiers of METS document with given
    * title.
    * @param title Title of METS document.
    * @return List holding all prefixes of selected METS document.
    */
   List<String> getResourceIdsByTitle(String title);
 
-
   /**
-   * Get all resource Identifiers of METS document with given
+   * Get all resource identifiers of METS document with given
    * PPN.
    * @param ppn PPN of METS document.
    * @return List holding all prefixes of selected METS document.
    */
   List<String> getResourceIdsByPpn(String ppn);
 
+  /**
+   * Get metadata of METS document with given
+   * resource identifier.
+   * @param resourceId resource identifier of METS document.
+   * @return Object holding metadata of selected METS document.
+   */
+  MetsProperties getMetadataByResourceId(String resourceId);
+
+  /**
+   * Get classification metadata of METS document with given
+   * resource identifier.
+   * @param resourceId resource identifier of METS document.
+   * @return Object holding classification metadata of selected METS document.
+   */
+  List<ClassificationMetadata> getClassificationMetadataByResourceId(String resourceId);
+
+  /**
+   * Get language metadata of METS document with given
+   * resource identifier.
+   * @param resourceId resource identifier of METS document.
+   * @return Object holding language metadata of selected METS document.
+   */
+  List<LanguageMetadata> getLanguageMetadataByResourceId(String resourceId);
+
+  /**
+   * Get genre metadata of METS document with given
+   * resource identifier.
+   * @param resourceId resource identifier of METS document.
+   * @return Object holding genre metadata of selected METS document.
+   */
+  List<GenreMetadata> getGenreMetadataByResourceId(String resourceId);
+
+  /**
+   * Get page metadata of METS document with given
+   * resource identifier.
+   * @param resourceId resource identifier of METS document.
+   * @return Object holding page metadata of selected METS document.
+   */
+  List<PageMetadata> getPageMetadataByResourceId(String resourceId);
+
+  /**
+   * Get page metadata of METS document with given
+   * resource identifier.
+   * @param resourceId resource identifier of METS document.
+   * @return Object holding page metadata of selected METS document.
+   */
+  List<MetsIdentifier> getIdentifierByResourceId(String resourceId);
+
+  /**
+   * Get page metadata of METS document with given
+   * resource identifier.
+   * @param resourceId resource identifier of METS document.
+   * @param type Type of the mets/mods identifier.
+   * @return Object holding page metadata of selected METS document.
+   */
+  List<MetsIdentifier> getIdentifierByResourceIdAndType(String resourceId, String type);
 }

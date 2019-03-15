@@ -16,21 +16,21 @@
 package edu.kit.datamanager.metastore.entity;
 
 /**
- * Interface to get and set GroupId of an instance.
+ * Interface to get and set PAGEID of an instance.
  */
-public interface IGroupId {
+public interface IPageId {
 
   /**
-   * Set GROUPID of a file.
+   * Set PAGEID of a file.
    *
-   * @param groupId GROUPID to set.
+   * @param pageId PAGEID to set.
    */
-  public void setGroupId(String groupId);
+  public void setPageId(String pageId);
 
   /**
-   * Get GROUPID of a file.
+   * Get PAGEID of a file.
    *
-   * @return GROUPID of the file.
+   * @return PAGEID of the file.
    */
-  public String getGroupId();
+  public String getPageId();
 }

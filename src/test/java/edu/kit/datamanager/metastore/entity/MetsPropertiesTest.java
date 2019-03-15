@@ -15,6 +15,7 @@
  */
 package edu.kit.datamanager.metastore.entity;
 
+import edu.kit.datamanager.metastore.util.MetsDocumentUtil;
 import java.io.File;
 import org.fzk.tools.xml.JaxenUtil;
 import org.jdom.Document;
@@ -62,7 +63,7 @@ public class MetsPropertiesTest {
     File file = new File("src/test/resources/mets/validMets.xml");
     assertTrue("File exists!", file.exists());
     Document document = JaxenUtil.getDocument(file);
-    MetsProperties metsProperties = new MetsProperties(document);
+    MetsProperties metsProperties = MetsDocumentUtil.extractMetadataFromMets(document,"resourceID");
     assertTrue(metsProperties.getTitle().equalsIgnoreCase("Der Herold"));
     assertTrue(metsProperties.getPpn().equalsIgnoreCase("PPN767137728"));
   }
@@ -73,7 +74,7 @@ public class MetsPropertiesTest {
     File file = new File("src/test/resources/mets/validMets_withoutTitle.xml");
     assertTrue("File exists!", file.exists());
     Document document = JaxenUtil.getDocument(file);
-    MetsProperties metsProperties = new MetsProperties(document);
+    MetsProperties metsProperties = MetsDocumentUtil.extractMetadataFromMets(document,"resourceID");
     assertTrue(metsProperties.getTitle().equalsIgnoreCase(MetsProperties.NO_TITLE));
     assertTrue(metsProperties.getPpn().equalsIgnoreCase("PPN767137728"));
   }
@@ -84,7 +85,7 @@ public class MetsPropertiesTest {
     File file = new File("src/test/resources/mets/invalidMetsWithoutPPN.xml");
     assertTrue("File exists!", file.exists());
     Document document = JaxenUtil.getDocument(file);
-    MetsProperties metsProperties = new MetsProperties(document);
+    MetsProperties metsProperties = MetsDocumentUtil.extractMetadataFromMets(document,"resourceID");
     assertEquals(metsProperties.getTitle(), "First title");
     assertEquals(metsProperties.getPpn(), MetsProperties.NO_PPN);
   }
@@ -95,7 +96,7 @@ public class MetsPropertiesTest {
     File file = new File("src/test/resources/mets/validMetsWith2PPN.xml");
     assertTrue("File exists!", file.exists());
     Document document = JaxenUtil.getDocument(file);
-    MetsProperties metsProperties = new MetsProperties(document);
+    MetsProperties metsProperties = MetsDocumentUtil.extractMetadataFromMets(document,"resourceID");
     assertTrue(metsProperties.getTitle().equalsIgnoreCase("Der Herold"));
     assertTrue(metsProperties.getPpn().equalsIgnoreCase("PPN767137728"));
   }
@@ -106,7 +107,7 @@ public class MetsPropertiesTest {
     File file = new File("src/test/resources/mets/validMets_2titles.xml");
     assertTrue("File exists!", file.exists());
     Document document = JaxenUtil.getDocument(file);
-    MetsProperties metsProperties = new MetsProperties(document);
+    MetsProperties metsProperties = MetsDocumentUtil.extractMetadataFromMets(document,"resourceID");
     assertTrue(metsProperties.getTitle().equalsIgnoreCase("Der Herold"));
     assertTrue(metsProperties.getPpn().equalsIgnoreCase("PPN767137728"));
   }
@@ -174,7 +175,7 @@ public class MetsPropertiesTest {
     System.out.println("toString");
     MetsProperties instance = new MetsProperties();
     System.out.println(instance);
-    String expResult = "MetsProperties [id=null, resourceId=null, title=null, ppn=null]";
+    String expResult = "MetsProperties [id=null, resourceId=null, title=No title available!, ppn=No PPN available!]";
     String result = instance.toString();
     assertEquals(expResult, result);
     // TODO review the generated test code and remove the default call to fail.

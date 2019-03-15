@@ -15,13 +15,15 @@
  */
 package edu.kit.datamanager.metastore.controller;
 
+import edu.kit.datamanager.metastore.dao.MetsMetadata;
 import edu.kit.datamanager.metastore.entity.MetsDocument;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -70,6 +72,46 @@ public interface IMetsDocumentController {
   @RequestMapping(path = "{resourceId}", method = RequestMethod.GET)
   @ResponseBody
   ResponseEntity<MetsDocument> getLatestMetsDocument(@ApiParam(value = "The numeric resource identifier.", required = true) @PathVariable(value = "resourceId") String resourceId);
+
+  /**
+   * Get metadata of current METS document with given resourceID.
+   *
+   * @param resourceId ResourceID of the METS document.
+   * @param model Model holding information about metadata.
+   *
+   * @return Metadata of METS document with given resourceID.
+   */
+  @ApiOperation(value = "Get metadata of currrent METS documents with given resourceID.",
+          notes = "Only the current METS document is supplied.")
+  @RequestMapping(path = "{resourceId}/metadata", method = RequestMethod.GET, produces = "application/json")
+  @ResponseBody
+  ResponseEntity<MetsMetadata> getLatestMetadataOfDocument(@ApiParam(value = "The numeric resource identifier.", required = true) @PathVariable(value = "resourceId") String resourceId, Model model);
+
+  /**
+   * Get metadata of current METS document with given resourceID.
+   *
+   * @param resourceId ResourceID of the METS document.
+   * @param model Model holding information about metadata.
+   *
+   * @return Metadata of METS document with given resourceID.
+   */
+  @ApiOperation(value = "Get metadata of currrent METS documents with given resourceID.",
+          notes = "Only the current METS document is supplied.")
+  @RequestMapping(path = "{resourceId}/metadata", method = RequestMethod.GET, produces = "text/html")
+  String getLatestMetadataOfDocumentAsHtml(@ApiParam(value = "The numeric resource identifier.", required = true) @PathVariable(value = "resourceId") String resourceId, Model model);
+
+  /**
+   * Get (ground truth) metadata of pages of current METS document with given resourceID.
+   *
+   * @param resourceId ResourceID of the METS document.
+   * @param model Model holding information about metadata.
+   *
+   * @return Metadata of METS document with given resourceID.
+   */
+  @ApiOperation(value = "Get (ground truth) metadata of pages of currrent METS documents with given resourceID.",
+          notes = "Only the current METS document is supplied.")
+  @RequestMapping(path = "{resourceId}/groundtruth", method = RequestMethod.GET, produces = "text/html")
+  String getLatestGroundTruthMetadataOfDocumentAsHtml(@ApiParam(value = "The numeric resource identifier.", required = true) @PathVariable(value = "resourceId") String resourceId, Model model);
 
   /**
    * Get all METS documents with given PPN.

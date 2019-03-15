@@ -94,86 +94,86 @@ public interface MetsFileRepository extends ArangoRepository<MetsFile, String> {
   Iterable<IUrl> findUrlByResourceIdAndUseInAndCurrentTrue(String resourceId, Collection<String> use);
 
   /**
-   * Find all files of a METS document with the same GROUPID.
+   * Find all files of a METS document with the same PageId
    *
    * @param resourceId ID of the METS document.
-   * @param groupId GROUPID of the files.
+   * @param pageId PAGEID of the files.
    *
    * @return Iterator holding all files.
    */
-  Iterable<MetsFile> findByResourceIdAndGroupIdAndCurrentTrue(String resourceId, String groupId);
+  Iterable<MetsFile> findByResourceIdAndPageIdAndCurrentTrue(String resourceId, String pageId);
 
   /**
-   * Find all files of a METS document with the same GROUPID.
+   * Find all files of a METS document with the same PageId
    *
    * @param resourceId ID of the METS document.
-   * @param groupId All possible GROUPID of the files.
+   * @param pageId All possible PAGEID of the files.
    *
    * @return Iterator holding all files.
    */
-  Iterable<MetsFile> findByResourceIdAndGroupIdInAndCurrentTrue(String resourceId, Collection<String> groupId);
+  Iterable<MetsFile> findByResourceIdAndPageIdInAndCurrentTrue(String resourceId, Collection<String> pageId);
 
   /**
-   * Find all file URLs of a METS document with the same GROUPID.
+   * Find all file URLs of a METS document with the same PageId
    *
    * @param resourceId ID of the METS document.
-   * @param groupId GROUPID of the files.
+   * @param pageId PAGEID of the files.
    *
    * @return Iterator holding all files.
    */
-  Iterable<IUrl> findUrlByResourceIdAndGroupIdAndCurrentTrue(String resourceId, String groupId);
+  Iterable<IUrl> findUrlByResourceIdAndPageIdAndCurrentTrue(String resourceId, String pageId);
 
   /**
-   * Find all file URLs of a METS document with the same GROUPID.
+   * Find all file URLs of a METS document with the same PageId
    *
    * @param resourceId ID of the METS document.
-   * @param groupId All possible GROUPID of the files.
+   * @param pageId All possible PAGEID of the files.
    *
    * @return Iterator holding all file URLs.
    */
-  Iterable<IUrl> findUrlByResourceIdAndGroupIdInAndCurrentTrue(String resourceId, Collection<String> groupId);
+  Iterable<IUrl> findUrlByResourceIdAndPageIdInAndCurrentTrue(String resourceId, Collection<String> pageId);
 
   /**
-   * Find all files of a METS document with the same USE and GROUPID.
+   * Find all files of a METS document with the same USE and PageId
    *
    * @param resourceId ID of the METS document.
    * @param use USE of the fileGrps.
-   * @param groupId GROUPID of the files.
+   * @param pageId PAGEID of the files.
    *
    * @return Iterator holding all files.
    */
-  Iterable<MetsFile> findByResourceIdAndUseAndGroupIdAndCurrentTrue(String resourceId, String use, String groupId);
+  Iterable<MetsFile> findByResourceIdAndUseAndPageIdAndCurrentTrue(String resourceId, String use, String pageId);
 
   /**
-   * Find all files of a METS document with the same USE and GROUPID.
+   * Find all files of a METS document with the same USE and PageId
    *
    * @param resourceId ID of the METS document.
    * @param use All possible USE of the fileGrps.
-   * @param groupId All possible GROUPID of the files.
+   * @param pageId All possible PAGEID of the files.
    *
    * @return Iterator holding all files.
    */
-  Iterable<MetsFile> findByResourceIdAndUseInAndGroupIdInAndCurrentTrue(String resourceId, Collection<String> use, Collection<String> groupId);
+  Iterable<MetsFile> findByResourceIdAndUseInAndPageIdInAndCurrentTrue(String resourceId, Collection<String> use, Collection<String> pageId);
 
   /**
-   * Find all file URLs of a METS document with the same USE and GROUPID.
+   * Find all file URLs of a METS document with the same USE and PageId
    *
    * @param resourceId ID of the METS document.
    * @param use USE of the fileGrps.
-   * @param groupId GROUPID of the files.
+   * @param pageId PAGEID of the files.
    *
    * @return Iterator holding all files.
    */
-  Iterable<IUrl> findUrlByResourceIdAndUseAndGroupIdAndCurrentTrue(String resourceId, String use, String groupId);
+  Iterable<IUrl> findUrlByResourceIdAndUseAndPageIdAndCurrentTrue(String resourceId, String use, String pageId);
 
   /**
-   * Find all file URLs of a METS document with the same USE and GROUPID.
+   * Find all file URLs of a METS document with the same USE and PageId
    *
    * @param resourceId ID of the METS document.
    * @param use All possible USE of the fileGrps.
-   * @param groupId All possible GROUPID of the files.
+   * @param pageId All possible PAGEID of the files.
    *
    * @return Iterator holding all file URLs.
    */
-  Iterable<IUrl> findUrlByResourceIdAndUseInAndGroupIdInAndCurrentTrue(String resourceId, Collection<String> use, Collection<String> groupId);
+  Iterable<IUrl> findUrlByResourceIdAndUseInAndPageIdInAndCurrentTrue(String resourceId, Collection<String> use, Collection<String> pageId);
 }
