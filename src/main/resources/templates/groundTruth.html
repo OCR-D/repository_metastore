@@ -32,7 +32,7 @@ limitations under the License.
       </thead>
       <tbody>
         <tr th:each="page: ${pageMetadata}">
-          <td th:text="${page.order}"></td>
+          <td th:text="'Page #' + ${page.order}"></td>
           <td th:text="${page.feature}"></td>
         </tr>
       </tbody>
