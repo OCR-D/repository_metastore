@@ -140,6 +140,32 @@ public interface IMetsDocumentController {
   ResponseEntity<List<String>> getResourceIdByTitle(@ApiParam(value = "The title of the METS document.", required = true)@RequestParam(value = "title") String title);
 
   /**
+   * Get all METS documents with ground truth label(s).
+   *
+   * @param label Ground truth labels of the METS document.
+   *
+   * @return List of URLs with given title.
+   */
+  @ApiOperation(value = "Get all resourceIds with given ground truth label(s).",
+          notes = "Only the current METS documents are supplied.")
+  @RequestMapping(path = "labeling", method = RequestMethod.GET)
+  @ResponseBody
+  ResponseEntity<List<String>> getResourceIdByLabel(@ApiParam(value = "The ground truth label(s) of the METS document.", required = true)@RequestParam(value = "label") String[] label);
+
+  /**
+   * Get all METS documents with ground truth label(s).
+   *
+   * @param label Ground truth labels of the METS document.
+   *
+   * @return List of URLs with given title.
+   */
+  @ApiOperation(value = "Get all resourceIds with given ground truth label(s) of a single page.",
+          notes = "Only the current METS documents are supplied.")
+  @RequestMapping(path = "labeling/page", method = RequestMethod.GET)
+  @ResponseBody
+  ResponseEntity<List<String>> getResourceIdByLabelOfPage(@ApiParam(value = "The ground truth label(s) of a single page inside the METS document.", required = true)@RequestParam(value = "label") String[] label);
+
+  /**
    * Get all versions of METS document with given resourceID.
    *
    * @param resourceId ResourceID of the METS document.

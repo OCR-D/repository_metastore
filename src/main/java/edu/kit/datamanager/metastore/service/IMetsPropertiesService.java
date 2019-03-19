@@ -44,6 +44,15 @@ public interface IMetsPropertiesService {
   List<String> getResourceIdsByPpn(String ppn);
 
   /**
+   * Get all resource identifiers of METS document with given
+   * ground truth label(s).
+   * @param label Ground truth label(s) of METS document.
+   * @param pageOnly Search for labels inside one page.
+   * @return List holding all prefixes of selected METS document.
+   */
+  List<String> getResourceIdsByGtLabel(String[] label, boolean pageOnly);
+
+  /**
    * Get metadata of METS document with given
    * resource identifier.
    * @param resourceId resource identifier of METS document.
@@ -84,7 +93,7 @@ public interface IMetsPropertiesService {
   List<PageMetadata> getPageMetadataByResourceId(String resourceId);
 
   /**
-   * Get page metadata of METS document with given
+   * Get mets identifier of METS document with given
    * resource identifier.
    * @param resourceId resource identifier of METS document.
    * @return Object holding page metadata of selected METS document.
@@ -92,8 +101,8 @@ public interface IMetsPropertiesService {
   List<MetsIdentifier> getIdentifierByResourceId(String resourceId);
 
   /**
-   * Get page metadata of METS document with given
-   * resource identifier.
+   * Get mets identifier of METS document with given
+   * resource identifier and type.
    * @param resourceId resource identifier of METS document.
    * @param type Type of the mets/mods identifier.
    * @return Object holding page metadata of selected METS document.

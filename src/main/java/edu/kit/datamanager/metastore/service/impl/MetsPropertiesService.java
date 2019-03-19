@@ -17,6 +17,7 @@ package edu.kit.datamanager.metastore.service.impl;
 
 import edu.kit.datamanager.metastore.entity.ClassificationMetadata;
 import edu.kit.datamanager.metastore.entity.GenreMetadata;
+import edu.kit.datamanager.metastore.entity.GroundTruthProperties;
 import edu.kit.datamanager.metastore.entity.IResourceId;
 import edu.kit.datamanager.metastore.entity.LanguageMetadata;
 import edu.kit.datamanager.metastore.entity.MetsIdentifier;
@@ -30,6 +31,7 @@ import edu.kit.datamanager.metastore.repository.MetsPropertiesRepository;
 import edu.kit.datamanager.metastore.repository.PageMetadataRepository;
 import edu.kit.datamanager.metastore.service.IMetsPropertiesService;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import org.apache.commons.collections4.IteratorUtils;
@@ -91,6 +93,44 @@ public class MetsPropertiesService implements IMetsPropertiesService {
     Iterable<IResourceId> allResources = metsPropertiesRepository.findResourceIdByPpn(ppn);
 
     return createResourceIdList(allResources);
+  }
+
+  @Override
+  public List<String> getResourceIdsByGtLabel(String[] label, boolean pageOnly) {
+    HashSet<String> resultSet = null;
+    for (String gtLabeling : label) {
+      GroundTruthProperties property = GroundTruthProperties.get(gtLabeling);
+      // Label is a valid label
+      if (property != null) {
+        HashSet<String> intermediateSet = new HashSet<>();
+        Iterable<PageMetadata> findByResourceId = pageMetadataRepository.findByFeature(property);
+        for (PageMetadata pmd : findByResourceId) {
+          StringBuilder sb = new StringBuilder();
+          if (pageOnly) {
+            sb.append(String.format("%1$5s", pmd.getOrder()));
+          }
+          sb.append(pmd.getResourceId());
+          intermediateSet.add(sb.toString());
+        }
+        if (resultSet == null) {
+          resultSet = intermediateSet;
+        } else {
+          resultSet.retainAll(intermediateSet);
+        }
+      } else {
+        throw new IllegalArgumentException(String.format("'%s' is not a valid ground truth label!", gtLabeling));
+      }
+    }
+    List<String> resultList = new ArrayList<>();
+    for (String key : resultSet) {
+      if (pageOnly) {
+        key = key.substring(5);
+      }
+      if (!resultList.contains(key)) {
+        resultList.add(key);
+      }
+    }
+    return resultList;
   }
 
   @Override

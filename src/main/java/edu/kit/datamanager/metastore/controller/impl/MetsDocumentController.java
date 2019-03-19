@@ -171,6 +171,18 @@ public class MetsDocumentController implements IMetsDocumentController {
     return "groundTruth";
   }
 
+  @Override
+  public ResponseEntity<List<String>> getResourceIdByLabel(@RequestParam(value = "label")String[] label) {
+    List<String> resourceIdList = metastoreResourceService.getResourceIdsByGtLabel(label, false);
+   return new ResponseEntity<>(resourceIdList, HttpStatus.OK); 
+  }
+
+  @Override
+  public ResponseEntity<List<String>> getResourceIdByLabelOfPage(@RequestParam(value = "label")String[] label) {
+    List<String> resourceIdList = metastoreResourceService.getResourceIdsByGtLabel(label, true);
+   return new ResponseEntity<>(resourceIdList, HttpStatus.OK); 
+  }
+
   /**
    * Handler for Exceptions.
    *
