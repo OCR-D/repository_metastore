@@ -23,9 +23,12 @@ Resolving deltas: 100% (357/357), done.
 user@localhost:/home/user/$cd base-repo
 user@localhost:/home/user/base-repo/$git submodule init
 Submodule 'libraries/service-base' (git://github.com/kit-data-manager/service-base.git) registered for path 'libraries/service-base'
+Submodule 'libraries/generic-message-consumer' (git://github.com/kit-data-manager/generic-message-consumer.git) registered for path 'libraries/generic-message-consumer'
 user@localhost:/home/user/base-repo/$git submodule update --remote --merge 
 Cloning into '/home/user/base-repo/libraries/service-base'...
-Submodule path 'libraries/service-base': checked out '0c...'
+Submodule path 'libraries/service-base': checked out 'a9...'
+Cloning into '/home/user/base-repo/libraries/generic-message-consumer'...
+Submodule path 'libraries/generic-message-consumer': checked out '98...'
 user@localhost:/home/user/base-repo/$cd libraries/service-base/
 user@localhost:/home/user/base-repo/libraries/service-base/$./gradlew install
 Starting a Gradle Daemon (subsequent builds will be faster)
@@ -33,6 +36,13 @@ Starting a Gradle Daemon (subsequent builds will be faster)
 BUILD SUCCESSFUL in 10s
 3 actionable tasks: 3 executed
 user@localhost:/home/user/base-repo/libraries/service-base/$cd ../../
+user@localhost:/home/user/base-repo/$cd libraries/generic-message-consumer/
+user@localhost:/home/user/base-repo/libraries/generic-message-consumer/$gradlew install
+Starting a Gradle Daemon
+[...]
+BUILD SUCCESSFUL in 5s
+3 actionable tasks: 3 executed
+user@localhost:/home/user/base-repo/libraries/generic-message-consumer/$cd ../../
 user@localhost:/home/user/base-repo/$./gradlew build
 [...]
 BUILD SUCCESSFUL in 51s
@@ -98,7 +108,7 @@ user@localhost:/home/user/base-repo/$java -jar build/libs/base-repo.jar
  \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
   '  |____| .__|_| |_|_| |_\__, | / / / /
  =========|_|==============|___/=/_/_/_/
- :: Spring Boot ::        (v2.0.3.RELEASE)
+ :: Spring Boot ::        (v2.0.5.RELEASE)
 [...]
 Spring is running!
 ```

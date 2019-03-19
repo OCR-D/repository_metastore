@@ -60,6 +60,9 @@ user@localhost:/home/user/base-repo/$git submodule update --remote --merge
 user@localhost:/home/user/base-repo/$cd libraries/service-base/
 user@localhost:/home/user/base-repo/libraries/service-base/$gradlew install
 user@localhost:/home/user/base-repo/libraries/service-base/$cd ../../
+user@localhost:/home/user/base-repo/$cd libraries/generic-message-consumer/
+user@localhost:/home/user/base-repo/libraries/generic-message-consumer/$gradlew install
+user@localhost:/home/user/base-repo/libraries/generic-message-consumer/$cd ../../
 user@localhost:/home/user/base-repo/$gradlew build
 # Configure KIT DM 2.0
 user@localhost:/home/user/base-repo/$cp conf/application.yml .
