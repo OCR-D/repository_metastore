@@ -31,7 +31,7 @@ public interface IMetsPropertiesService {
    * Get all resource identifiers of METS document with given
    * title.
    * @param title Title of METS document.
-   * @return List holding all prefixes of selected METS document.
+   * @return List holding all resourceIDs of selected METS document(s).
    */
   List<String> getResourceIdsByTitle(String title);
 
@@ -39,7 +39,7 @@ public interface IMetsPropertiesService {
    * Get all resource identifiers of METS document with given
    * PPN.
    * @param ppn PPN of METS document.
-   * @return List holding all prefixes of selected METS document.
+   * @return List holding all resourceIDs of selected METS document(s).
    */
   List<String> getResourceIdsByPpn(String ppn);
 
@@ -48,9 +48,17 @@ public interface IMetsPropertiesService {
    * ground truth label(s).
    * @param label Ground truth label(s) of METS document.
    * @param pageOnly Search for labels inside one page.
-   * @return List holding all prefixes of selected METS document.
+   * @return List holding all resourceIDs of selected METS document(s).
    */
   List<String> getResourceIdsByGtLabel(String[] label, boolean pageOnly);
+
+  /**
+   * Get all resource identifiers of METS document with given
+   * classification(s).
+   * @param classification Classification(s) of METS document.
+   * @return List holding all resourceIDs of selected METS document(s).
+   */
+  List<String> getResourceIdsByClassification(String[] classification);
 
   /**
    * Get metadata of METS document with given

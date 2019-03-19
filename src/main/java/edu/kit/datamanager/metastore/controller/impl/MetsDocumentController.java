@@ -172,14 +172,20 @@ public class MetsDocumentController implements IMetsDocumentController {
   }
 
   @Override
-  public ResponseEntity<List<String>> getResourceIdByLabel(@RequestParam(value = "label")String[] label) {
+  public ResponseEntity<List<String>> getResourceIdBySemanticLabel(@RequestParam(value = "label")String[] label) {
     List<String> resourceIdList = metastoreResourceService.getResourceIdsByGtLabel(label, false);
    return new ResponseEntity<>(resourceIdList, HttpStatus.OK); 
   }
 
   @Override
-  public ResponseEntity<List<String>> getResourceIdByLabelOfPage(@RequestParam(value = "label")String[] label) {
+  public ResponseEntity<List<String>> getResourceIdBySemanticLabelOfPage(@RequestParam(value = "label")String[] label) {
     List<String> resourceIdList = metastoreResourceService.getResourceIdsByGtLabel(label, true);
+   return new ResponseEntity<>(resourceIdList, HttpStatus.OK); 
+  }
+
+  @Override
+  public ResponseEntity<List<String>> getResourceIdByClassification(@RequestParam(value = "class")String[] classification) {
+    List<String> resourceIdList = metastoreResourceService.getResourceIdsByClassification(classification);
    return new ResponseEntity<>(resourceIdList, HttpStatus.OK); 
   }
 
