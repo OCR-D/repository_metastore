@@ -25,20 +25,11 @@ SUCCESS
 Now you can start the Research Data Repository with the following commands:
 su
 docker-compose up
-user@localhost:/ocrd/repository/docker/$bash installRepo.sh
+user@localhost:/ocrd/repository/docker/$
 ```
 Now the Research Data Repository is ready to start. Switch to super user and start 
 the docker containers.
-```bash=bash
-# Build OCR-D Research Data Repository
-user@localhost:/home/user/repository_metastore/installDocker/$bash installRepo.sh /ocrd/repository/
-[...]
-SUCCESS
-Now you can start the Research Data Repository with the following commands:
-su
-docker-compose up
-user@localhost:/ocrd/repository/docker/$
-```
+
 ## Start Research Data Repository
 From your installation directory, start up your application by running 'docker-compose up' (as root).
 ```bash=bash

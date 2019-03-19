@@ -46,7 +46,10 @@ git submodule update --remote --merge
 cd libraries/service-base/
 ./gradlew install
 cd ../../
-./gradlew build
+cd libraries/generic-message-consumer/
+./gradlew install
+cd ../../
+./gradlew -Prelease build
 cp build/libs/*.jar ../../docker/base-repo/
 cd ../..
 
