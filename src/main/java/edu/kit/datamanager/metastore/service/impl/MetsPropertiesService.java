@@ -134,6 +134,19 @@ public class MetsPropertiesService implements IMetsPropertiesService {
   }
 
   @Override
+  public List<String> getResourceIdsByClassification(String[] classification) {
+    HashSet<String> resultSet = new HashSet<>();
+    for (String item : classification) {
+      Iterable<ClassificationMetadata> findByClassification = classificationMetadataRepository.findByClassification(item);
+      for (ClassificationMetadata cmd : findByClassification) {
+        resultSet.add(cmd.getResourceId());
+      }
+    }
+    List<String> resultList = new ArrayList<>(resultSet);
+    return resultList;
+  }
+
+  @Override
   public MetsProperties getMetadataByResourceId(String resourceId) {
     MetsProperties metsProperties = null;
     Iterable<MetsProperties> findByResourceId = metsPropertiesRepository.findByResourceId(resourceId);

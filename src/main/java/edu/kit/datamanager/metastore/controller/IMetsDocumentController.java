@@ -140,30 +140,43 @@ public interface IMetsDocumentController {
   ResponseEntity<List<String>> getResourceIdByTitle(@ApiParam(value = "The title of the METS document.", required = true)@RequestParam(value = "title") String title);
 
   /**
-   * Get all METS documents with ground truth label(s).
+   * Get all METS documents with given ground truth label(s).
    *
    * @param label Ground truth labels of the METS document.
    *
-   * @return List of URLs with given title.
+   * @return List of resourceIDs with given label.
    */
   @ApiOperation(value = "Get all resourceIds with given ground truth label(s).",
           notes = "Only the current METS documents are supplied.")
   @RequestMapping(path = "labeling", method = RequestMethod.GET)
   @ResponseBody
-  ResponseEntity<List<String>> getResourceIdByLabel(@ApiParam(value = "The ground truth label(s) of the METS document.", required = true)@RequestParam(value = "label") String[] label);
+  ResponseEntity<List<String>> getResourceIdBySemanticLabel(@ApiParam(value = "The ground truth label(s) of the METS document.", required = true)@RequestParam(value = "label") String[] label);
 
   /**
-   * Get all METS documents with ground truth label(s).
+   * Get all METS documents with given ground truth label(s).
    *
    * @param label Ground truth labels of the METS document.
    *
-   * @return List of URLs with given title.
+   * @return List of resourceIDs with given label.
    */
   @ApiOperation(value = "Get all resourceIds with given ground truth label(s) of a single page.",
           notes = "Only the current METS documents are supplied.")
   @RequestMapping(path = "labeling/page", method = RequestMethod.GET)
   @ResponseBody
-  ResponseEntity<List<String>> getResourceIdByLabelOfPage(@ApiParam(value = "The ground truth label(s) of a single page inside the METS document.", required = true)@RequestParam(value = "label") String[] label);
+  ResponseEntity<List<String>> getResourceIdBySemanticLabelOfPage(@ApiParam(value = "The ground truth label(s) of a single page inside the METS document.", required = true)@RequestParam(value = "label") String[] label);
+
+  /**
+   * Get all METS documents with given classification(s).
+   *
+   * @param label Classifications of the METS document.
+   *
+   * @return List of resourceIDs with given classifications.
+   */
+  @ApiOperation(value = "Get all resourceIds with given classification(s).",
+          notes = "Only the current METS documents are supplied.")
+  @RequestMapping(path = "classification", method = RequestMethod.GET)
+  @ResponseBody
+  ResponseEntity<List<String>> getResourceIdByClassification(@ApiParam(value = "The classification(s) of the METS document.", required = true)@RequestParam(value = "class") String[] classification);
 
   /**
    * Get all versions of METS document with given resourceID.
