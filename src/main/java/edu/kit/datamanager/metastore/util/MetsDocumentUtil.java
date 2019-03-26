@@ -302,7 +302,7 @@ public class MetsDocumentUtil {
    * @throws Exception An error occurred during parsing METS file.
    */
   public static List<GenreMetadata> extractGenreMetadataFromMets(final Document metsDocument, final String resourceId) throws Exception {
-    List<GenreMetadata> classificationList = new ArrayList<>();
+    List<GenreMetadata> genreList = new ArrayList<>();
     Map<String, String> metsMap = new HashMap<>();
     // define XPaths
     metsMap.put(GENRE, "//mods:genre");
@@ -311,11 +311,11 @@ public class MetsDocumentUtil {
     if (values.length >= 1) {
       for (String genre : values) {
         if (genre.trim().length() > 1) {
-          classificationList.add(new GenreMetadata(resourceId, genre.trim()));
+          genreList.add(new GenreMetadata(resourceId, genre.trim()));
         }
       }
     }
-    return classificationList;
+    return genreList;
   }
 
   /**
