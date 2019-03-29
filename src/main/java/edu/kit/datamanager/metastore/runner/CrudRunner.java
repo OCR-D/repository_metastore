@@ -242,6 +242,7 @@ public class CrudRunner implements CommandLineRunner {
       System.out.println("********************************************************************************************************************");
       System.out.println("*******************************          MetsProperties         ***************************************************");
       System.out.println("********************************************************************************************************************");
+      System.out.println("No of entities for metsPorperties: " + metsPropertiesRepository.count());
       System.out.println("metsPropertiesRepository.findByResourceId(\"id_4\")");
       Iterable<MetsProperties> findByResourceId = metsPropertiesRepository.findByResourceId("id_4");
       for (Iterator<MetsProperties> it = findByResourceId.iterator(); it.hasNext();) {
@@ -277,6 +278,7 @@ public class CrudRunner implements CommandLineRunner {
       System.out.println("********************************************************************************************************************");
       System.out.println("************************       SectionDocument         ************************************************************");
       System.out.println("********************************************************************************************************************");
+      System.out.println("No of entities for sectionDocument: " + secRepository.count());
       // the generated id from the database is set in the original entity
       //Thread.sleep(2000);
       System.out.println("secRepository.findByResourceIdAndPrefix(\"id_0002\", \"dc\")");
@@ -289,10 +291,7 @@ public class CrudRunner implements CommandLineRunner {
       System.out.println("********************************************************************************************************************");
       System.out.println("*********** METSDOCUMENT  METSDOCUMENT  METSDOCUMENT  METSDOCUMENT  METSDOCUMENT ***********************************");
       System.out.println("********************************************************************************************************************");
-      Iterable<MetsDocument> metsDoc;
-      Iterator<MetsDocument> metsDocIterator;
-      Iterable<IResourceId> resourceIdOfMetsDoc;
-      Iterator<IResourceId> resourceIdIterator;
+      System.out.println("No of entities for metsDocument: " + repository.count());
       Iterable<IVersion> version;
       Iterator<IVersion> versionIterator;
 
@@ -346,6 +345,7 @@ public class CrudRunner implements CommandLineRunner {
       System.out.println("********************************************************************************************************************");
       System.out.println("*********** METSFILE METSFILE METSFILE METSFILE METSFILE METSFILE METSFILE *****************************************");
       System.out.println("********************************************************************************************************************");
+      System.out.println("No of entities for metsFile: " + metsFileRepository.count());
       Iterable<MetsFile> metsFile;
       Iterator<MetsFile> metsFileIterator;
       Iterable<IUrl> urlOfMetsFile;
@@ -476,6 +476,7 @@ public class CrudRunner implements CommandLineRunner {
       System.out.println("********************************************************************************************************************");
       System.out.println("*******************************          Classification  Metadata         ***************************************************");
       System.out.println("********************************************************************************************************************");
+      System.out.println("No of entities for classification Metadata: " + classificationMetadataRepository.count());
       System.out.println("classificationMetadataRepository.findByClassification(\"Geburtstag\")");
       Iterable<ClassificationMetadata> classificationList = classificationMetadataRepository.findByClassification("Geburtstag");
       Iterator<ClassificationMetadata> iteratorClassification = classificationList.iterator();
@@ -493,6 +494,7 @@ public class CrudRunner implements CommandLineRunner {
       System.out.println("********************************************************************************************************************");
       System.out.println("*******************************          Genre  Metadata         ***************************************************");
       System.out.println("********************************************************************************************************************");
+      System.out.println("No of entities for genre Metadata: " + genreMetadataRepository.count());
       System.out.println("genreMetadataRepository.findByGenre(\"Horror\")");
       Iterable<GenreMetadata> genreList = genreMetadataRepository.findByGenre("Horror");
       Iterator<GenreMetadata> iteratorGenre = genreList.iterator();
@@ -510,6 +512,7 @@ public class CrudRunner implements CommandLineRunner {
       System.out.println("********************************************************************************************************************");
       System.out.println("*******************************          Language  Metadata         ***************************************************");
       System.out.println("********************************************************************************************************************");
+      System.out.println("No of entities for language Metadata: " + languageMetadataRepository.count());
       System.out.println("languageMetadataRepository.findByLanguage(\"en\")");
       Iterable<LanguageMetadata> languageList = languageMetadataRepository.findByLanguage("en");
       Iterator<LanguageMetadata> iteratorLanguage = languageList.iterator();
@@ -527,6 +530,7 @@ public class CrudRunner implements CommandLineRunner {
       System.out.println("********************************************************************************************************************");
       System.out.println("*******************************          Identifier  Metadata         ***************************************************");
       System.out.println("********************************************************************************************************************");
+      System.out.println("No of entities for identifier Metadata: " + metsIdentifierRepository.count());
       System.out.println("metsIdentifierRepository.findByLanguage(\"url1\")");
       Iterable<MetsIdentifier> metsIdentifierList = metsIdentifierRepository.findByIdentifier("url1");
       Iterator<MetsIdentifier> metsIdentifierIterator = metsIdentifierList.iterator();
@@ -550,6 +554,7 @@ public class CrudRunner implements CommandLineRunner {
       System.out.println("********************************************************************************************************************");
       System.out.println("*******************************          Page  Metadata         ***************************************************");
       System.out.println("********************************************************************************************************************");
+      System.out.println("No of entities for page Metadata: " + pageMetadataRepository.count());
       System.out.println("pageMetadataRepository.findByFeature(\"" + GroundTruthProperties.ADMINS.toString() + "\")");
       Iterable<PageMetadata> pageList = pageMetadataRepository.findByFeature(GroundTruthProperties.ADMINS);
       Iterator<PageMetadata> iteratorPage = pageList.iterator();

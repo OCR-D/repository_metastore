@@ -44,8 +44,19 @@ public class MetsFileService implements IMetsFileService {
   /**
    * Repository persisting METS files.
    */
-  @Autowired
   private MetsFileRepository metsFileRepository;
+
+  /**
+   * Set repository via autowired, to allow initialization.
+   *
+   * @param metsFileRepository
+   */
+  @Autowired
+  public void setMetsFileRepository(MetsFileRepository metsFileRepository) {
+    this.metsFileRepository = metsFileRepository;
+    long count = metsFileRepository.count();
+    LOGGER.debug("No of entities in MetsFileRepository: {}", count);
+  }
 
   @Override
   public List<String> getAllPageIds(String resourceId) {
@@ -85,10 +96,10 @@ public class MetsFileService implements IMetsFileService {
     List<String> pageIdList;
     List<String> useList;
     Iterator<MetsFile> metsFileIterator;
-    
+
     pageIdList = (pageId != null) ? Arrays.asList(pageId) : null;
     useList = (use != null) ? Arrays.asList(use) : null;
-    
+
     if ((pageIdList != null) && (useList != null)) {
       metsFileIterator = metsFileRepository.findByResourceIdAndUseInAndPageIdInAndCurrentTrue(resourceId, useList, pageIdList).iterator();
     } else {

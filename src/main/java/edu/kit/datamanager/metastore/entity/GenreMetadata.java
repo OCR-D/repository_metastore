@@ -27,7 +27,7 @@ import com.arangodb.springframework.annotation.HashIndex;
  *    <li>Genre</li>
  *    </ul></p>
  */
-@Document("classificationMetadata")
+@Document("genreMetadata")
 @HashIndex(fields = {"resourceId"})
 @HashIndex(fields = {"genre"})
 public class GenreMetadata {
