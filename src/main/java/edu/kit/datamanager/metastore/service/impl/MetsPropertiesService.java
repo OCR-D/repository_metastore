@@ -35,6 +35,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import org.apache.commons.collections4.IteratorUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,40 +48,100 @@ import org.springframework.stereotype.Service;
 public class MetsPropertiesService implements IMetsPropertiesService {
 
   /**
+   * Logger.
+   */
+  private static final Logger LOGGER = LoggerFactory.getLogger(MetsPropertiesService.class);
+
+  /**
    * Repository persisting properties of METS document.
    */
-  @Autowired
   private MetsPropertiesRepository metsPropertiesRepository;
 
   /**
    * Repository persisting METS identifiers.
    */
-  @Autowired
   private MetsIdentifierRepository metsIdentifierRepository;
 
   /**
    * Repository persisting page metadata..
    */
-  @Autowired
   private PageMetadataRepository pageMetadataRepository;
 
   /**
    * Repository persisting classification metadata.
    */
-  @Autowired
   private ClassificationMetadataRepository classificationMetadataRepository;
 
   /**
    * Repository persisting genre metadata.
    */
-  @Autowired
   private GenreMetadataRepository genreMetadataRepository;
 
   /**
    * Repository persisting language metadata.
    */
-  @Autowired
   private LanguageMetadataRepository languageMetadataRepository;
+  
+  /** 
+   * Set repository via autowired, to allow initialization.
+   * @param metsPropertiesRepository 
+   */
+  @Autowired
+  public void setMetsPropertiesRepository(MetsPropertiesRepository metsPropertiesRepository) {
+    this.metsPropertiesRepository = metsPropertiesRepository;
+    long count = metsPropertiesRepository.count();
+    LOGGER.debug("No of entities in MetsPropertiesRepository: {}", count);
+  }
+  /** 
+   * Set repository via autowired, to allow initialization.
+   * @param metsIdentifierRepository 
+   */
+  @Autowired
+  public void setMetsIdentifierRepository(MetsIdentifierRepository metsIdentifierRepository) {
+    this.metsIdentifierRepository = metsIdentifierRepository;
+    long count = metsIdentifierRepository.count();
+    LOGGER.debug("No of entities in MetsIdentifierRepository: {}", count);
+  }
+  /** 
+   * Set repository via autowired, to allow initialization.
+   * @param pageMetadataRepository 
+   */
+  @Autowired
+  public void setPageMetadataRepository(PageMetadataRepository pageMetadataRepository) {
+    this.pageMetadataRepository = pageMetadataRepository;
+    long count = pageMetadataRepository.count();
+    LOGGER.debug("No of entities in PageMetadataRepository: {}", count);
+  }
+  /** 
+   * Set repository via autowired, to allow initialization.
+   * @param classificationMetadataRepository 
+   */
+  @Autowired
+  public void setClassificationMetadataRepository(ClassificationMetadataRepository classificationMetadataRepository) {
+    this.classificationMetadataRepository = classificationMetadataRepository;
+    long count = classificationMetadataRepository.count();
+    LOGGER.debug("No of entities in ClassificationMetadataRepository: {}", count);
+  }
+  /** 
+   * Set repository via autowired, to allow initialization.
+   * @param genreMetadataRepository 
+   */
+  @Autowired
+  public void setGenreMetadataRepository(GenreMetadataRepository genreMetadataRepository) {
+    this.genreMetadataRepository = genreMetadataRepository;
+    long count = genreMetadataRepository.count();
+    LOGGER.debug("No of entities in GenreMetadataRepository: {}", count);
+  }
+  /** 
+   * Set repository via autowired, to allow initialization.
+   * @param languageMetadataRepository 
+   */
+  @Autowired
+  public void setLanguageMetadataRepository(LanguageMetadataRepository languageMetadataRepository) {
+    this.languageMetadataRepository = languageMetadataRepository;
+    long count = languageMetadataRepository.count();
+    LOGGER.debug("No of entities in LanguageMetadataRepository: {}", count);
+  }
 
   @Override
   public List<String> getResourceIdsByTitle(String title) {

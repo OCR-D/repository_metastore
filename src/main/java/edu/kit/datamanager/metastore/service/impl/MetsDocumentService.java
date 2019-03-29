@@ -62,52 +62,126 @@ public class MetsDocumentService implements IMetsDocumentService {
   /**
    * Repository persisting Mets documents.
    */
-  @Autowired
-  private MetsDocumentRepository metsRepository;
+ private MetsDocumentRepository metsRepository;
 
   /**
    * Repository persisting METS files.
    */
-  @Autowired
   private MetsFileRepository metsFileRepository;
 
   /**
    * Repository persisting METS properties.
    */
-  @Autowired
   private MetsPropertiesRepository metsPropertiesRepository;
 
   /**
    * Repository persisting METS identifiers.
    */
-  @Autowired
   private MetsIdentifierRepository metsIdentifierRepository;
 
   /**
    * Repository persisting page metadata..
    */
-  @Autowired
   private PageMetadataRepository pageMetadataRepository;
 
   /**
    * Repository persisting classification metadata.
    */
-  @Autowired
   private ClassificationMetadataRepository classificationMetadataRepository;
 
   /**
    * Repository persisting genre metadata.
    */
-  @Autowired
   private GenreMetadataRepository genreMetadataRepository;
 
   /**
    * Repository persisting language metadata.
    */
-  @Autowired
   private LanguageMetadataRepository languageMetadataRepository;
 
-  @Override
+  /**
+   * Set repository via autowired, to allow initialization.
+   *
+   * @param metsDocumentRepository
+   */
+  @Autowired
+  public void setMetsDocumentRepository(MetsDocumentRepository metsDocumentRepository) {
+    this.metsRepository = metsDocumentRepository;
+    long count = metsRepository.count();
+    LOGGER.debug("No of entities in MetsDocumentRepository: {}", count);
+  }
+    /** 
+   * Set repository via autowired, to allow initialization.
+   * @param metsFileRepository 
+   */
+  @Autowired
+  public void setMetsFileRepository(MetsFileRepository metsFileRepository) {
+    this.metsFileRepository = metsFileRepository;
+    long count = metsFileRepository.count();
+    LOGGER.debug("No of entities in MetsFileRepository: {}", count);
+  }
+    /** 
+   * Set repository via autowired, to allow initialization.
+   * @param metsPropertiesRepository 
+   */
+  @Autowired
+  public void setMetsPropertiesRepository(MetsPropertiesRepository metsPropertiesRepository) {
+    this.metsPropertiesRepository = metsPropertiesRepository;
+    long count = metsPropertiesRepository.count();
+    LOGGER.debug("No of entities in MetsPropertiesRepository: {}", count);
+  }
+  /** 
+   * Set repository via autowired, to allow initialization.
+   * @param metsIdentifierRepository 
+   */
+  @Autowired
+  public void setMetsIdentifierRepository(MetsIdentifierRepository metsIdentifierRepository) {
+    this.metsIdentifierRepository = metsIdentifierRepository;
+    long count = metsIdentifierRepository.count();
+    LOGGER.debug("No of entities in MetsIdentifierRepository: {}", count);
+  }
+  /** 
+   * Set repository via autowired, to allow initialization.
+   * @param pageMetadataRepository 
+   */
+  @Autowired
+  public void setPageMetadataRepository(PageMetadataRepository pageMetadataRepository) {
+    this.pageMetadataRepository = pageMetadataRepository;
+    long count = pageMetadataRepository.count();
+    LOGGER.debug("No of entities in PageMetadataRepository: {}", count);
+  }
+  /** 
+   * Set repository via autowired, to allow initialization.
+   * @param classificationMetadataRepository 
+   */
+  @Autowired
+  public void setClassificationMetadataRepository(ClassificationMetadataRepository classificationMetadataRepository) {
+    this.classificationMetadataRepository = classificationMetadataRepository;
+    long count = classificationMetadataRepository.count();
+    LOGGER.debug("No of entities in ClassificationMetadataRepository: {}", count);
+  }
+  /** 
+   * Set repository via autowired, to allow initialization.
+   * @param genreMetadataRepository 
+   */
+  @Autowired
+  public void setGenreMetadataRepository(GenreMetadataRepository genreMetadataRepository) {
+    this.genreMetadataRepository = genreMetadataRepository;
+    long count = genreMetadataRepository.count();
+    LOGGER.debug("No of entities in GenreMetadataRepository: {}", count);
+  }
+  /** 
+   * Set repository via autowired, to allow initialization.
+   * @param languageMetadataRepository 
+   */
+  @Autowired
+  public void setLanguageMetadataRepository(LanguageMetadataRepository languageMetadataRepository) {
+    this.languageMetadataRepository = languageMetadataRepository;
+    long count = languageMetadataRepository.count();
+    LOGGER.debug("No of entities in LanguageMetadataRepository: {}", count);
+  }
+
+@Override
   public List<MetsDocument> getAllDocuments() {
     Iterator<MetsDocument> metsIterator = metsRepository.findByCurrentTrue().iterator();
     List<MetsDocument> metsList = IteratorUtils.toList(metsIterator);
