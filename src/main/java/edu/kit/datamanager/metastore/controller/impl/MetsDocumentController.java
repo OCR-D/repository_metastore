@@ -194,6 +194,13 @@ public class MetsDocumentController implements IMetsDocumentController {
     List<String> resourceIdList = metastoreResourceService.getResourceIdsByLanguage(language);
    return new ResponseEntity<>(resourceIdList, HttpStatus.OK); 
   }
+  
+  @Override
+  public ResponseEntity<List<String>> getResourceIdByIdentifier(@RequestParam(value = "identifier") String identifier,
+          @RequestParam(value = "type", required = false) String type) {
+    List<String> resourceIdList = metastoreResourceService.getResourceIdsByIdentifier(identifier, type);
+   return new ResponseEntity<>(resourceIdList, HttpStatus.OK); 
+  }
 
   /**
    * Handler for Exceptions.

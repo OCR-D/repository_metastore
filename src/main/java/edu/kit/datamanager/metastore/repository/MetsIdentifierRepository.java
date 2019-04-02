@@ -51,4 +51,14 @@ public interface MetsIdentifierRepository extends ArangoRepository<MetsIdentifie
    */
   Iterable<MetsIdentifier> findByIdentifier(String identifier);
 
+  /**
+   * Find MetsIdentifiers by identifier and type.
+   *
+   * @param identifier Identifier of the resource.
+   * @param type Type of the document.
+  *
+   * @return List of MetsIdentifiers with given title.
+   */
+  Iterable<MetsIdentifier> findByIdentifierAndType(String identifier, String type);
+
 }

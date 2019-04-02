@@ -81,10 +81,11 @@ public class MetsPropertiesService implements IMetsPropertiesService {
    * Repository persisting language metadata.
    */
   private LanguageMetadataRepository languageMetadataRepository;
-  
-  /** 
+
+  /**
    * Set repository via autowired, to allow initialization.
-   * @param metsPropertiesRepository 
+   *
+   * @param metsPropertiesRepository
    */
   @Autowired
   public void setMetsPropertiesRepository(MetsPropertiesRepository metsPropertiesRepository) {
@@ -92,9 +93,11 @@ public class MetsPropertiesService implements IMetsPropertiesService {
     long count = metsPropertiesRepository.count();
     LOGGER.debug("No of entities in MetsPropertiesRepository: {}", count);
   }
-  /** 
+
+  /**
    * Set repository via autowired, to allow initialization.
-   * @param metsIdentifierRepository 
+   *
+   * @param metsIdentifierRepository
    */
   @Autowired
   public void setMetsIdentifierRepository(MetsIdentifierRepository metsIdentifierRepository) {
@@ -102,9 +105,11 @@ public class MetsPropertiesService implements IMetsPropertiesService {
     long count = metsIdentifierRepository.count();
     LOGGER.debug("No of entities in MetsIdentifierRepository: {}", count);
   }
-  /** 
+
+  /**
    * Set repository via autowired, to allow initialization.
-   * @param pageMetadataRepository 
+   *
+   * @param pageMetadataRepository
    */
   @Autowired
   public void setPageMetadataRepository(PageMetadataRepository pageMetadataRepository) {
@@ -112,9 +117,11 @@ public class MetsPropertiesService implements IMetsPropertiesService {
     long count = pageMetadataRepository.count();
     LOGGER.debug("No of entities in PageMetadataRepository: {}", count);
   }
-  /** 
+
+  /**
    * Set repository via autowired, to allow initialization.
-   * @param classificationMetadataRepository 
+   *
+   * @param classificationMetadataRepository
    */
   @Autowired
   public void setClassificationMetadataRepository(ClassificationMetadataRepository classificationMetadataRepository) {
@@ -122,9 +129,11 @@ public class MetsPropertiesService implements IMetsPropertiesService {
     long count = classificationMetadataRepository.count();
     LOGGER.debug("No of entities in ClassificationMetadataRepository: {}", count);
   }
-  /** 
+
+  /**
    * Set repository via autowired, to allow initialization.
-   * @param genreMetadataRepository 
+   *
+   * @param genreMetadataRepository
    */
   @Autowired
   public void setGenreMetadataRepository(GenreMetadataRepository genreMetadataRepository) {
@@ -132,9 +141,11 @@ public class MetsPropertiesService implements IMetsPropertiesService {
     long count = genreMetadataRepository.count();
     LOGGER.debug("No of entities in GenreMetadataRepository: {}", count);
   }
-  /** 
+
+  /**
    * Set repository via autowired, to allow initialization.
-   * @param languageMetadataRepository 
+   *
+   * @param languageMetadataRepository
    */
   @Autowired
   public void setLanguageMetadataRepository(LanguageMetadataRepository languageMetadataRepository) {
@@ -216,6 +227,22 @@ public class MetsPropertiesService implements IMetsPropertiesService {
       for (LanguageMetadata lmd : findByLanguage) {
         resultSet.add(lmd.getResourceId());
       }
+    }
+    List<String> resultList = new ArrayList<>(resultSet);
+    return resultList;
+  }
+
+  @Override
+  public List<String> getResourceIdsByIdentifier(String identifier, String type) {
+    HashSet<String> resultSet = new HashSet<>();
+    Iterable<MetsIdentifier> findByIdentifier = null;
+    if (type != null) {
+      findByIdentifier = metsIdentifierRepository.findByIdentifierAndType(identifier, type);
+    } else {
+      findByIdentifier = metsIdentifierRepository.findByIdentifier(identifier);
+    }
+    for (MetsIdentifier mid : findByIdentifier) {
+      resultSet.add(mid.getResourceId());
     }
     List<String> resultList = new ArrayList<>(resultSet);
     return resultList;
