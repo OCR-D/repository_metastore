@@ -61,6 +61,23 @@ public interface IMetsPropertiesService {
   List<String> getResourceIdsByClassification(String[] classification);
 
   /**
+   * Get all resource identifiers of METS document with given
+   * language(s).
+   * @param language Language(s) of METS document.
+   * @return List holding all resourceIDs of selected METS document(s).
+   */
+  List<String> getResourceIdsByLanguage(String[] language);
+
+  /**
+   * Get all resource identifiers of METS document with given
+   * identifier.
+   * @param identifier Identifier of METS document.
+   * @param type Type of identifier.
+   * @return List holding all resourceIDs of selected METS document(s).
+   */
+  List<String> getResourceIdsByIdentifier(String identifier, String type);
+
+  /**
    * Get metadata of METS document with given
    * resource identifier.
    * @param resourceId resource identifier of METS document.

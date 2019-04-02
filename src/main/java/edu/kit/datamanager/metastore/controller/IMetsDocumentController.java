@@ -159,11 +159,10 @@ public interface IMetsDocumentController {
    *
    * @return List of resourceIDs with given label.
    */
-  @ApiOperation(value = "Get all resourceIds with given ground truth label(s) of a single page.",
-          notes = "Only the current METS documents are supplied.")
+  @ApiOperation(value = "Get all resourceIds with given semantic label(s) of a single page.")
   @RequestMapping(path = "labeling/page", method = RequestMethod.GET)
   @ResponseBody
-  ResponseEntity<List<String>> getResourceIdBySemanticLabelOfPage(@ApiParam(value = "The ground truth label(s) of a single page inside the METS document.", required = true)@RequestParam(value = "label") String[] label);
+  ResponseEntity<List<String>> getResourceIdBySemanticLabelOfPage(@ApiParam(value = "The semantic label(s) of a single page inside the METS document.", required = true)@RequestParam(value = "label") String[] label);
 
   /**
    * Get all METS documents with given classification(s).
@@ -172,11 +171,36 @@ public interface IMetsDocumentController {
    *
    * @return List of resourceIDs with given classifications.
    */
-  @ApiOperation(value = "Get all resourceIds with given classification(s).",
-          notes = "Only the current METS documents are supplied.")
+  @ApiOperation(value = "Get all resourceIds with given classification(s).")
   @RequestMapping(path = "classification", method = RequestMethod.GET)
   @ResponseBody
   ResponseEntity<List<String>> getResourceIdByClassification(@ApiParam(value = "The classification(s) of the METS document.", required = true)@RequestParam(value = "class") String[] classification);
+
+  /**
+   * Get all METS documents with given language(s).
+   *
+   * @param language Language(s) of the METS document.
+   *
+   * @return List of resourceIDs with given language(s).
+   */
+  @ApiOperation(value = "Get all resourceIds with given language(s).")
+  @RequestMapping(path = "language", method = RequestMethod.GET)
+  @ResponseBody
+  ResponseEntity<List<String>> getResourceIdByLanguage(@ApiParam(value = "The language(s) of the METS document.", required = true)@RequestParam(value = "lang") String[] language);
+
+  /**
+   * Get all METS documents with given identifier.
+   *
+   * @param identifier Identifier of the METS document.
+   * @param type Type of the identifier.
+   *
+   * @return List of resourceIDs with given identifier.
+   */
+  @ApiOperation(value = "Get all resourceIds with given identifier.")
+  @RequestMapping(path = "identifier", method = RequestMethod.GET)
+  @ResponseBody
+  ResponseEntity<List<String>> getResourceIdByIdentifier(@ApiParam(value = "The identifier of the METS document.", required = true)@RequestParam(value = "identifier") String identifier,
+          @ApiParam(value = "The type of the identifier.", required = false)@RequestParam(value = "type") String type);
 
   /**
    * Get all versions of METS document with given resourceID.
