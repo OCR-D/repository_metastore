@@ -24,7 +24,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author hartmann-v
+ * Test for MetsFile.
  */
 public class MetsFileTest {
 

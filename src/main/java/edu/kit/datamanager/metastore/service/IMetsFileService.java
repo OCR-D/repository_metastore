@@ -15,11 +15,8 @@
  */
 package edu.kit.datamanager.metastore.service;
 
-import edu.kit.datamanager.metastore.entity.MetsDocument;
 import edu.kit.datamanager.metastore.entity.MetsFile;
-import edu.kit.datamanager.metastore.entity.SectionDocument;
 import java.util.List;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Interface defining METS file service.

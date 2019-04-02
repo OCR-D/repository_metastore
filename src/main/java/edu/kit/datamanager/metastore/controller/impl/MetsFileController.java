@@ -19,7 +19,6 @@ import com.arangodb.ArangoDBException;
 import edu.kit.datamanager.metastore.controller.IMetsFileController;
 import edu.kit.datamanager.metastore.entity.MetsFile;
 import edu.kit.datamanager.metastore.service.IMetsFileService;
-import io.swagger.annotations.ApiParam;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

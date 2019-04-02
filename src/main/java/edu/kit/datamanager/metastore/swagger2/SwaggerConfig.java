@@ -18,7 +18,6 @@ package edu.kit.datamanager.metastore.swagger2;
 import com.google.common.collect.Lists;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
@@ -39,8 +38,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
- *
- * @author jejkal
+ * Class for building swagger-ui.html
  */
 @Configuration
 @EnableSwagger2
@@ -65,7 +63,7 @@ public class SwaggerConfig{
 
   private ApiInfo apiInfo(){
     return new ApiInfo(
-            "Repository Microservice - RESTful API",
+            "Metastore Microservice - RESTful API",
             "This webpage describes the RESTful interface of the Metastore Service based on KIT Data Manager Repository Microservice.",
             "0.1.0",
             null,

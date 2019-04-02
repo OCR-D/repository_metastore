@@ -205,7 +205,7 @@ public class MetsDocumentController implements IMetsDocumentController {
   /**
    * Handler for Exceptions.
    *
-   * @param exc Exception accessing database.
+   * @param ade Exception accessing database.
    *
    * @return Error status.
    */

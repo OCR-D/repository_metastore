@@ -57,8 +57,7 @@ import java.util.List;
 import org.springframework.dao.DataAccessException;
 
 /**
- * @author Volker Hartmann
- *
+ * CRUD Runner for testing repositories.
  */
 @ComponentScan("edu.kit.datamanager.metastore")
 public class CrudRunner implements CommandLineRunner {

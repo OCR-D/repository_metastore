@@ -28,7 +28,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author hartmann-v
+ * Test for MetsProperties.
  */
 public class MetsPropertiesTest {
 

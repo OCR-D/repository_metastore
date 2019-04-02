@@ -21,7 +21,6 @@ import java.io.File;
 import java.util.List;
 import org.fzk.tools.xml.JaxenUtil;
 import org.jdom.Document;
-import org.jdom.Namespace;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -31,7 +30,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author hartmann-v
+ * Test for MetsDocumentUtil.
  */
 public class MetsDocumentUtilTest {
   

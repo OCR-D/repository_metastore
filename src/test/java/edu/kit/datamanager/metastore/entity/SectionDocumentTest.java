@@ -15,7 +15,6 @@
  */
 package edu.kit.datamanager.metastore.entity;
 
-import java.util.Date;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -25,7 +24,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author hartmann-v
+ * Test for SectionDocument.
  */
 public class SectionDocumentTest {
 

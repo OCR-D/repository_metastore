@@ -22,8 +22,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- *
- * @author hartmann-v
+ * Tests for MdType.
  */
 public class MdTypeTest {
   

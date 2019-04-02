@@ -15,8 +15,6 @@
  */
 package edu.kit.datamanager.metastore.util;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import edu.kit.datamanager.metastore.exception.BagItException;
 import gov.loc.repository.bagit.conformance.BagLinter;
 import gov.loc.repository.bagit.creator.BagCreator;
@@ -52,7 +50,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,7 +67,9 @@ public class BagItUtil {
    * Build BagIt container of a payload directory.
    *
    * @param payLoadPath Path to payload directory.
-   * @throws IOException Error accessing files
+   * 
+   * @return Bag of directory.
+   * @throws BagItException Error building bag.
    */
   public static Bag buildBag(File payLoadPath) throws BagItException {
     Bag bag = null;
@@ -93,7 +92,7 @@ public class BagItUtil {
    * @param pathToBag Path to bagIt directory.
    *
    * @return Bag of directory.
-   * @throws IOException Error accessing files
+   * @throws BagItException Error reading bag.
    */
   public static Bag readBag(Path pathToBag) throws BagItException {
     LOGGER.debug("Read BagIt...");
@@ -116,6 +115,7 @@ public class BagItUtil {
    * @param bag Bag to validate.
    *
    * @return true or false
+   * @throws BagItException Error validating bag.
    */
   public static boolean validateBagit(Bag bag) throws BagItException {
     boolean valid = true;

@@ -15,7 +15,6 @@
  */
 package edu.kit.datamanager.metastore.controller;
 
-import edu.kit.datamanager.metastore.entity.MetsDocument;
 import edu.kit.datamanager.metastore.entity.MetsFile;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

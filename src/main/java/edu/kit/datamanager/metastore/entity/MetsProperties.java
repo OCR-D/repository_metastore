@@ -17,11 +17,6 @@ package edu.kit.datamanager.metastore.entity;
 
 import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.HashIndex;
-import edu.kit.datamanager.metastore.util.MetsDocumentUtil;
-import java.util.ArrayList;
-import java.util.List;
-import org.fzk.tools.xml.JaxenUtil;
-import org.jdom.Namespace;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.Id;

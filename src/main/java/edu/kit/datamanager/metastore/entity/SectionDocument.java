@@ -19,7 +19,6 @@ import org.springframework.data.annotation.Id;
 
 import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.HashIndex;
-import java.util.Date;
 
 /**
  * This class holds all information about section documents.

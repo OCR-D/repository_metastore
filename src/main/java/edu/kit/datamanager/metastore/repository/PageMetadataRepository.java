@@ -17,8 +17,6 @@ package edu.kit.datamanager.metastore.repository;
 
 import com.arangodb.springframework.repository.ArangoRepository;
 import edu.kit.datamanager.metastore.entity.GroundTruthProperties;
-import edu.kit.datamanager.metastore.entity.IResourceId;
-import edu.kit.datamanager.metastore.entity.MetsProperties;
 import edu.kit.datamanager.metastore.entity.PageMetadata;
 
 /**
