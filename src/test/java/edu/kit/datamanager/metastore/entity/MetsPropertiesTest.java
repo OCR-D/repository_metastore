@@ -65,6 +65,13 @@ public class MetsPropertiesTest {
     Document document = JaxenUtil.getDocument(file);
     MetsProperties metsProperties = MetsDocumentUtil.extractMetadataFromMets(document,"resourceID");
     assertTrue(metsProperties.getTitle().equalsIgnoreCase("Der Herold"));
+    assertTrue(metsProperties.getSubTitle().equalsIgnoreCase("Beispiel Untertitel"));
+    assertTrue(metsProperties.getYear().equalsIgnoreCase("1839"));
+    assertTrue(metsProperties.getLicense().contains("Staatsbibliothek zu Berlin"));
+    assertTrue(metsProperties.getAuthor().equalsIgnoreCase("Name of author"));
+    assertTrue(metsProperties.getNoOfPages() == 2);
+    assertTrue(metsProperties.getPublisher().equalsIgnoreCase("Staatsbibliothek zu Berlin – Preußischer Kulturbesitz, Germany"));
+    assertTrue(metsProperties.getPhysicalDescription().equalsIgnoreCase("physical description"));
     assertTrue(metsProperties.getPpn().equalsIgnoreCase("PPN767137728"));
   }
 
