@@ -189,6 +189,12 @@ public class MetsDocumentController implements IMetsDocumentController {
    return new ResponseEntity<>(resourceIdList, HttpStatus.OK); 
   }
 
+  @Override
+  public ResponseEntity<List<String>> getResourceIdByLanguage(@RequestParam(value = "lang")String[] language) {
+    List<String> resourceIdList = metastoreResourceService.getResourceIdsByLanguage(language);
+   return new ResponseEntity<>(resourceIdList, HttpStatus.OK); 
+  }
+
   /**
    * Handler for Exceptions.
    *

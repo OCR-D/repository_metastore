@@ -179,6 +179,19 @@ public interface IMetsDocumentController {
   ResponseEntity<List<String>> getResourceIdByClassification(@ApiParam(value = "The classification(s) of the METS document.", required = true)@RequestParam(value = "class") String[] classification);
 
   /**
+   * Get all METS documents with given language(s).
+   *
+   * @param language Language(s) of the METS document.
+   *
+   * @return List of resourceIDs with given language(s).
+   */
+  @ApiOperation(value = "Get all resourceIds with given language(s).",
+          notes = "Only the current METS documents are supplied.")
+  @RequestMapping(path = "language", method = RequestMethod.GET)
+  @ResponseBody
+  ResponseEntity<List<String>> getResourceIdByLanguage(@ApiParam(value = "The language(s) of the METS document.", required = true)@RequestParam(value = "lang") String[] language);
+
+  /**
    * Get all versions of METS document with given resourceID.
    *
    * @param resourceId ResourceID of the METS document.

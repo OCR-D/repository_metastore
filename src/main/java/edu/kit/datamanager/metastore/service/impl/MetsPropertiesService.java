@@ -209,6 +209,19 @@ public class MetsPropertiesService implements IMetsPropertiesService {
   }
 
   @Override
+  public List<String> getResourceIdsByLanguage(String[] language) {
+    HashSet<String> resultSet = new HashSet<>();
+    for (String item : language) {
+      Iterable<LanguageMetadata> findByLanguage = languageMetadataRepository.findByLanguage(item);
+      for (LanguageMetadata lmd : findByLanguage) {
+        resultSet.add(lmd.getResourceId());
+      }
+    }
+    List<String> resultList = new ArrayList<>(resultSet);
+    return resultList;
+  }
+
+  @Override
   public MetsProperties getMetadataByResourceId(String resourceId) {
     MetsProperties metsProperties = null;
     Iterable<MetsProperties> findByResourceId = metsPropertiesRepository.findByResourceId(resourceId);
