@@ -75,6 +75,23 @@ public class MetsPropertiesTest {
     assertTrue(metsProperties.getPpn().equalsIgnoreCase("PPN767137728"));
   }
 
+ @Test
+  public void testMetsPropertiesWithDocument_validMets_newFormat() throws Exception {
+    System.out.println("Test with valid METS file with new format");
+    File file = new File("src/test/resources/mets/validMets_newFormat.xml");
+    assertTrue("File exists!", file.exists());
+    Document document = JaxenUtil.getDocument(file);
+    MetsProperties metsProperties = MetsDocumentUtil.extractMetadataFromMets(document,"resourceID");
+    assertTrue(metsProperties.getTitle().equalsIgnoreCase("Gedichte"));
+    assertTrue(metsProperties.getSubTitle().equalsIgnoreCase(""));
+    assertTrue(metsProperties.getYear().equalsIgnoreCase("1778"));
+    assertTrue(metsProperties.getLicense().contains("Koordinierte"));
+    assertTrue(metsProperties.getAuthor().equalsIgnoreCase("Gottfried August Bürger"));
+    assertTrue(metsProperties.getNoOfPages() == 2);
+    assertTrue(metsProperties.getPublisher().equalsIgnoreCase("Dieterich"));
+    assertTrue(metsProperties.getPhysicalDescription().equalsIgnoreCase("XXII, [4], 328 S."));
+  }
+
   @Test
   public void testMetsPropertiesWithDocument_validMetsWithoutTitle() throws Exception {
     System.out.println("Test with valid METS file without title");

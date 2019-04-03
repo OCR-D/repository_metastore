@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="de">
+<head>
+
+<meta charset="utf-8">
+<!-- 
+	This website is powered by TYPO3 - inspiring people to share!
+	TYPO3 is a free open source Content Management Framework initially created by Kasper Skaarhoj and licensed under GNU/GPL.
+	TYPO3 is copyright 1998-2018 of Kasper Skaarhoj. Extensions are copyright of their respective owners.
+	Information and contribution at https://typo3.org/
+-->
+
+
+<link rel="shortcut icon" href="/typo3conf/ext/dfgviewer/Resources/Public/Images/dfgviewerFavicon.png" type="image/png">
+<title>DFG-Viewer: DFG-Viewer</title>
+<meta name="generator" content="TYPO3 CMS">
+<meta name="robots" content="all">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<link rel="stylesheet" type="text/css" href="/typo3temp/Assets/641ef09885.css?1536075172" media="all">
+<link rel="stylesheet" type="text/css" href="/typo3conf/ext/dfgviewer/Resources/Public/Css/webStyles.css?1541523162" media="all">
+
+
+<script src="//code.jquery.com/jquery-2.2.4.min.js" type="text/javascript" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script><script type="text/javascript">if (typeof jQuery == 'undefined') { document.write(unescape("%3Cscript src='typo3conf/ext/slub_web_ldp/Resources/Public/Javascript/jquery-2.2.4.min.js' type='text/javascript'%3E%3C/script%3E"));}</script>
+
+
+
+
+</head>
+<body class="website home">
+<div class="main-wrapper">
+		
+<div class="header">
+  <div class="header-image"></div>
+  <div class="sticky-header">
+    <h1>
+      <a class="dfgviewer-logo" title="DFG-Viewer" href="/">DFG-Viewer</a>
+    </h1>
+    <nav>
+      <ul class="main-nav"><li class="submenu"><a href="/ueber-das-projekt/" title="Das Projekt (ALT+D)"  accesskey="D">Das Projekt</a><ul><li><a href="/ueber-das-projekt/was-ist-der-dfg-viewer/" title="Was ist der DFG-Viewer? (ALT+W)"  accesskey="W">Was ist der DFG-Viewer?</a></li><li><a href="/ueber-das-projekt/projektpartner/" title="Projektpartner (ALT+P)"  accesskey="P">Projektpartner</a></li><li><a href="/ueber-das-projekt/nutzungsbedingungen/" title="Nutzungsbedingungen (ALT+N)"  accesskey="N">Nutzungsbedingungen</a></li><li><a href="/ueber-das-projekt/technische-voraussetzungen/" title="Technische Voraussetzungen (ALT+T)"  accesskey="T">Technische Voraussetzungen</a></li><li><a href="/ueber-das-projekt/implementierung/" title="Implementierung (ALT+I)"  accesskey="I">Implementierung</a></li></ul></li><li><a href="/demo/" title="Demo (ALT+E)"  accesskey="E">Demo</a></li><li><a href="/profil-der-metadaten/" title="Metadaten (ALT+M)"  accesskey="M">Metadaten</a></li><li><a href="/strukturdatenset/" title="Strukturdatenset (ALT+S)"  accesskey="S">Strukturdatenset</a></li><li class="submenu"><a href="/hinweise-zur-bildbearbeitung/" title="Bildbearbeitung (ALT+B)"  accesskey="B">Bildbearbeitung</a><ul><li><a href="/hinweise-zur-bildbearbeitung/implementierung/" title="Implementierung (ALT+L)"  accesskey="L">Implementierung</a></li><li><a href="/hinweise-zur-bildbearbeitung/beispiele/" title="Beispiele">Beispiele</a></li></ul></li></ul>
+      <ul class="language-nav"><li><a href="/" title="Sprache: Deutsch" class="actlang">DE</a></li><li><a href="/en/" title="Language: English">EN</a></li></ul>
+      <ul class="secondary-nav"><li><a href="/datenschutzerklaerung/" title="Datenschutz">Datenschutz</a></li><li><a href="/impressum/" title="Impressum">Impressum</a></li><li><a href="/kontakt/" title="Kontakt">Kontakt</a></li></ul>
+      <button type="button" class="nav-toggle">
+          <span class="nav-label">Open Navigation</span>
+          <span class="nav-button-bar"></span>
+          <span class="nav-button-bar"></span>
+          <span class="nav-button-bar"></span>
+          <span class="nav-button-bar"></span>
+      </button>
+    </nav>
+  </div>
+  
+  <h2>DFG-Viewer</h2>
+</div>
+
+		<!--TYPO3SEARCH_begin-->
+		
+		<div class="page-container">
+			
+	<!--  CONTENT ELEMENT, uid:40989/text [begin] -->
+		<div class="home-section mission">
+		<!--  Text: [begin] -->
+			<p class="bodytext">Der DFG-Viewer ist die Referenzimplementierung für die Digitalisierungsstandards der&nbsp;<a href="http://dfgviewer.thomasjung.me/website_home.html#" target="_blank">Deutschen Forschungsgemeinschaft (DFG)</a>. Das sind insbesondere die Datenformate METS/MODS und METS/TEI sowie die Austauschschnittstelle OAI-PMH.</p>
+<p class="bodytext">Das Angebot ist für den Datenanbieter wie auch die Nutzer kostenfrei.</p>
+<p class="bodytext"><a href="/ueber-das-projekt/" title="Mehr dazu" class="more">Mehr erfahren</a></p>
+		<!--  Text: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:40989/text [end] -->
+		
+	<!--  CONTENT ELEMENT, uid:40990/html [begin] -->
+		<div class="home-section demo">
+		<!--  Raw HTML content: [begin] -->
+			<h3>DFG-Viewer Demonstrator</h3>
+<p>Sehe Sie hier zunächst drei Demonstrationen des DFG-Viewers mit ausgewählten Werken verschiedener Projektpartner.</p>
+                    <ul class="demo-list">
+                        <li>
+                            <a href="/show/?tx_dlf%5Bid%5D=http%3A%2F%2Fdigital.slub-dresden.de%2Foai%2F%3Fverb%3DGetRecord%26metadataPrefix%3Dmets%26identifier%3Doai%3Ade%3Aslub-dresden%3Adb%3Aid-263566811" title="">
+                                <img src="/typo3conf/ext/dfgviewer/Resources/Public/Images/Demopages/demoSLUB.jpg" alt="demoSLUB">
+                                <span class="title">Der furnembsten, notwendigsten, der gantzen Architectur angehoerigen Mathematischen und…</span>
+                                <span class="uid">oai:de:slub-dresden:db:id-263566811</span>
+                                <span class="institute">SLUB Dresden</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/show/?tx_dlf%5Bid%5D=http%3A%2F%2Fdaten.digitale-sammlungen.de%2F~db%2Fmets%2Fbsb00020619_mets.xml" title="">
+                                <img src="/typo3conf/ext/dfgviewer/Resources/Public/Images/Demopages/demoBSB.jpg" alt="demoSLUB">
+                                <span class="title">Prima [- Undecima] pars librorum divi Aurelii Augustini…</span>
+                                <span class="uid">bsb00020619</span>
+                                <span class="institute">BSB München</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://dfg-viewer.de/show/?tx_dlf%5Bid%5D=http%3A%2F%2Fdbs.hab.de%2Foai%2Fwdb%3Fverb%3DGetRecord%26metadataPrefix%3Dmets%26identifier%3Doai%3Adiglib.hab.de%3Appn_549836969" title="">
+                                <img src="/typo3conf/ext/dfgviewer/Resources/Public/Images/Demopages/demoHAB.jpg" alt="demoSLUB">
+                                <span class="title">Johannis Michaelis Dilherri, Franci, Disputationum Academicarum, praecipue Philologicarum, Tomus…</span>
+                                <span class="uid">oai:diglib.hab.de:ppn_549836969</span>
+                                <span class="institute">HAB Wolfenbüttel</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <p><a href="/demo/" title="Mehr dazu" class="more">Weitere Beispiele ansehen</a></p>
+		<!--  Raw HTML content: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:40990/html [end] -->
+		
+	<!--  CONTENT ELEMENT, uid:40991/text [begin] -->
+		<div class="home-section metadata">
+		<!--  Header: [begin] -->
+			<div class="csc-header csc-header-n3"><h3>METS, MODS, TEI. Metadaten des DFG-Viewers</h3></div>
+		<!--  Header: [end] -->
+			
+		<!--  Text: [begin] -->
+			<p class="bodytext">Das verwendete Metadatenformat ist ausführlich dokumentiert und mit Beispielen versehen. Die beschriebene Minimalversion kann sehr leicht aus vorhandenen Metadaten anderer Formate erzeugt werden und genügt bereits, um den DFG-Viewer anzusprechen.</p>
+<p class="bodytext"><a href="/profil-der-metadaten/" title="Mehr dazu" class="more">Mehr erfahren</a></p>
+		<!--  Text: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:40991/text [end] -->
+		
+	<!--  CONTENT ELEMENT, uid:40992/text [begin] -->
+		<div class="home-section mailinglist">
+		<!--  Header: [begin] -->
+			<div class="csc-header csc-header-n4"><h3>DFG-Viewer Mailingliste</h3></div>
+		<!--  Header: [end] -->
+			
+		<!--  Text: [begin] -->
+			<p class="bodytext">Bleiben Sie steht informiert und tauschen Sie sich mit anderen Nutzern und den Entwicklern des DFG-Viewers zu aktuellen Themen und Trends aus.</p>
+<p class="bodytext"><a href="/kontakt/" title="Mehr dazu" class="more">In Kontakt bleiben</a></p>
+		<!--  Text: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:40992/text [end] -->
+		
+		</div>
+	
+		<!--TYPO3SEARCH_end-->
+		
+<div class="footer">
+    <a href="#top" title="zum Seitenanfang springen" class="totop">nach oben</a>
+    <p>Zuletzt aktualisiert: 30. Mai 2018</p>
+</div>
+
+</div>
+
+	
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(["setDomains", ["*.dfg-viewer.de"]]);
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//piwik.slub-dresden.de//";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', '5']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img src="//piwik.slub-dresden.de//piwik.php?idsite=5" style="border:0;" alt="" /></p></noscript>
+<script src="/typo3conf/ext/dfgviewer/Resources/Public/Js/jquery-ui-mouse-slider.js?1529057225" type="text/javascript"></script>
+<script src="/typo3conf/ext/dfgviewer/Resources/Public/Js/webScripts.js?1541523162" type="text/javascript"></script>
+
+
+
+</body>
+</html>
