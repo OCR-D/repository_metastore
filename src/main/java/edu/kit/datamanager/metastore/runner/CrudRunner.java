@@ -548,7 +548,13 @@ public class CrudRunner implements CommandLineRunner {
       while (metsIdentifierIterator.hasNext()) {
         System.out.println(metsIdentifierIterator.next().toString());
       }
-    }
+       System.out.println("metsIdentifierRepository.findByIdentifierAndType(\"id_0017\", \"handle\")");
+      metsIdentifierList = metsIdentifierRepository.findByIdentifierAndType("url3", "url");
+      metsIdentifierIterator = metsIdentifierList.iterator();
+      while (metsIdentifierIterator.hasNext()) {
+        System.out.println(metsIdentifierIterator.next().toString());
+      }
+   }
     if (argumentList.contains(PAGE)) {
       System.out.println("********************************************************************************************************************");
       System.out.println("*******************************          Page  Metadata         ***************************************************");
