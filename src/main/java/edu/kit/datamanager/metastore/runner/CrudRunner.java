@@ -139,36 +139,17 @@ public class CrudRunner implements CommandLineRunner {
     System.out.println("********************************************************************************************************************");
     if (argumentList.contains(METS_PROPERTIES)) {
       System.out.println("*******************************          MetsProperties         ***************************************************");
-      MetsProperties metsProperties = new MetsProperties();
-      metsProperties.setTitle("Titel");
-      metsProperties.setPpn("ppn1");
-      metsProperties.setResourceId("id_1");
-      metsPropertiesRepository.save(metsProperties);
-      metsProperties = new MetsProperties();
-      metsProperties.setTitle("Titel2");
-      metsProperties.setPpn("ppn2");
-      metsProperties.setResourceId("id_2");
-      metsPropertiesRepository.save(metsProperties);
-      metsProperties = new MetsProperties();
-      metsProperties.setTitle("Titel");
-      metsProperties.setPpn("ppn3");
-      metsProperties.setResourceId("id_3");
-      metsPropertiesRepository.save(metsProperties);
-      metsProperties = new MetsProperties();
-      metsProperties.setTitle("Titel3");
-      metsProperties.setPpn("ppn1");
-      metsProperties.setResourceId("id_4");
-      metsPropertiesRepository.save(metsProperties);
+      for (MetsProperties metsProperty : createMetsProperties()) {
+        metsPropertiesRepository.save(metsProperty);
+        System.out.println("MetsProperty saved! " + metsProperty);
+      }
+
     }
     if (argumentList.contains(METS_DOCUMENT)) {
       System.out.println("*******************************          MetsDocuments         ***************************************************");
-      final MetsDocument metsDocument = new MetsDocument("id_0001", "someXML");
-      repository.save(metsDocument);
-      System.out.println(String.format("metsDocument saved in the database with id: '%s' with version: '%d' at %tD", metsDocument.getId(), metsDocument.getVersion(), metsDocument.getLastModified()));
-      for (MetsDocument document : createMetsDocuments()) {
-        System.out.println(document);
-        repository.save(document);
-        System.out.println(String.format("metsDocument saved in the database with id: '%s' with version: '%d' at %tD", document.getId(), document.getVersion(), document.getLastModified()));
+      for (MetsDocument metsDocument : createMetsDocuments()) {
+        repository.save(metsDocument);
+        System.out.println("MetsDocument saved! " + metsDocument);
       }
     }
     if (argumentList.contains(SECTION_DOCUMENT)) {
@@ -180,8 +161,7 @@ public class CrudRunner implements CommandLineRunner {
     }
     if (argumentList.contains(METS_FILES)) {
       System.out.println("*******************************          MetsFiles         ***************************************************");
-      Collection<MetsFile> createMetsFiles = createMetsFiles();
-      for (MetsFile metsFile : createMetsFiles) {
+      for (MetsFile metsFile : createMetsFiles()) {
         metsFileRepository.save(metsFile);
         System.out.println("MetsFile saved! " + metsFile);
       }
@@ -195,40 +175,35 @@ public class CrudRunner implements CommandLineRunner {
     }
     if (argumentList.contains(CLASSIFICATION)) {
       System.out.println("*******************************          Classification  Metadata         ***************************************************");
-      Collection<ClassificationMetadata> classificationMD = createClassifications();
-      for (ClassificationMetadata classificationMetadata : classificationMD) {
+      for (ClassificationMetadata classificationMetadata : createClassifications()) {
         classificationMetadataRepository.save(classificationMetadata);
         System.out.println("ClassificationMetadata saved! " + classificationMetadata);
       }
     }
     if (argumentList.contains(GENRE)) {
       System.out.println("*******************************          Genre  Metadata         ***************************************************");
-      Collection<GenreMetadata> classificationMD = createGenre();
-      for (GenreMetadata genreMetadata : classificationMD) {
+      for (GenreMetadata genreMetadata : createGenre()) {
         genreMetadataRepository.save(genreMetadata);
         System.out.println("GenreMetadata saved! " + genreMetadata);
       }
     }
     if (argumentList.contains(LANGUAGE)) {
       System.out.println("*******************************          Language  Metadata         ***************************************************");
-      Collection<LanguageMetadata> languageMD = createLanguageMetadata();
-      for (LanguageMetadata languageMetadata : languageMD) {
+      for (LanguageMetadata languageMetadata : createLanguageMetadata()) {
         languageMetadataRepository.save(languageMetadata);
         System.out.println("LanguageMetadata saved! " + languageMetadata);
       }
     }
     if (argumentList.contains(IDENTIFIER)) {
       System.out.println("*******************************          Identifier  Metadata         ***************************************************");
-      Collection<MetsIdentifier> metsIdentifierList = createMetsIdentifier();
-      for (MetsIdentifier metsIdentifier : metsIdentifierList) {
+      for (MetsIdentifier metsIdentifier : createMetsIdentifier()) {
         metsIdentifierRepository.save(metsIdentifier);
         System.out.println("MetsIdentifier saved! " + metsIdentifier);
       }
     }
     if (argumentList.contains(PAGE)) {
       System.out.println("*******************************          Page  Metadata         ***************************************************");
-      Collection<PageMetadata> pageMetadataList = createPageMetadata();
-      for (PageMetadata pageMetadata : pageMetadataList) {
+      for (PageMetadata pageMetadata : createPageMetadata()) {
         pageMetadataRepository.save(pageMetadata);
         System.out.println("PageMetadata saved! " + pageMetadata);
       }
@@ -548,13 +523,13 @@ public class CrudRunner implements CommandLineRunner {
       while (metsIdentifierIterator.hasNext()) {
         System.out.println(metsIdentifierIterator.next().toString());
       }
-       System.out.println("metsIdentifierRepository.findByIdentifierAndType(\"id_0017\", \"handle\")");
+      System.out.println("metsIdentifierRepository.findByIdentifierAndType(\"id_0017\", \"handle\")");
       metsIdentifierList = metsIdentifierRepository.findByIdentifierAndType("url3", "url");
       metsIdentifierIterator = metsIdentifierList.iterator();
       while (metsIdentifierIterator.hasNext()) {
         System.out.println(metsIdentifierIterator.next().toString());
       }
-   }
+    }
     if (argumentList.contains(PAGE)) {
       System.out.println("********************************************************************************************************************");
       System.out.println("*******************************          Page  Metadata         ***************************************************");
@@ -610,7 +585,35 @@ public class CrudRunner implements CommandLineRunner {
 //		first5Sorted.forEach(System.out::println);
   }
 
+  public static void setupMetsProperties() {
+  }
+
+  public static Collection<MetsProperties> createMetsProperties() {
+    MetsProperties metsProperties1 = new MetsProperties();
+    metsProperties1.setTitle("Titel");
+    metsProperties1.setPpn("ppn1");
+    metsProperties1.setResourceId("id_1");
+    MetsProperties metsProperties2 = new MetsProperties();
+    metsProperties2.setTitle("Titel2");
+    metsProperties2.setPpn("ppn2");
+    metsProperties2.setResourceId("id_2");
+    MetsProperties metsProperties3 = new MetsProperties();
+    metsProperties3.setTitle("Titel");
+    metsProperties3.setPpn("ppn3");
+    metsProperties3.setResourceId("id_3");
+    MetsProperties metsProperties4 = new MetsProperties();
+    metsProperties4.setTitle("Titel3");
+    metsProperties4.setPpn("ppn1");
+    metsProperties4.setResourceId("id_4");
+    return Arrays.asList(metsProperties1,
+            metsProperties2,
+            metsProperties3,
+            metsProperties4);
+
+  }
+
   public static Collection<MetsDocument> createMetsDocuments() {
+
     MetsDocument eins = new MetsDocument("id_0002", "Am staerksten");
     MetsDocument zwei = eins.updateMetsContent("noch staerker");
     MetsDocument drei = zwei.updateMetsContent("staerker");
@@ -620,6 +623,7 @@ public class CrudRunner implements CommandLineRunner {
             zwei,
             drei,
             vier,
+            new MetsDocument("id_0001", "someXML"),
             new MetsDocument("id_0003me", "Lannister"),
             new MetsDocument("id_0004sei", "Lannister"),
             new MetsDocument("id_0005ah", "Mormont"),
