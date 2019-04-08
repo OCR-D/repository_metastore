@@ -57,7 +57,7 @@ cd ../..
 cd git
 git clone https://github.com/OCR-D/repository_metastore.git
 cd repository_metastore
-./gradlew build
+./gradlew -x test build
 cp build/libs/*.jar ../../docker/metastore/
 cd ../..
 
