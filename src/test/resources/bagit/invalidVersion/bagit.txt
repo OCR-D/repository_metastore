@@ -1,0 +1,2 @@
+BagIt-Version: 1.1
+Tag-File-Character-Encoding: UTF-8

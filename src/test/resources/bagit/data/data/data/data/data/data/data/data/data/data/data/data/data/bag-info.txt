@@ -1,0 +1,2 @@
+Payload-Oxum: 20123.14
+Bagging-Date: 2019-04-08
