@@ -37,13 +37,13 @@ BUILD SUCCESSFUL in 10s
 3 actionable tasks: 3 executed
 user@localhost:/home/user/base-repo/libraries/service-base/$cd ../../
 user@localhost:/home/user/base-repo/$cd libraries/generic-message-consumer/
-user@localhost:/home/user/base-repo/libraries/generic-message-consumer/$gradlew install
+user@localhost:/home/user/base-repo/libraries/generic-message-consumer/$./gradlew install
 Starting a Gradle Daemon
 [...]
 BUILD SUCCESSFUL in 5s
 3 actionable tasks: 3 executed
 user@localhost:/home/user/base-repo/libraries/generic-message-consumer/$cd ../../
-user@localhost:/home/user/base-repo/$./gradlew build
+user@localhost:/home/user/base-repo/$./gradlew -Prelease build
 [...]
 BUILD SUCCESSFUL in 51s
 7 actionable tasks: 7 executed
