@@ -1,6 +1,0 @@
-b07664e94ec620d0775ed098dfa2bc7d  data/data/mets.xml
-eaa2c609ff6371712f623f5531945b44  data/bagit.txt
-1952ca812856068deaa1766651630a2f  data/data/OCR-D-IMG/OCR-D-IMG-HEADER
-b49275a0c2ab6a968ce8100dd7550e74  data/manifest-md5.txt
-0592c94b26b9d018ba97be2f745d7fd8  data/bag-info.txt
-d41d8cd98f00b204e9800998ecf8427e  data/tagmanifest-md5.txt

@@ -28,8 +28,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
- * @author hartmann-v
+ * Test MetsIdentifier
  */
 public class MetsIdentifierTest {
   String resourceId = "resourceId";

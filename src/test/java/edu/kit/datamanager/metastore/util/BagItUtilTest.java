@@ -18,8 +18,12 @@ package edu.kit.datamanager.metastore.util;
 import edu.kit.datamanager.metastore.exception.BagItException;
 import gov.loc.repository.bagit.domain.Bag;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.stream.Stream;
+import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -29,7 +33,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author hartmann-v
+ * Test BagItUtil.
  */
 public class BagItUtilTest {
 
@@ -71,15 +75,20 @@ public class BagItUtilTest {
    * Test of buildBag method, of class BagItUtil.
    */
   @Test
-  public void testBuildBag1() {
+  public void testBuildBag1() throws IOException {
     System.out.println("buildBag");
-    File payLoadPath = new File("src/test/resources/bagit/data");
+    File testDir = new File("src/test/resources/bagit/test");
+    File srcDir = new File("src/test/resources/bagit/data");
+    FileUtils.copyDirectory(srcDir, testDir);
     try {
-      Bag result = BagItUtil.buildBag(payLoadPath);
+      Bag result = BagItUtil.buildBag(testDir);
+      Stream<Path> list = Files.list(testDir.toPath());
+      assertEquals(5, list.count());
       assertTrue(true);
     } catch (BagItException bie) {
       assertTrue(false);
     }
+    FileUtils.deleteDirectory(testDir);
   }
 
   /**

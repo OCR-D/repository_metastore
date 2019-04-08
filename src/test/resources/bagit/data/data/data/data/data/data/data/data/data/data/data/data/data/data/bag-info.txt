@@ -1,2 +1,0 @@
-Payload-Oxum: 19435.10
-Bagging-Date: 2019-04-08
