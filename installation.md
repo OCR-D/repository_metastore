@@ -17,19 +17,44 @@ First you have to install [KIT Data Manager](installation_KIT_DM_2.0.md)
 If ArangoDB is not already installed you also have to [install ArangoDB](installation_arangodb.md). 
 
 ## Install Metastore Service 
+### Build Service without Tests
 ```bash=bash
-# Build metastore service
+# Build metastore service (without tests)
 user@localhost:/home/user/$git clone https://github.com/OCR-D/repository_metastore.git
 Cloning into 'repository_metastore'...
 [...]
 Resolving deltas: 100% (451/451), done.
 user@localhost:/home/user/$cd repository_metastore
-user@localhost:/home/user/repository_metastore/$./gradlew build
+user@localhost:/home/user/repository_metastore/$./gradlew -x test clean build
 BUILD SUCCESSFUL in 5s
 7 actionable tasks: 7 executed
 ```
-
 As a result, a fat jar containing the entire service is created at 'build/libs/metastore-service-0.1.0.jar'.
+
+### Build Service including Tests
+If you want to execute tests during the build process you have to start an arangoDB
+instance in beforehand.
+```bash=bash
+# Start arangoDB in a separate console
+user@localhost:/home/user/$docker run -p 8539:8529 -e ARANGO_ROOT_PASSWORD=ocrd-testOnly arangodb/arangodb
+[...]
+2019-04-08T12:14:41Z [1] INFO ArangoDB (version 3.3.19 [linux]) is ready for business. Have fun!
+```
+Than metastore-service can be build.
+```bash=bash
+# Build metastore service (without tests)
+user@localhost:/home/user/$git clone https://github.com/OCR-D/repository_metastore.git
+Cloning into 'repository_metastore'...
+[...]
+Resolving deltas: 100% (451/451), done.
+user@localhost:/home/user/$cd repository_metastore
+user@localhost:/home/user/repository_metastore/$./gradlew clean build
+BUILD SUCCESSFUL in 34s
+7 actionable tasks: 7 executed
+```
+As a result, a fat jar containing the entire service is created at 'build/libs/metastore-service-0.1.0.jar'.
+
+
 
 ### Configure Metastore Service
 ```bash=bash
