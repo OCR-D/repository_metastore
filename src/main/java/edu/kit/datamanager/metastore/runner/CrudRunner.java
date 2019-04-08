@@ -769,8 +769,8 @@ public class CrudRunner implements CommandLineRunner {
 
   public static Collection<PageMetadata> createPageMetadata() {
     return Arrays.asList(
-            new PageMetadata("id_0002", "1", "phys_000l", GroundTruthProperties.ACQUISITION),
-            new PageMetadata("id_0002", "1", "phys_000l", GroundTruthProperties.ADMINS),
+            new PageMetadata("id_0002", "1", "phys_0001", GroundTruthProperties.ACQUISITION),
+            new PageMetadata("id_0002", "1", "phys_0001", GroundTruthProperties.ADMINS),
             new PageMetadata("id_0002", "2", "phys_0002", GroundTruthProperties.ADMINS),
             new PageMetadata("id_0015", "1", "phys_0001", GroundTruthProperties.ANDROID),
             new PageMetadata("id_0016", "1", "phys_0001", GroundTruthProperties.TOC),

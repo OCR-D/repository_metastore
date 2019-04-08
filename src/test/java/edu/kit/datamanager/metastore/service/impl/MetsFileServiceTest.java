@@ -170,6 +170,36 @@ public class MetsFileServiceTest {
    * MetsFileService.
    */
   @Test
+  public void testGetAvailableMetsFilesByUse() {
+    System.out.println("getAvailableMetsFilesByUseAndPageId");
+    String resourceId = "id_0018";
+    String[] use = {"OCR-D-GT-IMG-DESPEC"};
+    String[] pageId = null;
+    MetsFileService instance = metsFileService;
+    List<MetsFile> result = instance.getAvailableMetsFilesByUseAndPageId(resourceId, use, pageId);
+    assertEquals(2, result.size());
+  }
+
+  /**
+   * Test of getAvailableMetsFilesByUseAndPageId method, of class
+   * MetsFileService.
+   */
+  @Test
+  public void testGetAvailableMetsFilesPageId() {
+    System.out.println("getAvailableMetsFilesByUseAndPageId");
+    String resourceId = "id_0018";
+    String[] use = null;
+    String[] pageId = {"PAGE-0001"};
+    MetsFileService instance = metsFileService;
+    List<MetsFile> result = instance.getAvailableMetsFilesByUseAndPageId(resourceId, use, pageId);
+    assertEquals(1, result.size());
+  }
+
+  /**
+   * Test of getAvailableMetsFilesByUseAndPageId method, of class
+   * MetsFileService.
+   */
+  @Test
   public void testGetAvailableMetsFilesByUseAndPageId() {
     System.out.println("getAvailableMetsFilesByUseAndPageId");
     String resourceId = "id_0018";
