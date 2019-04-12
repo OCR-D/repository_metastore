@@ -390,14 +390,14 @@ public class MetsDocumentUtil {
       classifications.forEach((classification) -> {
         classificationList.add(classification.getClassification());
       });
-      dao.setLanguage(classificationList);
+      dao.setClassification(classificationList);
     }
     if (genres != null) {
       List<String> genreList = new ArrayList<>();
       genres.forEach((genre) -> {
         genreList.add(genre.getGenre());
       });
-      dao.setLanguage(genreList);
+      dao.setGenre(genreList);
     }
     if (pages != null) {
       List<PageFeatures> pageList = new ArrayList<>();
