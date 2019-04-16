@@ -11,6 +11,10 @@ before_install:
 - docker run -p 8539:8529 -e ARANGO_ROOT_PASSWORD=ocrd-testOn arangodb/arangodb
 
 install: true
+branches:
+  only:
+  - jUnitTests
+  
 script:
 - sh ./build-with-dependencies.sh
 
