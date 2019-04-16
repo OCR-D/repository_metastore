@@ -15,6 +15,7 @@ cd libraries/generic-message-consumer/
 ./gradlew install
 cd ../../
 ./gradlew -Prelease build
+cd ..
 
 # Create test report
 echo "Building project and executing tests"
