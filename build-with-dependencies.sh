@@ -19,4 +19,4 @@ cd ..
 
 # Create test report
 echo "Building project and executing tests"
-./gradlew clean check jacocoTestReport
+./gradlew --scan clean check jacocoTestReport
