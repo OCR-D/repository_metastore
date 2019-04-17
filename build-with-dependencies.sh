@@ -19,4 +19,5 @@ cd ..
 
 # Create test report
 echo "Building project and executing tests"
-./gradlew --debug --stacktrace clean check jacocoTestReport
+./gradlew --debug --stacktrace clean check jacocoTestReport codeCoverageReport
+

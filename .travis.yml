@@ -8,7 +8,7 @@ services:
 
 before_install:
 - docker pull arangodb/arangodb
-- docker run -d -p 8539:8529 -e ARANGO_ROOT_PASSWORD=ocrd-testOn arangodb/arangodb
+- docker run -d -p 8539:8529 -e ARANGO_ROOT_PASSWORD=ocrd-testOnly arangodb/arangodb
 
 install: true
 branches:
@@ -20,6 +20,7 @@ script:
 
 after_success:
 - "./gradlew coveralls"
+- bash <(curl -s https://codecov.io/bash)
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
