@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/VolkerHartmann/repository_metastore.svg?branch=jUnitTests)](https://travis-ci.com/VolkerHartmann/repository_metastore)
+[![Build Status](https://travis-ci.com/VolkerHartmann/repository_metastore.svg](https://travis-ci.com/VolkerHartmann/repository_metastore)
 # KIT Data Manager - Metastore Service
 
 This project contains metastore service microservice used by the KIT DM infrastructure. The service provides
