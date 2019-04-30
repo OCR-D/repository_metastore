@@ -35,6 +35,10 @@ jar {
   version =  '0.1.0'
 }
 
+bootJar {
+	launchScript()
+}
+
 repositories {
   mavenLocal() 
   jcenter()
