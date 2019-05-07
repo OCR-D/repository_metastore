@@ -39,6 +39,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
@@ -72,11 +73,6 @@ public class IMetsDocumentControllerTest {
   private ArangoOperations operations;
   @Autowired
   private MetsDocumentRepository repository;
-  /**
-   * Repository persisting METS files.
-   */
-  @Autowired
-  private MetsFileRepository metsFileRepository;
 
   /**
    * Repository persisting METS properties.
@@ -284,23 +280,47 @@ public class IMetsDocumentControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.modsIdentifier[0].identifier").value("handle1"))
             .andReturn();
   }
-//
-//  /**
-//   * Test of getLatestMetadataOfDocumentAsHtml method, of class
-//   * IMetsDocumentController.
-//   */
-//  @Test
-//  public void testGetLatestMetadataOfDocumentAsHtml() {
-//    System.out.println("getLatestMetadataOfDocumentAsHtml");
-//    String resourceId = "";
-//    Model model = null;
-//    IMetsDocumentController instance = new IMetsDocumentControllerImpl();
-//    String expResult = "";
-//    String result = instance.getLatestMetadataOfDocumentAsHtml(resourceId, model);
-//    assertEquals(expResult, result);
-//    // TODO review the generated test code and remove the default call to fail.
-//    fail("The test case is a prototype.");
-//  }
+
+  /**
+   * Test of getLatestMetadataOfDocumentAsHtml method, of class
+   * IMetsDocumentController.
+   */
+  @Test
+  public void testGetLatestMetadataOfDocumentAsHtml() throws Exception {
+    System.out.println("getLatestMetadataOfDocumentAsHtml");
+    String resourceId = "id_0016";
+    String title = "Some Title";
+    String subTitle = "Any Sub Title";
+    String year = "1984";
+    String author = "Ernest Twain";
+    String licence = "Apache 2.0";
+    int noOfPages = 1;
+    String physicalDescription = "book";
+    String publisher = "Gruener und Tag";
+    MetsProperties mp = new MetsProperties();
+    mp.setTitle(title);
+    mp.setSubTitle(subTitle);
+    mp.setResourceId(resourceId);
+    mp.setLicense(licence);
+    mp.setNoOfPages(noOfPages);
+    mp.setPhysicalDescription(physicalDescription);
+    mp.setPublisher(publisher);
+    mp.setAuthor(author);
+    mp.setYear(year);
+    metsPropertiesRepository.save(mp);
+
+    this.mockMvc.perform(get("/api/v1/metastore/mets/" + resourceId + "/metadata").accept(MediaType.TEXT_HTML)
+            .header(HttpHeaders.AUTHORIZATION, "Bearer NoBearerToken"))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.xpath("/html/body/table/tbody/tr").nodeCount(6))
+            .andExpect(MockMvcResultMatchers.xpath("/html/body/table/tbody/tr/td[text() = '" + title + "']").exists())
+            .andExpect(MockMvcResultMatchers.xpath("/html/body/table/tbody/tr/td[text() = '" + subTitle + "']").exists())
+            .andExpect(MockMvcResultMatchers.xpath("/html/body/table/tbody/tr/td[text() = '" + author + "']").exists())
+            .andExpect(MockMvcResultMatchers.xpath("/html/body/table/tbody/tr/td[text() = '" + licence + "']").exists())
+            .andExpect(MockMvcResultMatchers.xpath("/html/body/table/tbody/tr/td[text() = '" + noOfPages + "']").exists())
+            .andReturn();
+  }
 
   /**
    * Test of getLatestGroundTruthMetadataOfDocumentAsHtml method, of class
@@ -412,7 +432,7 @@ public class IMetsDocumentControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(1)))
             .andExpect(MockMvcResultMatchers.jsonPath("$.[0]", Matchers.isOneOf(allIds)))
             .andReturn();
-   }
+  }
 
   /**
    * Test of getResourceIdByClassification method, of class
@@ -431,7 +451,7 @@ public class IMetsDocumentControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.[0]", Matchers.isOneOf(allIds)))
             .andExpect(MockMvcResultMatchers.jsonPath("$.[1]", Matchers.isOneOf(allIds)))
             .andReturn();
-    }
+  }
 
   /**
    * Test of getResourceIdByClassification method, of class
@@ -450,7 +470,7 @@ public class IMetsDocumentControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.[0]", Matchers.isOneOf(allIds)))
             .andExpect(MockMvcResultMatchers.jsonPath("$.[1]", Matchers.isOneOf(allIds)))
             .andReturn();
-    }
+  }
 
   /**
    * Test of getResourceIdByLanguage method, of class IMetsDocumentController.
@@ -531,7 +551,7 @@ public class IMetsDocumentControllerTest {
   public void testGetVersionsOfMetsDocument() throws Exception {
     System.out.println("getVersionsOfMetsDocument");
     String resourceId = "id_0002";
-    Integer[] versionList = { 1, 2, 3, 4};
+    Integer[] versionList = {1, 2, 3, 4};
     this.mockMvc.perform(get("/api/v1/metastore/mets/" + resourceId + "/version").header(HttpHeaders.AUTHORIZATION, "Bearer NoBearerToken"))
             .andDo(print())
             .andExpect(status().isOk())
