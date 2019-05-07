@@ -231,7 +231,7 @@ public class MetsDocumentUtil {
       for (Object identifierObject : identifierList) {
         // Determine type and id 
         Element identifier = (Element) identifierObject;
-        String type = identifier.getAttribute("type").getValue();
+        String type = getAttribute(identifier, "type");
         String id = identifier.getValue();
         metsIdentifierList.add(new MetsIdentifier(resourceId, type, id));
       }
@@ -337,9 +337,9 @@ public class MetsDocumentUtil {
         for (Object pageObject : pageList) {
           // Determine order, id and dmdid. 
           Element pageNode = (Element) pageObject;
-          String order = pageNode.getAttribute("ORDER").getValue();
-          String id = pageNode.getAttribute("ID").getValue();
-          String dmdId = pageNode.getAttribute("DMDID").getValue();
+          String order = getAttribute(pageNode, "ORDER");
+          String id = getAttribute(pageNode, "ID");
+          String dmdId = getAttribute(pageNode, "DMDID");
           String[] features = JaxenUtil.getValues(root, "//mets:dmdSec[@ID='" + dmdId + "']/mets:mdWrap[@OTHERMDTYPE='GT']/mets:xmlData/gt:gt/gt:state/@prop", namespaces);
           for (String feature : features) {
             pageMetadataList.add(new PageMetadata(resourceId, order, id, GroundTruthProperties.get(feature)));
@@ -436,5 +436,20 @@ public class MetsDocumentUtil {
    */
   public static Namespace[] getNamespaces() {
     return namespaces;
+  }
+
+  /**
+   * Get value of attribute of given element.
+   *
+   * @param element Element
+   * @param attribute Label of attribute.
+   * @return Value or unknown if attribute is not set.
+   */
+  private static String getAttribute(Element element, String attribute) {
+    String attributeValue = "unknown";
+    if (element.getAttribute(attribute) != null) {
+      attributeValue = element.getAttribute(attribute).getValue();
+    }
+    return attributeValue;
   }
 }
