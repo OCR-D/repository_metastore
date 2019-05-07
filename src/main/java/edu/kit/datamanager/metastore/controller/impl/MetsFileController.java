@@ -107,7 +107,7 @@ public class MetsFileController implements IMetsFileController {
   public ResponseEntity<List<String>> getAllUsesOfMetsDocument(@PathVariable("resourceId") String resourceId) {
     LOGGER.trace("Get all USEs of METS files");
 
-    List<String> allUses = metastoreFileService.getAllPageIds(resourceId);
+    List<String> allUses = metastoreFileService.getAllUses(resourceId);
 
     return new ResponseEntity<>(allUses, HttpStatus.OK);
   }
