@@ -7,7 +7,9 @@ cp ./test/application.properties .
 git clone https://github.com/kit-data-manager/docker-kitdm-2.0.git
 cd docker-kitdm-2.0
 cd source
-docker-compose up
+docker-compose up &
+
+sleep 300
 
 # Create test report
 echo "Building project and executing tests"
