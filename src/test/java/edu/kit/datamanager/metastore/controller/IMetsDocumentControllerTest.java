@@ -22,7 +22,6 @@ import edu.kit.datamanager.metastore.repository.ClassificationMetadataRepository
 import edu.kit.datamanager.metastore.repository.GenreMetadataRepository;
 import edu.kit.datamanager.metastore.repository.LanguageMetadataRepository;
 import edu.kit.datamanager.metastore.repository.MetsDocumentRepository;
-import edu.kit.datamanager.metastore.repository.MetsFileRepository;
 import edu.kit.datamanager.metastore.repository.MetsIdentifierRepository;
 import edu.kit.datamanager.metastore.repository.MetsPropertiesRepository;
 import edu.kit.datamanager.metastore.repository.PageMetadataRepository;
@@ -30,6 +29,8 @@ import edu.kit.datamanager.metastore.runner.CrudRunner;
 import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -53,6 +54,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.springframework.web.util.NestedServletException;
 
 /**
  *
@@ -396,6 +398,33 @@ public class IMetsDocumentControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(1)))
             .andExpect(MockMvcResultMatchers.jsonPath("$.[0]", Matchers.isOneOf(allIds)))
             .andReturn();
+  }
+
+  /**
+   * Test of getResourceIdBySemanticLabel method, of class
+   * IMetsDocumentController.
+   */
+  @Test
+  public void testGetResourceIdByInvalidSemanticLabel() throws Exception {
+    System.out.println("getResourceIdByInvalidSemanticLabel");
+    String[] label = {"invalid.semantic.label"};
+    String[] allIds = {"id_0015"};
+    try {
+      this.mockMvc.perform(get("/api/v1/metastore/mets/labeling").header(HttpHeaders.AUTHORIZATION, "Bearer NoBearerToken")
+              .param("label", label))
+              .andDo(print())
+              .andExpect(status().isInternalServerError())
+              .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(1)))
+              .andExpect(MockMvcResultMatchers.jsonPath("$.[0]", Matchers.isOneOf(allIds)))
+              .andReturn();
+      assertTrue(false);
+    } catch (Throwable iae) {
+      IllegalArgumentException illegalArgument = new IllegalArgumentException("Invalid argument");
+      System.out.println(iae.getClass());
+      assertTrue(iae.getClass().isInstance(new NestedServletException("nothing")));
+      assertTrue(iae.getCause().getClass().isInstance(illegalArgument));
+      assertEquals("'" + label[0] + "' is not a valid ground truth label!",iae.getCause().getMessage());
+    }
   }
 
   /**

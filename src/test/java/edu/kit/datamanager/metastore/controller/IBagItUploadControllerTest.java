@@ -15,6 +15,7 @@
  */
 package edu.kit.datamanager.metastore.controller;
 
+import edu.kit.datamanager.metastore.storageservice.StorageException;
 import edu.kit.datamanager.util.ZipUtils;
 import java.io.File;
 import java.nio.file.Paths;
@@ -22,6 +23,8 @@ import org.apache.commons.io.FileUtils;
 import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -46,6 +49,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import org.springframework.web.util.NestedServletException;
 
 /**
  *
@@ -88,6 +92,90 @@ public class IBagItUploadControllerTest {
    */
   @Test
  @WithMockUser(username = "ingest", password = "forTestOnly", roles = "USER")
+ public void testHandleFileUploadEmptyBag() throws Exception {
+    System.out.println("handleFileUploadWithEmptyBag");
+    byte[] content = {};
+    try {
+    MockMultipartFile bagitContainer = new MockMultipartFile("file", "empty.zip", "application/octet-stream", content);
+    this.mockMvc.perform(MockMvcRequestBuilders.multipart("/api/v1/metastore/bagit")
+                         .file(bagitContainer))
+            .andExpect(status().is4xxClientError());
+      assertTrue(false);
+    } catch (Throwable iae) {
+      StorageException storageException = new StorageException("Invalid argument");
+      System.out.println(iae.getClass());
+      assertTrue(iae.getClass().isInstance(new NestedServletException("nothing")));
+      assertTrue(iae.getCause().getClass().isInstance(storageException));
+      assertEquals("Failed to store empty file empty.zip",iae.getCause().getMessage());
+    }
+    
+   }
+
+  /**
+   * Test of handleFileUpload method, of class IBagItUploadController.
+   */
+  @Test
+ @WithMockUser(username = "ingest", password = "forTestOnly", roles = "USER")
+ public void testHandleFileUploadRelativePathToBag() throws Exception {
+    System.out.println("handleFileUploadWithRelativePathToBag");
+    byte[] content = {32};
+    try {
+    MockMultipartFile bagitContainer = new MockMultipartFile("file", "../nonempty.zip", "application/octet-stream", content);
+    this.mockMvc.perform(MockMvcRequestBuilders.multipart("/api/v1/metastore/bagit")
+                         .file(bagitContainer))
+            .andExpect(status().is4xxClientError());
+      assertTrue(false);
+    } catch (Throwable iae) {
+      StorageException storageException = new StorageException("Invalid argument");
+      System.out.println(iae.getClass());
+      assertTrue(iae.getClass().isInstance(new NestedServletException("nothing")));
+      assertTrue(iae.getCause().getClass().isInstance(storageException));
+      assertEquals("Cannot store file with relative path outside current directory ../nonempty.zip",iae.getCause().getMessage());
+    }
+    
+   }
+
+  /**
+   * Test of handleFileUpload method, of class IBagItUploadController.
+   */
+  @Test
+ @WithMockUser(username = "ingest", password = "forTestOnly", roles = "USER")
+ public void testHandleFileUploadInvalidPathToMets() throws Exception {
+    System.out.println("handleFileUpload");
+    File ocrdZip = new File("/tmp/invalidPathToMets.ocrd.zip");
+    if (ocrdZip.exists()) {
+      ocrdZip.delete();
+    }
+    ZipUtils.zip(Paths.get("src/test/resources/bagit/", "invalidPathToMets").toFile(), ocrdZip);
+    MockMultipartFile bagitContainer = new MockMultipartFile("file", "invalidChecksum.ocrd.zip", "application/octet-stream", FileUtils.openInputStream(ocrdZip));
+    this.mockMvc.perform(MockMvcRequestBuilders.multipart("/api/v1/metastore/bagit")
+                         .file(bagitContainer))
+            .andExpect(status().is4xxClientError());
+   }
+
+  /**
+   * Test of handleFileUpload method, of class IBagItUploadController.
+   */
+  @Test
+ @WithMockUser(username = "ingest", password = "forTestOnly", roles = "USER")
+ public void testHandleFileUploadTwoMets() throws Exception {
+    System.out.println("handleFileUpload");
+    File ocrdZip = new File("/tmp/twoMets.ocrd.zip");
+    if (ocrdZip.exists()) {
+      ocrdZip.delete();
+    }
+    ZipUtils.zip(Paths.get("src/test/resources/bagit/", "twoMets").toFile(), ocrdZip);
+    MockMultipartFile bagitContainer = new MockMultipartFile("file", "invalidChecksum.ocrd.zip", "application/octet-stream", FileUtils.openInputStream(ocrdZip));
+    this.mockMvc.perform(MockMvcRequestBuilders.multipart("/api/v1/metastore/bagit")
+                         .file(bagitContainer))
+            .andExpect(status().is4xxClientError());
+   }
+
+  /**
+   * Test of handleFileUpload method, of class IBagItUploadController.
+   */
+  @Test
+ @WithMockUser(username = "ingest", password = "forTestOnly", roles = "USER")
  public void testHandleFileUploadInvalidBag() throws Exception {
     System.out.println("handleFileUpload");
     File ocrdZip = new File("/tmp/invalidChecksum.ocrd.zip");
@@ -96,6 +184,24 @@ public class IBagItUploadControllerTest {
     }
     ZipUtils.zip(Paths.get("src/test/resources/bagit/", "invalidChecksum").toFile(), ocrdZip);
     MockMultipartFile bagitContainer = new MockMultipartFile("file", "invalidChecksum.ocrd.zip", "application/octet-stream", FileUtils.openInputStream(ocrdZip));
+    this.mockMvc.perform(MockMvcRequestBuilders.multipart("/api/v1/metastore/bagit")
+                         .file(bagitContainer))
+            .andExpect(status().is4xxClientError());
+   }
+
+  /**
+   * Test of handleFileUpload method, of class IBagItUploadController.
+   */
+  @Test
+ @WithMockUser(username = "ingest", password = "forTestOnly", roles = "USER")
+ public void testHandleFileUploadTwoMetsDefined() throws Exception {
+    System.out.println("handleFileUploadWithTwoMetsDefined");
+    File ocrdZip = new File("/tmp/twoMets.ocrd.zip");
+    if (ocrdZip.exists()) {
+      ocrdZip.delete();
+    }
+    ZipUtils.zip(Paths.get("src/test/resources/bagit/", "twoMets").toFile(), ocrdZip);
+    MockMultipartFile bagitContainer = new MockMultipartFile("file", "twoMets.ocrd.zip", "application/octet-stream", FileUtils.openInputStream(ocrdZip));
     this.mockMvc.perform(MockMvcRequestBuilders.multipart("/api/v1/metastore/bagit")
                          .file(bagitContainer))
             .andExpect(status().is4xxClientError());

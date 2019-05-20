@@ -73,6 +73,10 @@ public class ZippedBagitTest {
     String expResult = resourceId;
     String result = instance.getResourceId();
     assertEquals(expResult, result);
+    expResult = "newResourceId";
+    instance.setResourceId(expResult);
+    result = instance.getResourceId();
+    assertEquals(expResult, result);
   }
 
   /**
@@ -84,6 +88,10 @@ public class ZippedBagitTest {
     ZippedBagit instance = new ZippedBagit(resourceId, url);
     String expResult = url;
     String result = instance.getUrl();
+    assertEquals(expResult, result);
+    expResult = "newUrl";
+    instance.setUrl(expResult);
+    result = instance.getUrl();
     assertEquals(expResult, result);
   }
 }

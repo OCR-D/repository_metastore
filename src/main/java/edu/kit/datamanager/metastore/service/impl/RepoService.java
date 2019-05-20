@@ -59,8 +59,9 @@ public class RepoService implements IRepoService {
 
   @Override
   public String createDigitalObject(File bagItFile) {
-    Iterator<MetsDocument> metsIterator = metsRepository.findByCurrentTrue().iterator();
-    List<MetsDocument> metsList = IteratorUtils.toList(metsIterator);
+    // Not implemented yet!
+//    Iterator<MetsDocument> metsIterator = metsRepository.findByCurrentTrue().iterator();
+//    List<MetsDocument> metsList = IteratorUtils.toList(metsIterator);
     return "http://anyURL";
   }
 }

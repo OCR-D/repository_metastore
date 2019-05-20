@@ -17,6 +17,7 @@ package edu.kit.datamanager.metastore.service.impl;
 
 import com.arangodb.springframework.core.ArangoOperations;
 import edu.kit.datamanager.metastore.entity.MetsDocument;
+import edu.kit.datamanager.metastore.exception.InvalidFormatException;
 import edu.kit.datamanager.metastore.exception.ResourceAlreadyExistsException;
 import edu.kit.datamanager.metastore.repository.ClassificationMetadataRepository;
 import edu.kit.datamanager.metastore.repository.GenreMetadataRepository;
@@ -224,6 +225,27 @@ public class MetsDocumentServiceTest {
     assertEquals(version, result.getVersion());
     MetsDocument result2 = instance.getMostRecentMetsDocumentByResourceId(resourceId);
     assertTrue(result2.getLastModified().getTime() >= result.getLastModified().getTime());
+  }
+
+  /**
+   * Test of createMetsDocument method, of class MetsDocumentService.
+   *
+   * @throws java.io.IOException
+   */
+  @Test
+  public void testCreateInvalidMetsDocument() throws IOException {
+    System.out.println("createMetsDocument");
+    String resourceId = "newResourceId";
+    String fileContent = "<Invalid></xml>";
+    MetsDocumentService instance = metsDocumentService;
+    int noOfDocuments = instance.getAllDocuments().size();
+    try {
+    instance.createMetsDocument(resourceId, fileContent);
+    } catch (InvalidFormatException ife) {
+      assertEquals("Invalid METS file!", ife.getMessage());
+    }
+    int noOfDocumentsAfter = instance.getAllDocuments().size();
+    assertTrue(noOfDocuments == noOfDocumentsAfter);
   }
 
   /**
