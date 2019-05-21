@@ -33,8 +33,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
@@ -67,9 +69,11 @@ import org.springframework.web.util.NestedServletException;
   WithSecurityContextTestExecutionListener.class})
 @ActiveProfiles("test")
 public class IBagItUploadControllerTest {
-
-  @Autowired
-  private MockMvc mockMvc;
+ 
+    @Autowired
+    private MockMvc mockMvc;
+    @Autowired
+    private TestRestTemplate template;
 
   public IBagItUploadControllerTest() {
   }
@@ -256,11 +260,12 @@ public class IBagItUploadControllerTest {
     if (ocrdZip.exists()) {
       ocrdZip.delete();
     }
-    ZipUtils.zip(Paths.get("src/test/resources/bagit/", "validBag").toFile(), ocrdZip);
-    MockMultipartFile bagitContainer = new MockMultipartFile("file", filename, "application/octet-stream", FileUtils.openInputStream(ocrdZip));
-    this.mockMvc.perform(MockMvcRequestBuilders.multipart("/api/v1/metastore/bagit")
-            .file(bagitContainer))
-            .andExpect(status().is4xxClientError());
+        ResponseEntity<String> result = template.withBasicAuth("ingest", "wrongPasswort")
+          .postForEntity("/api/v1/metastore/bagit", ocrdZip, String.class);
+        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
+        result = template.withBasicAuth("wrongUser", "forTestOnly")
+          .postForEntity("/api/v1/metastore/bagit", ocrdZip, String.class);
+        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
   }
 
   /**
