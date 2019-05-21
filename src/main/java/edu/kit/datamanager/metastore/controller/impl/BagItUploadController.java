@@ -76,7 +76,7 @@ public class BagItUploadController implements IBagItUploadController {
   /**
    * Key inside Bagit container defining location of the METS file.
    */
-  public static final String X_OCRD_METS = "X-Ocrd-Mets";
+  public static final String X_OCRD_METS = "Ocrd-Mets";
   /**
    * Default location of the METS file.
    */
@@ -291,15 +291,20 @@ public class BagItUploadController implements IBagItUploadController {
    *
    * @return Relative path to METS file.
    */
-  private String getPathToMets(Bag bag) {
+  private String getPathToMets(Bag bag) throws BagItException {
     List<String> listOfEntries = bag.getMetadata().get(X_OCRD_METS);
     String pathToMets = METS_LOCATION_DEFAULT;
     if (listOfEntries != null) {
       if (listOfEntries.size() > 1) {
-        LOGGER.warn("There are multiple location for METS defined!");
+        LOGGER.error("There are multiple location for METS defined!");
+        for (String item : listOfEntries) {
+          LOGGER.warn("Found: {}", item);
+        }
+        throw new BagItException("Error: Multiple METS locations defined!");
       }
       pathToMets = listOfEntries.get(0);
     }
+    LOGGER.trace("Path to METS: {}", pathToMets);
     return pathToMets;
   }
 
