@@ -15,37 +15,94 @@
  */
 package edu.kit.datamanager.metastore.controller;
 
-import edu.kit.datamanager.metastore.entity.XmlSchemaDefinition;
-import java.util.List;
+import com.arangodb.springframework.core.ArangoOperations;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import edu.kit.datamanager.metastore.repository.XmlSchemaDefinitionRepository;
+import edu.kit.datamanager.metastore.runner.CrudRunner;
+import java.io.File;
+import java.io.IOException;
+import org.apache.commons.io.FileUtils;
+import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.springframework.test.context.web.ServletTestExecutionListener;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  *
- * @author hartmann-v
+ * Integration test for MetsFileController
  */
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
+@TestExecutionListeners(listeners = {ServletTestExecutionListener.class,
+  DependencyInjectionTestExecutionListener.class,
+  DirtiesContextTestExecutionListener.class,
+  TransactionalTestExecutionListener.class,
+  WithSecurityContextTestExecutionListener.class})
+@ActiveProfiles("test")
 public class IXsdDocumentControllerTest {
-  
+
+  @Autowired
+  private ArangoOperations operations;
+  @Autowired
+  private TestRestTemplate template;
+  /**
+   * Repository persisting METS files.
+   */
+  @Autowired
+  private XmlSchemaDefinitionRepository xsdRepository;
+
+  @Autowired
+  private MockMvc mockMvc;
+
   public IXsdDocumentControllerTest() {
   }
-  
+
   @BeforeClass
   public static void setUpClass() {
   }
-  
+
   @AfterClass
   public static void tearDownClass() {
   }
-  
+
   @Before
   public void setUp() {
-  }
-  
+    try {
+      operations.dropDatabase();
+    } catch (DataAccessException dae) {
+      System.out.println("This message should be printed only once!");
+      System.out.println(dae.toString());
+    }
+     xsdRepository.saveAll(CrudRunner.createSchemaDefinitions());
+ }
+
   @After
   public void tearDown() {
   }
@@ -54,97 +111,104 @@ public class IXsdDocumentControllerTest {
    * Test of createMetsDocument method, of class IXsdDocumentController.
    */
   @Test
-  public void testCreateMetsDocument() {
+  @WithMockUser(username = "ingest", password = "forTestOnly", roles = "USER")
+  public void testCreateMetsDocument() throws IOException, Exception {
     System.out.println("createMetsDocument");
-    String prefix = "";
-    String fileContent = "";
-    IXsdDocumentController instance = new IXsdDocumentControllerImpl();
-    ResponseEntity expResult = null;
-    ResponseEntity result = instance.createMetsDocument(prefix, fileContent);
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    String prefix = "page";
+    File xsdFile = new File("src/test/resources/xsd/2018.xsd");
+    MockMultipartFile bagitContainer = new MockMultipartFile("fileContent", xsdFile.getName(), "application/octet-stream", FileUtils.openInputStream(xsdFile));
+    this.mockMvc.perform(MockMvcRequestBuilders.multipart("/api/v1/metastore/xsd/prefix/" + prefix)
+            .file(bagitContainer))
+            .andExpect(status().isOk());
+  }
+
+  /**
+   * Test of createMetsDocument method, of class IXsdDocumentController.
+   */
+  @Test
+  @WithMockUser(username = "ingest", password = "wrongPassword", roles = "USER")
+  public void testCreateMetsDocumentWithWrongCredentials() throws IOException, Exception {
+    System.out.println("createMetsDocument");
+    String prefix = "page";
+    File xsdFile = new File("src/test/resources/xsd/2018.xsd");
+    ResponseEntity<String> result = template.withBasicAuth("ingest", "wrongPasswort")
+            .postForEntity("/api/v1/metastore/xsd/prefix/" + prefix, xsdFile, String.class);
+    assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
+    result = template.withBasicAuth("wrongUser", "forTestOnly")
+            .postForEntity("/api/v1/metastore/xsd/prefix/" + prefix, xsdFile, String.class);
+    assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
   }
 
   /**
    * Test of getAllDocuments method, of class IXsdDocumentController.
    */
   @Test
-  public void testGetAllDocuments() {
+  public void testGetAllDocuments() throws Exception {
     System.out.println("getAllDocuments");
-    IXsdDocumentController instance = new IXsdDocumentControllerImpl();
-    ResponseEntity<List<XmlSchemaDefinition>> expResult = null;
-    ResponseEntity<List<XmlSchemaDefinition>> result = instance.getAllDocuments();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    String prefix[] = {"bmd", "tei", "dc", "file"};
+
+    this.mockMvc.perform(get("/api/v1/metastore/xsd" ))//"/api/v1/metastore/mets/" + resourceId + "/files"))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(4)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.[*].prefix", Matchers.hasItems(prefix)))
+            .andReturn();
   }
 
   /**
    * Test of getAllPrefixes method, of class IXsdDocumentController.
    */
   @Test
-  public void testGetAllPrefixes() {
+  public void testGetAllPrefixes() throws Exception {
     System.out.println("getAllPrefixes");
-    IXsdDocumentController instance = new IXsdDocumentControllerImpl();
-    ResponseEntity<List<String>> expResult = null;
-    ResponseEntity<List<String>> result = instance.getAllPrefixes();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    String prefix[] = {"bmd", "tei", "dc", "file"};
+
+    this.mockMvc.perform(get("/api/v1/metastore/xsd/prefix" ))//"/api/v1/metastore/mets/" + resourceId + "/files"))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(4)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.[*]", Matchers.hasItems(prefix)))
+            .andReturn();
+  
   }
 
   /**
    * Test of getXsdDocumentByNamespace method, of class IXsdDocumentController.
    */
   @Test
-  public void testGetXsdDocumentByNamespace() {
+  public void testGetXsdDocumentByNamespace() throws Exception {
     System.out.println("getXsdDocumentByNamespace");
-    String namespace = "";
-    IXsdDocumentController instance = new IXsdDocumentControllerImpl();
-    ResponseEntity<XmlSchemaDefinition> expResult = null;
-    ResponseEntity<XmlSchemaDefinition> result = instance.getXsdDocumentByNamespace(namespace);
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    String prefix= "dc";
+    String namespace = "namespace3";
+    String content = "someDCContent";
+
+    this.mockMvc.perform(get("/api/v1/metastore/xsd/ns")
+            .param("namespace", namespace))//"/api/v1/metastore/mets/" + resourceId + "/files"))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.prefix").value(prefix))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.namespace").value(namespace))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.xsdFile").value(content))
+            .andReturn();
   }
 
   /**
    * Test of getXsdDocumentByPrefix method, of class IXsdDocumentController.
    */
   @Test
-  public void testGetXsdDocumentByPrefix() {
+  public void testGetXsdDocumentByPrefix() throws Exception {
     System.out.println("getXsdDocumentByPrefix");
-    String prefix = "";
-    IXsdDocumentController instance = new IXsdDocumentControllerImpl();
-    ResponseEntity<XmlSchemaDefinition> expResult = null;
-    ResponseEntity<XmlSchemaDefinition> result = instance.getXsdDocumentByPrefix(prefix);
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    String prefix= "tei";
+    String namespace = "namespace2";
+    String content = "someTeiContent";
+
+    this.mockMvc.perform(get("/api/v1/metastore/xsd/prefix/" + prefix))//"/api/v1/metastore/mets/" + resourceId + "/files"))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.prefix").value(prefix))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.namespace").value(namespace))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.xsdFile").value(content))
+            .andReturn();
   }
 
-  public class IXsdDocumentControllerImpl implements IXsdDocumentController {
-
-    public ResponseEntity<?> createMetsDocument(String prefix, String fileContent) {
-      return null;
-    }
-
-    public ResponseEntity<List<XmlSchemaDefinition>> getAllDocuments() {
-      return null;
-    }
-
-    public ResponseEntity<List<String>> getAllPrefixes() {
-      return null;
-    }
-
-    public ResponseEntity<XmlSchemaDefinition> getXsdDocumentByNamespace(String namespace) {
-      return null;
-    }
-
-    public ResponseEntity<XmlSchemaDefinition> getXsdDocumentByPrefix(String prefix) {
-      return null;
-    }
-  }
-  
 }
