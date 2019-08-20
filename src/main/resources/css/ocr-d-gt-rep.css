@@ -478,7 +478,7 @@ template {
 thead {
     box-shadow: inset 1px 1px 0 #999;
     border-left: 1px solid #777;
-    background: url(https://jackrugile.com/images/misc/noise-diagonal.png), linear-gradient(#777, #444);
+    background: linear-gradient(#777, #444);
     color: white;
     font-weight: 100 !important; 
     line-height: 1.8rem;
@@ -544,6 +544,7 @@ html:before {
      
 }
 
+/** Hide form for upload
 form  {
   position: absolute; 
   overflow: hidden; 
@@ -551,4 +552,14 @@ form  {
   height: 1px; width: 1px; 
   margin: -1px; padding: 0; border: 0; 
   
-}
+}*/
+form caption {
+    box-shadow: inset 1px 1px 0 #999;
+    border-left: 1px solid #777;
+    background: linear-gradient(#777, #444);
+    color: white;
+    font-weight: 300 !important; 
+    font-size: 30pt !important;
+    text-align: center;
+    width: 100%
+  }

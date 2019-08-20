@@ -18,8 +18,11 @@
     <div>
       <form method="POST" enctype="multipart/form-data" action="/api/v1/metastore/bagit/">
         <table>
-          <tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
-          <tr><td></td><td><input type="submit" value="Upload" /></td></tr>
+          <caption>Upload BagIt-Container (Authorization required)</caption>
+          <tbody> 
+            <tr><td>Select (BagIt-)File:</td><td><input type="file" name="file"></td></tr>
+            <tr><td><input type="submit" value="Upload"></td></tr>
+          </tbody>
         </table>
       </form>
     </div>

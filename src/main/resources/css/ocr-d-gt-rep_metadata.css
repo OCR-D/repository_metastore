@@ -478,7 +478,7 @@ template {
 thead {
     box-shadow: inset 1px 1px 0 #999;
     border-left: 1px solid #777;
-    background: url(https://jackrugile.com/images/misc/noise-diagonal.png), linear-gradient(#777, #444);
+    background: linear-gradient(#777, #444);
     color: white;
     line-height: 1rem;
     text-align: left;
