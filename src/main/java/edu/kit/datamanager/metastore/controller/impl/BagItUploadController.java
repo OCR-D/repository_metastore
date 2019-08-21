@@ -276,6 +276,8 @@ public class BagItUploadController implements IBagItUploadController {
       } else {
         throw new InvalidFormatException("METS file doesn't exist or isn't specified");
       }
+    } else {
+        throw new InvalidFormatException("Filename '" + file.getOriginalFilename() + "' is not valid (*.zip)!");
     }
 
     if (location != null) {

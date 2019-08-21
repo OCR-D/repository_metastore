@@ -246,7 +246,7 @@ public class RepositoryUtil {
         // ...try once again
         handleFileUpload = apiInstance.handleFileUploadUsingPOSTWithHttpInfo(idOfResource, uploadFile, force, metadata, relativePath.toString());
       } else {
-        String message = String.format("Post file '%1s' to resource with ID '%2s'", relativePath.toString(), idOfResource);
+        String message = String.format("Post file '%1s' to resource with ID '%2s' failed with status code '%d'", relativePath.toString(), idOfResource);
         logApiException(message, ae);
         throw ae;
       }
@@ -282,7 +282,7 @@ public class RepositoryUtil {
             resourceExists = false;
           }
         } catch (ApiException ae) {
-          LOGGER.error("Test for resourceIdentifier failed!", ae);
+          LOGGER.warn("Test for resourceIdentifier failed!", ae);
           resourceExists = false;
         }
       }
