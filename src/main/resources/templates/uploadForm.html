@@ -28,7 +28,7 @@
     </div>
 
     <div>
-      <h3>List of all zipped Bagit Containers</h3>
+        <h3 th:text="'List of all zipped BagIt Containers (' + ${#lists.size(bagitFiles)} + ')'"></h3>
       <table>
         <thead>
           <tr>
