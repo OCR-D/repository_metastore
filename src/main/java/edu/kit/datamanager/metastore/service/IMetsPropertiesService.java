@@ -22,6 +22,8 @@ import edu.kit.datamanager.metastore.entity.MetsIdentifier;
 import edu.kit.datamanager.metastore.entity.MetsProperties;
 import edu.kit.datamanager.metastore.entity.PageMetadata;
 import java.util.List;
+import java.util.Set;
+import org.springframework.ui.Model;
 
 /**
  * Interface defining section document service.
@@ -133,4 +135,10 @@ public interface IMetsPropertiesService {
    * @return Object holding page metadata of selected METS document.
    */
   List<MetsIdentifier> getIdentifierByResourceIdAndType(String resourceId, String type);
+
+    /**
+     * Add all possible values to model.
+     * @param model model holding all values
+     */
+    public void addFeaturesToModel(Model model); 
 }

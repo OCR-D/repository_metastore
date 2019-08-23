@@ -77,5 +77,18 @@ public interface IBagItUploadController {
   @RequestMapping(path = "", method = RequestMethod.GET, produces = "application/json")
   @ResponseBody
   ResponseEntity<List<String>> listUploadedFiles(Model model) throws IOException;
+
+  /**
+   * Filtered listing of uploaded files.
+   *
+   * @param model Model holding information about filtered files.
+   *
+   * @return Website displaying information about uploaded files.
+   * @throws IOException Error while storing/reading file.
+   */
+  @ApiOperation(value = "List find containers.",
+          notes = "List filtered zipped BagIt containers with Form to search for BagIt container.")
+  @RequestMapping(path = "search", method = RequestMethod.GET, produces = "text/html")
+  String listFilteredFilesAsHtml(Model model) throws IOException;
   
 }

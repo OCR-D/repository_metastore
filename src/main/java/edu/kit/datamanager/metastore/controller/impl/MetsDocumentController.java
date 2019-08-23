@@ -25,10 +25,14 @@ import edu.kit.datamanager.metastore.entity.MetsDocument;
 import edu.kit.datamanager.metastore.entity.MetsIdentifier;
 import edu.kit.datamanager.metastore.entity.MetsProperties;
 import edu.kit.datamanager.metastore.entity.PageMetadata;
+import edu.kit.datamanager.metastore.entity.ZippedBagit;
+import edu.kit.datamanager.metastore.repository.ZippedBagitRepository;
 import edu.kit.datamanager.metastore.service.IMetsDocumentService;
 import edu.kit.datamanager.metastore.service.IMetsPropertiesService;
 import edu.kit.datamanager.metastore.util.MetsDocumentUtil;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,168 +54,230 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RequestMapping("api/v1/metastore/mets")
 public class MetsDocumentController implements IMetsDocumentController {
 
-  /**
-   * Logger for this class.
-   */
-  private static final Logger LOGGER = LoggerFactory.getLogger(MetsDocumentController.class);
+    /**
+     * Logger for this class.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(MetsDocumentController.class);
 
-  /**
-   * Services for handling METS documents.
-   */
-  @Autowired
-  private IMetsDocumentService metastoreService;
+    /**
+     * Services for handling METS documents.
+     */
+    @Autowired
+    private IMetsDocumentService metastoreService;
 
-  /**
-   * Services for handling properties of METS documents.
-   */
-  @Autowired
-  private IMetsPropertiesService metastoreResourceService;
+    /**
+     * Services for handling properties of METS documents.
+     */
+    @Autowired
+    private IMetsPropertiesService metastoreResourceService;
 
-  @Override
-  public ResponseEntity<List<MetsDocument>> getAllDocuments() {
-    List<MetsDocument> allDocuments = metastoreService.getAllDocuments();
-    LOGGER.trace("Get all METS documents");
-    return new ResponseEntity<>(allDocuments, HttpStatus.OK);
-  }
+    /**
+     * Properties for the zipped BagIt containers.
+     */
+    @Autowired
+    private ZippedBagitRepository bagitRepository;
 
-  @Override
-  public ResponseEntity<MetsDocument> getLatestMetsDocument(@PathVariable("resourceId") String resourceId) {
-    LOGGER.trace("Get latest METS documents with ID '{}'", resourceId);
-    MetsDocument metsDoc;
-    metsDoc = metastoreService.getMostRecentMetsDocumentByResourceId(resourceId);
-    return new ResponseEntity<>(metsDoc, HttpStatus.OK);
-  }
+    @Override
+    public ResponseEntity<List<MetsDocument>> getAllDocuments() {
+        List<MetsDocument> allDocuments = metastoreService.getAllDocuments();
+        LOGGER.trace("Get all METS documents");
+        return new ResponseEntity<>(allDocuments, HttpStatus.OK);
+    }
 
-  @Override
-  public ResponseEntity<MetsDocument> getMetsDocumentByVersion(@PathVariable("resourceId") String resourceId, @PathVariable("version") Integer version) {
-    LOGGER.trace("Get METS documents with ID '{}' and version {}", resourceId, version);
-    MetsDocument metsDoc;
-    metsDoc = metastoreService.getDocumentByResourceIdAndVersion(resourceId, version);
-    return new ResponseEntity<>(metsDoc, HttpStatus.OK);
-  }
+    @Override
+    public ResponseEntity<MetsDocument> getLatestMetsDocument(@PathVariable("resourceId") String resourceId) {
+        LOGGER.trace("Get latest METS documents with ID '{}'", resourceId);
+        MetsDocument metsDoc;
+        metsDoc = metastoreService.getMostRecentMetsDocumentByResourceId(resourceId);
+        return new ResponseEntity<>(metsDoc, HttpStatus.OK);
+    }
 
-  @Override
-  public ResponseEntity<?> createMetsDocument(@PathVariable("resourceId") String resourceId, @RequestParam("fileContent") String fileContent) {
-    LOGGER.trace("Create METS document!");
-    metastoreService.createMetsDocument(resourceId, fileContent);
-    URI location = ServletUriComponentsBuilder
-            .fromCurrentRequest().build().toUri();
-    return ResponseEntity.created(location).build();
-  }
+    @Override
+    public ResponseEntity<MetsDocument> getMetsDocumentByVersion(@PathVariable("resourceId") String resourceId, @PathVariable("version") Integer version) {
+        LOGGER.trace("Get METS documents with ID '{}' and version {}", resourceId, version);
+        MetsDocument metsDoc;
+        metsDoc = metastoreService.getDocumentByResourceIdAndVersion(resourceId, version);
+        return new ResponseEntity<>(metsDoc, HttpStatus.OK);
+    }
 
-  @Override
-  public ResponseEntity<List<Integer>> getVersionsOfMetsDocument(@PathVariable("resourceId") String resourceId) {
-    LOGGER.trace("Get versions of METS documents with ID '{}'", resourceId);
-    List<Integer> versionList;
-    versionList = metastoreService.getAllVersionsByResourceId(resourceId);
-    return new ResponseEntity<>(versionList, HttpStatus.OK);
-  }
+    @Override
+    public ResponseEntity<?> createMetsDocument(@PathVariable("resourceId") String resourceId, @RequestParam("fileContent") String fileContent) {
+        LOGGER.trace("Create METS document!");
+        metastoreService.createMetsDocument(resourceId, fileContent);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest().build().toUri();
+        return ResponseEntity.created(location).build();
+    }
 
-  @Override
-  public ResponseEntity<List<String>> getResourceIdByTitle(@RequestParam("title") String title) {
-    LOGGER.trace("Get resourceID of METS documents with title '{}'", title);
-    List<String> resourceIdList;
-    resourceIdList = metastoreResourceService.getResourceIdsByTitle(title);
-    return new ResponseEntity<>(resourceIdList, HttpStatus.OK);
-  }
+    @Override
+    public ResponseEntity<List<Integer>> getVersionsOfMetsDocument(@PathVariable("resourceId") String resourceId) {
+        LOGGER.trace("Get versions of METS documents with ID '{}'", resourceId);
+        List<Integer> versionList;
+        versionList = metastoreService.getAllVersionsByResourceId(resourceId);
+        return new ResponseEntity<>(versionList, HttpStatus.OK);
+    }
 
-  @Override
-  public ResponseEntity<List<String>> getResourceIdByPpn(@RequestParam("ppn") String ppn) {
-    LOGGER.trace("Get resourceID of METS documents with PPN '{}'", ppn);
-    List<String> resourceIdList;
-    resourceIdList = metastoreResourceService.getResourceIdsByPpn(ppn);
-    return new ResponseEntity<>(resourceIdList, HttpStatus.OK);
-  }
+    @Override
+    public ResponseEntity<List<String>> getResourceIdByTitle(@RequestParam("title") String title) {
+        LOGGER.trace("Get resourceID of METS documents with title '{}'", title);
+        List<String> resourceIdList;
+        resourceIdList = metastoreResourceService.getResourceIdsByTitle(title);
+        return new ResponseEntity<>(resourceIdList, HttpStatus.OK);
+    }
 
-  @Override
-  public ResponseEntity<MetsMetadata> getLatestMetadataOfDocument(@PathVariable("resourceId")String resourceId, Model model) {
-    LOGGER.trace("Get metadata of METS documents with resourceID '{}'", resourceId);
+    @Override
+    public ResponseEntity<List<String>> getResourceIdByPpn(@RequestParam("ppn") String ppn) {
+        LOGGER.trace("Get resourceID of METS documents with PPN '{}'", ppn);
+        List<String> resourceIdList;
+        resourceIdList = metastoreResourceService.getResourceIdsByPpn(ppn);
+        return new ResponseEntity<>(resourceIdList, HttpStatus.OK);
+    }
 
-    MetsMetadata metsMetadata;
-    MetsProperties metsProperties = metastoreResourceService.getMetadataByResourceId(resourceId);
-    List<ClassificationMetadata> classifications = metastoreResourceService.getClassificationMetadataByResourceId(resourceId);
-    List<GenreMetadata> genres = metastoreResourceService.getGenreMetadataByResourceId(resourceId);
-    List<MetsIdentifier> identifiers = metastoreResourceService.getIdentifierByResourceId(resourceId);
-    List<LanguageMetadata> languages = metastoreResourceService.getLanguageMetadataByResourceId(resourceId);
-    List<PageMetadata> pages = metastoreResourceService.getPageMetadataByResourceId(resourceId);
+    @Override
+    public ResponseEntity<MetsMetadata> getLatestMetadataOfDocument(@PathVariable("resourceId") String resourceId, Model model) {
+        LOGGER.trace("Get metadata of METS documents with resourceID '{}'", resourceId);
 
-    metsMetadata = MetsDocumentUtil.convertEntityToDao(metsProperties, languages, classifications, genres, pages, identifiers);
+        MetsMetadata metsMetadata;
+        MetsProperties metsProperties = metastoreResourceService.getMetadataByResourceId(resourceId);
+        List<ClassificationMetadata> classifications = metastoreResourceService.getClassificationMetadataByResourceId(resourceId);
+        List<GenreMetadata> genres = metastoreResourceService.getGenreMetadataByResourceId(resourceId);
+        List<MetsIdentifier> identifiers = metastoreResourceService.getIdentifierByResourceId(resourceId);
+        List<LanguageMetadata> languages = metastoreResourceService.getLanguageMetadataByResourceId(resourceId);
+        List<PageMetadata> pages = metastoreResourceService.getPageMetadataByResourceId(resourceId);
 
-    return new ResponseEntity<>(metsMetadata, HttpStatus.OK);
-  }
+        metsMetadata = MetsDocumentUtil.convertEntityToDao(metsProperties, languages, classifications, genres, pages, identifiers);
 
-  @Override
-  public String getLatestMetadataOfDocumentAsHtml(@PathVariable("resourceId")String resourceId, Model model) {
-    LOGGER.trace("Get metadata of METS documents with resourceID '{}' as HTML", resourceId);
-    // Collect metadata
-    MetsProperties metsProperties = metastoreResourceService.getMetadataByResourceId(resourceId);
-    List<MetsIdentifier> identifiers = metastoreResourceService.getIdentifierByResourceId(resourceId);
-    List<LanguageMetadata> languages = metastoreResourceService.getLanguageMetadataByResourceId(resourceId);
-    List<ClassificationMetadata> classifications = metastoreResourceService.getClassificationMetadataByResourceId(resourceId);
-    List<GenreMetadata> genres = metastoreResourceService.getGenreMetadataByResourceId(resourceId);
-    
-    // Add all to model 
-    model.addAttribute("metsMetadata", metsProperties);
-    model.addAttribute("metsIdentifier", identifiers);
-    model.addAttribute("metsLanguages", languages);
-    model.addAttribute("metsClassifications", classifications);
-    model.addAttribute("metsGenres", genres);
+        return new ResponseEntity<>(metsMetadata, HttpStatus.OK);
+    }
 
-    return "metadata";
-  }
+    @Override
+    public String getLatestMetadataOfDocumentAsHtml(@PathVariable("resourceId") String resourceId, Model model) {
+        LOGGER.trace("Get metadata of METS documents with resourceID '{}' as HTML", resourceId);
+        // Collect metadata
+        MetsProperties metsProperties = metastoreResourceService.getMetadataByResourceId(resourceId);
+        List<MetsIdentifier> identifiers = metastoreResourceService.getIdentifierByResourceId(resourceId);
+        List<LanguageMetadata> languages = metastoreResourceService.getLanguageMetadataByResourceId(resourceId);
+        List<ClassificationMetadata> classifications = metastoreResourceService.getClassificationMetadataByResourceId(resourceId);
+        List<GenreMetadata> genres = metastoreResourceService.getGenreMetadataByResourceId(resourceId);
 
-  @Override
-  public String getLatestGroundTruthMetadataOfDocumentAsHtml(@PathVariable("resourceId")String resourceId, Model model) {
-    LOGGER.trace("Get ground truth of METS documents with resourceID '{}' as HTML", resourceId);
-    // Collect metadata
-    List<PageMetadata> pages = metastoreResourceService.getPageMetadataByResourceId(resourceId);
-    // Add all to model
-    model.addAttribute("pageMetadata", pages);
+        // Add all to model 
+        model.addAttribute("metsMetadata", metsProperties);
+        model.addAttribute("metsIdentifier", identifiers);
+        model.addAttribute("metsLanguages", languages);
+        model.addAttribute("metsClassifications", classifications);
+        model.addAttribute("metsGenres", genres);
 
-    return "groundTruth";
-  }
+        return "metadata";
+    }
 
-  @Override
-  public ResponseEntity<List<String>> getResourceIdBySemanticLabel(@RequestParam(value = "label")String[] label) {
-    List<String> resourceIdList = metastoreResourceService.getResourceIdsByGtLabel(label, false);
-   return new ResponseEntity<>(resourceIdList, HttpStatus.OK); 
-  }
+    @Override
+    public String getLatestGroundTruthMetadataOfDocumentAsHtml(@PathVariable("resourceId") String resourceId, Model model) {
+        LOGGER.trace("Get ground truth of METS documents with resourceID '{}' as HTML", resourceId);
+        // Collect metadata
+        List<PageMetadata> pages = metastoreResourceService.getPageMetadataByResourceId(resourceId);
+        // Add all to model
+        model.addAttribute("pageMetadata", pages);
 
-  @Override
-  public ResponseEntity<List<String>> getResourceIdBySemanticLabelOfPage(@RequestParam(value = "label")String[] label) {
-    List<String> resourceIdList = metastoreResourceService.getResourceIdsByGtLabel(label, true);
-   return new ResponseEntity<>(resourceIdList, HttpStatus.OK); 
-  }
+        return "groundTruth";
+    }
 
-  @Override
-  public ResponseEntity<List<String>> getResourceIdByClassification(@RequestParam(value = "class")String[] classification) {
-    List<String> resourceIdList = metastoreResourceService.getResourceIdsByClassification(classification);
-   return new ResponseEntity<>(resourceIdList, HttpStatus.OK); 
-  }
+    @Override
+    public ResponseEntity<List<String>> getResourceIdBySemanticLabel(@RequestParam(value = "label") String[] label) {
+        List<String> resourceIdList = metastoreResourceService.getResourceIdsByGtLabel(label, false);
+        return new ResponseEntity<>(resourceIdList, HttpStatus.OK);
+    }
 
-  @Override
-  public ResponseEntity<List<String>> getResourceIdByLanguage(@RequestParam(value = "lang")String[] language) {
-    List<String> resourceIdList = metastoreResourceService.getResourceIdsByLanguage(language);
-   return new ResponseEntity<>(resourceIdList, HttpStatus.OK); 
-  }
-  
-  @Override
-  public ResponseEntity<List<String>> getResourceIdByIdentifier(@RequestParam(value = "identifier") String identifier,
-          @RequestParam(value = "type", required = false) String type) {
-    List<String> resourceIdList = metastoreResourceService.getResourceIdsByIdentifier(identifier, type);
-   return new ResponseEntity<>(resourceIdList, HttpStatus.OK); 
-  }
+    @Override
+    public String getResourceIdBySemanticLabelAsHtml(@RequestParam(value = "label") String[] label, Model model) {
+        List<String> resourceIdList = metastoreResourceService.getResourceIdsByGtLabel(label, false);
 
-  /**
-   * Handler for Exceptions.
-   *
-   * @param ade Exception accessing database.
-   *
-   * @return Error status.
-   */
-  @ExceptionHandler(ArangoDBException.class)
-  public ResponseEntity<?> handleArangoDBException(ArangoDBException ade) {
-    ResponseEntity<?> responseEntity = ResponseEntity.status(ade.getResponseCode()).body(ade.getErrorMessage());
-    return responseEntity;
-  }
+        buildModel(resourceIdList, model);
+
+        return "searchForm";
+    }
+
+    @Override
+    public ResponseEntity<List<String>> getResourceIdBySemanticLabelOfPage(@RequestParam(value = "label") String[] label) {
+        List<String> resourceIdList = metastoreResourceService.getResourceIdsByGtLabel(label, true);
+        return new ResponseEntity<>(resourceIdList, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<String>> getResourceIdByClassification(@RequestParam(value = "class") String[] classification) {
+        List<String> resourceIdList = metastoreResourceService.getResourceIdsByClassification(classification);
+        return new ResponseEntity<>(resourceIdList, HttpStatus.OK);
+    }
+
+    @Override
+    public String getResourceIdByClassificationAsHtml(@RequestParam(value = "class") String[] classification, Model model) {
+        List<String> resourceIdList = metastoreResourceService.getResourceIdsByClassification(classification);
+
+        buildModel(resourceIdList, model);
+
+        return "searchForm";
+    }
+
+    @Override
+    public ResponseEntity<List<String>> getResourceIdByLanguage(@RequestParam(value = "lang") String[] language) {
+        List<String> resourceIdList = metastoreResourceService.getResourceIdsByLanguage(language);
+        return new ResponseEntity<>(resourceIdList, HttpStatus.OK);
+    }
+
+    @Override
+    public String getResourceIdByLanguageAsHtml(@RequestParam(value = "lang") String[] language, Model model) {
+        List<String> resourceIdList = metastoreResourceService.getResourceIdsByLanguage(language);
+
+        buildModel(resourceIdList, model);
+
+        return "searchForm";
+    }
+
+    @Override
+    public ResponseEntity<List<String>> getResourceIdByIdentifier(@RequestParam(value = "identifier") String identifier,
+            @RequestParam(value = "type", required = false) String type) {
+        List<String> resourceIdList = metastoreResourceService.getResourceIdsByIdentifier(identifier, type);
+        return new ResponseEntity<>(resourceIdList, HttpStatus.OK);
+    }
+
+    @Override
+    public String getResourceIdByIdentifierAsHtml(@RequestParam(value = "identifier") String identifier,
+            @RequestParam(value = "type", required = false) String type, Model model) {
+        List<String> resourceIdList = metastoreResourceService.getResourceIdsByIdentifier(identifier, type);
+
+        buildModel(resourceIdList, model);
+
+        return "searchForm";
+    }
+
+    /**
+     * Build model for response.
+     *
+     * @param resourceIdList List with all bagit containers.
+     * @param model holding all values.
+     */
+    private void buildModel(List<String> resourceIdList, Model model) {
+        List<ZippedBagit> bagitList = new ArrayList<>();
+        for (String resourceId : resourceIdList) {
+            Iterator<ZippedBagit> iterator = bagitRepository.findByResourceId(resourceId).iterator();
+            if (iterator.hasNext()) {
+              bagitList.add(iterator.next());
+            }
+        }
+        model.addAttribute("bagitFiles", bagitList);
+
+        metastoreResourceService.addFeaturesToModel(model);
+    }
+
+    /**
+     * Handler for Exceptions.
+     *
+     * @param ade Exception accessing database.
+     *
+     * @return Error status.
+     */
+    @ExceptionHandler(ArangoDBException.class)
+    public ResponseEntity<?> handleArangoDBException(ArangoDBException ade) {
+        ResponseEntity<?> responseEntity = ResponseEntity.status(ade.getResponseCode()).body(ade.getErrorMessage());
+        return responseEntity;
+    }
 }
