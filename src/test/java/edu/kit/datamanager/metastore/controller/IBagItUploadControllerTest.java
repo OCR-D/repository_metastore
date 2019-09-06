@@ -350,6 +350,80 @@ public class IBagItUploadControllerTest {
             .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td[text() = '" + dataObjectId + "']").exists())
             .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td/a[text() = '" + redirectedUrl + "']").exists())
             .andReturn();
+    System.out.println("*****************************************************");
+    System.out.println("listFilteredUploadedFilesAsHtml");
+    this.mockMvc.perform(get("/api/v1/metastore/bagit/search").accept(MediaType.TEXT_HTML))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td[text() = '" + dataObjectId + "']").exists())
+            .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td/a[text() = '" + redirectedUrl + "']").exists())
+            .andReturn();
+    System.out.println("*****************************************************");
+    System.out.println("listFilteredUploadedFilesByClassificationAsHtml");
+    String[] classification = {"Lyrik"};
+    this.mockMvc.perform(get("/api/v1/metastore/mets/classification")
+            .param("class", classification)
+            .accept(MediaType.TEXT_HTML))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td[text() = '" + dataObjectId + "']").exists())
+            .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td/a[text() = '" + redirectedUrl + "']").exists())
+            .andReturn();
+    System.out.println("*****************************************************");
+    System.out.println("listFilteredUploadedFilesByUnknownClassificationAsHtml");
+    String[] unknownClassification = {"Comic"};
+    this.mockMvc.perform(get("/api/v1/metastore/mets/classification")
+            .param("class", unknownClassification)
+            .accept(MediaType.TEXT_HTML))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td[text() = '" + dataObjectId + "']").doesNotExist())
+            .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td/a[text() = '" + redirectedUrl + "']").doesNotExist())
+            .andReturn();
+    System.out.println("*****************************************************");
+    System.out.println("listFilteredUploadedFilesByLanguageAsHtml");
+    String[] language = {"deu"};
+    this.mockMvc.perform(get("/api/v1/metastore/mets/language")
+            .param("lang", language)
+            .accept(MediaType.TEXT_HTML))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td[text() = '" + dataObjectId + "']").exists())
+            .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td/a[text() = '" + redirectedUrl + "']").exists())
+            .andReturn();
+    System.out.println("*****************************************************");
+    System.out.println("listFilteredUploadedFilesByUnknownLanguageAsHtml");
+    String[] unknownLanguage = {"jpn"};
+    this.mockMvc.perform(get("/api/v1/metastore/mets/language")
+            .param("lang", unknownLanguage)
+            .accept(MediaType.TEXT_HTML))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td[text() = '" + dataObjectId + "']").doesNotExist())
+            .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td/a[text() = '" + redirectedUrl + "']").doesNotExist())
+            .andReturn();
+    System.out.println("*****************************************************");
+    System.out.println("listFilteredUploadedFilesBySemanticLabelAsHtml");
+    String[] semanticLabel = {"granularity/physical/document-related/word"};
+    this.mockMvc.perform(get("/api/v1/metastore/mets/labeling")
+            .param("label", semanticLabel)
+            .accept(MediaType.TEXT_HTML))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td[text() = '" + dataObjectId + "']").exists())
+            .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td/a[text() = '" + redirectedUrl + "']").exists())
+            .andReturn();
+    System.out.println("*****************************************************");
+    System.out.println("listFilteredUploadedFilesByUnknownSemanticLabelAsHtml");
+    String[] unknownSemanticLabel = {"granularity/physical/document-related/region"};
+    this.mockMvc.perform(get("/api/v1/metastore/mets/labeling")
+            .param("label", unknownSemanticLabel)
+            .accept(MediaType.TEXT_HTML))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td[text() = '" + dataObjectId + "']").doesNotExist())
+            .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td/a[text() = '" + redirectedUrl + "']").doesNotExist())
+            .andReturn();
   }
 
 }

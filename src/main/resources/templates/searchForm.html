@@ -25,12 +25,12 @@
             <tr><td >
               <label>Semantic labels:
               </label>
-                <select name="label" multiple>
+                <select name="label" multiple="true">
                   <option th:each="semanticLabel: ${semanticLabels}"
                     th:text="${semanticLabel}"></option>
                 </select>
             </td></tr>
-            <tr><td><input type="submit" value="Search"></td></tr>
+            <tr><td><input type="submit" value="Search" /></td></tr>
           </tbody>
         </table>
       </form>
@@ -41,13 +41,13 @@
           <tbody> 
             <tr><td>
               <label>Classification:
-                <select name="class" multiple>
+                <select name="class" multiple="true">
                   <option th:each="class: ${classes}"
                     th:text="${class}"></option>
                 </select>
               </label>
             </td></tr>
-            <tr><td><input type="submit" value="Search"></td></tr>
+            <tr><td><input type="submit" value="Search" /></td></tr>
           </tbody>
         </table>
       </form>
@@ -64,7 +64,7 @@
                 </select>
               </label>
             </td></tr>
-            <tr><td><input type="submit" value="Search"></td></tr>
+            <tr><td><input type="submit" value="Search" /></td></tr>
           </tbody>
         </table>
       </form>
@@ -81,7 +81,7 @@
                 </select>
               </label>
             </td></tr>
-            <tr><td><input type="submit" value="Search"></td></tr>
+            <tr><td><input type="submit" value="Search" /></td></tr>
           </tbody>
         </table>
       </form>
