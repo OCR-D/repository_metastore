@@ -1,0 +1,4 @@
+test {
+   environment "spring.config.location", "test/"
+   include '**/*'
+}

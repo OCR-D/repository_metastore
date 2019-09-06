@@ -12,13 +12,7 @@ cd ../..
 # Wait for setup of KIT DM and its database
 sleep 480
 
-# Clone base-repo
-git clone https://github.com/kit-data-manager/service-base.git
-cd service-base/
-./gradlew install
-cd ..
-
 # Create test report
 echo "Building project and executing tests"
-./gradlew clean check jacocoTestReport
+./gradlew -Ptravis clean check jacocoTestReport
 

@@ -21,8 +21,6 @@ plugins {
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'jacoco'
@@ -54,6 +52,16 @@ targetCompatibility = 1.8
 configurations {
   //   all*.exclude module : 'spring-boot-starter-logging'
 }
+
+if (project.hasProperty('travis')) {
+    println 'Using travis profile for building ' + project.getName()
+    apply from: 'gradle/build_dependencies.gradle'
+    apply from: 'gradle/profile-travis.gradle'
+} else if (project.hasProperty('release') || project.hasProperty('clean-release')) {
+    println 'Using release profile for building ' + project.getName()
+    apply from: 'gradle/build_dependencies.gradle'
+    apply from: 'gradle/profile-release.gradle'
+} 
 
 dependencies {
   compile("org.springframework.boot:spring-boot-starter-web")

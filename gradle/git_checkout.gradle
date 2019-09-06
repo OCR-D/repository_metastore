@@ -1,0 +1,13 @@
+/** Source code checkout of all git submodules related to the project. 
+ * Basically, only 'git submodule foreach git pull origin master' is executed.
+ */
+task checkoutDependencies(type:Exec){
+   commandLine 'git', 'submodule', 'foreach', 'git', 'pull' ,'origin', 'master'
+
+   standardOutput = new ByteArrayOutputStream()
+
+   ext.output = {
+      return standardOutput.toString()
+   }
+}
+
