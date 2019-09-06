@@ -55,6 +55,10 @@ in order to see available RESTful endpoints and their documentation. Furthermore
 #### Install KIT DM 2.0 
 ```bash=bash
 # Build KIT DM 2.0
+user@localhost:/home/user/$git clone https://github.com/kit-data-manager/docker-kitdm-2.0.git
+user@localhost:/home/user/$cd docker-kitdm-2.0/source
+user@localhost:/home/user/$docker-compose up &
+user@localhost:/home/user/$cd ../..
 user@localhost:/home/user/$git clone https://github.com/kit-data-manager/base-repo.git
 user@localhost:/home/user/$cd base-repo
 user@localhost:/home/user/base-repo/$git submodule init

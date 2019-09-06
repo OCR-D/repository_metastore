@@ -25,14 +25,14 @@ Cloning into 'repository_metastore'...
 [...]
 Resolving deltas: 100% (451/451), done.
 user@localhost:/home/user/$cd repository_metastore
-user@localhost:/home/user/repository_metastore/$./gradlew -x test clean build
+user@localhost:/home/user/repository_metastore/$./gradlew -Prelease clean build
 BUILD SUCCESSFUL in 5s
 7 actionable tasks: 7 executed
 ```
 As a result, a fat jar containing the entire service is created at 'build/libs/metastore-service-0.1.0.jar'.
 
 ### Build Service including Tests
-If you want to execute tests during the build process you have to start an arangoDB
+If you want to execute tests during the build process you have to start [KIT Data Manager](installation_KIT_DM_2.0.md#installation-using-dockerized-version) and an arangoDB
 instance in beforehand.
 ```bash=bash
 # Start arangoDB in a separate console
@@ -48,7 +48,7 @@ Cloning into 'repository_metastore'...
 [...]
 Resolving deltas: 100% (451/451), done.
 user@localhost:/home/user/$cd repository_metastore
-user@localhost:/home/user/repository_metastore/$./gradlew clean build
+user@localhost:/home/user/repository_metastore/$./gradlew -Ptravis clean build
 BUILD SUCCESSFUL in 34s
 7 actionable tasks: 7 executed
 ```
