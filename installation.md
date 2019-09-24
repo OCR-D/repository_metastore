@@ -17,10 +17,10 @@ First you have to install [KIT Data Manager](installation_KIT_DM_2.0.md)
 If ArangoDB is not already installed you also have to [install ArangoDB](installation_arangodb.md). 
 
 ## Install Metastore Service 
-### Build Service without Tests
+### Build Service 
 ```bash=bash
-# Build metastore service (without tests)
-user@localhost:/home/user/$git clone https://github.com/OCR-D/repository_metastore.git
+# Build metastore service (without integration tests)
+user@localhost:/home/user/$git clone --recursive https://github.com/OCR-D/repository_metastore.git
 Cloning into 'repository_metastore'...
 [...]
 Resolving deltas: 100% (451/451), done.
@@ -110,6 +110,7 @@ logging.level.root=INFO
 ```
 ################################################################################
 ###                    MAX file size for up-/download                        ###
+###                  Setting them to -1 ignore all limits.                   ###
 ################################################################################
 # Max file size.
 spring.servlet.multipart.max-file-size=1000MB
