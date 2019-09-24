@@ -46,15 +46,15 @@ mkdir -p docker/server/backup/postgres
 mkdir git
 # Checkout and build KIT Data Manager 2.0
 cd git
-git clone https://github.com/kit-data-manager/base-repo.git
+git clone --recursive https://github.com/kit-data-manager/base-repo.git
 cd base-repo
-./gradlew -Prelease build
+./gradlew -Pclean-release build
 cp build/libs/*.jar ../../docker/base-repo/
 cd ../..
 
 # Checkout and build Metastore
 cd git
-git clone https://github.com/OCR-D/repository_metastore.git
+git clone --recursive https://github.com/OCR-D/repository_metastore.git
 cd repository_metastore
 ./gradlew -Prelease build
 cp build/libs/*.jar ../../docker/metastore/
