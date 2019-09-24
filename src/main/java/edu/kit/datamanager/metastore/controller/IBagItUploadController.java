@@ -20,10 +20,8 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.client.ApiException;
 import java.io.IOException;
 import java.util.List;
-import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -79,5 +77,18 @@ public interface IBagItUploadController {
   @RequestMapping(path = "", method = RequestMethod.GET, produces = "application/json")
   @ResponseBody
   ResponseEntity<List<String>> listUploadedFiles(Model model) throws IOException;
+
+  /**
+   * Filtered listing of uploaded files.
+   *
+   * @param model Model holding information about filtered files.
+   *
+   * @return Website displaying information about uploaded files.
+   * @throws IOException Error while storing/reading file.
+   */
+  @ApiOperation(value = "List find containers.",
+          notes = "List filtered zipped BagIt containers with Form to search for BagIt container.")
+  @RequestMapping(path = "search", method = RequestMethod.GET, produces = "text/html")
+  String listFilteredFilesAsHtml(Model model) throws IOException;
   
 }

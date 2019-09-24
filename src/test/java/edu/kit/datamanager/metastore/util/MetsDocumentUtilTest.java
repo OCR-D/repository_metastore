@@ -18,7 +18,9 @@ package edu.kit.datamanager.metastore.util;
 import edu.kit.datamanager.metastore.entity.MetsFile;
 import edu.kit.datamanager.metastore.entity.MetsProperties;
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.fzk.tools.xml.JaxenUtil;
 import org.jdom.Document;
 import org.jdom.Namespace;
@@ -31,31 +33,32 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author hartmann-v
+ * Test for MetsDocumentUtil.
  */
 public class MetsDocumentUtilTest {
-  
+
   public MetsDocumentUtilTest() {
   }
-  
+
   @BeforeClass
   public static void setUpClass() {
   }
-  
+
   @AfterClass
   public static void tearDownClass() {
   }
-  
+
   @Before
   public void setUp() {
   }
-  
+
   @After
   public void tearDown() {
   }
 
   /**
    * Test of extractMetsFiles method, of class MetsDocumentUtil.
+   *
    * @throws java.lang.Exception
    */
   @Test
@@ -63,8 +66,10 @@ public class MetsDocumentUtilTest {
     MetsDocumentUtil metsDocumentUtil = new MetsDocumentUtil();
     assertNotNull(metsDocumentUtil);
   }
+
   /**
    * Test of extractMetsFiles method, of class MetsDocumentUtil.
+   *
    * @throws java.lang.Exception
    */
   @Test
@@ -91,12 +96,34 @@ public class MetsDocumentUtilTest {
     File file = new File("src/test/resources/mets/validMets.xml");
     assertTrue("File exists!", file.exists());
     String resourceId = "resourceId";
-    Integer version = 3;
     Document metsDocument = JaxenUtil.getDocument(file);
-    MetsProperties metsProperties = MetsDocumentUtil.extractProperties(metsDocument, resourceId, version);
-    assertEquals(metsProperties.getTitle(),"Der Herold");
-    assertEquals(metsProperties.getPpn(),"PPN767137728");
+    MetsProperties metsProperties = MetsDocumentUtil.extractMetadataFromMets(metsDocument, resourceId);
+    assertEquals(metsProperties.getTitle(), "Der Herold");
+    assertEquals(metsProperties.getPpn(), "PPN767137728");
     assertEquals(metsProperties.getResourceId(), resourceId);
   }
-  
+
+  /**
+   * Test of extractProperties method, of class MetsDocumentUtil.
+   */
+  @Test
+  public void testGetNamespaces() throws Exception {
+    System.out.println("getNamespaces");
+    File file = new File("src/test/resources/mets/validMets.xml");
+    assertTrue("File exists!", file.exists());
+    String resourceId = "resourceId";
+    Document metsDocument = JaxenUtil.getDocument(file);
+    Namespace[] namespaces = MetsDocumentUtil.getNamespaces();
+    assertEquals(5, namespaces.length);
+    Map<String, Namespace> map = new HashMap<>();
+    for (Namespace ns : namespaces) {
+      map.put(ns.getPrefix(), ns);
+    }
+    assertEquals(map.get("mets").getURI(), "http://www.loc.gov/METS/");
+    assertEquals(map.get("mods").getURI(), "http://www.loc.gov/mods/v3");
+    assertEquals(map.get("xlink").getURI(), "http://www.w3.org/1999/xlink");
+    assertEquals(map.get("gt").getURI(), "http://www.ocr-d.de/GT/");
+    assertEquals(map.get("page2017").getURI(), "http://schema.primaresearch.org/PAGE/gts/pagecontent/2017-07-15");
+  }
+
 }

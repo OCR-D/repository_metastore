@@ -1,0 +1,6 @@
+test {
+   environment "spring.config.location", "classpath:/test/"
+   exclude '**/controller/*'
+   exclude '**/repository/*'
+   exclude '**/service/impl/*'
+}

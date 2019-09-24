@@ -1,5 +1,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" /> 
+    <link rel="stylesheet" href="/css/ocr-d-gt-rep.css" />
     <style>
 
       th,td { padding: 10px; }
@@ -16,18 +18,21 @@
     <div>
       <form method="POST" enctype="multipart/form-data" action="/api/v1/metastore/bagit/">
         <table>
-          <tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
-          <tr><td></td><td><input type="submit" value="Upload" /></td></tr>
+          <caption>Upload BagIt-Container (Authorization required)</caption>
+          <tbody> 
+            <tr><td>Select (BagIt-)File:</td><td><input type="file" name="file" /></td></tr>
+            <tr><td><input type="submit" value="Upload" /></td></tr>
+          </tbody>
         </table>
       </form>
     </div>
 
     <div>
-      <h3>List of all zipped Bagit Containers</h3>
+        <h3 th:text="'List of all zipped BagIt Containers (' + ${#lists.size(bagitFiles)} + ')'"></h3>
       <table>
         <thead>
           <tr>
-            <th>Resource ID</th><th>URL</th><th>Files</th>
+            <th>Resource ID</th><th>URL</th><th>Files</th><th>Metadata</th><th>Ground Truth</th>
           </tr>
         </thead>
         <tbody>
@@ -35,6 +40,8 @@
             <td th:text="${file.resourceId}"></td>
             <td><a th:href="${file.url}" th:text="${file.url}"></a></td> 
             <td><a th:href="'/api/v1/metastore/mets/' + ${file.resourceId} + '/files'" th:text="'List of referenced files'"></a></td>
+            <td><a th:href="'/api/v1/metastore/mets/' + ${file.resourceId} + '/metadata'" th:text="'Metadata'"></a></td>
+            <td><a th:href="'/api/v1/metastore/mets/' + ${file.resourceId} + '/groundtruth'" th:text="'Semantic Labeling'"></a></td>
           </tr>
         </tbody>
       </table>

@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/VolkerHartmann/repository_metastore.svg?branch=master)](https://travis-ci.com/VolkerHartmann/repository_metastore)
+[![codecov](https://codecov.io/gh/VolkerHartmann/repository_metastore/branch/master/graph/badge.svg)](https://codecov.io/gh/VolkerHartmann/repository_metastore)
 # KIT Data Manager - Metastore Service
 
 This project contains metastore service microservice used by the KIT DM infrastructure. The service provides

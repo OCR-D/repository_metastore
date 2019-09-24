@@ -26,7 +26,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author hartmann-v
+ * Tests for MetsDocument.
  */
 public class MetsDocumentTest {
 

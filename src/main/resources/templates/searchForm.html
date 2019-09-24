@@ -1,0 +1,111 @@
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" /> 
+    <link rel="stylesheet" href="/css/ocr-d-gt-rep.css" />
+    <style>
+
+      th,td { padding: 10px; }
+
+    </style>   
+  </head>
+  <body>
+
+
+    <div th:if="${message}">
+      <h2 th:text="${message}"></h2>
+    </div>
+
+
+    <h1>Search for BagIt-Container(s)</h1>    
+
+      <form action="/api/v1/metastore/mets/labeling">           
+        <table>
+          <caption>Search for Semantic Label(s) </caption>
+          <tbody> 
+            <tr><td >
+              <label>Semantic labels:
+              </label>
+                <select name="label" multiple="true">
+                  <option th:each="semanticLabel: ${semanticLabels}"
+                    th:text="${semanticLabel}"></option>
+                </select>
+            </td></tr>
+            <tr><td><input type="submit" value="Search" /></td></tr>
+          </tbody>
+        </table>
+      </form>
+ 
+      <form action="/api/v1/metastore/mets/classification">           
+        <table>
+          <caption>Search for Classification(s) </caption>
+          <tbody> 
+            <tr><td>
+              <label>Classification:
+                <select name="class" multiple="true">
+                  <option th:each="class: ${classes}"
+                    th:text="${class}"></option>
+                </select>
+              </label>
+            </td></tr>
+            <tr><td><input type="submit" value="Search" /></td></tr>
+          </tbody>
+        </table>
+      </form>
+  
+      <form action="/api/v1/metastore/mets/language">           
+        <table>
+          <caption>Search for Language(s) </caption>
+          <tbody> 
+            <tr><td>
+              <label>Languages: 
+                <select name="lang" >
+                  <option th:each="lang: ${languages}"
+                    th:text="${lang}"></option>
+                </select>
+              </label>
+            </td></tr>
+            <tr><td><input type="submit" value="Search" /></td></tr>
+          </tbody>
+        </table>
+      </form>
+  
+      <form action="/api/v1/metastore/mets/identifier">           
+        <table>
+          <caption>Search for Identifier </caption>
+          <tbody> 
+            <tr><td>
+              <label>Identifier:
+                <select name="identifier" >
+                  <option th:each="identifier: ${identifiers}"
+                    th:text="${identifier}"></option>
+                </select>
+              </label>
+            </td></tr>
+            <tr><td><input type="submit" value="Search" /></td></tr>
+          </tbody>
+        </table>
+      </form>
+ 
+
+    <div>
+        <h3 th:text="'Filtered list of zipped BagIt Containers (' + ${#lists.size(bagitFiles)} + ')'"></h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Resource ID</th><th>URL</th><th>Files</th><th>Metadata</th><th>Ground Truth</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="file: ${bagitFiles}">
+            <td th:text="${file.resourceId}"></td>
+            <td><a th:href="${file.url}" th:text="${file.url}"></a></td> 
+            <td><a th:href="'/api/v1/metastore/mets/' + ${file.resourceId} + '/files'" th:text="'List of referenced files'"></a></td>
+            <td><a th:href="'/api/v1/metastore/mets/' + ${file.resourceId} + '/metadata'" th:text="'Metadata'"></a></td>
+            <td><a th:href="'/api/v1/metastore/mets/' + ${file.resourceId} + '/groundtruth'" th:text="'Semantic Labeling'"></a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </body>
+</html>

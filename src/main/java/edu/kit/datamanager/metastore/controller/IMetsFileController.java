@@ -15,7 +15,6 @@
  */
 package edu.kit.datamanager.metastore.controller;
 
-import edu.kit.datamanager.metastore.entity.MetsDocument;
 import edu.kit.datamanager.metastore.entity.MetsFile;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -34,11 +33,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public interface IMetsFileController {
 
   /**
-   * Get all referenced files of a METS document filtered by GROUPID AND/OR USE or ID.
+   * Get all referenced files of a METS document filtered by PAGEID AND/OR USE or ID.
    * 
    *
    * @param resourceId ResourceID of the METS document.
-   * @param groupId GROUPIDs of the files.
+   * @param pageId PAGEIDs of the files.
    * @param use USEs of the files.
    * @param fileId fileIds of the file.
    * @param model Model holding all information about collected files.
@@ -46,20 +45,20 @@ public interface IMetsFileController {
    * @return all METS documents.
    */
   @ApiOperation(value = "Get all files referenced in METS document.",
-          notes = "List of all files optionally filtered by GROUPID AND USE or by ID.")
+          notes = "List of all files optionally filtered by PAGEID AND USE or by ID.")
   @RequestMapping(path = "{resourceId}/files", method = RequestMethod.GET, produces = "application/json")
   @ResponseBody
   ResponseEntity<List<MetsFile>> getAllFilesOfMetsDocument(@ApiParam(value = "The numeric resource identifier.", required = true) @PathVariable(value = "resourceId") String resourceId,
-                    @ApiParam(value = "The GROUPID of the files.", required = false) @RequestParam(value = "groupId") String[] groupId,
+                    @ApiParam(value = "The PAGEID of the files.", required = false) @RequestParam(value = "pageId") String[] pageId,
                     @ApiParam(value = "The USE of the files.", required = false) @RequestParam(value = "use") String[] use,
                     @ApiParam(value = "The IDs of the files.", required = false) @RequestParam(value = "fileId") String[] fileId);
 
   /**
-   * Get an HTML page with all referenced files of a METS document filtered by GROUPID AND/OR USE or ID.
+   * Get an HTML page with all referenced files of a METS document filtered by PAGEID AND/OR USE or ID.
    * 
    *
    * @param resourceId ResourceID of the METS document.
-   * @param groupId GROUPIDs of the files.
+   * @param pageId PAGEIDs of the files.
    * @param use USEs of the files.
    * @param fileId fileIds of the file.
    * @param model Model holding all information about collected files.
@@ -67,10 +66,10 @@ public interface IMetsFileController {
    * @return all METS documents.
    */
   @ApiOperation(value = "Get all files referenced in METS document.",
-          notes = "List of all files optionally filtered by GROUPID AND USE or by ID.")
+          notes = "List of all files optionally filtered by PAGEID AND USE or by ID.")
   @RequestMapping(path = "{resourceId}/files", method = RequestMethod.GET, produces = "text/html")
   String getAllFilesOfMetsDocumentAsHtml(@ApiParam(value = "The numeric resource identifier.", required = true) @PathVariable(value = "resourceId") String resourceId,
-                    @ApiParam(value = "The GROUPID of the files.", required = false) @RequestParam(value = "groupId") String[] groupId,
+                    @ApiParam(value = "The PAGEID of the files.", required = false) @RequestParam(value = "pageId") String[] pageId,
                     @ApiParam(value = "The USE of the files.", required = false) @RequestParam(value = "use") String[] use,
                     @ApiParam(value = "The IDs of the files.", required = false) @RequestParam(value = "fileId") String[] fileId,
                     Model model);
@@ -79,33 +78,33 @@ public interface IMetsFileController {
    * Get all URLs of referenced files of a METS document.
    *
    * @param resourceId ResourceID of the METS document.
-   * @param groupId GROUPIDs of the files.
+   * @param pageId PAGEIDs of the files.
    * @param use USEs of the files.
    * @param fileId fileIds of the file.
    * 
    * @return all METS documents.
    */
   @ApiOperation(value = "Get all URLs of files referenced in METS document.",
-          notes = "List of all URLs optionally filtered by GROUPID AND USE or by ID.")
+          notes = "List of all URLs optionally filtered by PAGEID AND USE or by ID.")
   @RequestMapping(path = "{resourceId}/files/url", method = RequestMethod.GET)
   @ResponseBody
   ResponseEntity<List<String>> getUrlOfAllFilesOfMetsDocument(@ApiParam(value = "The numeric resource identifier.", required = true) @PathVariable(value = "resourceId") String resourceId,
-                    @ApiParam(value = "The GROUPID of the files.", required = false) @RequestParam(value = "groupId") String[] groupId,
+                    @ApiParam(value = "The PAGEID of the files.", required = false) @RequestParam(value = "pageId") String[] pageId,
                     @ApiParam(value = "The USE of the files.", required = false) @RequestParam(value = "use") String[] use,
                     @ApiParam(value = "The IDs of the files.", required = false) @RequestParam(value = "fileId") String[] fileId);
 
   /**
-   * Get all GROUPIDs of a METS document.
+   * Get all PAGEIDs of a METS document.
    * 
    *
    * @param resourceId ResourceID of the METS document.
    * 
-   * @return all GROUPIDs of METS documents.
+   * @return all PAGEIDs of METS documents.
    */
-  @ApiOperation(value = "Get all GROUPIDs defined in METS document.")
-  @RequestMapping(path = "{resourceId}/groupid", method = RequestMethod.GET)
+  @ApiOperation(value = "Get all PAGEIDs defined in METS document.")
+  @RequestMapping(path = "{resourceId}/pageid", method = RequestMethod.GET)
   @ResponseBody
-  ResponseEntity<List<String>> getAllGroupIdsOfMetsDocument(@ApiParam(value = "The numeric resource identifier.", required = true) @PathVariable(value = "resourceId") String resourceId);
+  ResponseEntity<List<String>> getAllPageIdsOfMetsDocument(@ApiParam(value = "The numeric resource identifier.", required = true) @PathVariable(value = "resourceId") String resourceId);
 
   /**
    * Get all USEs of a METS document.

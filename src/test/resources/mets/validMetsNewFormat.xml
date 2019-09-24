@@ -1,0 +1,53 @@
+<mets:mets xmlns:mets="http://www.loc.gov/METS/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xmlns:gt="http://www.ocr-d.de/GT/" xsi:schemaLocation="info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-0.xsd http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-6.xsd http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/version17/mets.v1-7.xsd http://www.loc.gov/mix/v10 http://www.loc.gov/standards/mix/mix10/mix10.xsd">
+    <mets:metsHdr CREATEDATE="2019-04-08 10:22:48.431110">
+        <mets:agent TYPE="OTHER" OTHERTYPE="SOFTWARE" ROLE="CREATOR">
+            <mets:name>ocrd/core v1.0.0b8</mets:name>
+        </mets:agent>
+    </mets:metsHdr>
+    <mets:structMap TYPE="PHYSICAL">
+        <mets:div TYPE="physSequence">
+            <mets:div TYPE="page" ID="phys_0001">
+                <mets:fptr FILEID="OCR-D-IMG-HEADER"/>
+            </mets:div>
+        </mets:div>
+    </mets:structMap>
+    <mets:dmdSec ID="DMDLOG_0001">
+        <mets:mdWrap MDTYPE="MODS">
+            <mets:xmlData>
+                <mods:mods xmlns:mods="http://www.loc.gov/mods/v3">
+                    <mods:classification authority="DTA">Belletristik</mods:classification>
+                    <mods:classification authority="DTA">Lyrik</mods:classification>
+                    <mods:identifier type="purl">idOnlyForTests</mods:identifier>
+                    <mods:language>
+                        <mods:languageTerm authority="iso639-2b" type="code">deu</mods:languageTerm>
+                    </mods:language>
+                </mods:mods>
+            </mets:xmlData>
+        </mets:mdWrap>
+    </mets:dmdSec>
+    <mets:dmdSec ID="DMDGT_0001">
+        <mets:mdWrap MDTYPE="OTHER" OTHERMDTYPE="GT">
+            <mets:xmlData>
+                <gt:gt>
+                    <gt:state prop="granularity/physical/document-related/word"/>
+                </gt:gt>
+            </mets:xmlData>
+        </mets:mdWrap>
+    </mets:dmdSec>
+    <mets:amdSec ID="AMD">
+    </mets:amdSec>
+    <mets:fileSec>
+        <mets:fileGrp USE="OCR-D-IMG">
+            <mets:file MIMETYPE="image/tiff" ID="OCR-D-IMG-HEADER">
+                <mets:FLocat LOCTYPE="URL" xlink:href="OCR-D-IMG/OCR-D-IMG-HEADER"/>
+            </mets:file>
+        </mets:fileGrp>
+    </mets:fileSec>
+    <mets:structMap TYPE="PHYSICAL">
+        <mets:div TYPE="physSequence" ID="phys_0000" DMDID="DMDGT_0000">
+            <mets:div TYPE="page" ORDER="1" ID="phys_0001" DMDID="DMDGT_0001">
+                <mets:fptr FILEID="OCR-D-IMG-HEADER"/>
+            </mets:div>
+        </mets:div>
+    </mets:structMap>
+</mets:mets>

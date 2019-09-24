@@ -17,9 +17,6 @@ package edu.kit.datamanager.metastore.entity;
 
 import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.HashIndex;
-import edu.kit.datamanager.metastore.util.MetsDocumentUtil;
-import org.fzk.tools.xml.JaxenUtil;
-import org.jdom.Namespace;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.Id;
@@ -28,9 +25,15 @@ import org.springframework.data.annotation.Id;
  * This class contains all important information a METS document. These are:
  * <p>
  * <ul>
- * <li>Title
- * <li>PPN
- * <li>TODO
+ * <li>Title</li>
+ * <li>Subtitle</li>
+ * <li>PPN</li>
+ * <li>Year</li>
+ * <li>License</li>
+ * <li>Author</li>
+ * <li>Publisher</li>
+ * <li>No of pages</li>
+ * <li>Physical description</li>
  * </ul><p>
  */
 @Document("metsProperties")
@@ -50,15 +53,6 @@ public class MetsProperties {
    */
   public static final String NO_PPN = "No PPN available!";
   /**
-   * X-Path expression for title of document.
-   */
-  private static final String X_PATH_TITLE = "//mods:mods/mods:titleInfo/mods:title[1]";
-  /** 
-   * X-Path expression for identifier.
-   */
-  private static final String X_PATH_PPN = "//mods:mods/mods:recordInfo/mods:recordIdentifier[1]";
-
-  /**
    * ID of the document.
    */
   @Id
@@ -72,7 +66,42 @@ public class MetsProperties {
    * Title of resource.
    */
   private String title;
+   /**
+   * Sub title of the document.
+   */
+  private String subTitle;
+
   /**
+   * Year of publication.
+   */
+  private String year;
+
+  /**
+   * License of document.
+   */
+  private String license;
+  
+  /** 
+   * Author of the document.
+   */
+  private String author;
+  
+  /**
+   * Number of pages (images).
+   */
+  private int noOfPages;
+  
+  /**
+   * Publisher.
+   */
+  private String publisher;
+  
+  /**
+   * Physical description.
+   */
+  private String physicalDescription;
+  
+ /**
    * PPN of resource.
    */
   private String ppn;
@@ -82,44 +111,8 @@ public class MetsProperties {
    */
   public MetsProperties() {
     super();
-  }
-
-  /**
-   * Constructor for MetsFile
-   *
-   * @param metsDocument Document holding all information about Digital Object.
-   */
-  public MetsProperties(org.jdom.Document metsDocument) {
-    super();
-    extractProperties(metsDocument);
-  }
-  /** 
-   * Extract properties from METS document via XPath. 
-   * 
-   * @param metsDocument METS document;
-   */
-  private void extractProperties(org.jdom.Document metsDocument) {
-    LOGGER.info("Extract properties from METS document.");
-    Namespace[] namespaces = MetsDocumentUtil.getNamespaces();
-    try {
-    title = JaxenUtil.getNodeValue(metsDocument, X_PATH_TITLE, namespaces);
-    } catch (Exception ex) {
-      LOGGER.trace(ex.getMessage());
-      title = null;
-    }
-    if (title == null) {
       title = NO_TITLE;
-    }
-    try {
-    ppn = JaxenUtil.getNodeValue(metsDocument, X_PATH_PPN, namespaces);
-    } catch (Exception ex) {
-      LOGGER.trace(ex.getMessage());
-      ppn = null;
-    }
-    if (ppn == null) {
       ppn = NO_PPN;
-    }
-   LOGGER.info("Properties:\nTitle: {}\nPPN: {}", title, ppn);
   }
 
   /**
@@ -174,6 +167,120 @@ public class MetsProperties {
    */
   public void setTitle(String title) {
     this.title = title;
+  }
+
+  /**
+   * Get subtitle of document.
+   *
+   * @return the subTitle
+   */
+  public String getSubTitle() {
+    return subTitle;
+  }
+
+  /**
+   * Set subtitle of document.
+   *
+   * @param subTitle the subTitle to set
+   */
+  public void setSubTitle(String subTitle) {
+    this.subTitle = subTitle;
+  }
+
+  /**
+   * Get year of publication.
+   * @return the year
+   */
+  public String getYear() {
+    return year;
+  }
+
+  /**
+   * Set year of publication.
+   * @param year the year to set
+   */
+  public void setYear(String year) {
+    this.year = year;
+  }
+
+  /**
+   * Get license of the document.
+   * @return the license
+   */
+  public String getLicense() {
+    return license;
+  }
+
+  /**
+   * Set license of the document.
+   * @param license the license to set
+   */
+  public void setLicense(String license) {
+    this.license = license;
+  }
+
+  /**
+   * Get author of document.
+   * @return the author
+   */
+  public String getAuthor() {
+    return author;
+  }
+
+  /**
+   * Set author of document.
+   * @param author the author to set
+   */
+  public void setAuthor(String author) {
+    this.author = author;
+  }
+
+  /**
+   * Get number of pages.
+   * @return the noOfPages
+   */
+  public int getNoOfPages() {
+    return noOfPages;
+  }
+
+  /**
+   * Set number of pages.
+   * @param noOfPages the noOfPages to set
+   */
+  public void setNoOfPages(int noOfPages) {
+    this.noOfPages = noOfPages;
+  }
+
+  /**
+   * Get publisher.
+   * @return the publisher
+   */
+  public String getPublisher() {
+    return publisher;
+  }
+
+  /**
+   * Set publisher.
+   * @param publisher the publisher to set
+   */
+  public void setPublisher(String publisher) {
+    this.publisher = publisher;
+  }
+
+  /**
+   * Get physical description.
+   * @return the physicalDescription
+   */
+  public String getPhysicalDescription() {
+    return physicalDescription;
+  }
+
+  /**
+   * Set physical description.
+   * @param physicalDescription the physicalDescription to set
+   */
+  public void setPhysicalDescription(String physicalDescription) {
+    this.physicalDescription = physicalDescription;
   }
 
   /**

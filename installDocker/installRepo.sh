@@ -1,10 +1,17 @@
 #!/bin/bash
+################################################################################
+# Install docker files in a directory. 
+# A subdirectory will contain all ingested files. Due to that be sure 
+# that file space is sufficient!
+# Usage:
+# bash installRepo.sh /path/to/installationdir
+################################################################################
 
 # Check if argument is given
 if [ -z "$1" ]; then
   echo Please provide a directory where to install.
   echo USAGE:
-  echo   installRepo.sh /path/to/repository
+  echo   installRepo.sh /path/to/installationdir
   exit 1
 fi
 
@@ -41,14 +48,6 @@ mkdir git
 cd git
 git clone https://github.com/kit-data-manager/base-repo.git
 cd base-repo
-git submodule init
-git submodule update --remote --merge 
-cd libraries/service-base/
-./gradlew install
-cd ../../
-cd libraries/generic-message-consumer/
-./gradlew install
-cd ../../
 ./gradlew -Prelease build
 cp build/libs/*.jar ../../docker/base-repo/
 cd ../..

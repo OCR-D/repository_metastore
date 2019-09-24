@@ -18,15 +18,15 @@ package edu.kit.datamanager.metastore.controller;
 import edu.kit.datamanager.metastore.entity.XmlSchemaDefinition;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import java.io.IOException;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Interface for XSD documents REST interface (fka Metastore).
@@ -44,10 +44,10 @@ public interface IXsdDocumentController {
   @ApiOperation(value = "Create new XSD document with given prefix.",
           notes = "The prefix has to be unique. The XSD document has to use only global"
                   + "references to other XSD document.")
-  @RequestMapping(path = "prefix/{prefix}", method = RequestMethod.PUT)
+  @RequestMapping(path = "prefix/{prefix}", method = RequestMethod.POST)
   @ResponseBody
   ResponseEntity<?> createMetsDocument(@ApiParam(value = "The prefix for the XSD document.", required = true)@PathVariable(value = "prefix") String prefix, 
-          @ApiParam(value = "The content of the XSD document.", required = true)@RequestParam(value = "fileContent") String fileContent);
+          @ApiParam(value = "The content of the XSD document.", required = true)@RequestParam(value = "fileContent") MultipartFile fileContent) throws IOException;
 
   /**
    * Get all XSD documents.

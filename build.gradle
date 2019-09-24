@@ -21,8 +21,6 @@ plugins {
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'jacoco'
@@ -33,6 +31,10 @@ version = '0.1.0'
 jar {
   baseName = 'metastore-service'
   version =  '0.1.0'
+}
+
+bootJar {
+	launchScript()
 }
 
 repositories {
@@ -50,6 +52,16 @@ targetCompatibility = 1.8
 configurations {
   //   all*.exclude module : 'spring-boot-starter-logging'
 }
+
+if (project.hasProperty('travis')) {
+    println 'Using travis profile for building ' + project.getName()
+    apply from: 'gradle/build_dependencies.gradle'
+    apply from: 'gradle/profile-travis.gradle'
+} else if (project.hasProperty('release') || project.hasProperty('clean-release')) {
+    println 'Using release profile for building ' + project.getName()
+    apply from: 'gradle/build_dependencies.gradle'
+    apply from: 'gradle/profile-release.gradle'
+} 
 
 dependencies {
   compile("org.springframework.boot:spring-boot-starter-web")
@@ -107,14 +119,27 @@ dependencies {
   testCompile("org.mockito:mockito-core:2.8.9")
   testCompile("org.powermock:powermock-module-junit4:1.7.4")
   testCompile("org.powermock:powermock-api-mockito2:1.7.4")
+  
+  // Test 
+  testCompile("org.springframework.restdocs:spring-restdocs-mockmvc")
+  testCompile("org.springframework.boot:spring-boot-starter-test")
+  testCompile("org.springframework:spring-test")
+  testCompile("org.springframework.security:spring-security-test") 
 }
 
 
 jacocoTestReport {
-    group = "Reporting"
+  group = "Reporting"
   reports {
     xml.enabled true
     html.enabled true
     html.destination "${buildDir}/reports/coverage"
+  }
+  afterEvaluate {
+    classDirectories = files(classDirectories.files.collect {
+        fileTree(dir: it, exclude: [
+                    '**/CrudRunner.class'
+          ])
+      })
   }
 }

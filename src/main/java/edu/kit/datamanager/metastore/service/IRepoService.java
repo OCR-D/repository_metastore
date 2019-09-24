@@ -15,9 +15,7 @@
  */
 package edu.kit.datamanager.metastore.service;
 
-import edu.kit.datamanager.metastore.entity.MetsDocument;
 import java.io.File;
-import java.util.List;
 
 /**
  * Interface defining Repo services.

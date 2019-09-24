@@ -8,10 +8,29 @@ In order to build this microservice you'll need:
 * PostgreSQL
 * KITDM 2.0 Authentication Service (optional)
 
-## Install PostgreSQL 
+There are two options for installing KIT Data Manager. 
+You may use the dockerized version without authentication or install it from scratch.
+ 
+
+## Installation using Dockerized Version
+```bash=bash
+# Install Docker KIT DM 2.0
+user@localhost:/home/user/$git clone https://github.com/kit-data-manager/docker-kitdm-2.0.git
+Cloning into 'docker-kitdm-2.0.git'...
+[...]
+Resolving deltas: 100% (357/357), done.
+user@localhost:/home/user/$cd docker-kitdm-2.0/source
+# Edit application.properties at tomcat/conf if neccessary
+# See section below.
+# Start docker-compose
+user@localhost:/home/user/docker-kitdm-2.0/source$/docker-compose up &
+[...]
+```
+## Installation from Scratch
+### Install PostgreSQL 
 [Install PostgreSQL with docker](installation_postgres.md)
 
-## Install KIT DM 2.0 
+### Install KIT DM 2.0 
 ```bash=bash
 # Build KIT DM 2.0
 # Create archive folder for KIT DM 2.0
@@ -21,29 +40,17 @@ Cloning into 'base-repo'...
 [...]
 Resolving deltas: 100% (357/357), done.
 user@localhost:/home/user/$cd base-repo
-user@localhost:/home/user/base-repo/$git submodule init
-Submodule 'libraries/service-base' (git://github.com/kit-data-manager/service-base.git) registered for path 'libraries/service-base'
-user@localhost:/home/user/base-repo/$git submodule update --remote --merge 
-Cloning into '/home/user/base-repo/libraries/service-base'...
-Submodule path 'libraries/service-base': checked out '0c...'
-user@localhost:/home/user/base-repo/$cd libraries/service-base/
-user@localhost:/home/user/base-repo/libraries/service-base/$./gradlew install
-Starting a Gradle Daemon (subsequent builds will be faster)
-[...]
-BUILD SUCCESSFUL in 10s
-3 actionable tasks: 3 executed
-user@localhost:/home/user/base-repo/libraries/service-base/$cd ../../
-user@localhost:/home/user/base-repo/$./gradlew build
+user@localhost:/home/user/base-repo/$./gradlew -Pclean-release build
 [...]
 BUILD SUCCESSFUL in 51s
 7 actionable tasks: 7 executed
 ```
-### Configure KIT DM 2.0
+#### Configure KIT DM 2.0
 ```bash=bash
 user@localhost:/home/user/base-repo/$cp conf/application.properties .
 ```
-#### Edit application.properties
-##### Configure port, max file size,connection to database and authentication:
+##### Edit application.properties
+###### Configure port, max file size,connection to database and authentication:
 ```
 #server settings
 server.port: 8090
@@ -58,7 +65,7 @@ spring.datasource.username: kitdm_admin
 spring.datasource.password: KITDM_ADMIN_PASSWORD
 [...]
 ```      
-##### Change basepath for archive, disable or enable authentication, set jwtSecret.
+###### Change basepath for archive, disable or enable authentication, set jwtSecret.
 'jwtSecret' should be a random string. (Please generate it with a tool: e.g.: 'uuidgen' or 'pwgen -y 36 1') 
 'jwtSecret' is only needed when authentication is enabled.
 ```
@@ -72,7 +79,7 @@ repo.messaging.enabled: false
 ```
 :information_source: Please avoid any whitespaces in front or behind 'ANY_JWT_SECRET'
 
-##### Set logging to INFO or WARN
+###### Set logging to INFO or WARN
 ```
 [...]
 #logging settings
@@ -82,12 +89,12 @@ logging.level.root: INFO
 #logging.level.org.springframework.amqp: DEBUG
 [...]
 ```
-## Install Authentication Service (Optional)
+### Install Authentication Service (Optional)
 The authentication service is only needed when authentication is enabled.
 
 [Install/Start authentication service](installation_authentication.md)
 
-## Start KIT DM 2.0
+### Start KIT DM 2.0
 After starting the database and the authentication service (if enabled) the repository can be started.
 ```bash=bash
 user@localhost:/home/user/base-repo/$java -jar build/libs/base-repo.jar 
@@ -98,7 +105,7 @@ user@localhost:/home/user/base-repo/$java -jar build/libs/base-repo.jar
  \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
   '  |____| .__|_| |_|_| |_\__, | / / / /
  =========|_|==============|___/=/_/_/_/
- :: Spring Boot ::        (v2.0.3.RELEASE)
+ :: Spring Boot ::        (v2.0.5.RELEASE)
 [...]
 Spring is running!
 ```

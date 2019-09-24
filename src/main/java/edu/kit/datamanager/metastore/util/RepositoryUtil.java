@@ -43,7 +43,6 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.logging.Level;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -247,7 +246,7 @@ public class RepositoryUtil {
         // ...try once again
         handleFileUpload = apiInstance.handleFileUploadUsingPOSTWithHttpInfo(idOfResource, uploadFile, force, metadata, relativePath.toString());
       } else {
-        String message = String.format("Post file '%1s' to resource with ID '%2s'", relativePath.toString(), idOfResource);
+        String message = String.format("Post file '%1s' to resource with ID '%2s' failed with status code '%d'", relativePath.toString(), idOfResource);
         logApiException(message, ae);
         throw ae;
       }
@@ -283,7 +282,7 @@ public class RepositoryUtil {
             resourceExists = false;
           }
         } catch (ApiException ae) {
-          LOGGER.error("Test for resourceIdentifier failed!", ae);
+          LOGGER.warn("Test for resourceIdentifier failed!", ae);
           resourceExists = false;
         }
       }

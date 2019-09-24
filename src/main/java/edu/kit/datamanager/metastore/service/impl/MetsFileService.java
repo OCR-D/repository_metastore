@@ -44,31 +44,42 @@ public class MetsFileService implements IMetsFileService {
   /**
    * Repository persisting METS files.
    */
-  @Autowired
   private MetsFileRepository metsFileRepository;
 
+  /**
+   * Set repository via autowired, to allow initialization.
+   *
+   * @param metsFileRepository
+   */
+  @Autowired
+  public void setMetsFileRepository(MetsFileRepository metsFileRepository) {
+    this.metsFileRepository = metsFileRepository;
+    long count = metsFileRepository.count();
+    LOGGER.debug("No of entities in MetsFileRepository: {}", count);
+  }
+
   @Override
-  public List<String> getAllGroupIds(String resourceId) {
+  public List<String> getAllPageIds(String resourceId) {
     Iterable<MetsFile> metsFileIterator = metsFileRepository.findByResourceIdAndCurrentTrue(resourceId);
 
-    Set<String> setOfGroupIds = new HashSet<>();
+    Set<String> setOfPageIds = new HashSet<>();
     for (MetsFile metsFile : metsFileIterator) {
-      setOfGroupIds.add(metsFile.getGroupId());
+      setOfPageIds.add(metsFile.getPageId());
     }
-    List<String> listOfGroupIds = new ArrayList<>(setOfGroupIds);
+    List<String> listOfPageIds = new ArrayList<>(setOfPageIds);
 
-    return listOfGroupIds;
+    return listOfPageIds;
   }
 
   @Override
   public List<String> getAllUses(String resourceId) {
     Iterable<MetsFile> metsFileIterator = metsFileRepository.findByResourceIdAndCurrentTrue(resourceId);
 
-    Set<String> setOfGroupIds = new HashSet<>();
+    Set<String> setOfPageIds = new HashSet<>();
     for (MetsFile metsFile : metsFileIterator) {
-      setOfGroupIds.add(metsFile.getUse());
+      setOfPageIds.add(metsFile.getUse());
     }
-    List<String> listOfUses = new ArrayList<>(setOfGroupIds);
+    List<String> listOfUses = new ArrayList<>(setOfPageIds);
 
     return listOfUses;
   }
@@ -81,19 +92,19 @@ public class MetsFileService implements IMetsFileService {
   }
 
   @Override
-  public List<MetsFile> getAvailableMetsFilesByUseAndGroupId(String resourceId, String[] use, String[] groupId) {
-    List<String> groupIdList;
+  public List<MetsFile> getAvailableMetsFilesByUseAndPageId(String resourceId, String[] use, String[] pageId) {
+    List<String> pageIdList;
     List<String> useList;
     Iterator<MetsFile> metsFileIterator;
-    
-    groupIdList = (groupId != null) ? Arrays.asList(groupId) : null;
+
+    pageIdList = (pageId != null) ? Arrays.asList(pageId) : null;
     useList = (use != null) ? Arrays.asList(use) : null;
-    
-    if ((groupIdList != null) && (useList != null)) {
-      metsFileIterator = metsFileRepository.findByResourceIdAndUseInAndGroupIdInAndCurrentTrue(resourceId, useList, groupIdList).iterator();
+
+    if ((pageIdList != null) && (useList != null)) {
+      metsFileIterator = metsFileRepository.findByResourceIdAndUseInAndPageIdInAndCurrentTrue(resourceId, useList, pageIdList).iterator();
     } else {
-      if (groupIdList != null) {
-        metsFileIterator = metsFileRepository.findByResourceIdAndGroupIdInAndCurrentTrue(resourceId, groupIdList).iterator();
+      if (pageIdList != null) {
+        metsFileIterator = metsFileRepository.findByResourceIdAndPageIdInAndCurrentTrue(resourceId, pageIdList).iterator();
       } else {
         metsFileIterator = metsFileRepository.findByResourceIdAndUseInAndCurrentTrue(resourceId, useList).iterator();
       }

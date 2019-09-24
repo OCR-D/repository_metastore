@@ -1,0 +1,4 @@
+[submodule "submodules/service-base"]
+	path = submodules/service-base
+	url = git://github.com/kit-data-manager/service-base.git
+	branch = master

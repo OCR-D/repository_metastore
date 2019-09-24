@@ -26,8 +26,6 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Class for walking through directory and register/upload them to repository
- *
- * @author hartmann-v
  */
 public class RegisterFilesInRepo extends SimpleFileVisitor<Path> {
 

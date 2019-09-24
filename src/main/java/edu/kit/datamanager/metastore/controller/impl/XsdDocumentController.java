@@ -18,19 +18,21 @@ package edu.kit.datamanager.metastore.controller.impl;
 import edu.kit.datamanager.metastore.controller.IXsdDocumentController;
 import edu.kit.datamanager.metastore.entity.XmlSchemaDefinition;
 import edu.kit.datamanager.metastore.service.IXsdDocumentService;
-import io.swagger.annotations.ApiOperation;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * REST services for METS documents (fka Metastore).
@@ -84,8 +86,10 @@ public class XsdDocumentController implements IXsdDocumentController {
   }
 
   @Override
-  public ResponseEntity<?> createMetsDocument(@PathVariable("prefix") String prefix, @RequestParam("fileContent") String fileContent) {
+  public ResponseEntity<?> createMetsDocument(@PathVariable("prefix") String prefix, @RequestParam("fileContent") MultipartFile file) throws IOException {
     LOGGER.trace("Create XSD document!");
+    String fileContent = new BufferedReader(new InputStreamReader(file.getInputStream()))
+  .lines().collect(Collectors.joining("\n"));
     System.out.println("Create XSD document with id " + prefix + "!" + fileContent);
     xsdService.createXsdDocument(prefix, fileContent);
     return ResponseEntity.ok("XSD document created!");

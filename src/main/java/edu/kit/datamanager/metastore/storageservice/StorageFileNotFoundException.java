@@ -18,8 +18,6 @@ package edu.kit.datamanager.metastore.storageservice;
 /**
  * Exception if file is not accessible.
  */
-
-
 public class StorageFileNotFoundException extends StorageException {
 
   /**

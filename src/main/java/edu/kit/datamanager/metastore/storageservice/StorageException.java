@@ -17,11 +17,7 @@ package edu.kit.datamanager.metastore.storageservice;
 
 /**
  * Exception while storing/loading file.
- *
- * @author hartmann-v
  */
-
-
 public class StorageException extends RuntimeException {
 
   /**

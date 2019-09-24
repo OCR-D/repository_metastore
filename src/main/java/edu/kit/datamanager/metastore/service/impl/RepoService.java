@@ -16,14 +16,14 @@
 package edu.kit.datamanager.metastore.service.impl;
 
 import edu.kit.datamanager.metastore.service.IRepoService;
-import edu.kit.datamanager.metastore.entity.IVersion;
 import edu.kit.datamanager.metastore.entity.MetsDocument;
 import edu.kit.datamanager.metastore.repository.MetsDocumentRepository;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.apache.commons.collections4.IteratorUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,15 +36,32 @@ import org.springframework.stereotype.Service;
 public class RepoService implements IRepoService {
 
   /**
+   * Logger.
+   */
+  private static final Logger LOGGER = LoggerFactory.getLogger(RepoService.class);
+
+  /**
    * Repository persisting METS documents.
    */
-  @Autowired
   private MetsDocumentRepository metsRepository;
+
+  /**
+   * Set repository via autowired, to allow initialization.
+   *
+   * @param metsDocumentRepository
+   */
+  @Autowired
+  public void setMetsDocumentRepository(MetsDocumentRepository metsDocumentRepository) {
+    this.metsRepository = metsDocumentRepository;
+    long count = metsRepository.count();
+    LOGGER.debug("No of entities in MetsDocumentRepository: {}", count);
+  }
 
   @Override
   public String createDigitalObject(File bagItFile) {
-    Iterator<MetsDocument> metsIterator = metsRepository.findByCurrentTrue().iterator();
-    List<MetsDocument> metsList = IteratorUtils.toList(metsIterator);
+    // Not implemented yet!
+//    Iterator<MetsDocument> metsIterator = metsRepository.findByCurrentTrue().iterator();
+//    List<MetsDocument> metsList = IteratorUtils.toList(metsIterator);
     return "http://anyURL";
   }
 }

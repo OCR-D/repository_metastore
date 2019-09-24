@@ -4,3 +4,5 @@
 /.nb-gradle-properties
 /.settings/
 /.project
+/private
+/nbproject
