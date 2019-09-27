@@ -15,7 +15,7 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-INSTALLATION_DIRECTORY=$1
+INSTALLATION_DIRECTORY=$(echo $1 | sed 's:/*$::')
 
 # Check if directory exists
 if [ ! -d "$INSTALLATION_DIRECTORY" ]; then
@@ -67,8 +67,8 @@ rm -rf git
 cd docker
 echo SUCCESS
 echo Now you can start the Research Data Repository with the following commands:
-echo su
-echo docker-compose up
+echo cd "\"$INSTALLATION_DIRECTORY/docker\""
+echo sudo docker-compose up
 
 
 

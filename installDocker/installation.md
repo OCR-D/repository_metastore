@@ -19,12 +19,12 @@ To install the OCR-D Research Data Repository you have to execute the shell scri
 
 ```bash=bash
 # Build OCR-D Research Data Repository
-user@localhost:/home/user/repository_metastore/installDocker/$bash installRepo.sh /ocrd/repository/
+user@localhost:/home/user/repository_metastore/installDocker/$bash installRepo.sh /ocrd/repository
 [...]
 SUCCESS
 Now you can start the Research Data Repository with the following commands:
-su
-docker-compose up
+cd "/ocrd/repository/docker"
+sudo docker-compose up
 user@localhost:/ocrd/repository/docker/$
 ```
 Now the Research Data Repository is ready to start. Switch to super user and start 
@@ -34,28 +34,24 @@ the docker containers.
 From your installation directory, start up your application by running 'docker-compose up' (as root).
 ```bash=bash
 # Start OCR-D Research Data Repository
-user@localhost:/ocrd/repository/docker/$su
-user@localhost:/ocrd/repository/docker/$docker-compose up
+user@localhost:/ocrd/repository/docker/$sudo docker-compose up
 ```
 ## Stop Research Data Repository
-Stop the application, either by running 'docker-compose down' from within your project directory 
+Stop the application, either by running 'sudo docker-compose stop' from within your project directory 
 in the second terminal, or by hitting CTRL+C in the original terminal where you started the app.
 ```bash=bash
 # Start OCR-D Research Data Repository
-user@localhost:/ocrd/repository/docker/$sudo su
-user@localhost:/ocrd/repository/docker/$docker-compose stop
+user@localhost:/ocrd/repository/docker/$sudo docker-compose stop
 ```
 ## Backup PostgreSQL and Arangodb
 To backup the databases you have to use the following commands:
 ```bash=bash
 # Backup postgreSQL
-user@localhost:/home/user/$sudo su
-user@localhost:/home/user/$docker exec -ti docker_postgres4kitdm_1 sh -c "pg_dump -U postgres -h 127.0.0.1 kitdm20 > /dump/database_dump_kitdm20_`date +%Y_%m_%dt%H_%M`.sql"
+user@localhost:/home/user/$sudo docker exec -ti docker_postgres4kitdm_1 sh -c "pg_dump -U postgres -h 127.0.0.1 kitdm20 > /dump/database_dump_kitdm20_`date +%Y_%m_%dt%H_%M`.sql"
 ```
 ```bash=bash
 # Backup arangodb
-user@localhost:/home/user/$sudo su
-user@localhost:/home/user/$docker exec -ti docker_arangodb4kitdm_1 sh -c "arangodump --include-system-collections true --server.database metastore-OCR-D --output-directory /dump/dump_`date +%Y_%m_%dt%H_%M`"
+user@localhost:/home/user/$sudo docker exec -ti docker_arangodb4kitdm_1 sh -c "arangodump --include-system-collections true --server.database metastore-OCR-D --output-directory /dump/dump_`date +%Y_%m_%dt%H_%M`"
 Please specify a password: arangodb4Docker
 [...]
 Wrote xxxx byte(s) into datafiles, sent 9 batch(es)
