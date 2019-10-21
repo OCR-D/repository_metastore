@@ -22,7 +22,6 @@ import edu.kit.datamanager.metastore.entity.MetsIdentifier;
 import edu.kit.datamanager.metastore.entity.MetsProperties;
 import edu.kit.datamanager.metastore.entity.PageMetadata;
 import java.util.List;
-import java.util.Set;
 import org.springframework.ui.Model;
 
 /**

@@ -305,8 +305,33 @@ public class IBagItUploadControllerTest {
     this.mockMvc.perform(get("/api/v1/metastore/bagit").accept(MediaType.TEXT_HTML))
             .andDo(print())
             .andExpect(status().isOk())
-            .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td[text() = '" + dataObjectId + "']").exists())
             .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td/a[text() = '" + redirectedUrl + "']").exists())
+            .andReturn();
+            // Upload second 'version' of bag
+    String redirectedUrl2 = this.mockMvc.perform(MockMvcRequestBuilders.multipart("/api/v1/metastore/bagit")
+            .file(bagitContainer))
+            .andExpect(status().isCreated())
+            .andExpect(MockMvcResultMatchers.redirectedUrlPattern("http://localhost:8090/api/v1/dataresources/*/data/" + filename))
+            .andReturn()
+            .getResponse()
+            .getRedirectedUrl();
+     split = redirectedUrl2.split("/");
+    String dataObjectId2 = split[split.length - 3];
+    System.out.println(dataObjectId);
+    System.out.println("*****************************************************");
+    System.out.println("listUploadedFiles");
+    this.mockMvc.perform(get("/api/v1/metastore/bagit"))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.[*]", Matchers.hasItem(redirectedUrl2)))
+            .andReturn();
+    System.out.println("*****************************************************");
+    System.out.println("listUploadedFilesAsHtml");
+    this.mockMvc.perform(get("/api/v1/metastore/bagit").accept(MediaType.TEXT_HTML))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td/a[text() = '" + redirectedUrl + "']").doesNotExist())
+            .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td/a[text() = '" + redirectedUrl2 + "']").exists())
             .andReturn();
   }
 
@@ -347,7 +372,6 @@ public class IBagItUploadControllerTest {
     this.mockMvc.perform(get("/api/v1/metastore/bagit").accept(MediaType.TEXT_HTML))
             .andDo(print())
             .andExpect(status().isOk())
-            .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td[text() = '" + dataObjectId + "']").exists())
             .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td/a[text() = '" + redirectedUrl + "']").exists())
             .andReturn();
     System.out.println("*****************************************************");
@@ -355,7 +379,6 @@ public class IBagItUploadControllerTest {
     this.mockMvc.perform(get("/api/v1/metastore/bagit/search").accept(MediaType.TEXT_HTML))
             .andDo(print())
             .andExpect(status().isOk())
-            .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td[text() = '" + dataObjectId + "']").exists())
             .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td/a[text() = '" + redirectedUrl + "']").exists())
             .andReturn();
     System.out.println("*****************************************************");
@@ -366,7 +389,6 @@ public class IBagItUploadControllerTest {
             .accept(MediaType.TEXT_HTML))
             .andDo(print())
             .andExpect(status().isOk())
-            .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td[text() = '" + dataObjectId + "']").exists())
             .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td/a[text() = '" + redirectedUrl + "']").exists())
             .andReturn();
     System.out.println("*****************************************************");
@@ -377,7 +399,6 @@ public class IBagItUploadControllerTest {
             .accept(MediaType.TEXT_HTML))
             .andDo(print())
             .andExpect(status().isOk())
-            .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td[text() = '" + dataObjectId + "']").doesNotExist())
             .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td/a[text() = '" + redirectedUrl + "']").doesNotExist())
             .andReturn();
     System.out.println("*****************************************************");
@@ -388,7 +409,6 @@ public class IBagItUploadControllerTest {
             .accept(MediaType.TEXT_HTML))
             .andDo(print())
             .andExpect(status().isOk())
-            .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td[text() = '" + dataObjectId + "']").exists())
             .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td/a[text() = '" + redirectedUrl + "']").exists())
             .andReturn();
     System.out.println("*****************************************************");
@@ -399,7 +419,6 @@ public class IBagItUploadControllerTest {
             .accept(MediaType.TEXT_HTML))
             .andDo(print())
             .andExpect(status().isOk())
-            .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td[text() = '" + dataObjectId + "']").doesNotExist())
             .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td/a[text() = '" + redirectedUrl + "']").doesNotExist())
             .andReturn();
     System.out.println("*****************************************************");
@@ -410,7 +429,6 @@ public class IBagItUploadControllerTest {
             .accept(MediaType.TEXT_HTML))
             .andDo(print())
             .andExpect(status().isOk())
-            .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td[text() = '" + dataObjectId + "']").exists())
             .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td/a[text() = '" + redirectedUrl + "']").exists())
             .andReturn();
     System.out.println("*****************************************************");
@@ -421,7 +439,6 @@ public class IBagItUploadControllerTest {
             .accept(MediaType.TEXT_HTML))
             .andDo(print())
             .andExpect(status().isOk())
-            .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td[text() = '" + dataObjectId + "']").doesNotExist())
             .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td/a[text() = '" + redirectedUrl + "']").doesNotExist())
             .andReturn();
   }

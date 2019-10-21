@@ -45,18 +45,10 @@ import edu.kit.datamanager.metastore.entity.ZippedBagit;
 import edu.kit.datamanager.metastore.exception.BagItException;
 import edu.kit.datamanager.metastore.exception.ResourceAlreadyExistsException;
 import edu.kit.datamanager.metastore.kitdm.KitDmProperties;
-import edu.kit.datamanager.metastore.repository.ClassificationMetadataRepository;
-import edu.kit.datamanager.metastore.repository.GenreMetadataRepository;
-import edu.kit.datamanager.metastore.repository.LanguageMetadataRepository;
-import edu.kit.datamanager.metastore.repository.MetsDocumentRepository;
 import edu.kit.datamanager.metastore.repository.MetsFileRepository;
-import edu.kit.datamanager.metastore.repository.MetsIdentifierRepository;
 import edu.kit.datamanager.metastore.repository.MetsPropertiesRepository;
-import edu.kit.datamanager.metastore.repository.PageMetadataRepository;
-import edu.kit.datamanager.metastore.repository.ZippedBagitRepository;
-import edu.kit.datamanager.metastore.runner.CrudRunner;
 import edu.kit.datamanager.metastore.service.IMetsPropertiesService;
-import edu.kit.datamanager.metastore.service.impl.MetsPropertiesService;
+import edu.kit.datamanager.metastore.service.IZippedBagitService;
 import edu.kit.datamanager.metastore.util.RegisterFilesInRepo;
 import edu.kit.datamanager.metastore.util.RepositoryUtil;
 import gov.loc.repository.bagit.domain.Bag;
@@ -65,12 +57,10 @@ import io.swagger.client.model.DataResource;
 import java.net.URISyntaxException;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileSystemUtils;
 
@@ -85,6 +75,10 @@ public class BagItUploadController implements IBagItUploadController {
      * Logger for this class.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(BagItUploadController.class);
+    /**
+     * Key inside Bagit container defining OCRD identifier.
+     */
+    public static final String X_OCRD_IDENTIFIER = "Ocrd-Identifier";
     /**
      * Key inside Bagit container defining location of the METS file.
      */
@@ -133,11 +127,12 @@ public class BagItUploadController implements IBagItUploadController {
      * Properties of KIT DM 2.0
      */
     private final KitDmProperties repositoryProperties;
+
     /**
      * Properties for the zipped BagIt containers.
      */
     @Autowired
-    private ZippedBagitRepository bagitRepository;
+    private IZippedBagitService bagitService;
 
     /**
      * Handler for repository.
@@ -162,10 +157,8 @@ public class BagItUploadController implements IBagItUploadController {
     public String listUploadedFilesAsHtml(Model model) throws IOException {
         LOGGER.info("listUploadedFilesAsHtml - " + model);
 
-        Iterable<ZippedBagit> findAllZippedFiles = bagitRepository.findAll();
-        List<ZippedBagit> allZippedFiles = new ArrayList<>();
-        findAllZippedFiles.forEach(allZippedFiles::add);
-        model.addAttribute("bagitFiles", allZippedFiles);
+        List<ZippedBagit> allLatestZippedBagits = bagitService.getAllLatestZippedBagits();
+        model.addAttribute("bagitFiles", allLatestZippedBagits);
 
         return "uploadForm";
     }
@@ -181,10 +174,31 @@ public class BagItUploadController implements IBagItUploadController {
     public String listFilteredFilesAsHtml(Model model) throws IOException {
         LOGGER.info("listFilteredFiles - " + model);
         if (!model.asMap().containsKey("bagitFiles")) {
-            Iterable<ZippedBagit> findAllZippedFiles = bagitRepository.findAll();
-            List<ZippedBagit> allZippedFiles = new ArrayList<>();
-            findAllZippedFiles.forEach(allZippedFiles::add);
-            model.addAttribute("bagitFiles", allZippedFiles);
+            List<ZippedBagit> allLatestZippedBagits = bagitService.getAllLatestZippedBagits();
+            model.addAttribute("bagitFiles", allLatestZippedBagits);
+        }
+        metastoreResourceService.addFeaturesToModel(model);
+
+        return "searchForm";
+    }
+
+    @Override
+    public ResponseEntity<List<String>> getResourceIdByOcrdIdentifier(@RequestParam(value = "ocrdidentifier") String ocrdIdentifier) {
+        List<String> resourceIdList = new ArrayList<>();
+        
+        List<ZippedBagit> allBagits = bagitService.getZippedBagitsByOcrdIdentifierOrderByVersionDesc(ocrdIdentifier);
+        for (ZippedBagit bagit: allBagits) {
+            resourceIdList.add(bagit.getResourceId());
+        }
+        return new ResponseEntity<>(resourceIdList, HttpStatus.OK);
+    }
+
+    @Override
+    public String getResourceIdByOcrdIdentifierAsHtml(@RequestParam(value = "ocrdidentifier") String ocrdIdentifier, Model model) {
+        LOGGER.info("listFilteredFilesWithOcrdIdentifier - " + model);
+        List<ZippedBagit> allBagits = bagitService.getZippedBagitsByOcrdIdentifierOrderByVersionDesc(ocrdIdentifier);
+        if (!model.asMap().containsKey("bagitFiles")) {
+            model.addAttribute("bagitFiles", allBagits);
         }
         metastoreResourceService.addFeaturesToModel(model);
 
@@ -295,8 +309,18 @@ public class BagItUploadController implements IBagItUploadController {
                         String locationString = repository.toDownloadUrl(repoIdentifier, metsPath);
                         location = new URI(locationString);
                         // 12. Register Bagit container
-                        ZippedBagit bagit = new ZippedBagit(resourceId, locationString);
-                        bagitRepository.save(bagit);
+                        String ocrdIdentifier = getOcrdIdentifierOfBag(bag);
+                        ZippedBagit newBagit = null;
+                        List<ZippedBagit> oldVersions = bagitService.getZippedBagitsByOcrdIdentifierOrderByVersionDesc(ocrdIdentifier);
+                        if (oldVersions.isEmpty()) {
+                            // Create first version of zipped bagit 
+                            newBagit = new ZippedBagit(resourceId, ocrdIdentifier, locationString);
+                        } else {
+                            ZippedBagit oldVersion = oldVersions.get(0);
+                            newBagit = oldVersion.updateZippedBagit(resourceId, locationString);
+                            bagitService.save(oldVersion);
+                        }
+                        bagitService.save(newBagit);
                     }
 
                 } catch (URISyntaxException ex) {
@@ -341,6 +365,30 @@ public class BagItUploadController implements IBagItUploadController {
     }
 
     /**
+     * Determines the path to the METS file.
+     *
+     * @param bag BagIt container.
+     *
+     * @return Relative path to METS file.
+     */
+    private String getOcrdIdentifierOfBag(Bag bag) throws BagItException {
+        List<String> listOfEntries = bag.getMetadata().get(X_OCRD_IDENTIFIER);
+        String ocrdIdentifier = null;
+        if (listOfEntries != null) {
+            if (listOfEntries.size() > 1) {
+                LOGGER.error("There are multiple ocrd identifier defined!");
+                for (String item : listOfEntries) {
+                    LOGGER.warn("Found: {}", item);
+                }
+                throw new BagItException("Error: Multiple ocrd identifier defined!");
+            }
+            ocrdIdentifier = listOfEntries.get(0);
+        }
+        LOGGER.trace("OCRD identifier: {}", ocrdIdentifier);
+        return ocrdIdentifier;
+    }
+
+    /**
      * List all existing bagitContainers.
      *
      * @return List with URL to all containers.
@@ -348,7 +396,7 @@ public class BagItUploadController implements IBagItUploadController {
     private List<String> getAllUrlsOfBagItContainers() {
         List<String> listOfAllUrls = new ArrayList<>();
 
-        Iterable<ZippedBagit> findAllZippedFiles = bagitRepository.findAll();
+        Iterable<ZippedBagit> findAllZippedFiles = bagitService.getAllLatestZippedBagits();
         for (ZippedBagit item : findAllZippedFiles) {
             listOfAllUrls.add(item.getUrl());
         }

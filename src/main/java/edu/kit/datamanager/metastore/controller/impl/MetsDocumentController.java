@@ -26,13 +26,12 @@ import edu.kit.datamanager.metastore.entity.MetsIdentifier;
 import edu.kit.datamanager.metastore.entity.MetsProperties;
 import edu.kit.datamanager.metastore.entity.PageMetadata;
 import edu.kit.datamanager.metastore.entity.ZippedBagit;
-import edu.kit.datamanager.metastore.repository.ZippedBagitRepository;
 import edu.kit.datamanager.metastore.service.IMetsDocumentService;
 import edu.kit.datamanager.metastore.service.IMetsPropertiesService;
+import edu.kit.datamanager.metastore.service.IZippedBagitService;
 import edu.kit.datamanager.metastore.util.MetsDocumentUtil;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,7 +74,7 @@ public class MetsDocumentController implements IMetsDocumentController {
      * Properties for the zipped BagIt containers.
      */
     @Autowired
-    private ZippedBagitRepository bagitRepository;
+    private IZippedBagitService bagitService;
 
     @Override
     public ResponseEntity<List<MetsDocument>> getAllDocuments() {
@@ -258,10 +257,13 @@ public class MetsDocumentController implements IMetsDocumentController {
     private void buildModel(List<String> resourceIdList, Model model) {
         List<ZippedBagit> bagitList = new ArrayList<>();
         for (String resourceId : resourceIdList) {
-            Iterator<ZippedBagit> iterator = bagitRepository.findByResourceId(resourceId).iterator();
-            if (iterator.hasNext()) {
-              bagitList.add(iterator.next());
+
+            ZippedBagit bagit = bagitService.getZippedBagitByResourceId(resourceId);
+            if (bagit.getLatest()) {
+                // Add only latest versions
+                bagitList.add(bagit);
             }
+
         }
         model.addAttribute("bagitFiles", bagitList);
 

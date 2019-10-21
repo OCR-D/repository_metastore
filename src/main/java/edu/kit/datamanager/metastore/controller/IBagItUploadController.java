@@ -90,5 +90,29 @@ public interface IBagItUploadController {
           notes = "List filtered zipped BagIt containers with Form to search for BagIt container.")
   @RequestMapping(path = "search", method = RequestMethod.GET, produces = "text/html")
   String listFilteredFilesAsHtml(Model model) throws IOException;
+
+  /**
+   * Get all METS documents with given ocrd identifier.
+   *
+   * @param ocrdIdentifier OCRD identifier of the METS document.
+   *
+   * @return List of resourceIDs with given ocrd identifier.
+   */
+  @ApiOperation(value = "Get all resourceIds with given ocrd identifier.")
+  @RequestMapping(path = "ocrdidentifier", method = RequestMethod.GET)
+  @ResponseBody
+  ResponseEntity<List<String>> getResourceIdByOcrdIdentifier(@ApiParam(value = "The ocrd identifier of the METS document.", required = true)@RequestParam(value = "ocrdidentifier") String ocrdIdentifier);
+
+  /**
+   * Get all METS documents with given ocrd identifier.
+   *
+   * @param ocrdIdentifier OCRD identifier of the METS document.
+   *
+   * @return List of resourceIDs with given ocrd identifier.
+   */
+  @ApiOperation(value = "Get all resourceIds with given ocrd identifier.")
+  @RequestMapping(path = "ocrdidentifier", method = RequestMethod.GET, produces = "text/html")
+  String getResourceIdByOcrdIdentifierAsHtml(@ApiParam(value = "The ocrd identifier of the METS document.", required = true)@RequestParam(value = "ocrdidentifier") String ocrdIdentifier, Model model);
+
   
 }

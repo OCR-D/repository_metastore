@@ -31,4 +31,32 @@ public interface ZippedBagitRepository extends ArangoRepository<ZippedBagit, Str
    * @return List of bagIt containers with given resourceIdentifier.
    */
   Iterable<ZippedBagit> findByResourceId(String resourceId);
+
+  /**
+   * Find all bagIt containers by OCRD identifier.
+   *
+   * @param ocrdIdentifier OCRD Identifier of the resource.
+   *
+   * @return List of bagIt containers with given OCRD Identifier.
+   */
+  Iterable<ZippedBagit> findByOcrdIdentifierOrderByVersionDesc(String ocrdIdentifier);
+
+  /**
+   * Find all bagIt containers by OCRD identifier.
+   *
+   * @param ocrdIdentifier OCRD Identifier of the resource.
+   * @param version  Version of the resource.
+   *
+   * @return List of bagIt containers with given OCRD Identifier.
+   */
+  Iterable<ZippedBagit> findByOcrdIdentifierAndVersion(String ocrdIdentifier, Integer version);
+
+  /**
+   * Find all latest bagIt containers sorted by date.
+   *
+   * @param ocrdIdentifier OCRD Identifier of the resource.
+   *
+   * @return List of bagIt containers with given OCRD Identifier.
+   */
+  Iterable<ZippedBagit> findByLatestTrueOrderByUploadDateDesc();
 }
