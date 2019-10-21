@@ -43,7 +43,7 @@ user@localhost:/home/user/$docker run -p 8539:8529 -e ARANGO_ROOT_PASSWORD=ocrd-
 Than metastore-service can be build.
 ```bash=bash
 # Build metastore service (without tests)
-user@localhost:/home/user/$git clone https://github.com/OCR-D/repository_metastore.git
+user@localhost:/home/user/$git clone --recursive https://github.com/OCR-D/repository_metastore.git
 Cloning into 'repository_metastore'...
 [...]
 Resolving deltas: 100% (451/451), done.

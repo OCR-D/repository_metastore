@@ -35,7 +35,7 @@ user@localhost:/home/user/docker-kitdm-2.0/source$/docker-compose up &
 # Build KIT DM 2.0
 # Create archive folder for KIT DM 2.0
 user@localhost:/home/user/$mkdir -p server/kitdm2.0/archive
-user@localhost:/home/user/$git clone https://github.com/kit-data-manager/base-repo.git
+user@localhost:/home/user/$git clone --recursive https://github.com/kit-data-manager/base-repo.git
 Cloning into 'base-repo'...
 [...]
 Resolving deltas: 100% (357/357), done.
