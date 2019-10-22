@@ -65,11 +65,9 @@ public class ZippedBagitServiceTest {
 
     @Autowired
     private ArangoOperations operations;
-    
+
     @Autowired
     private ZippedBagitRepository repository;
-
-    private Date startDate;
 
     private ZippedBagitService bagitService;
 
@@ -90,13 +88,7 @@ public class ZippedBagitServiceTest {
 
     @Before
     public void setUp() {
-        startDate = new Date();
-        try {
-            operations.dropDatabase();
-        } catch (DataAccessException dae) {
-            System.out.println("This message should be printed only once!");
-            System.out.println(dae.toString());
-        }
+        dropDatabase();
         before = new Date();
         repository.saveAll(CrudRunner.createZippedBagits());
         after = new Date();
@@ -113,11 +105,35 @@ public class ZippedBagitServiceTest {
      * Test of getAllLatestZippedBagits method, of class ZippedBagitService.
      */
     @Test
-    public void testGetAllLatestBagitContainers() {
-        System.out.println("getAllDocuments");
+    public void testGetAllLatestZippedBagits() {
+        System.out.println("testGetAllLatestZippedBagits");
         ZippedBagitService instance = bagitService;
-        List<ZippedBagit> result = instance.getAllLatestZippedBagits();
-        assertEquals(6, result.size());
+        String resourceId = "resource_0010";
+        String ocrdIdentifier = "id_0002";
+        String url = "url10";
+        Integer expectedVersion = 15;
+        List<ZippedBagit> mi = instance.getAllLatestZippedBagits();
+        assertEquals(6, mi.size());
+        ZippedBagit firstResult = mi.get(0);
+        assertEquals(resourceId, firstResult.getResourceId());
+        assertEquals(ocrdIdentifier, firstResult.getOcrdIdentifier());
+        assertEquals(url, firstResult.getUrl());
+        assertEquals(expectedVersion, firstResult.getVersion());
+        assertTrue(firstResult.getUploadDate().compareTo(before) >= 0);
+        assertTrue(firstResult.getUploadDate().compareTo(after) <= 0);
+        assertTrue(firstResult.getLatest());
+    }
+
+    /**
+     * Test of getAllLatestZippedBagits method, of class ZippedBagitService.
+     */
+    @Test
+    public void testGetAllLatestZippedBagitsOfEmptyDatabase() {
+        System.out.println("testGetAllLatestZippedBagitsOfEmptyDatabase");
+        dropDatabase();
+        ZippedBagitService instance = bagitService;
+        List<ZippedBagit> mi = instance.getAllLatestZippedBagits();
+        assertEquals(0, mi.size());
     }
 
     /**
@@ -131,7 +147,7 @@ public class ZippedBagitServiceTest {
         assertEquals(6, result.size());
         instance.save(new ZippedBagit("newid", "newocrdidentifier", "newurl"));
         result = instance.getAllLatestZippedBagits();
-         assertEquals(7, result.size());
+        assertEquals(7, result.size());
         ZippedBagit buffer = result.get(4);
         instance.save(buffer.updateZippedBagit("updateid", "updateurl"));
         instance.save(buffer);
@@ -158,16 +174,112 @@ public class ZippedBagitServiceTest {
         assertEquals(expectedVersion, mi.getVersion());
         assertTrue(mi.getUploadDate().compareTo(before) >= 0);
         assertTrue(mi.getUploadDate().compareTo(after) <= 0);
-         assertTrue(mi.getLatest());
+        assertTrue(mi.getLatest());
     }
 
     /**
-     * Test of getZippedBagitByOcrdIdentifierAndVersion method, of class ZippedBagitService.
+     * Test of getMostRecentZippedBagitByOcrdIdentifier method, of class
+     * ZippedBagitService.
+     */
+    @Test
+    public void testGetMostRecentBagitByInvalidOcrdIdentifier() {
+        System.out.println("testGetMostRecentBagitByInvalidOcrdIdentifier");
+        ZippedBagitService instance = bagitService;
+        String resourceId = "resource_0007";
+        String ocrdIdentifier = "unknownOcrdIdentifier";
+        String url = "url7";
+        Integer expectedVersion = 2;
+        ZippedBagit mi = instance.getMostRecentZippedBagitByOcrdIdentifier(ocrdIdentifier);
+        assertNull(mi);
+    }
+
+    /**
+     * Test of getMostRecentZippedBagitByOcrdIdentifier method, of class
+     * ZippedBagitService.
+     */
+    @Test
+    public void testGetMostRecentBagitByInvalidOcrdIdentifierOfEmptyDatabase() {
+        System.out.println("testGetMostRecentBagitByInvalidOcrdIdentifierOfEmptyDatabase");
+        dropDatabase();
+        ZippedBagitService instance = bagitService;
+        String resourceId = "resource_0007";
+        String ocrdIdentifier = "unknownOcrdIdentifier";
+        String url = "url7";
+        Integer expectedVersion = 2;
+        ZippedBagit mi = instance.getMostRecentZippedBagitByOcrdIdentifier(ocrdIdentifier);
+        assertNull(mi);
+    }
+
+    /**
+     * Test of getZippedBagitByOcrdIdentifierAndVersion method, of class
+     * ZippedBagitService.
+     */
+    @Test
+    public void testGetAllVersionsOfOcrdIdentifier() {
+        System.out.println("testGetAllVersionsOfOcrdIdentifier");
+        ZippedBagitService instance = bagitService;
+        String resourceId = "resource_0010";
+        String ocrdIdentifier = "id_0002";
+        String url = "url10";
+        Integer expectedVersion = 15;
+        String firstResourceId = "resource_0001";
+        String firstUrl = "url1";
+        Integer firstExpectedVersion = 1;
+        List<ZippedBagit> mi = instance.getZippedBagitsByOcrdIdentifierOrderByVersionDesc(ocrdIdentifier);
+        assertEquals(4, mi.size());
+        ZippedBagit lastVersion = mi.get(0);
+        assertEquals(resourceId, lastVersion.getResourceId());
+        assertEquals(ocrdIdentifier, lastVersion.getOcrdIdentifier());
+        assertEquals(url, lastVersion.getUrl());
+        assertEquals(expectedVersion, lastVersion.getVersion());
+        assertTrue(lastVersion.getUploadDate().compareTo(before) >= 0);
+        assertTrue(lastVersion.getUploadDate().compareTo(after) <= 0);
+        assertTrue(lastVersion.getLatest());
+        ZippedBagit firstVersion = mi.get(3);
+        assertEquals(firstResourceId, firstVersion.getResourceId());
+        assertEquals(ocrdIdentifier, firstVersion.getOcrdIdentifier());
+        assertEquals(firstUrl, firstVersion.getUrl());
+        assertEquals(firstExpectedVersion, firstVersion.getVersion());
+        assertTrue(firstVersion.getUploadDate().compareTo(before) >= 0);
+        assertTrue(firstVersion.getUploadDate().compareTo(after) <= 0);
+        assertFalse(firstVersion.getLatest());
+    }
+
+    /**
+     * Test of getZippedBagitByOcrdIdentifierAndVersion method, of class
+     * ZippedBagitService.
+     */
+    @Test
+    public void testGetAllVersionsOfInvalidOcrdIdentifier() {
+        System.out.println("testGetAllVersionsOfInvalidOcrdIdentifier");
+        ZippedBagitService instance = bagitService;
+        String ocrdIdentifier = "unknownOcrdIdentifier";
+        List<ZippedBagit> mi = instance.getZippedBagitsByOcrdIdentifierOrderByVersionDesc(ocrdIdentifier);
+        assertEquals(0, mi.size());
+    }
+
+    /**
+     * Test of getZippedBagitByOcrdIdentifierAndVersion method, of class
+     * ZippedBagitService.
+     */
+    @Test
+    public void testGetAllVersionsOfOcrdIdentifierOfEmptyDatabase() {
+        System.out.println("testGetAllVersionsOfOcrdIdentifierOfEmptyDatabase");
+        dropDatabase();
+        ZippedBagitService instance = bagitService;
+        String ocrdIdentifier = "unknownOcrdIdentifier";
+        List<ZippedBagit> mi = instance.getZippedBagitsByOcrdIdentifierOrderByVersionDesc(ocrdIdentifier);
+        assertEquals(0, mi.size());
+    }
+
+    /**
+     * Test of getZippedBagitByOcrdIdentifierAndVersion method, of class
+     * ZippedBagitService.
      */
     @Test
     public void testGetOcrdIdentifierAndVersion() {
         System.out.println("testGetOcrdIdentifierAndVersion");
-         ZippedBagitService instance = bagitService;
+        ZippedBagitService instance = bagitService;
         String resourceId = "resource_0003";
         String ocrdIdentifier = "id_0002";
         String url = "url3";
@@ -179,18 +291,40 @@ public class ZippedBagitServiceTest {
         assertEquals(expectedVersion, mi.getVersion());
         assertTrue(mi.getUploadDate().compareTo(before) >= 0);
         assertTrue(mi.getUploadDate().compareTo(after) <= 0);
-         assertFalse(mi.getLatest());
+        assertFalse(mi.getLatest());
     }
 
     /**
-     * Test of getZippedBagitByOcrdIdentifierAndVersion method, of class ZippedBagitService.
+     * Test of getZippedBagitByOcrdIdentifierAndVersion method, of class
+     * ZippedBagitService.
      */
     @Test
     public void testInvalidGetOcrdIdentifierAndVersion() {
         System.out.println("testInvalidGetOcrdIdentifierAndVersion");
-         ZippedBagitService instance = bagitService;
+        ZippedBagitService instance = bagitService;
         String resourceId = "resource_0003";
         String ocrdIdentifier = "id_0002";
+        String unknownOcrdIdentifier = "unknownOcrdIdentifier";
+        String url = "url3";
+        Integer expectedVersion = 4;
+        ZippedBagit mi = instance.getZippedBagitByOcrdIdentifierAndVersion(ocrdIdentifier, expectedVersion);
+        assertNull(mi);
+        mi = instance.getZippedBagitByOcrdIdentifierAndVersion(unknownOcrdIdentifier, Integer.valueOf(1));
+        assertNull(mi);
+    }
+
+    /**
+     * Test of getZippedBagitByOcrdIdentifierAndVersion method, of class
+     * ZippedBagitService.
+     */
+    @Test
+    public void testGetOcrdIdentifierAndVersionOfEmptyDatabase() {
+        System.out.println("testGetOcrdIdentifierAndVersionOfEmptyDatabase");
+        dropDatabase();
+        ZippedBagitService instance = bagitService;
+        String resourceId = "resource_0003";
+        String ocrdIdentifier = "id_0002";
+        String unknownOcrdIdentifier = "unknownOcrdIdentifier";
         String url = "url3";
         Integer expectedVersion = 4;
         ZippedBagit mi = instance.getZippedBagitByOcrdIdentifierAndVersion(ocrdIdentifier, expectedVersion);
@@ -203,7 +337,7 @@ public class ZippedBagitServiceTest {
     @Test
     public void testGetZippedBagitByResourceId() {
         System.out.println("testGetZippedBagitByResourceId");
-         ZippedBagitService instance = bagitService;
+        ZippedBagitService instance = bagitService;
         String resourceId = "resource_0001";
         String ocrdIdentifier = "id_0002";
         String url = "url1";
@@ -215,39 +349,42 @@ public class ZippedBagitServiceTest {
         assertEquals(expectedVersion, mi.getVersion());
         assertTrue(mi.getUploadDate().compareTo(before) >= 0);
         assertTrue(mi.getUploadDate().compareTo(after) <= 0);
-         assertFalse(mi.getLatest());
+        assertFalse(mi.getLatest());
     }
 
     /**
-     * Test of getAllLatestZippedBagits method, of class ZippedBagitService.
+     * Test of getZippedBagitByResourceId method, of class ZippedBagitService.
      */
     @Test
-    public void testGetAllLatestZippedBagits() {
-        System.out.println("testGetAllLatestZippedBagits");
-         ZippedBagitService instance = bagitService;
-        String resourceId = "resource_0010";
-        String ocrdIdentifier = "id_0002";
-        String url = "url10";
-        Integer expectedVersion = 15;
-        List<ZippedBagit> mi = instance.getAllLatestZippedBagits();
-        assertEquals(6, mi.size());
-        ZippedBagit firstResult = mi.get(0);
-        assertEquals(resourceId, firstResult.getResourceId());
-        assertEquals(ocrdIdentifier, firstResult.getOcrdIdentifier());
-        assertEquals(url, firstResult.getUrl());
-        assertEquals(expectedVersion, firstResult.getVersion());
-        assertTrue(firstResult.getUploadDate().compareTo(before) >= 0);
-        assertTrue(firstResult.getUploadDate().compareTo(after) <= 0);
-         assertTrue(firstResult.getLatest());
+    public void testGetZippedBagitByInvalidResourceId() {
+        System.out.println("testGetZippedBagitByInvalidResourceId");
+        ZippedBagitService instance = bagitService;
+        String resourceId = "unknownResourceId";
+        ZippedBagit mi = instance.getZippedBagitByResourceId(resourceId);
+        assertNull(mi);
     }
 
     /**
-     * Test of getAllVersionsByOcrdIdentifier method, of class ZippedBagitService.
+     * Test of getZippedBagitByResourceId method, of class ZippedBagitService.
+     */
+    @Test
+    public void testGetZippedBagitByResourceIdOfEmptyDatabase() {
+        System.out.println("testGetZippedBagitByResourceIdOfEmptyDatabase");
+        dropDatabase();
+        ZippedBagitService instance = bagitService;
+        String resourceId = "unknownResourceId";
+        ZippedBagit mi = instance.getZippedBagitByResourceId(resourceId);
+        assertNull(mi);
+    }
+
+    /**
+     * Test of getAllVersionsByOcrdIdentifier method, of class
+     * ZippedBagitService.
      */
     @Test
     public void testGetAllVersionsByOcrdIdentifier() {
         System.out.println("testGetAllVersionsByOcrdIdentifier");
-         ZippedBagitService instance = bagitService;
+        ZippedBagitService instance = bagitService;
         String ocrdIdentifier = "id_0002";
         Integer expectedVersion = 15;
         List<Integer> mi = instance.getAllVersionsByOcrdIdentifier(ocrdIdentifier);
@@ -257,4 +394,41 @@ public class ZippedBagitServiceTest {
         assertTrue(mi.contains(Integer.valueOf(3)));
         assertTrue(mi.contains(Integer.valueOf(15)));
     }
+
+    /**
+     * Test of getAllVersionsByOcrdIdentifier method, of class
+     * ZippedBagitService.
+     */
+    @Test
+    public void testGetAllVersionsByInvalidOcrdIdentifier() {
+        System.out.println("testGetAllVersionsByOcrdIdentifier");
+        ZippedBagitService instance = bagitService;
+        String ocrdIdentifier = "unknownOcrdIdentifier";
+        List<Integer> mi = instance.getAllVersionsByOcrdIdentifier(ocrdIdentifier);
+        assertEquals(0, mi.size());
+    }
+
+    /**
+     * Test of getAllVersionsByOcrdIdentifier method, of class
+     * ZippedBagitService.
+     */
+    @Test
+    public void testGetAllVersionsByOcrdIdentifierOfEmptyDatabase() {
+        System.out.println("testGetAllVersionsByOcrdIdentifier");
+        dropDatabase();
+        ZippedBagitService instance = bagitService;
+        String ocrdIdentifier = "id_0002";
+        List<Integer> mi = instance.getAllVersionsByOcrdIdentifier(ocrdIdentifier);
+        assertEquals(0, mi.size());
+    }
+
+    private void dropDatabase() {
+        try {
+            operations.dropDatabase();
+        } catch (DataAccessException dae) {
+            System.out.println("This message should be printed only once!");
+            System.out.println(dae.toString());
+        }
+    }
+
 }

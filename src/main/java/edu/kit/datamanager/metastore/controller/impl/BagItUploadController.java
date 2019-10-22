@@ -247,6 +247,7 @@ public class BagItUploadController implements IBagItUploadController {
                 LOGGER.trace("Create resourceIdentifier...");
                 resourceId = UUID.randomUUID().toString();
             } while (repository.existsResourceIdentifier(resourceId));
+            LOGGER.trace("Create resourceIdentifier: " + resourceId);
             // 3. Store zip file
             storageService.store(file, resourceId);
             // 4. unzip 
@@ -376,11 +377,11 @@ public class BagItUploadController implements IBagItUploadController {
         String ocrdIdentifier = null;
         if (listOfEntries != null) {
             if (listOfEntries.size() > 1) {
-                LOGGER.error("There are multiple ocrd identifier defined!");
+                LOGGER.error("There are multiple OCRD identifiers defined!");
                 for (String item : listOfEntries) {
                     LOGGER.warn("Found: {}", item);
                 }
-                throw new BagItException("Error: Multiple ocrd identifier defined!");
+                throw new BagItException("Error: Multiple OCRD identifiers defined!");
             }
             ocrdIdentifier = listOfEntries.get(0);
         }

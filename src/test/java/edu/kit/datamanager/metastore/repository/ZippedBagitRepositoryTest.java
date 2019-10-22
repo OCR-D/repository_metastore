@@ -15,6 +15,7 @@
  */
 package edu.kit.datamanager.metastore.repository;
 
+import com.arangodb.ArangoDBException;
 import com.arangodb.springframework.core.ArangoOperations;
 import edu.kit.datamanager.metastore.entity.ZippedBagit;
 import edu.kit.datamanager.metastore.runner.CrudRunner;
@@ -36,6 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -127,6 +129,7 @@ public class ZippedBagitRepositoryTest {
         assertTrue(mi.getUploadDate().compareTo(after) <= 0);
         assertTrue(mi.getLatest());
     }
+
     /**
      * Test of findByResourceId method, of class ZippedBagitRepository.
      */
@@ -159,7 +162,7 @@ public class ZippedBagitRepositoryTest {
         String resourceId;
         String ocrdIdentifier;
         String url;
-        
+
         ZippedBagitRepository instance = zippedBagitRepository;
         Iterator<ZippedBagit> result = instance.findByLatestTrueOrderByUploadDateDesc().iterator();
         date = after;
@@ -177,7 +180,7 @@ public class ZippedBagitRepositoryTest {
         assertTrue(mi.getUploadDate().compareTo(after) <= 0);
         assertTrue(mi.getUploadDate().compareTo(date) <= 0);
         assertTrue(mi.getLatest());
-        
+
         date = mi.getUploadDate();
         resourceId = "resource_0009";
         ocrdIdentifier = "id_0019";
@@ -193,7 +196,7 @@ public class ZippedBagitRepositoryTest {
         assertTrue(mi.getUploadDate().compareTo(after) <= 0);
         assertTrue(mi.getUploadDate().compareTo(date) <= 0);
         assertTrue(mi.getLatest());
-        
+
         date = mi.getUploadDate();
         resourceId = "resource_0008";
         ocrdIdentifier = "id_0018";
@@ -209,7 +212,7 @@ public class ZippedBagitRepositoryTest {
         assertTrue(mi.getUploadDate().compareTo(after) <= 0);
         assertTrue(mi.getUploadDate().compareTo(date) <= 0);
         assertTrue(mi.getLatest());
-        
+
         date = mi.getUploadDate();
         resourceId = "resource_0007";
         ocrdIdentifier = "id_0017";
@@ -225,7 +228,7 @@ public class ZippedBagitRepositoryTest {
         assertTrue(mi.getUploadDate().compareTo(after) <= 0);
         assertTrue(mi.getUploadDate().compareTo(date) <= 0);
         assertTrue(mi.getLatest());
-        
+
         date = mi.getUploadDate();
         resourceId = "resource_0005";
         ocrdIdentifier = "id_0016";
@@ -241,7 +244,7 @@ public class ZippedBagitRepositoryTest {
         assertTrue(mi.getUploadDate().compareTo(after) <= 0);
         assertTrue(mi.getUploadDate().compareTo(date) <= 0);
         assertTrue(mi.getLatest());
-        
+
         date = mi.getUploadDate();
         resourceId = "resource_0004";
         ocrdIdentifier = "id_0015";
@@ -259,7 +262,6 @@ public class ZippedBagitRepositoryTest {
         assertTrue(mi.getLatest());
     }
 
-
     /**
      * Test of findByResourceId method, of class ZippedBagitRepository.
      */
@@ -271,7 +273,7 @@ public class ZippedBagitRepositoryTest {
         String resourceId;
         String ocrdIdentifier = "id_0002";
         String url;
-        
+
         ZippedBagitRepository instance = zippedBagitRepository;
         Iterator<ZippedBagit> result = instance.findByOcrdIdentifierOrderByVersionDesc(ocrdIdentifier).iterator();
         date = after;
@@ -289,7 +291,7 @@ public class ZippedBagitRepositoryTest {
         assertTrue(mi.getUploadDate().compareTo(after) <= 0);
         assertTrue(mi.getUploadDate().compareTo(date) <= 0);
         assertTrue(mi.getLatest());
-        
+
         date = mi.getUploadDate();
         resourceId = "resource_0003";
         url = "url3";
@@ -304,7 +306,7 @@ public class ZippedBagitRepositoryTest {
         assertTrue(mi.getUploadDate().compareTo(after) <= 0);
         assertTrue(mi.getUploadDate().compareTo(date) <= 0);
         assertFalse(mi.getLatest());
-        
+
         date = mi.getUploadDate();
         resourceId = "resource_0002";
         url = "url2";
@@ -319,7 +321,7 @@ public class ZippedBagitRepositoryTest {
         assertTrue(mi.getUploadDate().compareTo(after) <= 0);
         assertTrue(mi.getUploadDate().compareTo(date) <= 0);
         assertFalse(mi.getLatest());
-        
+
         date = mi.getUploadDate();
         resourceId = "resource_0001";
         url = "url1";
@@ -346,7 +348,7 @@ public class ZippedBagitRepositoryTest {
         String resourceId;
         String ocrdIdentifier = "id_0002";
         String url;
-        
+
         ZippedBagitRepository instance = zippedBagitRepository;
         Iterator<ZippedBagit> result = instance.findByOcrdIdentifierAndVersion(ocrdIdentifier, expectedVersion).iterator();
         resourceId = "resource_0002";
@@ -361,5 +363,156 @@ public class ZippedBagitRepositoryTest {
         assertTrue(mi.getUploadDate().compareTo(before) >= 0);
         assertTrue(mi.getUploadDate().compareTo(after) <= 0);
         assertFalse(mi.getLatest());
+    }
+
+    /**
+     * Test of save method, of class ZippedBagitRepository.
+     */
+    @Test
+    public void testDoubleEntries() {
+        System.out.println("testDoubleEntries");
+        Integer expectedVersion = 1;
+        String ocrdIdentifier = "id_0002";
+
+        ZippedBagitRepository instance = zippedBagitRepository;
+        long count = instance.count();
+        Iterator<ZippedBagit> result = instance.findByOcrdIdentifierAndVersion(ocrdIdentifier, expectedVersion).iterator();
+        ocrdIdentifier = "id_0002";
+        assertTrue(result.hasNext());
+        ZippedBagit old = result.next();
+        // Try to store same instance twice
+        ZippedBagit mi = new ZippedBagit(old.getResourceId(), old.getOcrdIdentifier(), old.getUrl());
+        try {
+            instance.save(mi);
+            assertTrue(Boolean.FALSE);
+        } catch (InvalidDataAccessApiUsageException ade) {
+            assertTrue(Boolean.TRUE);
+        }
+        long count2 = instance.count();
+        assertEquals(count, count2);
+    }
+
+    /**
+     * Test of save method, of class ZippedBagitRepository.
+     */
+    @Test
+    public void testDoubleEntriesOcrdAndVersion() {
+        System.out.println("testDoubleEntriesOcrdAndVersion");
+        Integer expectedVersion = 1;
+        String ocrdIdentifier = "id_0002";
+
+        ZippedBagitRepository instance = zippedBagitRepository;
+        long count = instance.count();
+        Iterator<ZippedBagit> result = instance.findByOcrdIdentifierAndVersion(ocrdIdentifier, expectedVersion).iterator();
+        ocrdIdentifier = "id_0002";
+        assertTrue(result.hasNext());
+        ZippedBagit old = result.next();
+        // try to store ocrdIdentifier & version twice
+        ZippedBagit mi = new ZippedBagit("totallyNewResourceId", old.getOcrdIdentifier(), old.getUrl());
+        try {
+            instance.save(mi);
+            assertTrue(Boolean.FALSE);
+        } catch (InvalidDataAccessApiUsageException ade) {
+            assertTrue(Boolean.TRUE);
+        }
+        long count2 = instance.count();
+        assertEquals(count, count2);
+    }
+
+    /**
+     * Test of save method, of class ZippedBagitRepository.
+     */
+    @Test
+    public void testSameResourceId() {
+        System.out.println("testSameResourceId");
+        Integer expectedVersion = 1;
+        String ocrdIdentifier = "id_0002";
+
+        ZippedBagitRepository instance = zippedBagitRepository;
+        long count = instance.count();
+        Iterator<ZippedBagit> result = instance.findByOcrdIdentifierAndVersion(ocrdIdentifier, expectedVersion).iterator();
+        ocrdIdentifier = "id_0002";
+        assertTrue(result.hasNext());
+        ZippedBagit old = result.next();
+        // try to store same resourceID twice
+        ZippedBagit mi = new ZippedBagit(old.getResourceId(), "totallyNewOcrdIdentifier", old.getUrl());
+        try {
+            instance.save(mi);
+            assertTrue(Boolean.FALSE);
+        } catch (InvalidDataAccessApiUsageException ade) {
+            assertTrue(Boolean.TRUE);
+        }
+        long count2 = instance.count();
+        assertEquals(count, count2);
+    }
+
+    /**
+     * Test of save method, of class ZippedBagitRepository.
+     */
+    @Test
+    public void testSaveInstance() {
+        System.out.println("testSaveInstance");
+
+        ZippedBagitRepository instance = zippedBagitRepository;
+        long count = instance.count();
+
+        // Try to store same instance twice
+        ZippedBagit mi = new ZippedBagit("totallyNewResourceId", "newOcrdIdentifier", "anyUrl");
+        try {
+            instance.save(mi);
+            assertTrue(Boolean.TRUE);
+        } catch (InvalidDataAccessApiUsageException ade) {
+            assertTrue(Boolean.FALSE);
+        }
+        long count2 = instance.count();
+        assertEquals(count + 1, count2);
+
+    }
+
+    /**
+     * Test of save method, of class ZippedBagitRepository.
+     */
+    @Test
+    public void testSaveUpdatedZippedBagit() {
+        System.out.println("testSaveUpdatedZippedBagit");
+        Integer expectedVersion = 1;
+        String ocrdIdentifier = "onlyForUpdateTest";
+        String resourceId = "anotherResourceId";
+        String url = "any";
+
+        ZippedBagitRepository instance = zippedBagitRepository;
+        long count = instance.count();
+        long countLatest = getNumberOfItems(instance.findByLatestTrueOrderByUploadDateDesc().iterator());
+
+        // Try to store same instance twice
+        ZippedBagit mi = new ZippedBagit(resourceId, ocrdIdentifier, url);
+        instance.save(mi);
+        long count2 = instance.count();
+        long count2Latest = getNumberOfItems(instance.findByLatestTrueOrderByUploadDateDesc().iterator());
+        assertEquals(count + 1, count2);
+        assertEquals(countLatest + 1, count2Latest);
+        ZippedBagit newBag = mi.updateZippedBagit(resourceId + "1", url);
+        instance.save(mi);
+        instance.save(newBag);
+        long count3 = instance.count();
+        long count3Latest = getNumberOfItems(instance.findByLatestTrueOrderByUploadDateDesc().iterator());
+        assertEquals(count2 + 1, count3);
+        assertEquals(count2Latest, count3Latest);
+        ZippedBagit thirdBag = newBag.updateZippedBagit(resourceId + "2", url);
+        instance.save(newBag);
+        instance.save(thirdBag);
+        long count4 = instance.count();
+        long count4Latest = getNumberOfItems(instance.findByLatestTrueOrderByUploadDateDesc().iterator());
+        assertEquals(count3 + 1, count4);
+        assertEquals(count3Latest, count4Latest);
+    }
+
+    private int getNumberOfItems(Iterator iterator) {
+        int numberOfItems = 0;
+        while (iterator.hasNext()) {
+            iterator.next();
+            numberOfItems++;
+        }
+        return numberOfItems;
     }
 }

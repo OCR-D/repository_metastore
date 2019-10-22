@@ -5,6 +5,7 @@
  */
 package edu.kit.datamanager.metastore.service.impl;
 
+import com.arangodb.ArangoDBException;
 import edu.kit.datamanager.metastore.entity.ZippedBagit;
 import edu.kit.datamanager.metastore.repository.ZippedBagitRepository;
 import edu.kit.datamanager.metastore.service.IZippedBagitService;
@@ -46,10 +47,17 @@ public class ZippedBagitService implements IZippedBagitService {
 
     @Override
     public List<ZippedBagit> getAllLatestZippedBagits() {
-         List<ZippedBagit> bagitList = new ArrayList<>();
-        Iterator<ZippedBagit> iterator = bagitRepository.findByLatestTrueOrderByUploadDateDesc().iterator();
-        while (iterator.hasNext()) {
-            bagitList.add(iterator.next());
+        List<ZippedBagit> bagitList = new ArrayList<>();
+        try {
+            Iterator<ZippedBagit> iterator = bagitRepository.findByLatestTrueOrderByUploadDateDesc().iterator();
+            while (iterator.hasNext()) {
+                bagitList.add(iterator.next());
+            }
+            if (LOGGER.isTraceEnabled()) {
+                LOGGER.trace("getAllLatestZippedBagits - Size: '{}'", bagitList.size());
+            }
+        } catch (ArangoDBException ade) {
+            testException(ade);
         }
         return bagitList;
     }
@@ -57,19 +65,40 @@ public class ZippedBagitService implements IZippedBagitService {
     @Override
     public ZippedBagit getMostRecentZippedBagitByOcrdIdentifier(String ocrdIdentifier) {
         ZippedBagit bagit = null;
-        Iterator<ZippedBagit> iterator = bagitRepository.findByOcrdIdentifierOrderByVersionDesc(ocrdIdentifier).iterator();
-        if (iterator.hasNext()) {
-            bagit = iterator.next();
+        try {
+            Iterator<ZippedBagit> iterator = bagitRepository.findByOcrdIdentifierOrderByVersionDesc(ocrdIdentifier).iterator();
+            if (iterator.hasNext()) {
+                bagit = iterator.next();
+            }
+        } catch (ArangoDBException ade) {
+            testException(ade);
+        }
+
+        if (LOGGER.isTraceEnabled()) {
+            if (bagit == null) {
+                LOGGER.trace("getMostRecentZippedBagitByOcrdIdentifier - Not found!");
+            } else {
+                LOGGER.trace("getMostRecentZippedBagitByOcrdIdentifier - OCRD identifier: '{}' Version: '{}'", bagit.getOcrdIdentifier(), bagit.getVersion());
+            }
         }
         return bagit;
     }
 
     @Override
     public List<Integer> getAllVersionsByOcrdIdentifier(String ocrdIdentifier) {
-        Iterator<ZippedBagit> findZippedFilesWithOcrdIdentifier = bagitRepository.findByOcrdIdentifierOrderByVersionDesc(ocrdIdentifier).iterator();
         List<Integer> allVersions = new ArrayList<>();
-        while (findZippedFilesWithOcrdIdentifier.hasNext()) {
-            allVersions.add(findZippedFilesWithOcrdIdentifier.next().getVersion());
+        try {
+            Iterator<ZippedBagit> findZippedFilesWithOcrdIdentifier = bagitRepository.findByOcrdIdentifierOrderByVersionDesc(ocrdIdentifier).iterator();
+            while (findZippedFilesWithOcrdIdentifier.hasNext()) {
+                allVersions.add(findZippedFilesWithOcrdIdentifier.next().getVersion());
+            }
+        } catch (ArangoDBException ade) {
+            testException(ade);
+        }
+        if (LOGGER.isTraceEnabled()) {
+            if (allVersions.size() > 0) {
+                LOGGER.trace("getAllVersionsByOcrdIdentifier - Size: '{}' - Last Version: '{}'", allVersions.size(), allVersions.get(0));
+            }
         }
         return allVersions;
     }
@@ -77,9 +106,20 @@ public class ZippedBagitService implements IZippedBagitService {
     @Override
     public ZippedBagit getZippedBagitByOcrdIdentifierAndVersion(String ocrdIdentifier, Integer version) {
         ZippedBagit bagit = null;
-        Iterator<ZippedBagit> iterator = bagitRepository.findByOcrdIdentifierAndVersion(ocrdIdentifier, version).iterator();
-        if (iterator.hasNext()) {
-            bagit = iterator.next();
+        try {
+            Iterator<ZippedBagit> iterator = bagitRepository.findByOcrdIdentifierAndVersion(ocrdIdentifier, version).iterator();
+            if (iterator.hasNext()) {
+                bagit = iterator.next();
+            }
+        } catch (ArangoDBException ade) {
+            testException(ade);
+        }
+        if (LOGGER.isTraceEnabled()) {
+            if (bagit == null) {
+                LOGGER.trace("getZippedBagitByOcrdIdentifierAndVersion - Not found!");
+            } else {
+                LOGGER.trace("getZippedBagitByOcrdIdentifierAndVersion - OCRD identifier: '{}' Version: '{}'", bagit.getOcrdIdentifier(), bagit.getVersion());
+            }
         }
         return bagit;
     }
@@ -87,9 +127,20 @@ public class ZippedBagitService implements IZippedBagitService {
     @Override
     public List<ZippedBagit> getZippedBagitsByOcrdIdentifierOrderByVersionDesc(String ocrdIdentifier) {
         List<ZippedBagit> bagitList = new ArrayList<>();
-        Iterator<ZippedBagit> iterator = bagitRepository.findByOcrdIdentifierOrderByVersionDesc(ocrdIdentifier).iterator();
-        while (iterator.hasNext()) {
-            bagitList.add(iterator.next());
+        try {
+            Iterator<ZippedBagit> iterator = bagitRepository.findByOcrdIdentifierOrderByVersionDesc(ocrdIdentifier).iterator();
+            while (iterator.hasNext()) {
+                bagitList.add(iterator.next());
+            }
+        } catch (ArangoDBException ade) {
+            testException(ade);
+        }
+        if (LOGGER.isTraceEnabled()) {
+            if (bagitList == null) {
+                LOGGER.trace("getZippedBagitByOcrdIdentifierAndVersion - Not found!");
+            } else {
+                LOGGER.trace("getZippedBagitByOcrdIdentifierAndVersion - Size: '{}'", bagitList.size());
+            }
         }
         return bagitList;
     }
@@ -97,17 +148,40 @@ public class ZippedBagitService implements IZippedBagitService {
     @Override
     public ZippedBagit getZippedBagitByResourceId(String resourceIdentifier) {
         ZippedBagit bagit = null;
-        Iterator<ZippedBagit> iterator = bagitRepository.findByResourceId(resourceIdentifier).iterator();
-        if (iterator.hasNext()) {
-            bagit = iterator.next();
+        try {
+            Iterator<ZippedBagit> iterator = bagitRepository.findByResourceId(resourceIdentifier).iterator();
+            if (iterator.hasNext()) {
+                bagit = iterator.next();
+            }
+        } catch (ArangoDBException ade) {
+            testException(ade);
         }
-        
+        if (LOGGER.isTraceEnabled()) {
+            if (bagit == null) {
+                LOGGER.trace("getZippedBagitByOcrdIdentifierAndVersion - Not found!");
+            } else {
+                LOGGER.trace("getZippedBagitByOcrdIdentifierAndVersion - OCRD identifier: '{}' Version: '{}'", bagit.getOcrdIdentifier(), bagit.getVersion());
+            }
+        }
         return bagit;
     }
 
     @Override
     public ZippedBagit save(ZippedBagit zippedBagit) {
         return bagitRepository.save(zippedBagit);
+    }
+
+    /**
+     * Test if Exception is thrown due to empty database. If so, ignore it.
+     *
+     * @param ade Exception.
+     */
+    private void testException(ArangoDBException ade) {
+        // ignore if error due to empty database.
+        if (!((ade.getResponseCode() == 404)
+                && (ade.getErrorNum() == 1203))) {
+            throw ade;
+        }
     }
 
 }
