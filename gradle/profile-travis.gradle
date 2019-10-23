@@ -1,5 +1,6 @@
 test {
    environment "spring.config.location", "test/"
    include '**/*'
-   exclude '**/service/impl/*'
+   exclude '**/controller/*'
+   exclude '**/repository/*'
 }
