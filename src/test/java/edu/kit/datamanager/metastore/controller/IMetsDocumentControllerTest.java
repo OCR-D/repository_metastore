@@ -73,6 +73,7 @@ public class IMetsDocumentControllerTest {
 
   @Autowired
   private ArangoOperations operations;
+  
   @Autowired
   private MetsDocumentRepository repository;
 

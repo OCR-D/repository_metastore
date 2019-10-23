@@ -16,16 +16,7 @@
 package edu.kit.datamanager.metastore.controller;
 
 import com.arangodb.springframework.core.ArangoOperations;
-import edu.kit.datamanager.metastore.entity.GroundTruthProperties;
-import edu.kit.datamanager.metastore.entity.MetsProperties;
-import edu.kit.datamanager.metastore.repository.ClassificationMetadataRepository;
-import edu.kit.datamanager.metastore.repository.GenreMetadataRepository;
-import edu.kit.datamanager.metastore.repository.LanguageMetadataRepository;
-import edu.kit.datamanager.metastore.repository.MetsDocumentRepository;
 import edu.kit.datamanager.metastore.repository.MetsFileRepository;
-import edu.kit.datamanager.metastore.repository.MetsIdentifierRepository;
-import edu.kit.datamanager.metastore.repository.MetsPropertiesRepository;
-import edu.kit.datamanager.metastore.repository.PageMetadataRepository;
 import edu.kit.datamanager.metastore.runner.CrudRunner;
 import org.hamcrest.Matchers;
 import org.junit.After;
@@ -38,7 +29,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
 import org.springframework.test.context.ActiveProfiles;

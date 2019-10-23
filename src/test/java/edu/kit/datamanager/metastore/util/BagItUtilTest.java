@@ -101,7 +101,7 @@ public class BagItUtilTest {
      */
     @Test
     public void testReadValidBag() {
-        System.out.println("readBag");
+        System.out.println("readValidBag");
         Path pathToBag = Paths.get("src/test/resources/bagit/", "validBag");
         Bag result = BagItUtil.readBag(pathToBag);
         assertTrue(true);
@@ -112,7 +112,7 @@ public class BagItUtilTest {
      */
     @Test
     public void testReadInvalidBag1() {
-        System.out.println("readBag");
+        System.out.println("readInvalidBag1");
 
         try {
             Path pathToBag = Paths.get("src/test/resources/bagit/", "invalidChecksum");
@@ -129,7 +129,7 @@ public class BagItUtilTest {
      */
     @Test
     public void testReadInvalidBag2() {
-        System.out.println("readBag");
+        System.out.println("readInvalidBag2");
 
         try {
             Path pathToBag = Paths.get("src/test/resources/bagit/", "invalidOxum");
@@ -146,7 +146,7 @@ public class BagItUtilTest {
      */
     @Test
     public void testReadInvalidBag3() {
-        System.out.println("readBag");
+        System.out.println("readInvalidBag3");
 
         try {
             Path pathToBag = Paths.get("src/test/resources/bagit/", "invalidVersion");
@@ -163,7 +163,7 @@ public class BagItUtilTest {
      */
     @Test
     public void testReadInvalidBag4() {
-        System.out.println("readBag");
+        System.out.println("readInvalidBag4");
 
         try {
             Path pathToBag = Paths.get("src/test/resources/bagit/", "notComplete");
@@ -180,7 +180,7 @@ public class BagItUtilTest {
      */
     @Test
     public void testReadInvalidBag5() {
-        System.out.println("readBag");
+        System.out.println("readInvalidBag5");
 
         try {
             Path pathToBag = Paths.get("src/test/resources/bagit/", "notExists");
@@ -239,7 +239,12 @@ public class BagItUtilTest {
         String pathToMets = BagItUtil.getPathToMets(bag);
         assertEquals("data/alternateMets.xml", pathToMets);
         pathToBag = Paths.get("src/test/resources/bagit/", "twoMetsWithProfile");
-        bag = BagItUtil.readBag(pathToBag);
+        try {
+            BagReader reader = new BagReader();
+            bag = reader.read(pathToBag);
+        } catch (IOException | UnparsableVersionException | MaliciousPathException | UnsupportedAlgorithmException | InvalidBagitFileFormatException ex) {
+            throw new BagItException(ex.getMessage());
+        }
         try {
             BagItUtil.getPathToMets(bag);
             assertTrue(Boolean.FALSE);

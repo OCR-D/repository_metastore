@@ -27,12 +27,10 @@ import edu.kit.datamanager.metastore.repository.ClassificationMetadataRepository
 import edu.kit.datamanager.metastore.repository.GenreMetadataRepository;
 import edu.kit.datamanager.metastore.repository.LanguageMetadataRepository;
 import edu.kit.datamanager.metastore.repository.MetsDocumentRepository;
-import edu.kit.datamanager.metastore.repository.MetsFileRepository;
 import edu.kit.datamanager.metastore.repository.MetsIdentifierRepository;
 import edu.kit.datamanager.metastore.repository.MetsPropertiesRepository;
 import edu.kit.datamanager.metastore.repository.PageMetadataRepository;
 import edu.kit.datamanager.metastore.runner.CrudRunner;
-import edu.kit.datamanager.util.AuthenticationHelper;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -41,18 +39,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunnerDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 /**
  *
@@ -124,6 +114,7 @@ public class MetsPropertiesServiceTest {
       System.out.println(dae.toString());
     }
     repository.saveAll(CrudRunner.createMetsDocuments());
+    
     classificationMetadataRepository.saveAll(CrudRunner.createClassifications());
     genreMetadataRepository.saveAll(CrudRunner.createGenre());
     languageMetadataRepository.saveAll(CrudRunner.createLanguageMetadata());

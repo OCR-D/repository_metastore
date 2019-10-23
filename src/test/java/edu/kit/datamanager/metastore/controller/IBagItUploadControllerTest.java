@@ -77,6 +77,7 @@ public class IBagItUploadControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+    
     @Autowired
     private TestRestTemplate template;
 
