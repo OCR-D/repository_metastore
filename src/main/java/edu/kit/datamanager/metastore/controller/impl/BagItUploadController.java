@@ -76,18 +76,6 @@ public class BagItUploadController implements IBagItUploadController {
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(BagItUploadController.class);
     /**
-     * Key inside Bagit container defining OCRD identifier.
-     */
-    public static final String X_OCRD_IDENTIFIER = "Ocrd-Identifier";
-    /**
-     * Key inside Bagit container defining location of the METS file.
-     */
-    public static final String X_OCRD_METS = "Ocrd-Mets";
-    /**
-     * Default location of the METS file.
-     */
-    public static final String METS_LOCATION_DEFAULT = "data/mets.xml";
-    /**
      * Default data type for OCR-D data resource.
      */
     public static final String OCR_D_DATA_TYPE = "OCR-D GT Data";
@@ -263,7 +251,7 @@ public class BagItUploadController implements IBagItUploadController {
             // 5. validate BagIt container 
             Bag bag = BagItUtil.readBag(pathToBagIt);
             // 6. extract METS and properties and files (resourceIdentifier needed)
-            String xOcrdMets = getPathToMets(bag);
+            String xOcrdMets = BagItUtil.getPathToMets(bag);
             File metsFile = Paths.get(pathToBagIt.toString(), xOcrdMets).toFile();
             if (metsFile.exists()) {
                 try {
@@ -310,7 +298,7 @@ public class BagItUploadController implements IBagItUploadController {
                         String locationString = repository.toDownloadUrl(repoIdentifier, metsPath);
                         location = new URI(locationString);
                         // 12. Register Bagit container
-                        String ocrdIdentifier = getOcrdIdentifierOfBag(bag);
+                        String ocrdIdentifier = BagItUtil.getOcrdIdentifierOfBag(bag);
                         ZippedBagit newBagit = null;
                         List<ZippedBagit> oldVersions = bagitService.getZippedBagitsByOcrdIdentifierOrderByVersionDesc(ocrdIdentifier);
                         if (oldVersions.isEmpty()) {
@@ -339,54 +327,6 @@ public class BagItUploadController implements IBagItUploadController {
             LOGGER.info(location.toString());
         }
         return ResponseEntity.created(location).build();
-    }
-
-    /**
-     * Determines the path to the METS file.
-     *
-     * @param bag BagIt container.
-     *
-     * @return Relative path to METS file.
-     */
-    private String getPathToMets(Bag bag) throws BagItException {
-        List<String> listOfEntries = bag.getMetadata().get(X_OCRD_METS);
-        String pathToMets = METS_LOCATION_DEFAULT;
-        if (listOfEntries != null) {
-            if (listOfEntries.size() > 1) {
-                LOGGER.error("There are multiple location for METS defined!");
-                for (String item : listOfEntries) {
-                    LOGGER.warn("Found: {}", item);
-                }
-                throw new BagItException("Error: Multiple METS locations defined!");
-            }
-            pathToMets = listOfEntries.get(0);
-        }
-        LOGGER.trace("Path to METS: {}", pathToMets);
-        return pathToMets;
-    }
-
-    /**
-     * Determines the path to the METS file.
-     *
-     * @param bag BagIt container.
-     *
-     * @return Relative path to METS file.
-     */
-    private String getOcrdIdentifierOfBag(Bag bag) throws BagItException {
-        List<String> listOfEntries = bag.getMetadata().get(X_OCRD_IDENTIFIER);
-        String ocrdIdentifier = null;
-        if (listOfEntries != null) {
-            if (listOfEntries.size() > 1) {
-                LOGGER.error("There are multiple OCRD identifiers defined!");
-                for (String item : listOfEntries) {
-                    LOGGER.warn("Found: {}", item);
-                }
-                throw new BagItException("Error: Multiple OCRD identifiers defined!");
-            }
-            ocrdIdentifier = listOfEntries.get(0);
-        }
-        LOGGER.trace("OCRD identifier: {}", ocrdIdentifier);
-        return ocrdIdentifier;
     }
 
     /**
