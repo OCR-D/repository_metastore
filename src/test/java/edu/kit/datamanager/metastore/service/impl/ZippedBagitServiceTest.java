@@ -16,18 +16,11 @@
 package edu.kit.datamanager.metastore.service.impl;
 
 import com.arangodb.springframework.core.ArangoOperations;
-import edu.kit.datamanager.metastore.entity.MetsDocument;
 import edu.kit.datamanager.metastore.entity.ZippedBagit;
-import edu.kit.datamanager.metastore.exception.InvalidFormatException;
-import edu.kit.datamanager.metastore.exception.ResourceAlreadyExistsException;
 import edu.kit.datamanager.metastore.repository.ZippedBagitRepository;
 import edu.kit.datamanager.metastore.runner.CrudRunner;
-import edu.kit.datamanager.util.AuthenticationHelper;
-import java.io.File;
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -35,32 +28,16 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunnerDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 /**
  *
  */
 @RunWith(SpringRunner.class)
-@PowerMockRunnerDelegate(SpringJUnit4ClassRunner.class)
-@PowerMockIgnore({"javax.crypto.*", "javax.management.*"})
-@PrepareForTest(AuthenticationHelper.class)
 @SpringBootTest
-@AutoConfigureMockMvc
-@TestExecutionListeners(listeners = {
-    DependencyInjectionTestExecutionListener.class,
-    TransactionalTestExecutionListener.class
-})
 public class ZippedBagitServiceTest {
 
     @Autowired
@@ -185,10 +162,7 @@ public class ZippedBagitServiceTest {
     public void testGetMostRecentBagitByInvalidOcrdIdentifier() {
         System.out.println("testGetMostRecentBagitByInvalidOcrdIdentifier");
         ZippedBagitService instance = bagitService;
-        String resourceId = "resource_0007";
         String ocrdIdentifier = "unknownOcrdIdentifier";
-        String url = "url7";
-        Integer expectedVersion = 2;
         ZippedBagit mi = instance.getMostRecentZippedBagitByOcrdIdentifier(ocrdIdentifier);
         assertNull(mi);
     }
@@ -202,10 +176,7 @@ public class ZippedBagitServiceTest {
         System.out.println("testGetMostRecentBagitByInvalidOcrdIdentifierOfEmptyDatabase");
         dropDatabase();
         ZippedBagitService instance = bagitService;
-        String resourceId = "resource_0007";
         String ocrdIdentifier = "unknownOcrdIdentifier";
-        String url = "url7";
-        Integer expectedVersion = 2;
         ZippedBagit mi = instance.getMostRecentZippedBagitByOcrdIdentifier(ocrdIdentifier);
         assertNull(mi);
     }
@@ -302,10 +273,8 @@ public class ZippedBagitServiceTest {
     public void testInvalidGetOcrdIdentifierAndVersion() {
         System.out.println("testInvalidGetOcrdIdentifierAndVersion");
         ZippedBagitService instance = bagitService;
-        String resourceId = "resource_0003";
         String ocrdIdentifier = "id_0002";
         String unknownOcrdIdentifier = "unknownOcrdIdentifier";
-        String url = "url3";
         Integer expectedVersion = 4;
         ZippedBagit mi = instance.getZippedBagitByOcrdIdentifierAndVersion(ocrdIdentifier, expectedVersion);
         assertNull(mi);
@@ -322,10 +291,7 @@ public class ZippedBagitServiceTest {
         System.out.println("testGetOcrdIdentifierAndVersionOfEmptyDatabase");
         dropDatabase();
         ZippedBagitService instance = bagitService;
-        String resourceId = "resource_0003";
         String ocrdIdentifier = "id_0002";
-        String unknownOcrdIdentifier = "unknownOcrdIdentifier";
-        String url = "url3";
         Integer expectedVersion = 4;
         ZippedBagit mi = instance.getZippedBagitByOcrdIdentifierAndVersion(ocrdIdentifier, expectedVersion);
         assertNull(mi);
@@ -386,7 +352,6 @@ public class ZippedBagitServiceTest {
         System.out.println("testGetAllVersionsByOcrdIdentifier");
         ZippedBagitService instance = bagitService;
         String ocrdIdentifier = "id_0002";
-        Integer expectedVersion = 15;
         List<Integer> mi = instance.getAllVersionsByOcrdIdentifier(ocrdIdentifier);
         assertEquals(4, mi.size());
         assertTrue(mi.contains(Integer.valueOf(1)));

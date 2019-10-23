@@ -58,15 +58,7 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
  *
  */
 @RunWith(SpringRunner.class)
-@PowerMockRunnerDelegate(SpringJUnit4ClassRunner.class)
-@PowerMockIgnore({"javax.crypto.*", "javax.management.*"})
-@PrepareForTest(AuthenticationHelper.class)
 @SpringBootTest
-@AutoConfigureMockMvc
-@TestExecutionListeners(listeners = {
-  DependencyInjectionTestExecutionListener.class,
-  TransactionalTestExecutionListener.class
-})
 public class MetsPropertiesServiceTest {
 
   @Autowired

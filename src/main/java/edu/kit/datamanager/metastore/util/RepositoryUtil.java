@@ -246,7 +246,7 @@ public class RepositoryUtil {
         // ...try once again
         handleFileUpload = apiInstance.handleFileUploadUsingPOSTWithHttpInfo(idOfResource, uploadFile, force, metadata, relativePath.toString());
       } else {
-        String message = String.format("Post file '%1s' to resource with ID '%2s' failed with status code '%d'", relativePath.toString(), idOfResource);
+        String message = String.format("Post file '%1s' to resource with ID '%2s' failed with status code '%d'", relativePath.toString(), idOfResource, ae.getCode());
         logApiException(message, ae);
         throw ae;
       }
