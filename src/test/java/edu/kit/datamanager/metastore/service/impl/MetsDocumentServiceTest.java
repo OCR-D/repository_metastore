@@ -118,12 +118,7 @@ public class MetsDocumentServiceTest {
   @Before
   public void setUp() {
     startDate = new Date();
-    try {
       operations.dropDatabase();
-    } catch (DataAccessException dae) {
-      System.out.println("This message should be printed only once!");
-      System.out.println(dae.toString());
-    }
     repository.saveAll(CrudRunner.createMetsDocuments());
     metsDocumentService = new MetsDocumentService();
     metsDocumentService.setMetsDocumentRepository(repository);

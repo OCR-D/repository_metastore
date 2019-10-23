@@ -69,9 +69,9 @@ public class MetsFileServiceTest {
       System.out.println("This message should be printed only once!");
       System.out.println(dae.toString());
     }
-    metsFileRepository.saveAll(CrudRunner.createMetsFiles());
     metsFileService = new MetsFileService();
     metsFileService.setMetsFileRepository(metsFileRepository);
+    metsFileRepository.saveAll(CrudRunner.createMetsFiles());
   }
 
   @After

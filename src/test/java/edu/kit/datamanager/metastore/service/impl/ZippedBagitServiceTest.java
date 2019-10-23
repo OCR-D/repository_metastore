@@ -67,7 +67,10 @@ public class ZippedBagitServiceTest {
     public void setUp() {
         dropDatabase();
         before = new Date();
-        repository.saveAll(CrudRunner.createZippedBagits());
+        for (ZippedBagit item: CrudRunner.createZippedBagits()) {
+            repository.save(item);
+        }
+//        repository.saveAll();
         after = new Date();
 
         bagitService = new ZippedBagitService();
