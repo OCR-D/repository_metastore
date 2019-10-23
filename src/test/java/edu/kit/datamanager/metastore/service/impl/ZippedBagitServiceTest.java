@@ -44,7 +44,7 @@ public class ZippedBagitServiceTest {
     private ArangoOperations operations;
 
     @Autowired
-    private ZippedBagitRepository repository;
+    private ZippedBagitRepository zippedBagitRepository;
 
     private ZippedBagitService bagitService;
 
@@ -67,14 +67,11 @@ public class ZippedBagitServiceTest {
     public void setUp() {
         dropDatabase();
         before = new Date();
-        for (ZippedBagit item: CrudRunner.createZippedBagits()) {
-            repository.save(item);
-        }
-//        repository.saveAll();
+        zippedBagitRepository.saveAll(CrudRunner.createZippedBagits());
         after = new Date();
 
         bagitService = new ZippedBagitService();
-        bagitService.setBagitRepository(repository);
+        bagitService.setBagitRepository(zippedBagitRepository);
     }
 
     @After
