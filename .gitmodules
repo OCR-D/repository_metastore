@@ -5,3 +5,5 @@
 [submodule "submodules/ocrd_workspace"]
 	path = submodules/ocrd_workspace
 	url = https://github.com/VolkerHartmann/ocrd_workspace.git
+	branch = master
+

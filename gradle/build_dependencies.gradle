@@ -30,7 +30,7 @@ task buildOcrdWorkspace(type:Exec){
   dependsOn buildServiceBase
 
   workingDir 'submodules/ocrd_workspace'
-  commandLine 'sh', './gradlew', 'build', 'install'
+  commandLine './gradlew', 'build', 'install'
 
    standardOutput = new ByteArrayOutputStream()
 
