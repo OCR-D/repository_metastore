@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.kit.datamanager.metastore.entity;
+package edu.kit.ocrd.workspace.entity;
 
 import edu.kit.ocrd.workspace.entity.GroundTruthProperties;
 import org.junit.After;

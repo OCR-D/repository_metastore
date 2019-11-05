@@ -10,12 +10,12 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
+ * See the License for the specific genre governing permissions and
  * limitations under the License.
  */
-package edu.kit.datamanager.metastore.entity;
+package edu.kit.ocrd.workspace.entity;
 
-import edu.kit.ocrd.workspace.entity.LanguageMetadata;
+import edu.kit.ocrd.workspace.entity.GenreMetadata;
 import edu.kit.datamanager.metastore.util.MetsDocumentUtil;
 import java.io.File;
 import java.util.List;
@@ -31,12 +31,12 @@ import static org.junit.Assert.*;
 /**
  *
  */
-public class LanguageMetadataTest {
+public class GenreMetadataTest {
   String resourceId = "resourceId";
-  String language = "language";
+  String genre = "genre";
   String id = "id";
   
-  public LanguageMetadataTest() {
+  public GenreMetadataTest() {
   }
   
   @BeforeClass
@@ -56,12 +56,12 @@ public class LanguageMetadataTest {
   }
 
   /**
-   * Test of getId method, of class LanguageMetadata.
+   * Test of getId method, of class GenreMetadata.
    */
   @Test
   public void testSetAndGetId() {
     System.out.println("set and getId");
-    LanguageMetadata instance = new LanguageMetadata();
+    GenreMetadata instance = new GenreMetadata();
     String expResult = id;
     instance.setId(id);
     String result = instance.getId();
@@ -69,12 +69,12 @@ public class LanguageMetadataTest {
   }
 
   /**
-   * Test of getResourceId method, of class LanguageMetadata.
+   * Test of getResourceId method, of class GenreMetadata.
    */
   @Test
   public void testSetAndGetResourceId() {
     System.out.println("set and getResourceId");
-    LanguageMetadata instance = new LanguageMetadata();
+    GenreMetadata instance = new GenreMetadata();
     String expResult = resourceId;
     instance.setResourceId(resourceId);
     String result = instance.getResourceId();
@@ -82,36 +82,36 @@ public class LanguageMetadataTest {
   }
 
   /**
-   * Test of getLanguage method, of class LanguageMetadata.
+   * Test of getGenre method, of class GenreMetadata.
    */
   @Test
-  public void testSetAndGetLanguage() {
-    System.out.println("set and getLanguage");
-    LanguageMetadata instance = new LanguageMetadata();
-    String expResult = language;
-    instance.setLanguage(language);
-    String result = instance.getLanguage();
+  public void testSetAndGetGenre() {
+    System.out.println("set and getGenre");
+    GenreMetadata instance = new GenreMetadata();
+    String expResult = genre;
+    instance.setGenre(genre);
+    String result = instance.getGenre();
     assertEquals(expResult, result);
   }
 
   /**
-   * Test of toString method, of class LanguageMetadata.
+   * Test of toString method, of class GenreMetadata.
    */
   @Test
   public void testToString() {
     System.out.println("toString");
-    LanguageMetadata instance = new LanguageMetadata(resourceId, language);
+    GenreMetadata instance = new GenreMetadata(resourceId, genre);
     String result = instance.toString();
     assertTrue(result.contains("resourceId=" + resourceId));
-    assertTrue(result.contains("language=" + language));
+    assertTrue(result.contains("genre=" + genre));
   }
   
   @Test
   public void testConstructor() {
     System.out.println("constructor");
-    LanguageMetadata instance = new LanguageMetadata(resourceId, language);
+    GenreMetadata instance = new GenreMetadata(resourceId, genre);
     assertEquals(resourceId, instance.getResourceId());
-    assertEquals(language, instance.getLanguage());
+    assertEquals(genre, instance.getGenre());
   }
 
  @Test
@@ -120,11 +120,11 @@ public class LanguageMetadataTest {
     File file = new File("src/test/resources/mets/validMets_newFormat.xml");
     assertTrue("File exists!", file.exists());
     Document document = JaxenUtil.getDocument(file);
-    List<LanguageMetadata> extractLanguageMetadataFromMets = MetsDocumentUtil.extractLanguageMetadataFromMets(document, resourceId);
-    assertTrue(extractLanguageMetadataFromMets.size() == 1);
-    LanguageMetadata lmd = extractLanguageMetadataFromMets.get(0);
-    assertEquals(lmd.getResourceId(), resourceId);
-    assertEquals(lmd.getLanguage(),"deu");
+    List<GenreMetadata> extractGenreMetadataFromMets = MetsDocumentUtil.extractGenreMetadataFromMets(document, resourceId);
+    assertTrue(extractGenreMetadataFromMets.size() == 1);
+    GenreMetadata cmd = extractGenreMetadataFromMets.get(0);
+    assertEquals(cmd.getResourceId(), resourceId);
+    assertEquals(cmd.getGenre(),"Gedichte");
   }
   
 }
