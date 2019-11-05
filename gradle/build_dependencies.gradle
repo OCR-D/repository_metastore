@@ -1,8 +1,7 @@
 /**Build the service-base library. This is the first step required before any other library can be build.
  * There are two more options involved in here:
  * 
- * If properties 'clean-release' or 'travis' are set, the current sources of all dependend libraries are pulled from the remote repository. 
- * If property 'clean-release' is set, also the sources of the base-repo are pulled before the build starts.
+ * If properties 'release' or 'travis' are set, the current sources of all dependend libraries are pulled from the remote repository. 
  * 
  * Afterwards, 'gradlew build install' is executed for the service-base dependency.
  */
@@ -21,12 +20,15 @@ task buildServiceBase(type:Exec){
    }
 }
 
+/**Build the ocrd workspace validation library. 
+ * This dependeny is build after the service-base dependency has been built.
+ * 
+ */
+
 task buildOcrdWorkspace(type:Exec){
-   if (project.hasProperty('release') || project.hasProperty('travis')) {
-      apply from: 'gradle/git_checkout.gradle'
-      dependsOn checkoutDependencies
-   }
-   workingDir 'submodules/ocrd_workspace'
+  dependsOn buildServiceBase
+
+  workingDir 'submodules/ocrd_workspace'
    commandLine './gradlew', 'build', 'install'
 
    standardOutput = new ByteArrayOutputStream()
@@ -41,6 +43,5 @@ task buildOcrdWorkspace(type:Exec){
  * task depends on task 'buildServiceBase', which has not to be called again.
  */
 compileJava {
-      dependsOn buildServiceBase
-      dependsOn buildOcrdWorkspace
+  dependsOn buildOcrdWorkspace
 }
