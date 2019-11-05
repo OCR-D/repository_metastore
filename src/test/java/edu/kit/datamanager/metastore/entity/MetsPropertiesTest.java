@@ -15,6 +15,10 @@
  */
 package edu.kit.datamanager.metastore.entity;
 
+import edu.kit.ocrd.workspace.entity.MetsProperties;
+import edu.kit.ocrd.workspace.entity.ClassificationMetadata;
+import edu.kit.ocrd.workspace.entity.LanguageMetadata;
+import edu.kit.ocrd.workspace.entity.PageMetadata;
 import edu.kit.datamanager.metastore.util.MetsDocumentUtil;
 import java.io.File;
 import java.util.List;

@@ -16,7 +16,7 @@
 package edu.kit.datamanager.metastore.repository;
 
 import com.arangodb.springframework.repository.ArangoRepository;
-import edu.kit.datamanager.metastore.entity.GenreMetadata;
+import edu.kit.ocrd.workspace.entity.GenreMetadata;
 
 /**
  * Repository holding all GenreMetadata.

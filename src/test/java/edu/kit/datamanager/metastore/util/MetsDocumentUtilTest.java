@@ -15,8 +15,8 @@
  */
 package edu.kit.datamanager.metastore.util;
 
-import edu.kit.datamanager.metastore.entity.MetsFile;
-import edu.kit.datamanager.metastore.entity.MetsProperties;
+import edu.kit.ocrd.workspace.entity.MetsFile;
+import edu.kit.ocrd.workspace.entity.MetsProperties;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;

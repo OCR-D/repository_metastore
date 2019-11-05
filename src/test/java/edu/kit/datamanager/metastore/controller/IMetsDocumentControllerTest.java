@@ -16,8 +16,8 @@
 package edu.kit.datamanager.metastore.controller;
 
 import com.arangodb.springframework.core.ArangoOperations;
-import edu.kit.datamanager.metastore.entity.GroundTruthProperties;
-import edu.kit.datamanager.metastore.entity.MetsProperties;
+import edu.kit.ocrd.workspace.entity.GroundTruthProperties;
+import edu.kit.ocrd.workspace.entity.MetsProperties;
 import edu.kit.datamanager.metastore.repository.ClassificationMetadataRepository;
 import edu.kit.datamanager.metastore.repository.GenreMetadataRepository;
 import edu.kit.datamanager.metastore.repository.LanguageMetadataRepository;

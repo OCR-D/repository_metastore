@@ -16,7 +16,7 @@
 package edu.kit.datamanager.metastore.service.impl;
 
 import edu.kit.datamanager.metastore.service.IRepoService;
-import edu.kit.datamanager.metastore.entity.MetsDocument;
+import edu.kit.ocrd.workspace.entity.MetsDocument;
 import edu.kit.datamanager.metastore.repository.MetsDocumentRepository;
 import java.io.File;
 import java.util.Iterator;

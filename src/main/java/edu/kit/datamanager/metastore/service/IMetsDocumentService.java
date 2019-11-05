@@ -15,7 +15,7 @@
  */
 package edu.kit.datamanager.metastore.service;
 
-import edu.kit.datamanager.metastore.entity.MetsDocument;
+import edu.kit.ocrd.workspace.entity.MetsDocument;
 import edu.kit.datamanager.metastore.exception.ResourceAlreadyExistsException;
 import java.util.List;
 

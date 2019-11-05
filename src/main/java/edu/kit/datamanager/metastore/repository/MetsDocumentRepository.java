@@ -16,8 +16,8 @@
 package edu.kit.datamanager.metastore.repository;
 
 import com.arangodb.springframework.repository.ArangoRepository;
-import edu.kit.datamanager.metastore.entity.IVersion;
-import edu.kit.datamanager.metastore.entity.MetsDocument;
+import edu.kit.ocrd.workspace.entity.IVersion;
+import edu.kit.ocrd.workspace.entity.MetsDocument;
 
 /**
  * Repository holding all MetsDocuments.

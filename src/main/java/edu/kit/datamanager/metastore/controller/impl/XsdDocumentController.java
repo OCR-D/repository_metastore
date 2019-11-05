@@ -16,7 +16,7 @@
 package edu.kit.datamanager.metastore.controller.impl;
 
 import edu.kit.datamanager.metastore.controller.IXsdDocumentController;
-import edu.kit.datamanager.metastore.entity.XmlSchemaDefinition;
+import edu.kit.ocrd.workspace.entity.XmlSchemaDefinition;
 import edu.kit.datamanager.metastore.service.IXsdDocumentService;
 import java.io.BufferedReader;
 import java.io.IOException;

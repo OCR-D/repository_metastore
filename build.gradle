@@ -99,19 +99,17 @@ dependencies {
   // bag it
   compile("gov.loc:bagit:5.2.0")
   
-  // local dependencies
-  compile("org.fzk.ipe:Tools:1.6")
-  compile("jaxen:jaxen:1.1.6")
-  compile("org.jdom:jdom:1.1")
+  // sub modules
+  compile("edu.kit.ocrd:ocrd-workspace:0.1.0")
+  compile("edu.kit.datamanager:service-base:0.1") { 
+    exclude group: '*'    
+  } 
 
   // Stub for KIT DM 2.0
   compile("io.swagger:swagger-java-client:1.0.1")
   // Stub for KIT DM 2.0 Auth
   compile("io.swagger:java-auth-client:1.0.0")
   //compile("org.eclipse.persistence:javax.persistence:2.1.0")
-  compile("edu.kit.datamanager:service-base:0.1") { 
-    exclude group: '*'    
-  } 
   compileOnly('org.projectlombok:lombok')
 
   testCompile("junit:junit:4.12")

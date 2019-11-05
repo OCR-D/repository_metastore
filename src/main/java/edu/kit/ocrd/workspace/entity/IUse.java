@@ -13,24 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.kit.datamanager.metastore.entity;
+package edu.kit.ocrd.workspace.entity;
 
 /**
- * Interface for the resourceId of METS document.
+ * Interface to get and set USE of an instance.
  */
-public interface IResourceId {
+public interface IUse {
+
   /**
-   * Set resourceId of the METS document.
-   * 
-   * @param resourceId Resource ID of the METS document.
+   * Set USE of a file.
+   *
+   * @param use USE to set.
    */
-  public void setResourceId(String resourceId);
-  
+  public void setUse(String use);
+
   /**
-   * Get resourceId of the METS document.
-   * 
-   * @return Resource ID of the METS document. 
+   * Get USE of a file.
+   *
+   * @return USE of the file.
    */
-  public String getResourceId();
-  
+  public String getUse();
 }

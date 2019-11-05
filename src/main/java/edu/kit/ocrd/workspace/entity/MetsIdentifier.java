@@ -10,10 +10,10 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific genre governing permissions and
+ * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.kit.datamanager.metastore.entity;
+package edu.kit.ocrd.workspace.entity;
 
 import org.springframework.data.annotation.Id;
 
@@ -21,16 +21,17 @@ import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.HashIndex;
 
 /**
- * This class contains information about genres assigned to a METS document.
+ * This class contains information about one identifier of a METS document.
  * These are: <p><ul>
  *    <li>Resource Identifier</li>
- *    <li>Genre</li>
+ *    <li>Type</li>
+ *    <li>Identifier</li>
  *    </ul></p>
  */
-@Document("genreMetadata")
+@Document("metsIdentifier")
 @HashIndex(fields = {"resourceId"})
-@HashIndex(fields = {"genre"})
-public class GenreMetadata {
+@HashIndex(fields = {"identifier"})
+public class MetsIdentifier {
   /** 
    * ID of the document.
    */
@@ -41,29 +42,35 @@ public class GenreMetadata {
    */
   private String resourceId;
   /**
-   * genre of the document.
+   * Type of identifier (one of: purl, urn, handle, url).
    */
-  private String genre;
+  private String type;
+  /**
+   * Identifier of given type.
+   */
+  private String identifier;
+
 
   /**
-   * Default constructor for GenreMetadata.
+   * Default constructor for MetsFile.
    */
-  public GenreMetadata() {
+  public MetsIdentifier() {
     super();
   }
 
   /**
-   * Constructor for GenreMetadata
+   * Constructor for MetsFile
    * 
    * @param resourceId ResourceID of the METS document.
-   * @param genre Genre of the document.
+   * @param type Type of identifier.
+   * @param identifier Identifier.
    */
-  public GenreMetadata(final String resourceId,final String genre) {
+  public MetsIdentifier(final String resourceId, final String type, final String identifier) {
     super();
     this.resourceId = resourceId;
-    this.genre = genre;
+    this.type = type;
+    this.identifier = identifier;
   }
-
   /**
    * Get ID.
    * @return ID
@@ -94,26 +101,39 @@ public class GenreMetadata {
   }
 
   /**
-   * Get genre of document.
-   * 
-   * @return the genre
+   * Get type of identifier.
+   * @return the type
    */
-  public String getGenre() {
-    return genre;
+  public String getType() {
+    return type;
   }
 
   /**
-   * Set genre of document.
-   * 
-   * @param genre the genre to set
+   * Set type of identifier.
+   * @param type the type to set
    */
-  public void setGenre(String genre) {
-    this.genre = genre;
+  public void setType(String type) {
+    this.type = type;
   }
 
+  /**
+   * Get identifier.
+   * @return the identifier
+   */
+  public String getIdentifier() {
+    return identifier;
+  }
+
+  /**
+   * Set identifier.
+   * @param identifier the identifier to set
+   */
+  public void setIdentifier(String identifier) {
+    this.identifier = identifier;
+  }
   
   @Override
   public String toString() {
-     return "GenreMetadata [id=" + id + ", resourceId=" + resourceId + ", genre=" + genre + "]";
+     return "MetsIdentifier [id=" + id + ", resourceId=" + resourceId + ", type=" + type + ", identifier=" + identifier + "]";
   }
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.kit.datamanager.metastore.entity;
+package edu.kit.ocrd.workspace.entity;
 
 import org.springframework.data.annotation.Id;
 
@@ -21,17 +21,16 @@ import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.HashIndex;
 
 /**
- * This class contains information about one identifier of a METS document.
+ * This class contains information about languages used inside a METS document.
  * These are: <p><ul>
  *    <li>Resource Identifier</li>
- *    <li>Type</li>
- *    <li>Identifier</li>
+ *    <li>Language</li>
  *    </ul></p>
  */
-@Document("metsIdentifier")
+@Document("languageMetadata")
 @HashIndex(fields = {"resourceId"})
-@HashIndex(fields = {"identifier"})
-public class MetsIdentifier {
+@HashIndex(fields = {"language"})
+public class LanguageMetadata {
   /** 
    * ID of the document.
    */
@@ -42,35 +41,29 @@ public class MetsIdentifier {
    */
   private String resourceId;
   /**
-   * Type of identifier (one of: purl, urn, handle, url).
+   * language of the document.
    */
-  private String type;
-  /**
-   * Identifier of given type.
-   */
-  private String identifier;
-
+  private String language;
 
   /**
-   * Default constructor for MetsFile.
+   * Default constructor for LanguageMetadata.
    */
-  public MetsIdentifier() {
+  public LanguageMetadata() {
     super();
   }
 
   /**
-   * Constructor for MetsFile
+   * Constructor for LanguageMetadata
    * 
    * @param resourceId ResourceID of the METS document.
-   * @param type Type of identifier.
-   * @param identifier Identifier.
+   * @param language Language of the document.
    */
-  public MetsIdentifier(final String resourceId, final String type, final String identifier) {
+  public LanguageMetadata(final String resourceId,final String language) {
     super();
     this.resourceId = resourceId;
-    this.type = type;
-    this.identifier = identifier;
+    this.language = language;
   }
+
   /**
    * Get ID.
    * @return ID
@@ -101,39 +94,26 @@ public class MetsIdentifier {
   }
 
   /**
-   * Get type of identifier.
-   * @return the type
+   * Get language of document.
+   * 
+   * @return the language
    */
-  public String getType() {
-    return type;
+  public String getLanguage() {
+    return language;
   }
 
   /**
-   * Set type of identifier.
-   * @param type the type to set
+   * Set language of document.
+   * 
+   * @param language the language to set
    */
-  public void setType(String type) {
-    this.type = type;
+  public void setLanguage(String language) {
+    this.language = language;
   }
 
-  /**
-   * Get identifier.
-   * @return the identifier
-   */
-  public String getIdentifier() {
-    return identifier;
-  }
-
-  /**
-   * Set identifier.
-   * @param identifier the identifier to set
-   */
-  public void setIdentifier(String identifier) {
-    this.identifier = identifier;
-  }
   
   @Override
   public String toString() {
-     return "MetsIdentifier [id=" + id + ", resourceId=" + resourceId + ", type=" + type + ", identifier=" + identifier + "]";
+     return "LanguageMetadata [id=" + id + ", resourceId=" + resourceId + ", language=" + language + "]";
   }
 }

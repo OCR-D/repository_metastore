@@ -15,12 +15,12 @@
  */
 package edu.kit.datamanager.metastore.service;
 
-import edu.kit.datamanager.metastore.entity.ClassificationMetadata;
-import edu.kit.datamanager.metastore.entity.GenreMetadata;
-import edu.kit.datamanager.metastore.entity.LanguageMetadata;
-import edu.kit.datamanager.metastore.entity.MetsIdentifier;
-import edu.kit.datamanager.metastore.entity.MetsProperties;
-import edu.kit.datamanager.metastore.entity.PageMetadata;
+import edu.kit.ocrd.workspace.entity.ClassificationMetadata;
+import edu.kit.ocrd.workspace.entity.GenreMetadata;
+import edu.kit.ocrd.workspace.entity.LanguageMetadata;
+import edu.kit.ocrd.workspace.entity.MetsIdentifier;
+import edu.kit.ocrd.workspace.entity.MetsProperties;
+import edu.kit.ocrd.workspace.entity.PageMetadata;
 import java.util.List;
 import org.springframework.ui.Model;
 

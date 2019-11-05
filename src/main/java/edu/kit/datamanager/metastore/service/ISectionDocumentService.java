@@ -15,7 +15,7 @@
  */
 package edu.kit.datamanager.metastore.service;
 
-import edu.kit.datamanager.metastore.entity.SectionDocument;
+import edu.kit.ocrd.workspace.entity.SectionDocument;
 import java.util.List;
 
 /**

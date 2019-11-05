@@ -15,7 +15,7 @@
  */
 package edu.kit.datamanager.metastore.service;
 
-import edu.kit.datamanager.metastore.entity.ZippedBagit;
+import edu.kit.ocrd.workspace.entity.ZippedBagit;
 import java.util.List;
 
 /**

@@ -15,7 +15,7 @@
  */
 package edu.kit.datamanager.metastore.service;
 
-import edu.kit.datamanager.metastore.entity.MetsFile;
+import edu.kit.ocrd.workspace.entity.MetsFile;
 import java.util.List;
 
 /**

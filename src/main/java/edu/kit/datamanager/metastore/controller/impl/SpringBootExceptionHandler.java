@@ -24,7 +24,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.kit.datamanager.metastore.exception.BagItException;
+import edu.kit.datamanager.metastore.exception.InvalidFormatException;
 import edu.kit.datamanager.metastore.exception.ResourceAlreadyExistsException;
+import edu.kit.ocrd.workspace.exception.WorkspaceException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
@@ -61,6 +63,30 @@ public class SpringBootExceptionHandler{
   @ExceptionHandler(StorageFileNotFoundException.class)
   public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
     return ResponseEntity.notFound().build();
+  }
+
+  /**
+   * Handler for InvalidFormatException.
+   *
+   * @param exc Exception parsing file.
+   *
+   * @return Error status.
+   */
+  @ExceptionHandler(InvalidFormatException.class)
+  public ResponseEntity<?> handleStorageFileNotFound(InvalidFormatException exc) {
+    return ResponseEntity.badRequest().body(exc.getMessage());
+  }
+
+  /**
+   * Handler for InvalidFormatException.
+   *
+   * @param exc Exception parsing file.
+   *
+   * @return Error status.
+   */
+  @ExceptionHandler(WorkspaceException.class)
+  public ResponseEntity<?> handleStorageFileNotFound(WorkspaceException exc) {
+    return ResponseEntity.badRequest().body(exc.getMessage());
   }
 
   /**

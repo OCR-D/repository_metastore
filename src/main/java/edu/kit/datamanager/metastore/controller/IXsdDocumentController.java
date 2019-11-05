@@ -15,7 +15,7 @@
  */
 package edu.kit.datamanager.metastore.controller;
 
-import edu.kit.datamanager.metastore.entity.XmlSchemaDefinition;
+import edu.kit.ocrd.workspace.entity.XmlSchemaDefinition;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import java.io.IOException;

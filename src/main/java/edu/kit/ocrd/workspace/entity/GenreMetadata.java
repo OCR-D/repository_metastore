@@ -10,10 +10,10 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
+ * See the License for the specific genre governing permissions and
  * limitations under the License.
  */
-package edu.kit.datamanager.metastore.entity;
+package edu.kit.ocrd.workspace.entity;
 
 import org.springframework.data.annotation.Id;
 
@@ -21,16 +21,16 @@ import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.HashIndex;
 
 /**
- * This class contains information about languages used inside a METS document.
+ * This class contains information about genres assigned to a METS document.
  * These are: <p><ul>
  *    <li>Resource Identifier</li>
- *    <li>Language</li>
+ *    <li>Genre</li>
  *    </ul></p>
  */
-@Document("languageMetadata")
+@Document("genreMetadata")
 @HashIndex(fields = {"resourceId"})
-@HashIndex(fields = {"language"})
-public class LanguageMetadata {
+@HashIndex(fields = {"genre"})
+public class GenreMetadata {
   /** 
    * ID of the document.
    */
@@ -41,27 +41,27 @@ public class LanguageMetadata {
    */
   private String resourceId;
   /**
-   * language of the document.
+   * genre of the document.
    */
-  private String language;
+  private String genre;
 
   /**
-   * Default constructor for LanguageMetadata.
+   * Default constructor for GenreMetadata.
    */
-  public LanguageMetadata() {
+  public GenreMetadata() {
     super();
   }
 
   /**
-   * Constructor for LanguageMetadata
+   * Constructor for GenreMetadata
    * 
    * @param resourceId ResourceID of the METS document.
-   * @param language Language of the document.
+   * @param genre Genre of the document.
    */
-  public LanguageMetadata(final String resourceId,final String language) {
+  public GenreMetadata(final String resourceId,final String genre) {
     super();
     this.resourceId = resourceId;
-    this.language = language;
+    this.genre = genre;
   }
 
   /**
@@ -94,26 +94,26 @@ public class LanguageMetadata {
   }
 
   /**
-   * Get language of document.
+   * Get genre of document.
    * 
-   * @return the language
+   * @return the genre
    */
-  public String getLanguage() {
-    return language;
+  public String getGenre() {
+    return genre;
   }
 
   /**
-   * Set language of document.
+   * Set genre of document.
    * 
-   * @param language the language to set
+   * @param genre the genre to set
    */
-  public void setLanguage(String language) {
-    this.language = language;
+  public void setGenre(String genre) {
+    this.genre = genre;
   }
 
   
   @Override
   public String toString() {
-     return "LanguageMetadata [id=" + id + ", resourceId=" + resourceId + ", language=" + language + "]";
+     return "GenreMetadata [id=" + id + ", resourceId=" + resourceId + ", genre=" + genre + "]";
   }
 }

@@ -16,15 +16,15 @@
 package edu.kit.datamanager.metastore.service.impl;
 
 import com.arangodb.ArangoDBException;
-import edu.kit.datamanager.metastore.entity.ClassificationMetadata;
-import edu.kit.datamanager.metastore.entity.GenreMetadata;
-import edu.kit.datamanager.metastore.entity.IVersion;
-import edu.kit.datamanager.metastore.entity.LanguageMetadata;
-import edu.kit.datamanager.metastore.entity.MetsDocument;
-import edu.kit.datamanager.metastore.entity.MetsFile;
-import edu.kit.datamanager.metastore.entity.MetsIdentifier;
-import edu.kit.datamanager.metastore.entity.MetsProperties;
-import edu.kit.datamanager.metastore.entity.PageMetadata;
+import edu.kit.ocrd.workspace.entity.ClassificationMetadata;
+import edu.kit.ocrd.workspace.entity.GenreMetadata;
+import edu.kit.ocrd.workspace.entity.IVersion;
+import edu.kit.ocrd.workspace.entity.LanguageMetadata;
+import edu.kit.ocrd.workspace.entity.MetsDocument;
+import edu.kit.ocrd.workspace.entity.MetsFile;
+import edu.kit.ocrd.workspace.entity.MetsIdentifier;
+import edu.kit.ocrd.workspace.entity.MetsProperties;
+import edu.kit.ocrd.workspace.entity.PageMetadata;
 import edu.kit.datamanager.metastore.exception.InvalidFormatException;
 import edu.kit.datamanager.metastore.exception.ResourceAlreadyExistsException;
 import edu.kit.datamanager.metastore.repository.ClassificationMetadataRepository;

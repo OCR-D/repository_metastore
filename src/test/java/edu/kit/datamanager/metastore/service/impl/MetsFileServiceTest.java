@@ -16,7 +16,7 @@
 package edu.kit.datamanager.metastore.service.impl;
 
 import com.arangodb.springframework.core.ArangoOperations;
-import edu.kit.datamanager.metastore.entity.MetsFile;
+import edu.kit.ocrd.workspace.entity.MetsFile;
 import edu.kit.datamanager.metastore.repository.MetsFileRepository;
 import edu.kit.datamanager.metastore.runner.CrudRunner;
 import java.util.List;

@@ -15,6 +15,7 @@
  */
 package edu.kit.datamanager.metastore.entity;
 
+import edu.kit.ocrd.workspace.entity.GroundTruthProperties;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

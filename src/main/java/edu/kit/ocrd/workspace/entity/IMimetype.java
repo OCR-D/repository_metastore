@@ -13,24 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.kit.datamanager.metastore.entity;
+package edu.kit.ocrd.workspace.entity;
 
 /**
- * Interface to get and set PAGEID of an instance.
+ * Interface to get and set Mimetype of an instance.
  */
-public interface IPageId {
+public interface IMimetype {
 
   /**
-   * Set PAGEID of a file.
+   * Set MIMETYPE of a file.
    *
-   * @param pageId PAGEID to set.
+   * @param mimetype MIMETYPE to set.
    */
-  public void setPageId(String pageId);
+  public void setMimetype(String mimetype);
 
   /**
-   * Get PAGEID of a file.
+   * Get MIMETYPE of a file.
    *
-   * @return PAGEID of the file.
+   * @return MIMETYPE of the file.
    */
-  public String getPageId();
+  public String getMimetype();
 }

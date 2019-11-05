@@ -15,6 +15,7 @@
  */
 package edu.kit.datamanager.metastore.entity;
 
+import edu.kit.ocrd.workspace.entity.MetsDocument;
 import java.security.SecureRandom;
 import java.util.Date;
 import org.junit.After;

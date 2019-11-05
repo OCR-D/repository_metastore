@@ -17,7 +17,7 @@ package edu.kit.datamanager.metastore.controller.impl;
 
 import com.arangodb.ArangoDBException;
 import edu.kit.datamanager.metastore.controller.IMetsFileController;
-import edu.kit.datamanager.metastore.entity.MetsFile;
+import edu.kit.ocrd.workspace.entity.MetsFile;
 import edu.kit.datamanager.metastore.service.IMetsFileService;
 import java.util.ArrayList;
 import java.util.Arrays;

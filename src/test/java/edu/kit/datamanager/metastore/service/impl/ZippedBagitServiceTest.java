@@ -16,7 +16,7 @@
 package edu.kit.datamanager.metastore.service.impl;
 
 import com.arangodb.springframework.core.ArangoOperations;
-import edu.kit.datamanager.metastore.entity.ZippedBagit;
+import edu.kit.ocrd.workspace.entity.ZippedBagit;
 import edu.kit.datamanager.metastore.repository.ZippedBagitRepository;
 import edu.kit.datamanager.metastore.runner.CrudRunner;
 import java.util.Date;

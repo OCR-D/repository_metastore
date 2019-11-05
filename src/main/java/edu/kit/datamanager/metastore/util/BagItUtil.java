@@ -62,7 +62,14 @@ public class BagItUtil {
      * Logger.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(BagItUtil.class);
-
+    /**
+     * Error message multiple OCR-D identifier
+     */
+    public static final String MULTIPLE_OCR_D_IDENTIFIER = "Error: Multiple OCRD identifiers defined!";
+    /**
+     * Error message multiple OCR-D identifier
+     */
+    public static final String MULTIPLE_METS_LOCATIONS = "Error: Multiple METS locations defined!";
     /**
      * Key inside Bagit container defining OCRD identifier.
      */
@@ -211,7 +218,7 @@ public class BagItUtil {
                 for (String item : listOfEntries) {
                     LOGGER.warn("Found: {}", item);
                 }
-                throw new BagItException("Error: Multiple METS locations defined!");
+                throw new BagItException(MULTIPLE_METS_LOCATIONS);
             }
             pathToMets = listOfEntries.get(0);
         }
@@ -235,7 +242,7 @@ public class BagItUtil {
                 for (String item : listOfEntries) {
                     LOGGER.warn("Found: {}", item);
                 }
-                throw new BagItException("Error: Multiple OCRD identifiers defined!");
+                throw new BagItException(MULTIPLE_OCR_D_IDENTIFIER);
             }
             ocrdIdentifier = listOfEntries.get(0);
         }

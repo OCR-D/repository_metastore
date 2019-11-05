@@ -15,6 +15,7 @@
  */
 package edu.kit.datamanager.metastore.entity;
 
+import edu.kit.ocrd.workspace.entity.ClassificationMetadata;
 import edu.kit.datamanager.metastore.util.MetsDocumentUtil;
 import java.io.File;
 import java.util.List;

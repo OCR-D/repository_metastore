@@ -16,8 +16,8 @@
 package edu.kit.datamanager.metastore.repository;
 
 import com.arangodb.springframework.repository.ArangoRepository;
-import edu.kit.datamanager.metastore.entity.IUrl;
-import edu.kit.datamanager.metastore.entity.MetsFile;
+import edu.kit.ocrd.workspace.entity.IUrl;
+import edu.kit.ocrd.workspace.entity.MetsFile;
 import java.util.Collection;
 
 /**

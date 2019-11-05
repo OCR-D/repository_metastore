@@ -13,24 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.kit.datamanager.metastore.entity;
+package edu.kit.ocrd.workspace.entity;
 
 /**
- * Interface to get and set USE of an instance.
+ * Interface to get and set PAGEID of an instance.
  */
-public interface IUse {
+public interface IPageId {
 
   /**
-   * Set USE of a file.
+   * Set PAGEID of a file.
    *
-   * @param use USE to set.
+   * @param pageId PAGEID to set.
    */
-  public void setUse(String use);
+  public void setPageId(String pageId);
 
   /**
-   * Get USE of a file.
+   * Get PAGEID of a file.
    *
-   * @return USE of the file.
+   * @return PAGEID of the file.
    */
-  public String getUse();
+  public String getPageId();
 }

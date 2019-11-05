@@ -16,7 +16,7 @@
 package edu.kit.datamanager.metastore.service.impl;
 
 import com.arangodb.springframework.core.ArangoOperations;
-import edu.kit.datamanager.metastore.entity.MetsDocument;
+import edu.kit.ocrd.workspace.entity.MetsDocument;
 import edu.kit.datamanager.metastore.exception.InvalidFormatException;
 import edu.kit.datamanager.metastore.exception.ResourceAlreadyExistsException;
 import edu.kit.datamanager.metastore.repository.ClassificationMetadataRepository;

@@ -15,7 +15,7 @@
  */
 package edu.kit.datamanager.metastore.service.impl;
 
-import edu.kit.datamanager.metastore.entity.XmlSchemaDefinition;
+import edu.kit.ocrd.workspace.entity.XmlSchemaDefinition;
 import edu.kit.datamanager.metastore.repository.XmlSchemaDefinitionRepository;
 import edu.kit.datamanager.metastore.service.IXsdDocumentService;
 import edu.kit.datamanager.metastore.util.XsdUtil;

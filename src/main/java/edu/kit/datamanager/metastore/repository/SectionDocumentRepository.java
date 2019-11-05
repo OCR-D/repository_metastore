@@ -16,7 +16,7 @@
 package edu.kit.datamanager.metastore.repository;
 
 import com.arangodb.springframework.repository.ArangoRepository;
-import edu.kit.datamanager.metastore.entity.SectionDocument;
+import edu.kit.ocrd.workspace.entity.SectionDocument;
 
 /**
  * Repository holding all section documents of METS documents.

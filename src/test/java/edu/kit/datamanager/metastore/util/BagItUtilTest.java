@@ -42,155 +42,150 @@ import static org.junit.Assert.*;
  */
 public class BagItUtilTest {
 
-    public BagItUtilTest() {
+  public BagItUtilTest() {
+  }
+
+  @BeforeClass
+  public static void setUpClass() {
+  }
+
+  @AfterClass
+  public static void tearDownClass() {
+  }
+
+  @Before
+  public void setUp() {
+  }
+
+  @After
+  public void tearDown() {
+  }
+
+  /**
+   * Test of buildBag method, of class BagItUtil.
+   */
+  @Test
+  public void testBuildBag() {
+    System.out.println("buildBagInvalidDirectory");
+    File payLoadPath = new File("/file/not/exists.ocrd.zip");
+    try {
+      Bag result = BagItUtil.buildBag(payLoadPath);
+      assertTrue(false);
+    } catch (BagItException bie) {
+      assertTrue(bie.getMessage().contains("/file/not/exists"));
     }
+  }
 
-    @BeforeClass
-    public static void setUpClass() {
+  /**
+   * Test of buildBag method, of class BagItUtil.
+   */
+  @Test
+  public void testBuildBag1() throws IOException {
+    System.out.println("buildBag");
+    File testDir = new File("src/test/resources/bagit/test");
+    File srcDir = new File("src/test/resources/bagit/data");
+    FileUtils.copyDirectory(srcDir, testDir);
+    try {
+      Bag result = BagItUtil.buildBag(testDir);
+      Stream<Path> list = Files.list(testDir.toPath());
+      assertEquals(5, list.count());
+      assertTrue(true);
+    } catch (BagItException bie) {
+      assertTrue(false);
     }
+    FileUtils.deleteDirectory(testDir);
+  }
 
-    @AfterClass
-    public static void tearDownClass() {
+  /**
+   * Test of readBag method, of class BagItUtil.
+   */
+  @Test
+  public void testReadValidBag() {
+    System.out.println("readValidBag");
+    Path pathToBag = Paths.get("src/test/resources/bagit/", "validBag");
+    Bag result = BagItUtil.readBag(pathToBag);
+    assertTrue(true);
+  }
+
+  /**
+   * Test of readBag method, of class BagItUtil.
+   */
+  @Test
+  public void testReadInvalidBag1() {
+    System.out.println("readInvalidBag1");
+
+    try {
+      Path pathToBag = Paths.get("src/test/resources/bagit/", "invalidChecksum");
+      Bag result = BagItUtil.readBag(pathToBag);
+      assertTrue(false);
+    } catch (BagItException bie) {
+      assertTrue(bie.getMessage().contains("invalidChecksum/data/mets.xml"));
     }
+  }
 
-    @Before
-    public void setUp() {
+  /**
+   * Test of readBag method, of class BagItUtil.
+   */
+  @Test
+  public void testReadInvalidBag2() {
+    System.out.println("readInvalidBag2");
+
+    try {
+      Path pathToBag = Paths.get("src/test/resources/bagit/", "invalidOxum");
+      Bag result = BagItUtil.readBag(pathToBag);
+      assertTrue(false);
+    } catch (BagItException bie) {
+      assertTrue(bie.getMessage().contains("[18778]"));
     }
+  }
 
-    @After
-    public void tearDown() {
+  /**
+   * Test of readBag method, of class BagItUtil.
+   */
+  @Test
+  public void testReadInvalidBag3() {
+    System.out.println("readInvalidBag3");
+
+    try {
+      Path pathToBag = Paths.get("src/test/resources/bagit/", "invalidVersion");
+      Bag result = BagItUtil.readBag(pathToBag);
+      assertTrue(false);
+    } catch (BagItException bie) {
+      assertTrue(bie.getMessage().contains("1.1"));
     }
+  }
 
-    /**
-     * Test of buildBag method, of class BagItUtil.
-     */
-    @Test
-    public void testBuildBag() {
-        System.out.println("buildBagInvalidDirectory");
-        File payLoadPath = new File("/file/not/exists.ocrd.zip");
-        try {
-            Bag result = BagItUtil.buildBag(payLoadPath);
-            assertTrue(false);
-        } catch (BagItException bie) {
-            assertTrue(bie.getMessage().contains("/file/not/exists"));
-        }
+  /**
+   * Test of readBag method, of class BagItUtil.
+   */
+  @Test
+  public void testReadInvalidBag4() {
+    System.out.println("readInvalidBag4");
+
+    try {
+      Path pathToBag = Paths.get("src/test/resources/bagit/", "notComplete");
+      Bag result = BagItUtil.readBag(pathToBag);
+      assertTrue(false);
+    } catch (BagItException bie) {
+      assertTrue(bie.getMessage().contains("notComplete/data/mets.xml"));
     }
+  }
 
-    /**
-     * Test of buildBag method, of class BagItUtil.
-     */
-    @Test
-    public void testBuildBag1() throws IOException {
-        System.out.println("buildBag");
-        File testDir = new File("src/test/resources/bagit/test");
-        File srcDir = new File("src/test/resources/bagit/data");
-        FileUtils.copyDirectory(srcDir, testDir);
-        try {
-            Bag result = BagItUtil.buildBag(testDir);
-            Stream<Path> list = Files.list(testDir.toPath());
-            assertEquals(5, list.count());
-            assertTrue(true);
-        } catch (BagItException bie) {
-            assertTrue(false);
-        }
-        FileUtils.deleteDirectory(testDir);
+  /**
+   * Test of readBag method, of class BagItUtil.
+   */
+  @Test
+  public void testReadInvalidBag5() {
+    System.out.println("readInvalidBag5");
+
+    try {
+      Path pathToBag = Paths.get("src/test/resources/bagit/", "notExists");
+      Bag result = BagItUtil.readBag(pathToBag);
+      assertTrue(false);
+    } catch (BagItException bie) {
+      assertTrue(bie.getMessage().contains("notExists/bagit.txt"));
     }
-
-    /**
-     * Test of readBag method, of class BagItUtil.
-     */
-    @Test
-    public void testReadValidBag() {
-        System.out.println("readValidBag");
-        Path pathToBag = Paths.get("src/test/resources/bagit/", "validBag");
-        Bag result = BagItUtil.readBag(pathToBag);
-        assertTrue(true);
-    }
-
-    /**
-     * Test of readBag method, of class BagItUtil.
-     */
-    @Test
-    public void testReadInvalidBag1() {
-        System.out.println("readInvalidBag1");
-
-        try {
-            Path pathToBag = Paths.get("src/test/resources/bagit/", "invalidChecksum");
-            Bag result = BagItUtil.readBag(pathToBag);
-            assertTrue(false);
-        } catch (BagItException bie) {
-            System.out.println(bie.getMessage());
-            assertTrue(true);
-        }
-    }
-
-    /**
-     * Test of readBag method, of class BagItUtil.
-     */
-    @Test
-    public void testReadInvalidBag2() {
-        System.out.println("readInvalidBag2");
-
-        try {
-            Path pathToBag = Paths.get("src/test/resources/bagit/", "invalidOxum");
-            Bag result = BagItUtil.readBag(pathToBag);
-            assertTrue(false);
-        } catch (BagItException bie) {
-            System.out.println(bie.getMessage());
-            assertTrue(true);
-        }
-    }
-
-    /**
-     * Test of readBag method, of class BagItUtil.
-     */
-    @Test
-    public void testReadInvalidBag3() {
-        System.out.println("readInvalidBag3");
-
-        try {
-            Path pathToBag = Paths.get("src/test/resources/bagit/", "invalidVersion");
-            Bag result = BagItUtil.readBag(pathToBag);
-            assertTrue(false);
-        } catch (BagItException bie) {
-            System.out.println(bie.getMessage());
-            assertTrue(true);
-        }
-    }
-
-    /**
-     * Test of readBag method, of class BagItUtil.
-     */
-    @Test
-    public void testReadInvalidBag4() {
-        System.out.println("readInvalidBag4");
-
-        try {
-            Path pathToBag = Paths.get("src/test/resources/bagit/", "notComplete");
-            Bag result = BagItUtil.readBag(pathToBag);
-            assertTrue(false);
-        } catch (BagItException bie) {
-            System.out.println(bie.getMessage());
-            assertTrue(true);
-        }
-    }
-
-    /**
-     * Test of readBag method, of class BagItUtil.
-     */
-    @Test
-    public void testReadInvalidBag5() {
-        System.out.println("readInvalidBag5");
-
-        try {
-            Path pathToBag = Paths.get("src/test/resources/bagit/", "notExists");
-            Bag result = BagItUtil.readBag(pathToBag);
-            assertTrue(false);
-        } catch (BagItException bie) {
-            System.out.println(bie.getMessage());
-            assertTrue(true);
-        }
-    }
+  }
 //
 //  /**
 //   * Test of validateBagit method, of class BagItUtil.
@@ -206,75 +201,77 @@ public class BagItUtilTest {
 //    fail("The test case is a prototype.");
 //  }
 
-    /**
-     * Test of printBagItInformation method, of class BagItUtil.
-     */
-    @Test
-    public void testPrintBagItInformation() {
-        System.out.println("printBagItInformation");
-        Path pathToBag = Paths.get("src/test/resources/bagit/", "validBag");
-        Bag bag = BagItUtil.readBag(pathToBag);
-        BagItUtil.printBagItInformation(bag);
-        assertTrue(true);
-    }
+  /**
+   * Test of printBagItInformation method, of class BagItUtil.
+   */
+  @Test
+  public void testPrintBagItInformation() {
+    System.out.println("printBagItInformation");
+    Path pathToBag = Paths.get("src/test/resources/bagit/", "validBag");
+    Bag bag = BagItUtil.readBag(pathToBag);
+    BagItUtil.printBagItInformation(bag);
+    assertTrue(true);
+  }
 
-    /**
-     * Test of printBagItInformation method, of class BagItUtil.
-     */
-    @Test
-    public void testBagItUtilClass() {
-        System.out.println("create Instance");
-        BagItUtil util = new BagItUtil();
-        assertNotNull(util);
-    }
+  /**
+   * Test of printBagItInformation method, of class BagItUtil.
+   */
+  @Test
+  public void testBagItUtilClass() {
+    System.out.println("create Instance");
+    BagItUtil util = new BagItUtil();
+    assertNotNull(util);
+  }
 
-    /**
-     * Test of reading parameter from bag-info.txt, of class BagItUtil.
-     */
-    @Test
-    public void testGetPathToMets() {
-        System.out.println("testGetPathToMets");
-        Path pathToBag = Paths.get("src/test/resources/bagit/", "pathToMets");
-        Bag bag = BagItUtil.readBag(pathToBag);
-        String pathToMets = BagItUtil.getPathToMets(bag);
-        assertEquals("data/alternateMets.xml", pathToMets);
-        pathToBag = Paths.get("src/test/resources/bagit/", "twoMetsWithProfile");
-        try {
-            BagReader reader = new BagReader();
-            bag = reader.read(pathToBag);
-        } catch (IOException | UnparsableVersionException | MaliciousPathException | UnsupportedAlgorithmException | InvalidBagitFileFormatException ex) {
-            throw new BagItException(ex.getMessage());
-        }
-        try {
-            BagItUtil.getPathToMets(bag);
-            assertTrue(Boolean.FALSE);
-        } catch (BagItException bie) {
-            assertTrue(Boolean.TRUE);
-        }
+  /**
+   * Test of reading parameter from bag-info.txt, of class BagItUtil.
+   */
+  @Test
+  public void testGetPathToMets() {
+    System.out.println("testGetPathToMets");
+    Path pathToBag = Paths.get("src/test/resources/bagit/", "pathToMets");
+    Bag bag = BagItUtil.readBag(pathToBag);
+    String pathToMets = BagItUtil.getPathToMets(bag);
+    assertEquals("data/alternateMets.xml", pathToMets);
+    pathToBag = Paths.get("src/test/resources/bagit/", "twoMetsWithProfile");
+    try {
+      BagReader reader = new BagReader();
+      bag = reader.read(pathToBag);
+    } catch (IOException | UnparsableVersionException | MaliciousPathException | UnsupportedAlgorithmException | InvalidBagitFileFormatException ex) {
+      throw new BagItException(ex.getMessage());
     }
+    try {
+      BagItUtil.getPathToMets(bag);
+      assertTrue(Boolean.FALSE);
+    } catch (BagItException bie) {
+      assertEquals(bie.getMessage(), BagItUtil.MULTIPLE_METS_LOCATIONS);
+      assertTrue(Boolean.TRUE);
+    }
+  }
 
-    /**
-     * Test of reading parameter from bag-info.txt, of class BagItUtil.
-     */
-    @Test
-    public void testGetXOcrdIdentifier() {
-        System.out.println("testGetXOcrdIdentifier");
-        Path pathToBag = Paths.get("src/test/resources/bagit/", "validBag");
-        Bag bag = BagItUtil.readBag(pathToBag);
-        String ocrdIdentifierOfBag = BagItUtil.getOcrdIdentifierOfBag(bag);
-        assertEquals("bagForTest", ocrdIdentifierOfBag);
-        pathToBag = Paths.get("src/test/resources/bagit/", "twoOcrdIdentifier");
-        BagReader reader = new BagReader();
-        try {
-            bag = reader.read(pathToBag);
-        } catch (IOException | UnparsableVersionException | MaliciousPathException | UnsupportedAlgorithmException | InvalidBagitFileFormatException ex) {
-            throw new BagItException(ex.getMessage());
-        }
-        try {
-            BagItUtil.getOcrdIdentifierOfBag(bag);
-            assertTrue(Boolean.FALSE);
-        } catch (BagItException bie) {
-            assertTrue(Boolean.TRUE);
-        }
+  /**
+   * Test of reading parameter from bag-info.txt, of class BagItUtil.
+   */
+  @Test
+  public void testGetXOcrdIdentifier() {
+    System.out.println("testGetXOcrdIdentifier");
+    Path pathToBag = Paths.get("src/test/resources/bagit/", "validBag");
+    Bag bag = BagItUtil.readBag(pathToBag);
+    String ocrdIdentifierOfBag = BagItUtil.getOcrdIdentifierOfBag(bag);
+    assertEquals("bagForTest", ocrdIdentifierOfBag);
+    pathToBag = Paths.get("src/test/resources/bagit/", "twoOcrdIdentifier");
+    BagReader reader = new BagReader();
+    try {
+      bag = reader.read(pathToBag);
+    } catch (IOException | UnparsableVersionException | MaliciousPathException | UnsupportedAlgorithmException | InvalidBagitFileFormatException ex) {
+      throw new BagItException(ex.getMessage());
     }
+    try {
+      BagItUtil.getOcrdIdentifierOfBag(bag);
+      assertTrue(Boolean.FALSE);
+    } catch (BagItException bie) {
+      assertEquals(bie.getMessage(), BagItUtil.MULTIPLE_OCR_D_IDENTIFIER);
+      assertTrue(Boolean.TRUE);
+    }
+  }
 }

@@ -13,13 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.kit.datamanager.metastore.entity;
+package edu.kit.ocrd.workspace.entity;
 
 /**
- * Interface for the version of METS document.
- * The initial version starts by 1 and will be incremented for each new version.
+ * Interface to get and set base attributes of all documents.
  */
-public interface IVersion {
+public interface IBaseEntity {
+
+  /**
+   * Get database ID.
+   * 
+   * @return the id
+   */
+  public String getId();
+
+  /**
+   * Set database ID.
+   * (Shouldn't be used.)
+   * 
+   * @param id the id to set
+   */
+  public void setId(String id);
+  /**
+   * Set resourceId of the METS document.
+   * 
+   * @param resourceId Resource ID of the METS document.
+   */
+  public void setResourceId(String resourceId);
+  
+  /**
+   * Get resourceId of the METS document.
+   * 
+   * @return Resource ID of the METS document. 
+   */
+  public String getResourceId();
   /**
    * Set version of the METS document.
    * 
@@ -33,5 +60,5 @@ public interface IVersion {
    * @return Version of the METS document. 
    */
   public Integer getVersion();
-  
+
 }

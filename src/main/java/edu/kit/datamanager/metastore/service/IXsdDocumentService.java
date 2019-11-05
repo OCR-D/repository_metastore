@@ -15,7 +15,7 @@
  */
 package edu.kit.datamanager.metastore.service;
 
-import edu.kit.datamanager.metastore.entity.XmlSchemaDefinition;
+import edu.kit.ocrd.workspace.entity.XmlSchemaDefinition;
 import java.util.List;
 
 /**

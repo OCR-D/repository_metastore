@@ -6,7 +6,7 @@
 package edu.kit.datamanager.metastore.service.impl;
 
 import com.arangodb.ArangoDBException;
-import edu.kit.datamanager.metastore.entity.ZippedBagit;
+import edu.kit.ocrd.workspace.entity.ZippedBagit;
 import edu.kit.datamanager.metastore.repository.ZippedBagitRepository;
 import edu.kit.datamanager.metastore.service.IZippedBagitService;
 import java.util.ArrayList;

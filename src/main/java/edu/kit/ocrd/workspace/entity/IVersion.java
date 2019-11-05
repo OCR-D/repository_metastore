@@ -13,24 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.kit.datamanager.metastore.entity;
+package edu.kit.ocrd.workspace.entity;
 
 /**
- * Interface to get and set Mimetype of an instance.
+ * Interface for the version of METS document.
+ * The initial version starts by 1 and will be incremented for each new version.
  */
-public interface IMimetype {
-
+public interface IVersion {
   /**
-   * Set MIMETYPE of a file.
-   *
-   * @param mimetype MIMETYPE to set.
+   * Set version of the METS document.
+   * 
+   * @param version Version of the METS document.
    */
-  public void setMimetype(String mimetype);
-
+  public void setVersion(Integer version);
+  
   /**
-   * Get MIMETYPE of a file.
-   *
-   * @return MIMETYPE of the file.
+   * Get version of the METS document.
+   * 
+   * @return Version of the METS document. 
    */
-  public String getMimetype();
+  public Integer getVersion();
+  
 }
