@@ -4,4 +4,4 @@ Bagging-Date: 2019-04-08 10:26:43.375555
 Ocrd-Identifier: bagForTest
 Ocrd-Manifestation-Depth: full
 Ocrd-Mets:data/alternateMets.xml
-Payload-Oxum: 18779.2
+Payload-Oxum: 18921.2
