@@ -1,4 +1,5 @@
-/**Build the service-base library. This is the first step required before any other library can be build.
+/**
+ * Build the service-base library. This is the first step required before any other library can be build.
  * There are two more options involved in here:
  * 
  * If properties 'release' or 'travis' are set, the current sources of all dependend libraries are pulled from the remote repository. 
@@ -29,7 +30,7 @@ task buildOcrdWorkspace(type:Exec){
   dependsOn buildServiceBase
 
   workingDir 'submodules/ocrd_workspace'
-   commandLine './gradlew', 'build', 'install'
+  commandLine './gradlew', 'build', 'install'
 
    standardOutput = new ByteArrayOutputStream()
 
