@@ -2,3 +2,6 @@
 	path = submodules/service-base
 	url = git://github.com/kit-data-manager/service-base.git
 	branch = master
+[submodule "submodules/ocrd_workspace"]
+	path = submodules/ocrd_workspace
+	url = https://github.com/VolkerHartmann/ocrd_workspace.git
