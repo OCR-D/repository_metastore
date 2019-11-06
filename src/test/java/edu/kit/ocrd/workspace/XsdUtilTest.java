@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.kit.datamanager.metastore.util;
+package edu.kit.ocrd.workspace;
 
+import edu.kit.ocrd.workspace.XsdUtil;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;

@@ -18,7 +18,7 @@ package edu.kit.datamanager.metastore.service.impl;
 import edu.kit.ocrd.workspace.entity.XmlSchemaDefinition;
 import edu.kit.datamanager.metastore.repository.XmlSchemaDefinitionRepository;
 import edu.kit.datamanager.metastore.service.IXsdDocumentService;
-import edu.kit.datamanager.metastore.util.XsdUtil;
+import edu.kit.ocrd.workspace.XsdUtil;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

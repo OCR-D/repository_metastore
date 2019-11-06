@@ -36,7 +36,7 @@ import edu.kit.datamanager.metastore.repository.MetsIdentifierRepository;
 import edu.kit.datamanager.metastore.repository.MetsPropertiesRepository;
 import edu.kit.datamanager.metastore.repository.PageMetadataRepository;
 import edu.kit.datamanager.metastore.service.IMetsDocumentService;
-import edu.kit.datamanager.metastore.util.MetsDocumentUtil;
+import edu.kit.ocrd.workspace.MetsDocumentUtil;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

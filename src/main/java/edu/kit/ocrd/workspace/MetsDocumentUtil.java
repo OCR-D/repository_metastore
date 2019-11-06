@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.kit.datamanager.metastore.util;
+package edu.kit.ocrd.workspace;
 
 import edu.kit.datamanager.metastore.dao.MetsMetadata;
 import edu.kit.datamanager.metastore.dao.ModsIdentifier;
 import edu.kit.datamanager.metastore.dao.PageFeatures;
+import edu.kit.ocrd.workspace.MetsUtil;
 import edu.kit.ocrd.workspace.entity.ClassificationMetadata;
 import edu.kit.ocrd.workspace.entity.GenreMetadata;
 import edu.kit.ocrd.workspace.entity.GroundTruthProperties;
@@ -40,70 +41,12 @@ import org.slf4j.LoggerFactory;
 /**
  * Utility handling METS document.
  */
-public class MetsDocumentUtil {
+public class MetsDocumentUtil extends MetsUtil {
 
   /**
    * Logger.
    */
   private static final Logger LOGGER = LoggerFactory.getLogger(MetsDocumentUtil.class);
-  /**
-   * Namespaces used inside METS documents.
-   */
-  private static Namespace[] namespaces = {
-    Namespace.getNamespace("mets", "http://www.loc.gov/METS/"),
-    Namespace.getNamespace("mods", "http://www.loc.gov/mods/v3"),
-    Namespace.getNamespace("xlink", "http://www.w3.org/1999/xlink"),
-    Namespace.getNamespace("gt", "http://www.ocr-d.de/GT/"),
-    Namespace.getNamespace("page2017", "http://schema.primaresearch.org/PAGE/gts/pagecontent/2017-07-15")
-  };
-  /**
-   * Title of document.
-   */
-  private static final String TITLE = "title";
-  /**
-   * Subtitle of document.
-   */
-  private static final String SUB_TITLE = "subtitle";
-  /**
-   * Author of document.
-   */
-  private static final String AUTHOR = "author";
-  /**
-   * License of document.
-   */
-  private static final String LICENSE = "license";
-  /**
-   * Language of document.
-   */
-  private static final String LANGUAGE = "language";
-  /**
-   * Year of document.
-   */
-  private static final String YEAR = "year";
-  /**
-   * Number of pages of document.
-   */
-  private static final String NUMBER_OF_IMAGES = "number_of_images";
-  /**
-   * Classifications of document.
-   */
-  private static final String CLASSIFICATION = "classification";
-  /**
-   * Genres of document.
-   */
-  private static final String GENRE = "genre";
-  /**
-   * Publisher of document.
-   */
-  private static final String PUBLISHER = "publisher";
-  /**
-   * Physical description of document.
-   */
-  private static final String PHYSICAL_DESCRIPTION = "physical_description";
-  /**
-   * Record identifier (PPN) of document.
-   */
-  private static final String PPN = "PPN";
 
   /**
    * Extract MetsFile instances from METS document.
@@ -117,25 +60,25 @@ public class MetsDocumentUtil {
   public static List<MetsFile> extractMetsFiles(Document metsDocument, String resourceId, Integer version) {
     LOGGER.info("Extract files from METS document. ResourceID: {}, Version: {}", resourceId, version);
     List<MetsFile> metsFiles = new ArrayList<>();
-    List nodes = JaxenUtil.getNodes(metsDocument, "//mets:fileGrp", namespaces);
+    List nodes = JaxenUtil.getNodes(metsDocument, metsMap.get(FILE_GROUPS), getNamespaces());
     LOGGER.trace("Found {} fileGrp(s)", nodes.size());
     for (Object node : nodes) {
       Element fileGrpElement = (Element) node;
       String use = JaxenUtil.getAttributeValue(fileGrpElement, "./@USE");
-      List fileNodes = JaxenUtil.getNodes(fileGrpElement, "./mets:file", namespaces);
+      List fileNodes = JaxenUtil.getNodes(fileGrpElement, "./mets:file", getNamespaces());
       LOGGER.trace("Found fileGrp with USE: {} containing {} file(s)", use, fileNodes.size());
       for (Object node2 : fileNodes) {
         Element fileElement = (Element) node2;
         String id = JaxenUtil.getAttributeValue(fileElement, "./@ID");
         String pageId;
         try {
-          pageId = JaxenUtil.getAttributeValue(metsDocument, "//mets:div[./mets:fptr/@FILEID='" + id + "']/@ID", namespaces);
+          pageId = JaxenUtil.getAttributeValue(metsDocument, "//mets:div[./mets:fptr/@FILEID='" + id + "']/@ID", getNamespaces());
         } catch (ArrayIndexOutOfBoundsException aioobe) {
           // Try to find pageId using old style
           pageId = JaxenUtil.getAttributeValue(fileElement, "./@GROUPID");
         }
         String mimetype = JaxenUtil.getAttributeValue(fileElement, "./@MIMETYPE");
-        String url = JaxenUtil.getAttributeValue(fileElement, "./mets:FLocat/@xlink:href", namespaces);
+        String url = JaxenUtil.getAttributeValue(fileElement, "./mets:FLocat/@xlink:href", getNamespaces());
         LOGGER.trace("Found file with id: {}, pageId: {}, mimetype: {}, url: {}", id, pageId, mimetype, url);
         metsFiles.add(new MetsFile(resourceId, version, id, mimetype, pageId, use, url));
       }
@@ -156,30 +99,20 @@ public class MetsDocumentUtil {
     MetsProperties metsMetadata = new MetsProperties();
     metsMetadata.setResourceId(resourceId);
     // define XPaths
-    Map<String, String> metsMap = new HashMap<>();
-    metsMap.put(TITLE, "/mets:mets/mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:titleInfo/mods:title[not(@type)]");
-    metsMap.put(SUB_TITLE, "/mets:mets/mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:titleInfo/mods:subTitle[not(@type)]");
-    metsMap.put(YEAR, "/mets:mets/mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:originInfo/mods:dateIssued");
-    metsMap.put(LICENSE, "//mets:rightsMD/descendant::*");
-    metsMap.put(AUTHOR, "//mods:name/mods:role/mods:roleTerm[text()='aut']/../../mods:displayForm");
-    metsMap.put(NUMBER_OF_IMAGES, "/mets:mets/mets:fileSec/mets:fileGrp[@USE='OCR-D-IMG']/mets:file");
-    metsMap.put(PUBLISHER, "//mods:publisher[not(@keydate = 'yes')]");
-    metsMap.put(PHYSICAL_DESCRIPTION, "//mods:physicalDescription/mods:extent");
-    metsMap.put(PPN, "//mods:mods/mods:recordInfo/mods:recordIdentifier[1]");
     Element root = metsDocument.getRootElement();
-    String[] values = JaxenUtil.getValues(root, metsMap.get(TITLE), namespaces);
+    String[] values = JaxenUtil.getValues(root, metsMap.get(TITLE), getNamespaces());
     if (values.length >= 1) {
       metsMetadata.setTitle(values[0]);
     }
-    values = JaxenUtil.getValues(root, metsMap.get(SUB_TITLE), namespaces);
+    values = JaxenUtil.getValues(root, metsMap.get(SUB_TITLE), getNamespaces());
     if (values.length >= 1) {
       metsMetadata.setSubTitle(values[0]);
     }
-    values = JaxenUtil.getValues(root, metsMap.get(YEAR), namespaces);
+    values = JaxenUtil.getValues(root, metsMap.get(YEAR), getNamespaces());
     if (values.length >= 1) {
       metsMetadata.setYear(values[0]);
     }
-    values = JaxenUtil.getValues(root, metsMap.get(LICENSE), namespaces);
+    values = JaxenUtil.getValues(root, metsMap.get(LICENSE), getNamespaces());
     if (values.length >= 1) {
       StringBuilder builder = new StringBuilder();
       for (int i = 0; i < values.length; i++) {
@@ -192,22 +125,22 @@ public class MetsDocumentUtil {
       }
       metsMetadata.setLicense(builder.toString());
     }
-    values = JaxenUtil.getValues(root, metsMap.get(AUTHOR), namespaces);
+    values = JaxenUtil.getValues(root, metsMap.get(AUTHOR), getNamespaces());
     if (values.length >= 1) {
       metsMetadata.setAuthor(values[0]);
     }
-    values = JaxenUtil.getValues(root, metsMap.get(NUMBER_OF_IMAGES), namespaces);
+    values = JaxenUtil.getValues(root, metsMap.get(NUMBER_OF_IMAGES), getNamespaces());
     metsMetadata.setNoOfPages(values.length);
 
-    values = JaxenUtil.getValues(root, metsMap.get(PUBLISHER), namespaces);
+    values = JaxenUtil.getValues(root, metsMap.get(PUBLISHER), getNamespaces());
     if (values.length >= 1) {
       metsMetadata.setPublisher(values[0]);
     }
-    values = JaxenUtil.getValues(root, metsMap.get(PHYSICAL_DESCRIPTION), namespaces);
+    values = JaxenUtil.getValues(root, metsMap.get(PHYSICAL_DESCRIPTION), getNamespaces());
     if (values.length >= 1) {
       metsMetadata.setPhysicalDescription(values[0]);
     }
-    values = JaxenUtil.getValues(root, metsMap.get(PPN), namespaces);
+    values = JaxenUtil.getValues(root, metsMap.get(PPN), getNamespaces());
     if (values.length >= 1) {
       metsMetadata.setPpn(values[0]);
     }
@@ -226,7 +159,7 @@ public class MetsDocumentUtil {
   public static List<MetsIdentifier> extractIdentifierFromMets(final Document metsDocument, final String resourceId) throws Exception {
     List<MetsIdentifier> metsIdentifierList = new ArrayList<>();
     Element root = metsDocument.getRootElement();
-    List identifierList = JaxenUtil.getNodes(root, "//mods:identifier", namespaces);
+    List identifierList = JaxenUtil.getNodes(root, metsMap.get(UNIQUE_IDENTIFIER), getNamespaces());
     if (!identifierList.isEmpty()) {
       for (Object identifierObject : identifierList) {
         // Determine type and id 
@@ -250,11 +183,8 @@ public class MetsDocumentUtil {
    */
   public static List<LanguageMetadata> extractLanguageMetadataFromMets(final Document metsDocument, final String resourceId) throws Exception {
     List<LanguageMetadata> languageList = new ArrayList<>();
-    Map<String, String> metsMap = new HashMap<>();
-    // define XPaths
-    metsMap.put(LANGUAGE, "//mods:languageTerm");
     Element root = metsDocument.getRootElement();
-    String[] values = JaxenUtil.getValues(root, metsMap.get(LANGUAGE), namespaces);
+    String[] values = JaxenUtil.getValues(root, metsMap.get(LANGUAGE), getNamespaces());
     if (values.length >= 1) {
       for (String language : values) {
         if (language.trim().length() > 1) {
@@ -276,11 +206,8 @@ public class MetsDocumentUtil {
    */
   public static List<ClassificationMetadata> extractClassificationMetadataFromMets(final Document metsDocument, final String resourceId) throws Exception {
     List<ClassificationMetadata> classificationList = new ArrayList<>();
-    Map<String, String> metsMap = new HashMap<>();
-    // define XPaths
-    metsMap.put(CLASSIFICATION, "//mods:classification");
     Element root = metsDocument.getRootElement();
-    String[] values = JaxenUtil.getValues(root, metsMap.get(CLASSIFICATION), namespaces);
+    String[] values = JaxenUtil.getValues(root, metsMap.get(CLASSIFICATION), getNamespaces());
     if (values.length >= 1) {
       for (String classification : values) {
         if (classification.trim().length() > 1) {
@@ -302,11 +229,8 @@ public class MetsDocumentUtil {
    */
   public static List<GenreMetadata> extractGenreMetadataFromMets(final Document metsDocument, final String resourceId) throws Exception {
     List<GenreMetadata> genreList = new ArrayList<>();
-    Map<String, String> metsMap = new HashMap<>();
-    // define XPaths
-    metsMap.put(GENRE, "//mods:genre");
     Element root = metsDocument.getRootElement();
-    String[] values = JaxenUtil.getValues(root, metsMap.get(GENRE), namespaces);
+    String[] values = JaxenUtil.getValues(root, metsMap.get(GENRE), getNamespaces());
     if (values.length >= 1) {
       for (String genre : values) {
         if (genre.trim().length() > 1) {
@@ -329,10 +253,10 @@ public class MetsDocumentUtil {
   public static List<PageMetadata> extractGroundTruthFeaturesFromMets(final Document metsDocument, final String resourceId) throws Exception {
     List<PageMetadata> pageMetadataList = new ArrayList<>();
     Element root = metsDocument.getRootElement();
-    List physicalList = JaxenUtil.getNodes(root, "//mets:structMap[@TYPE='PHYSICAL']", namespaces);
+    List physicalList = JaxenUtil.getNodes(root, metsMap.get(PHYSICAL_MAP), getNamespaces());
     if (!physicalList.isEmpty()) {
       Element structMap = (Element) physicalList.get(0);
-      List pageList = JaxenUtil.getNodes(structMap, "//mets:div[@TYPE='page']", namespaces);
+      List pageList = JaxenUtil.getNodes(structMap, metsMap.get(PAGE_NODES), getNamespaces());
       if (!pageList.isEmpty()) {
         for (Object pageObject : pageList) {
           // Determine order, id and dmdid. 
@@ -340,7 +264,7 @@ public class MetsDocumentUtil {
           String order = getAttribute(pageNode, "ORDER");
           String id = getAttribute(pageNode, "ID");
           String dmdId = getAttribute(pageNode, "DMDID");
-          String[] features = JaxenUtil.getValues(root, "//mets:dmdSec[@ID='" + dmdId + "']/mets:mdWrap[@OTHERMDTYPE='GT']/mets:xmlData/gt:gt/gt:state/@prop", namespaces);
+          String[] features = JaxenUtil.getValues(root, "//mets:dmdSec[@ID='" + dmdId + "']/mets:mdWrap[@OTHERMDTYPE='GT']/mets:xmlData/gt:gt/gt:state/@prop", getNamespaces());
           for (String feature : features) {
             pageMetadataList.add(new PageMetadata(resourceId, order, id, GroundTruthProperties.get(feature)));
           }
@@ -426,16 +350,6 @@ public class MetsDocumentUtil {
       dao.setModsIdentifier(modsIdentifierList);
     }
     return dao;
-  }
-
-  /**
-   * Get all namespaces used inside METS document. (Do not contain namespaces
-   * used only inside special section documents.)
-   *
-   * @return Namespaces used inside METS document.
-   */
-  public static Namespace[] getNamespaces() {
-    return namespaces;
   }
 
   /**

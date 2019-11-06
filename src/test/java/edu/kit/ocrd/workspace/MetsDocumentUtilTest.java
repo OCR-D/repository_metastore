@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.kit.datamanager.metastore.util;
+package edu.kit.ocrd.workspace;
 
+import edu.kit.ocrd.workspace.MetsDocumentUtil;
 import edu.kit.ocrd.workspace.entity.MetsFile;
 import edu.kit.ocrd.workspace.entity.MetsProperties;
 import java.io.File;

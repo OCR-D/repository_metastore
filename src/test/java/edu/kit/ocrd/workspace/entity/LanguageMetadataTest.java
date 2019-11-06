@@ -16,7 +16,7 @@
 package edu.kit.ocrd.workspace.entity;
 
 import edu.kit.ocrd.workspace.entity.LanguageMetadata;
-import edu.kit.datamanager.metastore.util.MetsDocumentUtil;
+import edu.kit.ocrd.workspace.MetsDocumentUtil;
 import java.io.File;
 import java.util.List;
 import org.fzk.tools.xml.JaxenUtil;

@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.kit.datamanager.metastore.util;
+package edu.kit.ocrd.workspace;
 
+import edu.kit.ocrd.workspace.BagItUtil;
 import edu.kit.datamanager.metastore.exception.BagItException;
 import gov.loc.repository.bagit.domain.Bag;
 import gov.loc.repository.bagit.exceptions.InvalidBagitFileFormatException;

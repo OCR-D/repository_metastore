@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.kit.datamanager.metastore.util;
+package edu.kit.ocrd.workspace;
 
 import org.fzk.tools.xml.JaxenUtil;
 import org.jdom.Document;

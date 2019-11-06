@@ -29,7 +29,7 @@ import edu.kit.ocrd.workspace.entity.ZippedBagit;
 import edu.kit.datamanager.metastore.service.IMetsDocumentService;
 import edu.kit.datamanager.metastore.service.IMetsPropertiesService;
 import edu.kit.datamanager.metastore.service.IZippedBagitService;
-import edu.kit.datamanager.metastore.util.MetsDocumentUtil;
+import edu.kit.ocrd.workspace.MetsDocumentUtil;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
