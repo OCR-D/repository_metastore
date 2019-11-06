@@ -17,7 +17,7 @@ package edu.kit.datamanager.metastore.controller.impl;
 
 import edu.kit.datamanager.metastore.controller.IMetsDocumentController;
 import com.arangodb.ArangoDBException;
-import edu.kit.datamanager.metastore.dao.MetsMetadata;
+import edu.kit.ocrd.dao.MetsMetadata;
 import edu.kit.ocrd.workspace.entity.ClassificationMetadata;
 import edu.kit.ocrd.workspace.entity.GenreMetadata;
 import edu.kit.ocrd.workspace.entity.LanguageMetadata;

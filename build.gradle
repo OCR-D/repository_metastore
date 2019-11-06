@@ -101,6 +101,7 @@ dependencies {
   
   // sub modules
   compile("edu.kit.ocrd:ocrd-workspace:0.1.0")
+  compile("edu.kit.ocrd:ocrd-metadata:0.1.0")
   compile("edu.kit.datamanager:service-base:0.1") { 
     exclude group: '*'    
   } 

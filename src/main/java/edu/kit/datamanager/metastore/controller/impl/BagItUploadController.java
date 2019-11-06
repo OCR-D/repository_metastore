@@ -42,7 +42,7 @@ import edu.kit.datamanager.metastore.controller.IBagItUploadController;
 import edu.kit.ocrd.workspace.entity.MetsFile;
 import edu.kit.ocrd.workspace.entity.MetsProperties;
 import edu.kit.ocrd.workspace.entity.ZippedBagit;
-import edu.kit.datamanager.metastore.exception.BagItException;
+import edu.kit.ocrd.exception.BagItException;
 import edu.kit.datamanager.metastore.exception.ResourceAlreadyExistsException;
 import edu.kit.datamanager.metastore.kitdm.KitDmProperties;
 import edu.kit.datamanager.metastore.repository.MetsFileRepository;
