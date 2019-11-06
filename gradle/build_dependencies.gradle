@@ -39,10 +39,28 @@ task buildOcrdWorkspace(type:Exec){
    }
 }
 
+/**Build the ocrd workspace validation library. 
+ * This dependeny is build after the service-base dependency has been built.
+ * 
+ */
+
+task buildOcrdMetadata(type:Exec){
+  dependsOn buildOcrdWorkspace
+
+  workingDir 'submodules/ocrd_metadata'
+  commandLine './gradlew', 'build', 'install'
+
+   standardOutput = new ByteArrayOutputStream()
+
+   ext.output = {
+      return standardOutput.toString()
+   }
+}
+
 /**The default task for compiling the project has to be overwritten in order to build first 
  * all dependencies. At this point, only task 'buildGenericMessageConsumer' is called as this
  * task depends on task 'buildServiceBase', which has not to be called again.
  */
 compileJava {
-  dependsOn buildOcrdWorkspace
+  dependsOn buildOcrdMetadata
 }
