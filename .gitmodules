@@ -7,3 +7,7 @@
 	url = https://github.com/VolkerHartmann/ocrd_workspace.git
 	branch = master
 
+[submodule "submodules/ocrd_metadata"]
+	path = submodules/ocrd_metadata
+	url = https://github.com/VolkerHartmann/ocrd_metadata.git
+	branch = master
