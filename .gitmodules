@@ -11,3 +11,7 @@
 	path = submodules/ocrd_metadata
 	url = https://github.com/VolkerHartmann/ocrd_metadata.git
 	branch = master
+[submodule "submodules/bagging"]
+	path = submodules/bagging
+	url = https://github.com/VolkerHartmann/bagging.git
+	branch = ocrd
