@@ -15,6 +15,7 @@
  */
 package edu.kit.datamanager.metastore.controller.impl;
 
+import com.github.jscancella.domain.Bag;
 import edu.kit.datamanager.metastore.exception.InvalidFormatException;
 import edu.kit.datamanager.metastore.service.IMetsDocumentService;
 import edu.kit.datamanager.metastore.storageservice.StorageService;
@@ -52,7 +53,6 @@ import edu.kit.datamanager.metastore.service.IZippedBagitService;
 import edu.kit.datamanager.metastore.util.RegisterFilesInRepo;
 import edu.kit.datamanager.metastore.util.RepositoryUtil;
 import edu.kit.ocrd.workspace.WorkspaceUtil;
-import gov.loc.repository.bagit.domain.Bag;
 import io.swagger.client.ApiException;
 import io.swagger.client.model.DataResource;
 import java.net.URISyntaxException;

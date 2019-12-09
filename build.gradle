@@ -26,11 +26,11 @@ apply plugin: 'io.spring.dependency-management'
 apply plugin: 'jacoco'
 
 group = 'edu.kit.datamanager.metastore'
-version = '0.1.0'
+version = '0.2.0'
 
 jar {
   baseName = 'metastore-service'
-  version =  '0.1.0'
+  version =  '0.2.0'
 }
 
 bootJar {
@@ -96,12 +96,12 @@ dependencies {
    
   compile("org.slf4j:slf4j-api:1.7.25")
   compile("ch.qos.logback:logback-classic:1.2.3")
-  // bag it
-  compile("gov.loc:bagit:5.2.0")
   
   // sub modules
-  compile("edu.kit.ocrd:ocrd-workspace:0.1.0")
-  compile("edu.kit.ocrd:ocrd-metadata:0.1.0")
+  // bag it
+  compile("edu.kit.ocrd:bagging:${version}")
+  compile("edu.kit.ocrd:ocrd-workspace:${version}")
+  compile("edu.kit.ocrd:ocrd-metadata:${version}")
   compile("edu.kit.datamanager:service-base:0.1") { 
     exclude group: '*'    
   } 

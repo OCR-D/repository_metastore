@@ -21,13 +21,30 @@ task buildServiceBase(type:Exec){
    }
 }
 
+/**Build the bagit library. 
+ * This dependeny is build after the service-base dependency has been built.
+ * 
+ */
+
+task buildBagitLibrary(type:Exec){
+  dependsOn buildServiceBase
+
+  workingDir 'submodules/bagging'
+  commandLine './gradlew', '-Pgroup=edu.kit.ocrd', '-Pversion=${version}', 'build', 'install'
+
+   standardOutput = new ByteArrayOutputStream()
+
+   ext.output = {
+      return standardOutput.toString()
+   }
+}
 /**Build the ocrd workspace validation library. 
  * This dependeny is build after the service-base dependency has been built.
  * 
  */
 
 task buildOcrdWorkspace(type:Exec){
-  dependsOn buildServiceBase
+  dependsOn buildBagitLibrary
 
   workingDir 'submodules/ocrd_workspace'
   commandLine './gradlew', 'build', 'install'

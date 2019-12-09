@@ -53,6 +53,7 @@ import edu.kit.datamanager.metastore.repository.MetsPropertiesRepository;
 import edu.kit.datamanager.metastore.repository.PageMetadataRepository;
 import edu.kit.datamanager.metastore.repository.SectionDocumentRepository;
 import edu.kit.datamanager.metastore.repository.XmlSchemaDefinitionRepository;
+import edu.kit.ocrd.workspace.entity.TextRegion;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -781,6 +782,68 @@ public class CrudRunner implements CommandLineRunner {
                 new PageMetadata("id_0017", "2", "phys_0002", GroundTruthProperties.DIA),
                 new PageMetadata("id_0018", "1", "phys_0001", GroundTruthProperties.ADMINS),
                 new PageMetadata("id_0019", "1", "phys_0001", GroundTruthProperties.LATIN));
+    }
+
+    public static Collection<TextRegion> createTextRegion() {
+      TextRegion text1 = new TextRegion();
+      text1.setResourceId("id_0002");
+      text1.setRegion("region1");
+      text1.setPageUrl("OCR-D-IMG_0001");
+      text1.setImageUrl("OCR-D-IMG_0001");
+      text1.setOrder("1");
+      text1.setText("This is a really long text from a very large page. Unfortunately it "
+              + "repeats the same text several times.");
+      text1.setVersion(1);
+      text1.setConfidence(1.0f);
+      
+      TextRegion text2 = new TextRegion();
+      text2.setResourceId("id_0002");
+      text2.setRegion("region2");
+      text2.setPageUrl("OCR-D-IMG_0002");
+      text2.setImageUrl("OCR-D-IMG_0002");
+      text2.setOrder("2");
+      text2.setText("On page 2 there is a shorter text. Unfortunately it "
+              + "repeats the same text several times.");
+      text2.setVersion(1);
+      text2.setConfidence(0.6f);
+      
+      TextRegion text3 = new TextRegion();
+      text3.setResourceId("id_0002");
+      text3.setRegion("region3");
+      text3.setPageUrl("OCR-D-IMG_0003");
+      text3.setImageUrl("OCR-D-IMG_0003");
+      text3.setOrder("3");
+      text3.setText("Dito on page 3.");
+      text3.setVersion(1);
+      text3.setConfidence(0.8f);
+      
+      TextRegion text4 = new TextRegion();
+      text4.setResourceId("id_0002");
+      text4.setRegion("region4");
+      text4.setPageUrl("OCR-D-IMG_0004");
+      text4.setImageUrl("OCR-D-IMG_0004");
+      text4.setOrder("4");
+      text4.setText("This is a really long text from a very large page. Unfortunately it "
+              + "repeats the same text several times."
+              + "This is a really long text from a very large page. Unfortunately it "
+              + "repeats the same text several times."
+              + "This is a really long text from a very large page. Unfortunately it "
+              + "repeats the same text several times.");
+      text4.setVersion(1);
+      text4.setConfidence(0.5f);
+      
+      TextRegion text5 = new TextRegion();
+      text5.setResourceId("id_0003");
+      text5.setRegion("region5");
+      text5.setPageUrl("OCR-D-IMG_0005");
+      text5.setImageUrl("OCR-D-IMG_0005");
+      text5.setOrder("5");
+      text5.setText("This is the last page.");
+      text5.setVersion(1);
+      text5.setConfidence(0.9f);
+      
+      
+        return Arrays.asList( text2, text3, text5, text1, text4);
     }
 
     public static Collection<ZippedBagit> createZippedBagits() {
