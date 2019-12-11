@@ -1,0 +1,48 @@
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ocrd-cis-ocropy-binarize --mets /data/workspace/example/data/mets.xml --working-dir /data/workspace/example/data --input-file-grp OCR-D-IMG --output-file-grp OCR-D-IMG-BIN-OCROPY --log-level ERROR
+13:55:40.039 INFO matplotlib.font_manager - generated new fontManager
+13:55:40.158 INFO root - Overriding log level globally to ERROR
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ocrd-tesserocr-segment-region --mets /data/workspace/example/data/mets.xml --working-dir /data/workspace/example/data --input-file-grp OCR-D-IMG-BIN-OCROPY --output-file-grp OCR-D-SEG-REGION --log-level ERROR
+13:55:43.987 INFO root - Overriding log level globally to ERROR
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ocrd-tesserocr-segment-line --mets /data/workspace/example/data/mets.xml --working-dir /data/workspace/example/data --input-file-grp OCR-D-SEG-REGION --output-file-grp OCR-D-SEG-LINE --log-level ERROR
+13:55:45.733 INFO root - Overriding log level globally to ERROR
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ocrd-tesserocr-recognize --mets /data/workspace/example/data/mets.xml --working-dir /data/workspace/example/data --input-file-grp OCR-D-SEG-LINE --output-file-grp OCR-D-OCR-TESSEROCR-FRAKTUR --parameter /data/models/param-tess-fraktur.json --log-level ERROR
+13:55:47.500 INFO root - Overriding log level globally to ERROR
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ocrd zip bag -d /data/workspace/example/data -i http://www.deutschestextarchiv.de/wundt_grundriss_1896 -D full /data/workspace/example/data/taverna_1575986137963.ocrd.zip
+13:55:49.310 INFO ocrd.workspace_bagger - Bagging /data/workspace/example/data to /data/workspace/example/data/taverna_1575986137963.ocrd.zip (temp dir /tmp/ocrd-bagit-gqhtasrz)
+13:55:49.310 INFO ocrd.workspace_bagger - Resolving http://media.dwds.de/dta/images/wundt_grundriss_1896/wundt_grundriss_1896_0001_800px.jpg (full)
+13:55:49.311 INFO ocrd.workspace_bagger - Resolved http://media.dwds.de/dta/images/wundt_grundriss_1896/wundt_grundriss_1896_0001_800px.jpg
+13:55:49.390 INFO ocrd.workspace_bagger - Resolving OCR-D-IMG/OCR-D-IMG_0001.jpg (full)
+13:55:49.390 INFO ocrd.workspace_bagger - Resolved OCR-D-IMG/OCR-D-IMG_0001.jpg
+13:55:49.391 INFO ocrd.workspace_bagger - Resolving OCR-D-GT-SEG-PAGE/OCR-D-GT-SEG-PAGE_0001.xml (full)
+13:55:49.391 INFO ocrd.workspace_bagger - Resolved OCR-D-GT-SEG-PAGE/OCR-D-GT-SEG-PAGE_0001.xml
+13:55:49.391 INFO ocrd.workspace_bagger - Resolving OCR-D-GT-SEG-BLOCK/OCR-D-GT-SEG-BLOCK_0001.xml (full)
+13:55:49.391 INFO ocrd.workspace_bagger - Resolved OCR-D-GT-SEG-BLOCK/OCR-D-GT-SEG-BLOCK_0001.xml
+13:55:49.392 INFO ocrd.workspace_bagger - Resolving OCR-D-IMG-BIN/OCR-D-IMG-BIN_0001.png (full)
+13:55:49.392 INFO ocrd.workspace_bagger - Resolved OCR-D-IMG-BIN/OCR-D-IMG-BIN_0001.png
+13:55:49.392 INFO ocrd.workspace_bagger - Resolving OCR-D-IMG-BIN-OCROPY/OCR-D-IMG-BIN-OCROPY_0001.xml (full)
+13:55:49.392 INFO ocrd.workspace_bagger - Resolved OCR-D-IMG-BIN-OCROPY/OCR-D-IMG-BIN-OCROPY_0001.xml
+13:55:49.392 INFO ocrd.workspace_bagger - Resolving OCR-D-SEG-REGION/OCR-D-SEG-REGION_0001.xml (full)
+13:55:49.393 INFO ocrd.workspace_bagger - Resolved OCR-D-SEG-REGION/OCR-D-SEG-REGION_0001.xml
+13:55:49.393 INFO ocrd.workspace_bagger - Resolving OCR-D-SEG-LINE/OCR-D-SEG-LINE_0001.xml (full)
+13:55:49.393 INFO ocrd.workspace_bagger - Resolved OCR-D-SEG-LINE/OCR-D-SEG-LINE_0001.xml
+13:55:49.393 INFO ocrd.workspace_bagger - Resolving OCR-D-OCR-TESSEROCR-FRAKTUR/OCR-D-OCR-TESSEROCR-FRAKTUR_0001.xml (full)
+13:55:49.393 INFO ocrd.workspace_bagger - Resolved OCR-D-OCR-TESSEROCR-FRAKTUR/OCR-D-OCR-TESSEROCR-FRAKTUR_0001.xml
+13:55:49.404 INFO bagit - Using 1 processes to generate manifests: sha512
+13:55:49.404 INFO bagit - Generating manifest lines for file data/mets.xml
+13:55:49.405 INFO bagit - Generating manifest lines for file data/DEFAULT/DEFAULT_0001.jpg
+13:55:49.405 INFO bagit - Generating manifest lines for file data/OCR-D-GT-SEG-BLOCK/OCR-D-GT-SEG-BLOCK_0001.xml
+13:55:49.405 INFO bagit - Generating manifest lines for file data/OCR-D-GT-SEG-PAGE/OCR-D-GT-SEG-PAGE_0001.xml
+13:55:49.405 INFO bagit - Generating manifest lines for file data/OCR-D-IMG/OCR-D-IMG_0001.jpg
+13:55:49.405 INFO bagit - Generating manifest lines for file data/OCR-D-IMG-BIN/OCR-D-IMG-BIN_0001.png
+13:55:49.405 INFO bagit - Generating manifest lines for file data/OCR-D-IMG-BIN-OCROPY/OCR-D-IMG-BIN-OCROPY_0001.xml
+13:55:49.406 INFO bagit - Generating manifest lines for file data/OCR-D-OCR-TESSEROCR-FRAKTUR/OCR-D-OCR-TESSEROCR-FRAKTUR_0001.xml
+13:55:49.406 INFO bagit - Generating manifest lines for file data/OCR-D-SEG-LINE/OCR-D-SEG-LINE_0001.xml
+13:55:49.406 INFO bagit - Generating manifest lines for file data/OCR-D-SEG-REGION/OCR-D-SEG-REGION_0001.xml
+13:55:49.406 INFO ocrd.workspace_bagger - New vs. old: {'http://media.dwds.de/dta/images/wundt_grundriss_1896/wundt_grundriss_1896_0001_800px.jpg': 'DEFAULT/DEFAULT_0001.jpg', 'OCR-D-IMG/OCR-D-IMG_0001.jpg': 'OCR-D-IMG/OCR-D-IMG_0001.jpg', 'OCR-D-GT-SEG-PAGE/OCR-D-GT-SEG-PAGE_0001.xml': 'OCR-D-GT-SEG-PAGE/OCR-D-GT-SEG-PAGE_0001.xml', 'OCR-D-GT-SEG-BLOCK/OCR-D-GT-SEG-BLOCK_0001.xml': 'OCR-D-GT-SEG-BLOCK/OCR-D-GT-SEG-BLOCK_0001.xml', 'OCR-D-IMG-BIN/OCR-D-IMG-BIN_0001.png': 'OCR-D-IMG-BIN/OCR-D-IMG-BIN_0001.png', 'OCR-D-IMG-BIN-OCROPY/OCR-D-IMG-BIN-OCROPY_0001.xml': 'OCR-D-IMG-BIN-OCROPY/OCR-D-IMG-BIN-OCROPY_0001.xml', 'OCR-D-SEG-REGION/OCR-D-SEG-REGION_0001.xml': 'OCR-D-SEG-REGION/OCR-D-SEG-REGION_0001.xml', 'OCR-D-SEG-LINE/OCR-D-SEG-LINE_0001.xml': 'OCR-D-SEG-LINE/OCR-D-SEG-LINE_0001.xml', 'OCR-D-OCR-TESSEROCR-FRAKTUR/OCR-D-OCR-TESSEROCR-FRAKTUR_0001.xml': 'OCR-D-OCR-TESSEROCR-FRAKTUR/OCR-D-OCR-TESSEROCR-FRAKTUR_0001.xml'}
+13:55:49.409 INFO bagit - Creating /tmp/ocrd-bagit-gqhtasrz/tagmanifest-sha512.txt
+13:55:49.417 INFO ocrd.workspace_bagger - Created bag at /data/workspace/example/data/taverna_1575986137963.ocrd.zip

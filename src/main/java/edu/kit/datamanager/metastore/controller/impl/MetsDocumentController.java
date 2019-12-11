@@ -17,6 +17,7 @@ package edu.kit.datamanager.metastore.controller.impl;
 
 import edu.kit.datamanager.metastore.controller.IMetsDocumentController;
 import com.arangodb.ArangoDBException;
+import edu.kit.datamanager.metastore.kitdm.KitDmProperties;
 import edu.kit.ocrd.dao.MetsMetadata;
 import edu.kit.ocrd.workspace.entity.ClassificationMetadata;
 import edu.kit.ocrd.workspace.entity.GenreMetadata;
@@ -28,8 +29,12 @@ import edu.kit.ocrd.workspace.entity.PageMetadata;
 import edu.kit.ocrd.workspace.entity.ZippedBagit;
 import edu.kit.datamanager.metastore.service.IMetsDocumentService;
 import edu.kit.datamanager.metastore.service.IMetsPropertiesService;
+import edu.kit.datamanager.metastore.service.IProvenanceMetadataService;
+import edu.kit.datamanager.metastore.service.ITextRegionService;
 import edu.kit.datamanager.metastore.service.IZippedBagitService;
 import edu.kit.ocrd.workspace.MetsDocumentUtil;
+import edu.kit.ocrd.workspace.entity.ProvenanceMetadata;
+import edu.kit.ocrd.workspace.entity.TextRegion;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,10 +76,35 @@ public class MetsDocumentController implements IMetsDocumentController {
     private IMetsPropertiesService metastoreResourceService;
 
     /**
+     * Services for handling properties of METS documents.
+     */
+    @Autowired
+    private ITextRegionService textRegionService;
+
+    /**
+     * Services for handling properties of METS documents.
+     */
+    @Autowired
+    private IProvenanceMetadataService provenanceMetadataService;
+
+    /**
      * Properties for the zipped BagIt containers.
      */
     @Autowired
     private IZippedBagitService bagitService;
+  /**
+   * Properties of KIT DM 2.0
+   */
+  private final KitDmProperties repositoryProperties;
+  /**
+   * Constructor setting up KIT DM properties.
+   *
+   * @param repositoryProperties Properties for access to KIT DM repository.
+   */
+  @Autowired
+  public MetsDocumentController(KitDmProperties repositoryProperties) {
+    this.repositoryProperties = repositoryProperties;
+  }
 
     @Override
     public ResponseEntity<List<MetsDocument>> getAllDocuments() {
@@ -178,6 +208,29 @@ public class MetsDocumentController implements IMetsDocumentController {
         model.addAttribute("pageMetadata", pages);
 
         return "groundTruth";
+    }
+
+    @Override
+    public String getLatestTextRegionsOfDocumentAsHtml(@PathVariable("resourceId") String resourceId, Model model) {
+        LOGGER.trace("Get text regions of METS documents with resourceID '{}' as HTML", resourceId);
+        // Collect metadata
+        List<TextRegion> textRegions = textRegionService.getTextRegionByResourceId(resourceId);
+        // Add all to model
+        model.addAttribute("paths", repositoryProperties);
+        model.addAttribute("textRegion", textRegions);
+
+        return "textRegion";
+    }
+
+    @Override
+    public String getLatestProvenanceMetadataOfDocumentAsHtml(@PathVariable("resourceId") String resourceId, Model model) {
+        LOGGER.trace("Get provenance of METS documents with resourceID '{}' as HTML", resourceId);
+        // Collect metadata
+        List<ProvenanceMetadata> provenance = provenanceMetadataService.getProvenanceMetadataByResourceId(resourceId);
+        // Add all to model
+        model.addAttribute("provenanceMetadata", provenance);
+
+        return "provenance";
     }
 
     @Override

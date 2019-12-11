@@ -16,7 +16,7 @@
 package edu.kit.datamanager.metastore.repository;
 
 import com.arangodb.springframework.core.ArangoOperations;
-import edu.kit.ocrd.workspace.entity.ZippedBagit;
+import edu.kit.ocrd.workspace.entity.TextRegion;
 import edu.kit.datamanager.metastore.runner.CrudRunner;
 import edu.kit.ocrd.workspace.entity.TextRegion;
 import java.util.Collection;
@@ -89,7 +89,7 @@ public class TextRegionRepositoryTest {
     }
 
     /**
-     * Test of findByResourceId method, of class ZippedBagitRepository.
+     * Test of findByResourceId method, of class TextRegionRepository.
      */
     @Test
     public void testFindByResourceId() {
@@ -118,7 +118,7 @@ public class TextRegionRepositoryTest {
     }
 
     /**
-     * Test of save method, of class ZippedBagitRepository.
+     * Test of save method, of class TextRegionRepository.
      */
     @Test
     public void testSaveInstance() {

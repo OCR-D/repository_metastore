@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pc:PcGts xmlns:pc="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2019-07-15/pagecontent.xsd">
+    <pc:Metadata>
+        <pc:Creator>OCR-D/core 2.0.2</pc:Creator>
+        <pc:Created>2019-12-10T13:55:40.165810</pc:Created>
+        <pc:LastChange>2019-12-10T13:55:40.165810</pc:LastChange>
+        <pc:MetadataItem type="processingStep" name="layout/segmentation/region" value="ocrd-tesserocr-segment-region">
+            <pc:Labels externalModel="ocrd-tool" externalId="parameters">
+                <pc:Label value="True" type="overwrite_regions"/>
+                <pc:Label value="0" type="padding"/>
+                <pc:Label value="False" type="crop_polygons"/>
+                <pc:Label value="True" type="find_tables"/>
+            </pc:Labels>
+        </pc:MetadataItem>
+        <pc:MetadataItem type="processingStep" name="layout/segmentation/line" value="ocrd-tesserocr-segment-line">
+            <pc:Labels externalModel="ocrd-tool" externalId="parameters">
+                <pc:Label value="True" type="overwrite_lines"/>
+            </pc:Labels>
+        </pc:MetadataItem>
+    </pc:Metadata>
+    <pc:Page imageFilename="OCR-D-IMG/OCR-D-IMG_0001.jpg" imageWidth="1995" imageHeight="3263" orientation="0.">
+        <pc:AlternativeImage filename="OCR-D-IMG-BIN/OCR-D-IMG-BIN_0001.png" comments=",binarized"/>
+        <pc:ReadingOrder>
+            <pc:OrderedGroup id="reading-order">
+                <pc:RegionRefIndexed index="0" regionRef="region0000"/>
+                <pc:RegionRefIndexed index="1" regionRef="region0001"/>
+                <pc:RegionRefIndexed index="2" regionRef="region0002"/>
+                <pc:RegionRefIndexed index="3" regionRef="region0003"/>
+                <pc:RegionRefIndexed index="4" regionRef="region0004"/>
+            </pc:OrderedGroup>
+        </pc:ReadingOrder>
+        <pc:TextRegion id="region0000">
+            <pc:Coords points="620,575 1182,575 1182,654 620,654"/>
+            <pc:TextLine id="region0000_line0000">
+                <pc:Coords points="620,575 1182,575 1182,654 620,654"/>
+            </pc:TextLine>
+        </pc:TextRegion>
+        <pc:TextRegion id="region0001">
+            <pc:Coords points="201,1159 1582,1159 1582,1272 201,1272"/>
+            <pc:TextLine id="region0001_line0000">
+                <pc:Coords points="201,1159 1582,1159 1582,1272 201,1272"/>
+            </pc:TextLine>
+        </pc:TextRegion>
+        <pc:TextRegion id="region0002">
+            <pc:Coords points="852,1497 940,1497 940,1526 852,1526"/>
+            <pc:TextLine id="region0002_line0000">
+                <pc:Coords points="852,1497 940,1497 940,1526 852,1526"/>
+            </pc:TextLine>
+        </pc:TextRegion>
+        <pc:TextRegion id="region0003">
+            <pc:Coords points="538,1747 1255,1747 1255,1804 538,1804"/>
+            <pc:TextLine id="region0003_line0000">
+                <pc:Coords points="538,1747 1255,1747 1255,1804 538,1804"/>
+            </pc:TextLine>
+        </pc:TextRegion>
+        <pc:TextRegion id="region0004">
+            <pc:Coords points="434,2705 1365,2705 1365,2944 434,2944"/>
+            <pc:TextLine id="region0004_line0000">
+                <pc:Coords points="768,2705 1027,2705 1027,2753 768,2753"/>
+            </pc:TextLine>
+            <pc:TextLine id="region0004_line0001">
+                <pc:Coords points="434,2809 1365,2809 1365,2851 434,2851"/>
+            </pc:TextLine>
+            <pc:TextLine id="region0004_line0002">
+                <pc:Coords points="845,2907 954,2907 954,2944 845,2944"/>
+            </pc:TextLine>
+        </pc:TextRegion>
+    </pc:Page>
+</pc:PcGts>

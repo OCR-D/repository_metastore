@@ -1,0 +1,33 @@
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ocrd-cis-ocropy-binarize --mets /data/workspace/unitTest/data/mets.xml --working-dir /data/workspace/unitTest/data --input-file-grp OCR-D-IMG --output-file-grp OCR-D-IMG-BIN-OCROPY --log-level ERROR
+08:18:16.202 INFO matplotlib.font_manager - generated new fontManager
+08:18:16.323 INFO root - Overriding log level globally to ERROR
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ocrd-tesserocr-segment-region --mets /data/workspace/unitTest/data/mets.xml --working-dir /data/workspace/unitTest/data --input-file-grp OCR-D-IMG-BIN-OCROPY --output-file-grp OCR-D-SEG-REGION --log-level ERROR
+08:18:18.184 INFO root - Overriding log level globally to ERROR
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ocrd-tesserocr-segment-line --mets /data/workspace/unitTest/data/mets.xml --working-dir /data/workspace/unitTest/data --input-file-grp OCR-D-SEG-REGION --output-file-grp OCR-D-SEG-LINE --log-level ERROR
+08:18:19.835 INFO root - Overriding log level globally to ERROR
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ocrd zip bag -d /data/workspace/unitTest/data -i idOnlyForTests -D full /data/workspace/unitTest/data/taverna_1575965893694.ocrd.zip
+08:18:20.589 INFO ocrd.workspace_bagger - Bagging /data/workspace/unitTest/data to /data/workspace/unitTest/data/taverna_1575965893694.ocrd.zip (temp dir /tmp/ocrd-bagit-d5hldgk0)
+08:18:20.589 INFO ocrd.workspace_bagger - Resolving OCR-D-IMG/OCR-D-IMG-HEADER.tif (full)
+08:18:20.589 INFO ocrd.workspace_bagger - Resolved OCR-D-IMG/OCR-D-IMG-HEADER.tif
+08:18:20.590 INFO ocrd.workspace_bagger - Resolving OCR-D-IMG-BIN/OCR-D-IMG-BIN-HEADER.png (full)
+08:18:20.590 INFO ocrd.workspace_bagger - Resolved OCR-D-IMG-BIN/OCR-D-IMG-BIN-HEADER.png
+08:18:20.590 INFO ocrd.workspace_bagger - Resolving OCR-D-IMG-BIN-OCROPY/OCR-D-IMG-BIN-OCROPY-HEADER.xml (full)
+08:18:20.590 INFO ocrd.workspace_bagger - Resolved OCR-D-IMG-BIN-OCROPY/OCR-D-IMG-BIN-OCROPY-HEADER.xml
+08:18:20.591 INFO ocrd.workspace_bagger - Resolving OCR-D-SEG-REGION/OCR-D-SEG-REGION-HEADER.xml (full)
+08:18:20.591 INFO ocrd.workspace_bagger - Resolved OCR-D-SEG-REGION/OCR-D-SEG-REGION-HEADER.xml
+08:18:20.591 INFO ocrd.workspace_bagger - Resolving OCR-D-SEG-LINE/OCR-D-SEG-LINE-HEADER.xml (full)
+08:18:20.591 INFO ocrd.workspace_bagger - Resolved OCR-D-SEG-LINE/OCR-D-SEG-LINE-HEADER.xml
+08:18:20.596 INFO bagit - Using 1 processes to generate manifests: sha512
+08:18:20.596 INFO bagit - Generating manifest lines for file data/mets.xml
+08:18:20.596 INFO bagit - Generating manifest lines for file data/OCR-D-IMG/OCR-D-IMG-HEADER.tif
+08:18:20.596 INFO bagit - Generating manifest lines for file data/OCR-D-IMG-BIN/OCR-D-IMG-BIN-HEADER.png
+08:18:20.596 INFO bagit - Generating manifest lines for file data/OCR-D-IMG-BIN-OCROPY/OCR-D-IMG-BIN-OCROPY-HEADER.xml
+08:18:20.596 INFO bagit - Generating manifest lines for file data/OCR-D-SEG-LINE/OCR-D-SEG-LINE-HEADER.xml
+08:18:20.597 INFO bagit - Generating manifest lines for file data/OCR-D-SEG-REGION/OCR-D-SEG-REGION-HEADER.xml
+08:18:20.597 INFO ocrd.workspace_bagger - New vs. old: {'OCR-D-IMG/OCR-D-IMG-HEADER.tif': 'OCR-D-IMG/OCR-D-IMG-HEADER.tif', 'OCR-D-IMG-BIN/OCR-D-IMG-BIN-HEADER.png': 'OCR-D-IMG-BIN/OCR-D-IMG-BIN-HEADER.png', 'OCR-D-IMG-BIN-OCROPY/OCR-D-IMG-BIN-OCROPY-HEADER.xml': 'OCR-D-IMG-BIN-OCROPY/OCR-D-IMG-BIN-OCROPY-HEADER.xml', 'OCR-D-SEG-REGION/OCR-D-SEG-REGION-HEADER.xml': 'OCR-D-SEG-REGION/OCR-D-SEG-REGION-HEADER.xml', 'OCR-D-SEG-LINE/OCR-D-SEG-LINE-HEADER.xml': 'OCR-D-SEG-LINE/OCR-D-SEG-LINE-HEADER.xml'}
+08:18:20.600 INFO bagit - Creating /tmp/ocrd-bagit-d5hldgk0/tagmanifest-sha512.txt
+08:18:20.604 INFO ocrd.workspace_bagger - Created bag at /data/workspace/unitTest/data/taverna_1575965893694.ocrd.zip

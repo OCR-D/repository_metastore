@@ -16,21 +16,30 @@
 package edu.kit.datamanager.metastore.repository;
 
 import com.arangodb.springframework.repository.ArangoRepository;
-import edu.kit.ocrd.workspace.entity.TextRegion;
+import edu.kit.ocrd.workspace.entity.ProvenanceMetadata;
 
 /**
- * Repository holding all TextRegions.
+ * Repository holding all ProvenanceMetadata.
  */
-public interface TextRegionRepository extends ArangoRepository<TextRegion, String> {
+public interface ProvenanceMetadataRepository extends ArangoRepository<ProvenanceMetadata, String> {
 
   /**
-   * Find all text regions of a METS document.
+   * Find all ProvenanceMetadata of a METS document.
    *
    * @param resourceId Resource ID of the METS document.
-   * @param pageUrl (relative) URL of page.
    *
-   * @return All text regions of a METS document.
+   * @return All provenance of a METS document.
    */
-  Iterable<TextRegion> findByResourceIdOrderByOrderAsc(String resourceId);
+  Iterable<ProvenanceMetadata> findByResourceIdOrderByStartProcessorAsc(String resourceId);
+
+  /**
+   * Find all ProvenanceMetadata of a METS document.
+   *
+   * @param resourceId Resource ID of the METS document.
+   * @param workflowId Workflow ID of the workflow.
+   *
+   * @return Provenance of one workflow of a METS document.
+   */
+  Iterable<ProvenanceMetadata> findByResourceIdAndWorkflowIdOrderByStartProcessorAsc(String resourceId, String workflowId);
 
 }

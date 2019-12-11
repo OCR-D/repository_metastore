@@ -53,7 +53,9 @@ import edu.kit.datamanager.metastore.repository.MetsPropertiesRepository;
 import edu.kit.datamanager.metastore.repository.PageMetadataRepository;
 import edu.kit.datamanager.metastore.repository.SectionDocumentRepository;
 import edu.kit.datamanager.metastore.repository.XmlSchemaDefinitionRepository;
+import edu.kit.ocrd.workspace.entity.ProvenanceMetadata;
 import edu.kit.ocrd.workspace.entity.TextRegion;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -844,6 +846,81 @@ public class CrudRunner implements CommandLineRunner {
       
       
         return Arrays.asList( text2, text3, text5, text1, text4);
+    }
+
+    public static Collection<ProvenanceMetadata> createProvenanceMetadata() {
+      ProvenanceMetadata pmd1 = new ProvenanceMetadata();
+      pmd1.setResourceId("id_0002");
+      pmd1.setDurationProcessor(20l);
+      pmd1.setDurationWorkflow(100l);
+      pmd1.setInputFileGrps("group1");
+      pmd1.setOutputFileGrps("group2");
+      pmd1.setParameterFile("Content of parameter file.");
+      pmd1.setProcessorLabel("ocrd-tesserocr-binarize");
+      pmd1.setStartProcessor(new Date(987654321l));
+      pmd1.setStartWorkflow(new Date(987654311l));
+      pmd1.setWorkflowId("any workflow ID");
+      
+      ProvenanceMetadata pmd2 = new ProvenanceMetadata();
+      pmd2.setResourceId("id_0002");
+      pmd2.setDurationProcessor(12l);
+      pmd2.setDurationWorkflow(100l);
+      pmd2.setInputFileGrps("group2");
+      pmd2.setOutputFileGrps("group3, group4");
+      pmd2.setParameterFile("Content of parameter file.");
+      pmd2.setProcessorLabel("ocrd-tesserocr-segment-line");
+      pmd2.setStartProcessor(new Date(987654341l));
+      pmd2.setStartWorkflow(new Date(987654311l));
+      pmd2.setWorkflowId("any workflow ID");
+      
+      ProvenanceMetadata pmd3 = new ProvenanceMetadata();
+      pmd3.setResourceId("id_0002");
+      pmd3.setDurationProcessor(13l);
+      pmd3.setDurationWorkflow(100l);
+      pmd3.setInputFileGrps("group3");
+      pmd3.setOutputFileGrps("group5");
+      pmd3.setProcessorLabel("ocrd-tesserocr-recognize");
+      pmd3.setStartProcessor(new Date(987654354l));
+      pmd3.setStartWorkflow(new Date(987654311l));
+      pmd3.setWorkflowId("any workflow ID");
+      
+      ProvenanceMetadata pmd4 = new ProvenanceMetadata();
+      pmd4.setResourceId("id_0002");
+      pmd4.setDurationProcessor(14l);
+      pmd4.setDurationWorkflow(100l);
+      pmd4.setInputFileGrps("group1, group2");
+      pmd4.setOutputFileGrps("group3");
+      pmd4.setParameterFile("Content of parameter file.");
+      pmd4.setProcessorLabel("ocrd-calamari-recognize");
+      pmd4.setStartProcessor(new Date(987654400l));
+      pmd4.setStartWorkflow(new Date(987654390l));
+      pmd4.setWorkflowId("another workflow ID");
+      
+      ProvenanceMetadata pmd5 = new ProvenanceMetadata();
+      pmd5.setResourceId("id_0002");
+      pmd5.setDurationProcessor(15l);
+      pmd5.setDurationWorkflow(100l);
+      pmd5.setInputFileGrps("group3");
+      pmd5.setOutputFileGrps("group4");
+      pmd5.setParameterFile("Content of parameter file.");
+      pmd5.setProcessorLabel("ocrd-evaluation");
+      pmd5.setStartProcessor(new Date(987654414l));
+      pmd5.setStartWorkflow(new Date(987654390l));
+      pmd5.setWorkflowId("another workflow ID");
+      
+      ProvenanceMetadata pmd6 = new ProvenanceMetadata();
+      pmd6.setResourceId("id_0003");
+      pmd6.setDurationProcessor(16l);
+      pmd6.setDurationWorkflow(150l);
+      pmd6.setInputFileGrps("group1");
+      pmd6.setOutputFileGrps("group2");
+      pmd6.setProcessorLabel("ocrd-tesserocr-binarize");
+      pmd6.setStartProcessor(new Date(987654414l));
+      pmd6.setStartWorkflow(new Date(987654390l));
+      pmd6.setWorkflowId("any workflow ID");
+      
+      
+        return Arrays.asList( pmd2, pmd3, pmd6, pmd1, pmd4, pmd5);
     }
 
     public static Collection<ZippedBagit> createZippedBagits() {

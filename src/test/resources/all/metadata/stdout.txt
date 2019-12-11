@@ -1,0 +1,10 @@
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ocrd-cis-ocropy-binarize --mets /data/workspace/example/data/mets.xml --working-dir /data/workspace/example/data --input-file-grp OCR-D-IMG --output-file-grp OCR-D-IMG-BIN-OCROPY --log-level ERROR
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ocrd-tesserocr-segment-region --mets /data/workspace/example/data/mets.xml --working-dir /data/workspace/example/data --input-file-grp OCR-D-IMG-BIN-OCROPY --output-file-grp OCR-D-SEG-REGION --log-level ERROR
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ocrd-tesserocr-segment-line --mets /data/workspace/example/data/mets.xml --working-dir /data/workspace/example/data --input-file-grp OCR-D-SEG-REGION --output-file-grp OCR-D-SEG-LINE --log-level ERROR
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ocrd-tesserocr-recognize --mets /data/workspace/example/data/mets.xml --working-dir /data/workspace/example/data --input-file-grp OCR-D-SEG-LINE --output-file-grp OCR-D-OCR-TESSEROCR-FRAKTUR --parameter /data/models/param-tess-fraktur.json --log-level ERROR
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ocrd zip bag -d /data/workspace/example/data -i http://www.deutschestextarchiv.de/wundt_grundriss_1896 -D full /data/workspace/example/data/taverna_1575986137963.ocrd.zip

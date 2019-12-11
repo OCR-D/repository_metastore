@@ -92,7 +92,15 @@
       <table>
         <thead>
           <tr>
-            <th>Upload Date</th><th>Version</th><th>OCRD Identifier</th><th>URL</th><th>Files</th><th>Metadata</th><th>Ground Truth</th>
+            <th>Upload Date</th>
+            <th>Version</th>
+            <th>OCRD Identifier</th>
+            <th>URL</th>
+            <th>Files</th>
+            <th>Metadata</th>
+            <th>Ground Truth</th>
+            <th>Provenance</th>
+            <th>Text Regions</th>
           </tr>
         </thead>
         <tbody>
@@ -100,10 +108,12 @@
             <td th:text="${file.uploadDate}"></td>
             <td th:text="${file.version}"></td>
             <td><a th:href="'/api/v1/metastore/bagit/ocrdidentifier?ocrdidentifier=' + ${file.ocrdIdentifier}" th:text="${file.ocrdIdentifier}"></a></td>
-            <td><a th:href="${file.url}" th:text="${file.url}"></a></td> 
+            <td><a th:href="${file.url}">Download Zip</a></td> 
             <td><a th:href="'/api/v1/metastore/mets/' + ${file.resourceId} + '/files'" th:text="'List of referenced files'"></a></td>
             <td><a th:href="'/api/v1/metastore/mets/' + ${file.resourceId} + '/metadata'" th:text="'Metadata'"></a></td>
             <td><a th:href="'/api/v1/metastore/mets/' + ${file.resourceId} + '/groundtruth'" th:text="'Semantic Labeling'"></a></td>
+            <td><a th:href="'/api/v1/metastore/mets/' + ${file.resourceId} + '/provenance'" th:text="'Provenance'"></a></td>
+            <td><a th:href="'/api/v1/metastore/mets/' + ${file.resourceId} + '/textregion'" th:text="'Text Regions'"></a></td>
           </tr>
         </tbody>
       </table>

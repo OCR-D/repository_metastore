@@ -61,7 +61,6 @@ public class XsdDocumentController implements IXsdDocumentController {
   @Override
   public ResponseEntity<List<String>> getAllPrefixes() {
     LOGGER.trace("Get prefixes of  all XSD documents");
-    System.out.println("Get prefixes of  all XSD documents.");
     XmlSchemaDefinition xsdDocument;
     List<String> allPrefixes = xsdService.getAllPrefixes();
     return new ResponseEntity<>(allPrefixes, HttpStatus.OK);
@@ -70,7 +69,6 @@ public class XsdDocumentController implements IXsdDocumentController {
   @Override
   public ResponseEntity<XmlSchemaDefinition> getXsdDocumentByPrefix(@PathVariable("prefix") String prefix) {
     LOGGER.trace("Get XSD document with prefix " + prefix);
-    System.out.println("Get XSD document with prefix " + prefix);
     XmlSchemaDefinition xsdDocument;
     xsdDocument = xsdService.getDocumentByPrefix(prefix);
     return new ResponseEntity<>(xsdDocument, HttpStatus.OK);
@@ -79,7 +77,6 @@ public class XsdDocumentController implements IXsdDocumentController {
   @Override
   public ResponseEntity<XmlSchemaDefinition> getXsdDocumentByNamespace(@RequestParam("namespace") String namespace) {
     LOGGER.trace("Get XSD document with namespace " + namespace);
-    System.out.println("Get XSD document with namespace " + namespace);
     XmlSchemaDefinition xsdDocument;
     xsdDocument = xsdService.getDocumentByNamespace(namespace);
     return new ResponseEntity<>(xsdDocument, HttpStatus.OK);
@@ -89,8 +86,7 @@ public class XsdDocumentController implements IXsdDocumentController {
   public ResponseEntity<?> createMetsDocument(@PathVariable("prefix") String prefix, @RequestParam("fileContent") MultipartFile file) throws IOException {
     LOGGER.trace("Create XSD document!");
     String fileContent = new BufferedReader(new InputStreamReader(file.getInputStream()))
-  .lines().collect(Collectors.joining("\n"));
-    System.out.println("Create XSD document with id " + prefix + "!" + fileContent);
+            .lines().collect(Collectors.joining("\n"));
     xsdService.createXsdDocument(prefix, fileContent);
     return ResponseEntity.ok("XSD document created!");
   }

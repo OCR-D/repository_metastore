@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<prov:document xmlns:prov="http://www.w3.org/ns/prov#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns3="http://openprovenance.org/prov/extension#" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ocrd="http://www.ocr-d.de">
+    <prov:entity prov:id="ocrd:idOnlyForTests__OCR__D__IMG__BIN__HEADER">
+        <prov:type xsi:type="xsd:QName">ocrd:mets__referencedFile</prov:type>
+        <prov:value xsi:type="xsd:string">OCR-D-IMG-BIN-HEADER</prov:value>
+    </prov:entity>
+    <prov:entity prov:id="ocrd:idOnlyForTests__OCR__D__IMG__HEADER">
+        <prov:type xsi:type="xsd:QName">ocrd:mets__referencedFile</prov:type>
+        <prov:value xsi:type="xsd:string">OCR-D-IMG-HEADER</prov:value>
+    </prov:entity>
+    <prov:entity prov:id="ocrd:idOnlyForTests__OCR__D__IMG__BIN__OCROPY__HEADER">
+        <prov:type xsi:type="xsd:QName">ocrd:mets__referencedFile</prov:type>
+        <prov:type xsi:type="xsd:QName">ocrd:mets__referencedFile</prov:type>
+        <prov:value xsi:type="xsd:string">OCR-D-IMG-BIN-OCROPY-HEADER</prov:value>
+    </prov:entity>
+    <prov:entity prov:id="ocrd:idOnlyForTests__OCR__D__SEG__LINE__HEADER">
+        <prov:type xsi:type="xsd:QName">ocrd:mets__referencedFile</prov:type>
+        <prov:value xsi:type="xsd:string">OCR-D-SEG-LINE-HEADER</prov:value>
+    </prov:entity>
+    <prov:entity prov:id="ocrd:idOnlyForTests__mets__xml__1575965893694__0000">
+        <prov:type xsi:type="xsd:QName">ocrd:mets</prov:type>
+        <prov:value xsi:type="xsd:string">mets.xml.1575965893694_0000</prov:value>
+    </prov:entity>
+    <prov:entity prov:id="ocrd:idOnlyForTests__mets__xml__1575965893694__0001">
+        <prov:type xsi:type="xsd:QName">ocrd:mets</prov:type>
+        <prov:type xsi:type="xsd:QName">ocrd:mets</prov:type>
+        <prov:value xsi:type="xsd:string">mets.xml.1575965893694_0001</prov:value>
+    </prov:entity>
+    <prov:entity prov:id="ocrd:idOnlyForTests__mets__xml__1575965893694__0002">
+        <prov:type xsi:type="xsd:QName">ocrd:mets</prov:type>
+        <prov:type xsi:type="xsd:QName">ocrd:mets</prov:type>
+        <prov:value xsi:type="xsd:string">mets.xml.1575965893694_0002</prov:value>
+    </prov:entity>
+    <prov:entity prov:id="ocrd:idOnlyForTests__mets__xml__1575965893694__0003">
+        <prov:type xsi:type="xsd:QName">ocrd:mets</prov:type>
+        <prov:value xsi:type="xsd:string">mets.xml.1575965893694_0003</prov:value>
+    </prov:entity>
+    <prov:entity prov:id="ocrd:idOnlyForTests__OCR__D__SEG__REGION__HEADER">
+        <prov:type xsi:type="xsd:QName">ocrd:mets__referencedFile</prov:type>
+        <prov:type xsi:type="xsd:QName">ocrd:mets__referencedFile</prov:type>
+        <prov:value xsi:type="xsd:string">OCR-D-SEG-REGION-HEADER</prov:value>
+    </prov:entity>
+    <prov:activity prov:id="ocrd:workflow__idOnlyForTests__2019__12__10T08__18__13">
+        <prov:startTime>2019-12-10T08:18:13.694Z</prov:startTime>
+        <prov:endTime>2019-12-10T08:18:20.036Z</prov:endTime>
+        <prov:label>workflow-idOnlyForTests-2019-12-10T08-18-13</prov:label>
+        <prov:type xsi:type="xsd:QName">ocrd:workflow</prov:type>
+        <prov:type xsi:type="xsd:QName">ocrd:workflow</prov:type>
+    </prov:activity>
+    <prov:activity prov:id="ocrd:processor__idOnlyForTests__2019__12__10T08__18__14">
+        <prov:startTime>2019-12-10T08:18:14.100Z</prov:startTime>
+        <prov:endTime>2019-12-10T08:18:16.532Z</prov:endTime>
+        <prov:label>ocrd-cis-ocropy-binarize_Version 0.0.6, ocrd/core 2.0.2
+</prov:label>
+        <prov:type xsi:type="xsd:QName">ocrd:processor</prov:type>
+    </prov:activity>
+    <prov:activity prov:id="ocrd:processor__idOnlyForTests__2019__12__10T08__18__19">
+        <prov:startTime>2019-12-10T08:18:19.208Z</prov:startTime>
+        <prov:endTime>2019-12-10T08:18:20.036Z</prov:endTime>
+        <prov:label>ocrd-tesserocr-segment-line_Version 0.6.0, ocrd/core 2.0.2
+</prov:label>
+        <prov:type xsi:type="xsd:QName">ocrd:processor</prov:type>
+    </prov:activity>
+    <prov:activity prov:id="ocrd:processor__idOnlyForTests__2019__12__10T08__18__17">
+        <prov:startTime>2019-12-10T08:18:17.539Z</prov:startTime>
+        <prov:endTime>2019-12-10T08:18:18.415Z</prov:endTime>
+        <prov:label>ocrd-tesserocr-segment-region_Version 0.6.0, ocrd/core 2.0.2
+</prov:label>
+        <prov:type xsi:type="xsd:QName">ocrd:processor</prov:type>
+    </prov:activity>
+    <prov:agent prov:id="ocrd:Execute__Taverna__OCR__D__Workflow"/>
+    <prov:used>
+        <prov:activity prov:ref="ocrd:processor__idOnlyForTests__2019__12__10T08__18__19"/>
+        <prov:entity prov:ref="ocrd:idOnlyForTests__OCR__D__SEG__REGION__HEADER"/>
+    </prov:used>
+    <prov:used>
+        <prov:activity prov:ref="ocrd:processor__idOnlyForTests__2019__12__10T08__18__19"/>
+        <prov:entity prov:ref="ocrd:idOnlyForTests__mets__xml__1575965893694__0002"/>
+    </prov:used>
+    <prov:used>
+        <prov:activity prov:ref="ocrd:processor__idOnlyForTests__2019__12__10T08__18__17"/>
+        <prov:entity prov:ref="ocrd:idOnlyForTests__OCR__D__IMG__BIN__OCROPY__HEADER"/>
+    </prov:used>
+    <prov:used>
+        <prov:activity prov:ref="ocrd:processor__idOnlyForTests__2019__12__10T08__18__17"/>
+        <prov:entity prov:ref="ocrd:idOnlyForTests__mets__xml__1575965893694__0001"/>
+    </prov:used>
+    <prov:used>
+        <prov:activity prov:ref="ocrd:processor__idOnlyForTests__2019__12__10T08__18__14"/>
+        <prov:entity prov:ref="ocrd:idOnlyForTests__OCR__D__IMG__HEADER"/>
+    </prov:used>
+    <prov:used>
+        <prov:activity prov:ref="ocrd:processor__idOnlyForTests__2019__12__10T08__18__14"/>
+        <prov:entity prov:ref="ocrd:idOnlyForTests__mets__xml__1575965893694__0000"/>
+    </prov:used>
+    <prov:wasGeneratedBy>
+        <prov:entity prov:ref="ocrd:idOnlyForTests__OCR__D__SEG__LINE__HEADER"/>
+        <prov:activity prov:ref="ocrd:processor__idOnlyForTests__2019__12__10T08__18__19"/>
+        <prov:role xsi:type="xsd:string">'ocrd:{http://www.ocr-d.de}processor_idOnlyForTests_2019_12_10T08_18_20'</prov:role>
+    </prov:wasGeneratedBy>
+    <prov:wasGeneratedBy>
+        <prov:entity prov:ref="ocrd:idOnlyForTests__mets__xml__1575965893694__0003"/>
+        <prov:activity prov:ref="ocrd:processor__idOnlyForTests__2019__12__10T08__18__19"/>
+        <prov:role xsi:type="xsd:string">'ocrd:{http://www.ocr-d.de}processor_idOnlyForTests_2019_12_10T08_18_20'</prov:role>
+    </prov:wasGeneratedBy>
+    <prov:wasGeneratedBy>
+        <prov:entity prov:ref="ocrd:idOnlyForTests__OCR__D__SEG__REGION__HEADER"/>
+        <prov:activity prov:ref="ocrd:processor__idOnlyForTests__2019__12__10T08__18__17"/>
+        <prov:role xsi:type="xsd:string">'ocrd:{http://www.ocr-d.de}processor_idOnlyForTests_2019_12_10T08_18_18'</prov:role>
+    </prov:wasGeneratedBy>
+    <prov:wasGeneratedBy>
+        <prov:entity prov:ref="ocrd:idOnlyForTests__mets__xml__1575965893694__0002"/>
+        <prov:activity prov:ref="ocrd:processor__idOnlyForTests__2019__12__10T08__18__17"/>
+        <prov:role xsi:type="xsd:string">'ocrd:{http://www.ocr-d.de}processor_idOnlyForTests_2019_12_10T08_18_18'</prov:role>
+    </prov:wasGeneratedBy>
+    <prov:wasGeneratedBy>
+        <prov:entity prov:ref="ocrd:idOnlyForTests__OCR__D__IMG__BIN__HEADER"/>
+        <prov:activity prov:ref="ocrd:processor__idOnlyForTests__2019__12__10T08__18__14"/>
+        <prov:role xsi:type="xsd:string">'ocrd:{http://www.ocr-d.de}processor_idOnlyForTests_2019_12_10T08_18_16'</prov:role>
+    </prov:wasGeneratedBy>
+    <prov:wasGeneratedBy>
+        <prov:entity prov:ref="ocrd:idOnlyForTests__OCR__D__IMG__BIN__OCROPY__HEADER"/>
+        <prov:activity prov:ref="ocrd:processor__idOnlyForTests__2019__12__10T08__18__14"/>
+        <prov:role xsi:type="xsd:string">'ocrd:{http://www.ocr-d.de}processor_idOnlyForTests_2019_12_10T08_18_16'</prov:role>
+    </prov:wasGeneratedBy>
+    <prov:wasGeneratedBy>
+        <prov:entity prov:ref="ocrd:idOnlyForTests__mets__xml__1575965893694__0001"/>
+        <prov:activity prov:ref="ocrd:processor__idOnlyForTests__2019__12__10T08__18__14"/>
+        <prov:role xsi:type="xsd:string">'ocrd:{http://www.ocr-d.de}processor_idOnlyForTests_2019_12_10T08_18_16'</prov:role>
+    </prov:wasGeneratedBy>
+    <prov:wasDerivedFrom>
+        <prov:generatedEntity prov:ref="ocrd:idOnlyForTests__OCR__D__SEG__LINE__HEADER"/>
+        <prov:usedEntity prov:ref="ocrd:idOnlyForTests__OCR__D__SEG__REGION__HEADER"/>
+    </prov:wasDerivedFrom>
+    <prov:wasDerivedFrom>
+        <prov:generatedEntity prov:ref="ocrd:idOnlyForTests__mets__xml__1575965893694__0003"/>
+        <prov:usedEntity prov:ref="ocrd:idOnlyForTests__mets__xml__1575965893694__0002"/>
+    </prov:wasDerivedFrom>
+    <prov:wasDerivedFrom>
+        <prov:generatedEntity prov:ref="ocrd:idOnlyForTests__OCR__D__SEG__REGION__HEADER"/>
+        <prov:usedEntity prov:ref="ocrd:idOnlyForTests__OCR__D__IMG__BIN__OCROPY__HEADER"/>
+    </prov:wasDerivedFrom>
+    <prov:wasDerivedFrom>
+        <prov:generatedEntity prov:ref="ocrd:idOnlyForTests__mets__xml__1575965893694__0002"/>
+        <prov:usedEntity prov:ref="ocrd:idOnlyForTests__mets__xml__1575965893694__0001"/>
+    </prov:wasDerivedFrom>
+    <prov:wasDerivedFrom>
+        <prov:generatedEntity prov:ref="ocrd:idOnlyForTests__mets__xml__1575965893694__0001"/>
+        <prov:usedEntity prov:ref="ocrd:idOnlyForTests__mets__xml__1575965893694__0000"/>
+    </prov:wasDerivedFrom>
+    <prov:wasAssociatedWith prov:id="ocrd:agent__workflow__idOnlyForTests__2019__12__10T08__18__13">
+        <prov:activity prov:ref="ocrd:workflow__idOnlyForTests__2019__12__10T08__18__13"/>
+        <prov:agent prov:ref="ocrd:Execute__Taverna__OCR__D__Workflow"/>
+    </prov:wasAssociatedWith>
+    <prov:wasStartedBy prov:id="ocrd:taverna__workflow__idOnlyForTests__2019__12__10T08__18__13">
+        <prov:activity prov:ref="ocrd:workflow__idOnlyForTests__2019__12__10T08__18__13"/>
+        <prov:trigger prov:ref="ocrd:processor__idOnlyForTests__2019__12__10T08__18__19"/>
+    </prov:wasStartedBy>
+    <prov:wasStartedBy prov:id="ocrd:taverna__workflow__idOnlyForTests__2019__12__10T08__18__13">
+        <prov:activity prov:ref="ocrd:workflow__idOnlyForTests__2019__12__10T08__18__13"/>
+        <prov:trigger prov:ref="ocrd:processor__idOnlyForTests__2019__12__10T08__18__17"/>
+    </prov:wasStartedBy>
+    <prov:wasStartedBy prov:id="ocrd:taverna__workflow__idOnlyForTests__2019__12__10T08__18__13">
+        <prov:activity prov:ref="ocrd:workflow__idOnlyForTests__2019__12__10T08__18__13"/>
+        <prov:trigger prov:ref="ocrd:processor__idOnlyForTests__2019__12__10T08__18__14"/>
+    </prov:wasStartedBy>
+</prov:document>

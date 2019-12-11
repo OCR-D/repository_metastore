@@ -49,6 +49,8 @@ import edu.kit.datamanager.metastore.kitdm.KitDmProperties;
 import edu.kit.datamanager.metastore.repository.MetsFileRepository;
 import edu.kit.datamanager.metastore.repository.MetsPropertiesRepository;
 import edu.kit.datamanager.metastore.service.IMetsPropertiesService;
+import edu.kit.datamanager.metastore.service.IProvenanceMetadataService;
+import edu.kit.datamanager.metastore.service.ITextRegionService;
 import edu.kit.datamanager.metastore.service.IZippedBagitService;
 import edu.kit.datamanager.metastore.util.RegisterFilesInRepo;
 import edu.kit.datamanager.metastore.util.RepositoryUtil;
@@ -95,6 +97,18 @@ public class BagItUploadController implements IBagItUploadController {
    */
   @Autowired
   private IMetsDocumentService metsDocumentService;
+
+  /**
+   * Service for managing text regions.
+   */
+  @Autowired
+  private ITextRegionService textRegionService;
+
+ /**
+   * Services for managing provenance metadata.
+   */
+  @Autowired
+  private IProvenanceMetadataService provenanceMetadataService;
 
   /**
    * Repository persisting METS properties.
@@ -254,6 +268,7 @@ public class BagItUploadController implements IBagItUploadController {
       Bag bag = BagItUtil.readBag(pathToBagIt);
       String xOcrdMets = BagItUtil.getPathToMets(bag);
       File metsFile = Paths.get(pathToBagIt.toString(), xOcrdMets).toFile();
+      File provenanceFile = Paths.get(pathToBagIt.toString(), "metadata/ocrd_provenance.xml").toFile();
       if (metsFile.exists()) {
         try {
           // 6. validate workspace (throws exception if not valid)
@@ -261,6 +276,8 @@ public class BagItUploadController implements IBagItUploadController {
           // 7. extract METS and properties and files (resourceIdentifier needed)
           String metsFileAsString = FileUtils.readFileToString(metsFile, "UTF-8");
           metsDocumentService.createMetsDocument(resourceId, metsFileAsString);
+          textRegionService.createTextRegion(resourceId, metsFile);
+          provenanceMetadataService.createProvenanceMetadata(resourceId, metsFile, provenanceFile);
           // 8. Create resource.
           Iterable<MetsProperties> findByResourceId = metsPropertiesRepository.findByResourceId(resourceId);
           Iterator<MetsProperties> iterator = findByResourceId.iterator();

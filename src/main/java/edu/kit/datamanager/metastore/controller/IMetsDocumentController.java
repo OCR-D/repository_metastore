@@ -113,6 +113,32 @@ public interface IMetsDocumentController {
   String getLatestGroundTruthMetadataOfDocumentAsHtml(@ApiParam(value = "The numeric resource identifier.", required = true) @PathVariable(value = "resourceId") String resourceId, Model model);
 
   /**
+   * Get text region metadata of all pages of current METS document with given resourceID.
+   *
+   * @param resourceId ResourceID of the METS document.
+   * @param model Model holding information about metadata.
+   *
+   * @return Metadata of METS document with given resourceID.
+   */
+  @ApiOperation(value = "Get text region metadata of all pages of currrent METS documents with given resourceID.",
+          notes = "Only the current METS document is supplied.")
+  @RequestMapping(path = "{resourceId}/textregion", method = RequestMethod.GET, produces = "text/html")
+  String getLatestTextRegionsOfDocumentAsHtml(@ApiParam(value = "The numeric resource identifier.", required = true) @PathVariable(value = "resourceId") String resourceId, Model model);
+
+  /**
+   * Get provenance metadata of pages of current METS document with given resourceID.
+   *
+   * @param resourceId ResourceID of the METS document.
+   * @param model Model holding information about metadata.
+   *
+   * @return Metadata of METS document with given resourceID.
+   */
+  @ApiOperation(value = "Get provenance metadata of pages of currrent METS documents with given resourceID.",
+          notes = "Only the current METS document is supplied.")
+  @RequestMapping(path = "{resourceId}/provenance", method = RequestMethod.GET, produces = "text/html")
+  String getLatestProvenanceMetadataOfDocumentAsHtml(@ApiParam(value = "The numeric resource identifier.", required = true) @PathVariable(value = "resourceId") String resourceId, Model model);
+
+  /**
    * Get all METS documents with given PPN.
    *
    * @param ppn PPN of the METS document.

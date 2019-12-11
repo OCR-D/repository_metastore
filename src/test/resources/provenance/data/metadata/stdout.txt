@@ -1,0 +1,8 @@
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ocrd-cis-ocropy-binarize --mets /data/workspace/unitTest/data/mets.xml --working-dir /data/workspace/unitTest/data --input-file-grp OCR-D-IMG --output-file-grp OCR-D-IMG-BIN-OCROPY --log-level ERROR
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ocrd-tesserocr-segment-region --mets /data/workspace/unitTest/data/mets.xml --working-dir /data/workspace/unitTest/data --input-file-grp OCR-D-IMG-BIN-OCROPY --output-file-grp OCR-D-SEG-REGION --log-level ERROR
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ocrd-tesserocr-segment-line --mets /data/workspace/unitTest/data/mets.xml --working-dir /data/workspace/unitTest/data --input-file-grp OCR-D-SEG-REGION --output-file-grp OCR-D-SEG-LINE --log-level ERROR
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ocrd zip bag -d /data/workspace/unitTest/data -i idOnlyForTests -D full /data/workspace/unitTest/data/taverna_1575965893694.ocrd.zip
