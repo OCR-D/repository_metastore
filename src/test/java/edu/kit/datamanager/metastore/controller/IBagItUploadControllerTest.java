@@ -596,6 +596,22 @@ public class IBagItUploadControllerTest {
             .andExpect(status().isOk())
             .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td/a[@href = '" + redirectedUrl + "']").doesNotExist())
             .andReturn();
+    System.out.println("*****************************************************");
+    System.out.println("listTextRegionsAsHtml");
+    this.mockMvc.perform(get("/api/v1/metastore/mets/"+dataObjectId + "/textregion")
+            .accept(MediaType.TEXT_HTML))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.xpath("/html/body/table/tbody/tr/td[text() = 'WILHELM WUNDT']").exists())
+            .andReturn();
+    System.out.println("*****************************************************");
+    System.out.println("listProvenanceAsHtml");
+    this.mockMvc.perform(get("/api/v1/metastore/mets/"+dataObjectId + "/provenance")
+            .accept(MediaType.TEXT_HTML))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.xpath("/html/body/table/tbody/tr/td[text() = '{ \"model\": \"Fraktur\" }']").exists())
+            .andReturn();
   }
 
 }

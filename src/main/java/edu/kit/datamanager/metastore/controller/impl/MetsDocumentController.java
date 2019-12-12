@@ -312,7 +312,7 @@ public class MetsDocumentController implements IMetsDocumentController {
         for (String resourceId : resourceIdList) {
 
             ZippedBagit bagit = bagitService.getZippedBagitByResourceId(resourceId);
-            if (bagit.getLatest()) {
+            if (bagit != null && bagit.getLatest()) {
                 // Add only latest versions
                 bagitList.add(bagit);
             }

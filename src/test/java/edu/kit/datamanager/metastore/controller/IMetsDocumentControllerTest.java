@@ -544,6 +544,25 @@ public class IMetsDocumentControllerTest {
    * Test of getResourceIdByIdentifier method, of class IMetsDocumentController.
    */
   @Test
+  public void testGetResourceIdByIdentifierAsHtml() throws Exception {
+    System.out.println("getResourceIdByIdentifier");
+    String identifier = "url3";
+    String type = "";
+    String[] allIds = {"id_0019"};
+    this.mockMvc.perform(get("/api/v1/metastore/mets/identifier").header(HttpHeaders.AUTHORIZATION, "Bearer NoBearerToken")
+            .param("identifier", identifier)
+            .accept(MediaType.TEXT_HTML))
+            .andDo(print())
+            .andExpect(status().isOk())
+            // in actual model there is no entry for this identifier has to be fixed.
+            .andExpect(MockMvcResultMatchers.xpath("/html/body/div/table/tbody/tr/td/a[text() = '" + allIds[0] + "']").doesNotExist())
+            .andReturn();
+  }
+
+  /**
+   * Test of getResourceIdByIdentifier method, of class IMetsDocumentController.
+   */
+  @Test
   public void testGetResourceIdByIdentifierAndType() throws Exception {
     System.out.println("getResourceIdByIdentifierAndType");
     String identifier = "url2";

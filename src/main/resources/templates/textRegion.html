@@ -39,8 +39,8 @@ limitations under the License.
       </thead>
       <tbody>
         <tr th:each="text: ${textRegion}">
-          <td><a th:href="${paths.basePath} + '/api/v1/dataresources/' + ${text.resourceId} + '/data/bagit/data/' + ${text.imageUrl}" th:text="${text.imageUrl}"></a></td>
-          <td><a th:href="${paths.basePath} + '/api/v1/dataresources/' + ${text.resourceId} + '/data/bagit/data/' + ${text.pageUrl}" th:text="${text.pageUrl}"></a></td>
+          <td th:with="start=${#strings.indexOf(text.imageUrl,'/') + 1}"><a th:href="${paths.basePath} + '/api/v1/dataresources/' + ${text.resourceId} + '/data/bagit/data/' + ${text.imageUrl}" th:text="${#strings.substring(text.imageUrl,start)}"></a></td>
+          <td th:with="start=${#strings.indexOf(text.pageUrl,'/') + 1}"><a th:href="${paths.basePath} + '/api/v1/dataresources/' + ${text.resourceId} + '/data/bagit/data/' + ${text.pageUrl}" th:text="${#strings.substring(text.pageUrl,start)}"></a></td>
           <td th:text="${text.order}"></td>
           <td th:text="${text.region}"></td>
           <td th:text="${text.confidence}"></td>
