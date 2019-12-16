@@ -31,43 +31,20 @@ echo Install Research Data Repository into $INSTALLATION_DIRECTORY
 # Determine base directory
 BASE_DIR=$(dirname "$0")
 
-cp -r "$BASE_DIR"/docker "$INSTALLATION_DIRECTORY"
+cp -r "$BASE_DIR"/docker/* "$INSTALLATION_DIRECTORY"
+cp ConfigureDocker "$INSTALLATION_DIRECTORY"
+cp setupDocker.sh "$INSTALLATION_DIRECTORY"
 cd "$INSTALLATION_DIRECTORY"
-# Prepare docker volumes
-# Data folders
-mkdir -p docker/server/arangodb
-mkdir -p docker/server/postgres
-mkdir -p docker/server/kitdm
-# Backup folders
-mkdir -p docker/server/backup/arangodb
-mkdir -p docker/server/backup/postgres
+chmod 777 setupDocker.sh
 
-# Create directory for git projects
-mkdir git
-# Checkout and build KIT Data Manager 2.0
-cd git
-git clone --recursive https://github.com/kit-data-manager/base-repo.git
-cd base-repo
-./gradlew -Pclean-release build
-cp build/libs/*.jar ../../docker/base-repo/
-cd ../..
+#Setup files for docker compose
+docker build -t ocrd/setup_framework -f ConfigureDocker .
 
-# Checkout and build Metastore
-cd git
-git clone --recursive https://github.com/OCR-D/repository_metastore.git
-cd repository_metastore
-./gradlew -Prelease build
-cp build/libs/*.jar ../../docker/metastore/
-cd ../..
+docker run -v "$INSTALLATION_DIRECTORY":/install ocrd/setup_framework /install/setupDocker.sh /install
 
-# Remove git projects
-rm -rf git
-
-# Change to docker directory
-cd docker
 echo SUCCESS
 echo Now you can start the Research Data Repository with the following commands:
-echo cd "\"$INSTALLATION_DIRECTORY/docker\""
+echo cd \""$INSTALLATION_DIRECTORY"\"
 echo sudo docker-compose up
 
 
