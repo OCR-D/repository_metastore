@@ -47,3 +47,11 @@ echo Now you can start the Research Data Repository with the following commands:
 echo cd \""$INSTALLATION_DIRECTORY"\"
 echo docker-compose up
 
+
+
+
+
+
+
+
+

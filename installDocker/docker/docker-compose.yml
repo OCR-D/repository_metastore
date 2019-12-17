@@ -1,16 +1,11 @@
 version: "3"
 services:
-  proxydns:
-    image: defreitas/dns-proxy-server
-    hostname: dns.mageddo
-    ports:
-      - "5380:5380"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
-      - "/etc/resolv.conf:/etc/resolv.conf"
-    restart: always
+  rabbitmq:
+    image: rabbitmq:3
+    container_name: rabbitmq
   postgres4kitdm:
     build: postgres
+    container_name: postgres4kitdm
     environment:
       - POSTGRES_PASSWORD=postgres4Docker
     ports:
@@ -18,9 +13,9 @@ services:
     volumes:
       - "${PWD}/server/backup/postgres:/dump"
       - "${PWD}/server/postgres:/var/lib/postgresql/data"
-    network_mode: bridge 
   arangodb4kitdm:
     image: arangodb
+    container_name: arangodb4kitdm
     environment:
       - ARANGO_ROOT_PASSWORD=arangodb4Docker
     ports:
@@ -28,23 +23,23 @@ services:
     volumes:
       - "${PWD}/server/backup/arangodb:/dump"
       - "${PWD}/server/arangodb:/var/lib/arangodb3"
-    network_mode: bridge 
   kitdm20:
     build: base-repo
-    hostname: kitdm20.docker
+    container_name: kitdm20
     links: 
       - postgres4kitdm
     ports:
       - "8090:8090"
     volumes:
       - "${PWD}/server/kitdm:/kitdm/archive"    
-    network_mode: bridge 
   metastore:
     build: metastore
+    container_name: metastore
     links: 
       - postgres4kitdm
       - arangodb4kitdm
       - kitdm20
+      - rabbitmq
     ports:
       - "8080:8080"
-    network_mode: bridge 
+
