@@ -59,7 +59,7 @@ public class TextRegionService implements ITextRegionService {
 
   @Override
   public List<TextRegion> getTextRegionByResourceId(String resourceId) {
-    Iterator<TextRegion> provenanceIterator = textRegionRepository.findByResourceIdOrderByOrderAsc(resourceId).iterator();
+    Iterator<TextRegion> provenanceIterator = textRegionRepository.findByResourceIdOrderByImageUrlAscOrderAsc(resourceId).iterator();
     List<TextRegion> provenanceList = IteratorUtils.toList(provenanceIterator);
     return provenanceList;
   }

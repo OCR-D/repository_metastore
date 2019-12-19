@@ -361,7 +361,7 @@ public class MetsPropertiesServiceTest {
         assertEquals(1, result.size());
         PageMetadata pm = result.get(0);
         assertEquals(resourceId, pm.getResourceId());
-        assertEquals("1", pm.getOrder());
+        assertEquals(new Integer(1), pm.getOrder());
         assertEquals("phys_0001", pm.getPageId());
         assertEquals(GroundTruthProperties.LATIN, pm.getFeature());
     }

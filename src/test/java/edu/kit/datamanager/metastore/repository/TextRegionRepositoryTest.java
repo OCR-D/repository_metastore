@@ -98,21 +98,50 @@ public class TextRegionRepositoryTest {
         TextRegionRepository instance = textRegionRepository;
         Iterator<TextRegion> result = instance.findByResourceIdOrderByOrderAsc(resourceId).iterator();
         TextRegion mi = result.next();
-        String previousOrder = mi.getOrder();
+        Integer previousOrder = mi.getOrder();
         assertTrue(result.hasNext());
         assertEquals(resourceId, mi.getResourceId());
         mi = result.next();
-        assertTrue(mi.getOrder().compareTo(previousOrder)> 0);
+        assertTrue(mi.getOrder() > previousOrder);
         previousOrder = mi.getOrder();
         assertTrue(result.hasNext());
         assertEquals(resourceId, mi.getResourceId());
         mi = result.next();
-        assertTrue(mi.getOrder().compareTo(previousOrder)> 0);
+        assertTrue(mi.getOrder() > previousOrder);
         previousOrder = mi.getOrder();
         assertTrue(result.hasNext());
         assertEquals(resourceId, mi.getResourceId());
         mi = result.next();
-        assertTrue(mi.getOrder().compareTo(previousOrder)> 0);
+        assertTrue(mi.getOrder() > previousOrder);
+        previousOrder = mi.getOrder();
+        assertFalse(result.hasNext());
+    }
+
+    /**
+     * Test of findByResourceId method, of class TextRegionRepository.
+     */
+    @Test
+    public void testFindByResourceIdOrderByImageUrlAndOrder() {
+        System.out.println("testFindByResourceIdOrderByImageUrlAndOrder");
+        String resourceId = "id_0002";
+        TextRegionRepository instance = textRegionRepository;
+        Iterator<TextRegion> result = instance.findByResourceIdOrderByOrderAsc(resourceId).iterator();
+        TextRegion mi = result.next();
+        Integer previousOrder = mi.getOrder();
+        assertTrue(result.hasNext());
+        assertEquals(resourceId, mi.getResourceId());
+        mi = result.next();
+        assertTrue(mi.getOrder() > previousOrder);
+        previousOrder = mi.getOrder();
+        assertTrue(result.hasNext());
+        assertEquals(resourceId, mi.getResourceId());
+        mi = result.next();
+        assertTrue(mi.getOrder() > previousOrder);
+        previousOrder = mi.getOrder();
+        assertTrue(result.hasNext());
+        assertEquals(resourceId, mi.getResourceId());
+        mi = result.next();
+        assertTrue(mi.getOrder() > previousOrder);
         previousOrder = mi.getOrder();
         assertFalse(result.hasNext());
     }

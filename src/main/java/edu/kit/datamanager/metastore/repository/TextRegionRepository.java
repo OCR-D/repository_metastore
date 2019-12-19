@@ -33,4 +33,14 @@ public interface TextRegionRepository extends ArangoRepository<TextRegion, Strin
    */
   Iterable<TextRegion> findByResourceIdOrderByOrderAsc(String resourceId);
 
+  /**
+   * Find all text regions of a METS document ordered by 'image' and 'order'.
+   *
+   * @param resourceId Resource ID of the METS document.
+   * @param pageUrl (relative) URL of page.
+   *
+   * @return All text regions of a METS document.
+   */
+  Iterable<TextRegion> findByResourceIdOrderByImageUrlAscOrderAsc(String resourceId);
+
 }

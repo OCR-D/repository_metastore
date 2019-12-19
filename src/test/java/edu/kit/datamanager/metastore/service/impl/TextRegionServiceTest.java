@@ -93,12 +93,12 @@ public class TextRegionServiceTest {
     TextRegionService instance = textRegionService;
     List<TextRegion> result = instance.getTextRegionByResourceId(resourceId);
     assertEquals(4, result.size());
-    String previousOrder = "0";
+    Integer previousOrder = 0;
     TextRegion pmd = result.get(0);
     for (int index = 0; index < result.size(); index++) {
       pmd = result.get(index);
       assertEquals(resourceId, pmd.getResourceId());
-      assertTrue(pmd.getOrder().compareTo(previousOrder) > 0);
+      assertTrue(pmd.getOrder() > previousOrder);
       previousOrder = pmd.getOrder();
 
     }
@@ -130,10 +130,10 @@ public class TextRegionServiceTest {
     instance.createTextRegion(resourceId, metsFile);
     List<TextRegion> result = instance.getTextRegionByResourceId(resourceId);
     assertEquals(5, result.size());
-    String previousOrder = "/"; // predecessor of '0'
+    Integer previousOrder = -1; // predecessor of 0
     for (TextRegion pmd : result) {
       assertTrue(pmd.getRegion().startsWith("region000"));
-      assertTrue(pmd.getOrder().compareTo(previousOrder) > 0);
+      assertTrue(pmd.getOrder() > previousOrder);
       previousOrder = pmd.getOrder();
       assertTrue(pmd.getPageUrl().startsWith("OCR-D-OCR-"));
       assertEquals("OCR-D-IMG/OCR-D-IMG_0001.jpg", pmd.getImageUrl());

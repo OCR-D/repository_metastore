@@ -775,15 +775,15 @@ public class CrudRunner implements CommandLineRunner {
 
     public static Collection<PageMetadata> createPageMetadata() {
         return Arrays.asList(
-                new PageMetadata("id_0002", "1", "phys_0001", GroundTruthProperties.ACQUISITION),
-                new PageMetadata("id_0002", "1", "phys_0001", GroundTruthProperties.ADMINS),
-                new PageMetadata("id_0002", "2", "phys_0002", GroundTruthProperties.ADMINS),
-                new PageMetadata("id_0015", "1", "phys_0001", GroundTruthProperties.ANDROID),
-                new PageMetadata("id_0016", "1", "phys_0001", GroundTruthProperties.TOC),
-                new PageMetadata("id_0017", "1", "phys_0001", GroundTruthProperties.FAX),
-                new PageMetadata("id_0017", "2", "phys_0002", GroundTruthProperties.DIA),
-                new PageMetadata("id_0018", "1", "phys_0001", GroundTruthProperties.ADMINS),
-                new PageMetadata("id_0019", "1", "phys_0001", GroundTruthProperties.LATIN));
+                new PageMetadata("id_0002", 1, "phys_0001", GroundTruthProperties.ACQUISITION),
+                new PageMetadata("id_0002", 1, "phys_0001", GroundTruthProperties.ADMINS),
+                new PageMetadata("id_0002", 2, "phys_0002", GroundTruthProperties.ADMINS),
+                new PageMetadata("id_0015", 1, "phys_0001", GroundTruthProperties.ANDROID),
+                new PageMetadata("id_0016", 1, "phys_0001", GroundTruthProperties.TOC),
+                new PageMetadata("id_0017", 1, "phys_0001", GroundTruthProperties.FAX),
+                new PageMetadata("id_0017", 2, "phys_0002", GroundTruthProperties.DIA),
+                new PageMetadata("id_0018", 1, "phys_0001", GroundTruthProperties.ADMINS),
+                new PageMetadata("id_0019", 1, "phys_0001", GroundTruthProperties.LATIN));
     }
 
     public static Collection<TextRegion> createTextRegion() {
@@ -792,7 +792,7 @@ public class CrudRunner implements CommandLineRunner {
       text1.setRegion("region1");
       text1.setPageUrl("OCR-D-IMG_0001");
       text1.setImageUrl("OCR-D-IMG_0001");
-      text1.setOrder("1");
+      text1.setOrder(1);
       text1.setText("This is a really long text from a very large page. Unfortunately it "
               + "repeats the same text several times.");
       text1.setVersion(1);
@@ -803,7 +803,7 @@ public class CrudRunner implements CommandLineRunner {
       text2.setRegion("region2");
       text2.setPageUrl("OCR-D-IMG_0002");
       text2.setImageUrl("OCR-D-IMG_0002");
-      text2.setOrder("2");
+      text2.setOrder(2);
       text2.setText("On page 2 there is a shorter text. Unfortunately it "
               + "repeats the same text several times.");
       text2.setVersion(1);
@@ -814,7 +814,7 @@ public class CrudRunner implements CommandLineRunner {
       text3.setRegion("region3");
       text3.setPageUrl("OCR-D-IMG_0003");
       text3.setImageUrl("OCR-D-IMG_0003");
-      text3.setOrder("3");
+      text3.setOrder(3);
       text3.setText("Dito on page 3.");
       text3.setVersion(1);
       text3.setConfidence(0.8f);
@@ -824,7 +824,7 @@ public class CrudRunner implements CommandLineRunner {
       text4.setRegion("region4");
       text4.setPageUrl("OCR-D-IMG_0004");
       text4.setImageUrl("OCR-D-IMG_0004");
-      text4.setOrder("4");
+      text4.setOrder(4);
       text4.setText("This is a really long text from a very large page. Unfortunately it "
               + "repeats the same text several times."
               + "This is a really long text from a very large page. Unfortunately it "
@@ -839,7 +839,7 @@ public class CrudRunner implements CommandLineRunner {
       text5.setRegion("region5");
       text5.setPageUrl("OCR-D-IMG_0005");
       text5.setImageUrl("OCR-D-IMG_0005");
-      text5.setOrder("5");
+      text5.setOrder(5);
       text5.setText("This is the last page.");
       text5.setVersion(1);
       text5.setConfidence(0.9f);
