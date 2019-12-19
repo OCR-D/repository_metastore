@@ -7,18 +7,6 @@
 # bash installRepo.sh /path/to/installationdir
 ################################################################################
 
-# Test for commands used in this script
-testForCommands="sed docker"
-
-for command in $testForCommands
-do 
-  $command --help >> /dev/null
-  if [ $? -ne 0 ]; then
-    echo "Error: command '$command' is not installed!"
-    exit 1
-  fi
-done
-
 # Check if argument is given
 if [ -z "$1" ]; then
   echo Please provide a directory where to install.
@@ -39,10 +27,6 @@ if [ ! -z "$(ls -A "$INSTALLATION_DIRECTORY")" ]; then
    echo "Please provide an empty directory or a new directory!"
    exit 1
 fi
-
-cd "$INSTALLATION_DIRECTORY"
-INSTALLATION_DIRECTORY=`pwd`
-
 echo Install Research Data Repository into $INSTALLATION_DIRECTORY
 # Determine base directory
 BASE_DIR=$(dirname "$0")
@@ -62,4 +46,12 @@ echo SUCCESS
 echo Now you can start the Research Data Repository with the following commands:
 echo cd \""$INSTALLATION_DIRECTORY"\"
 echo docker-compose up
+
+
+
+
+
+
+
+
 

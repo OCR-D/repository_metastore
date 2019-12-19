@@ -25,6 +25,26 @@ user@localhost:/home/user/$sudo chmod +x /usr/local/bin/docker-compose
 # Install Code Completion (optional)
 user@localhost:/home/user/$sudo curl -L https://raw.githubusercontent.com/docker/compose/1.23.2/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose
 ```
+## Setup Docker
+After installing docker you have to set up daemon and add user to  the group 'docker'
+```bash=bash
+# Start docker daemon at startup
+user@localhost:/home/user/$sudo systemctl enable docker
+```
+```bash=bash
+# Add user to group 'docker'
+user@localhost:/home/user/$sudo usermod -aG docker $USER
+```
+:warning: Please log out and log in again. 
+## Test setup
+Now test your installation.
+```bash=bash
+# Test installation
+user@localhost:/home/user/$docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+user@localhost:/home/user/$
+```
+You did it!
 
 ## More Information
 
