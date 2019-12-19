@@ -8,7 +8,7 @@
 ################################################################################
 
 # Test for commands used in this script
-testForCommands="sed git java"
+testForCommands="sed git"
 
 for command in $testForCommands
 do 
@@ -18,6 +18,12 @@ do
     exit 1
   fi
 done
+# Separate test for 'java' due to parameter '--help' doesn't exist
+java -version
+if [ $? -ne 0 ]; then
+  echo "Error: command 'java' is not installed!"
+  exit 1
+fi
 
 # Check if argument is given
 if [ -z "$1" ]; then
