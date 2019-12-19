@@ -99,9 +99,9 @@ dependencies {
   
   // sub modules
   // bag it
-  compile("edu.kit.ocrd:bagging:${version}")
-  compile("edu.kit.ocrd:ocrd-workspace:${version}")
-  compile("edu.kit.ocrd:ocrd-metadata:${version}")
+  compile("edu.kit.ocrd:bagging:0.2.0")
+  compile("edu.kit.ocrd:ocrd-workspace:0.2.0")
+  compile("edu.kit.ocrd:ocrd-metadata:0.3.0")
   compile("edu.kit.datamanager:service-base:0.1") { 
     exclude group: '*'    
   } 
