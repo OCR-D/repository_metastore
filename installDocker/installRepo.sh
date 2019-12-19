@@ -6,6 +6,8 @@
 # Usage:
 # bash installRepo.sh /path/to/installationdir
 ################################################################################
+# Determine base directory
+ACTUAL_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 # Test for commands used in this script
 testForCommands="sed docker"
@@ -44,12 +46,10 @@ cd "$INSTALLATION_DIRECTORY"
 INSTALLATION_DIRECTORY=`pwd`
 
 echo Install Research Data Repository into $INSTALLATION_DIRECTORY
-# Determine base directory
-BASE_DIR=$(dirname "$0")
 
-cp -r "$BASE_DIR"/docker/* "$INSTALLATION_DIRECTORY"
-cp ConfigureDocker "$INSTALLATION_DIRECTORY"
-cp setupDocker.sh "$INSTALLATION_DIRECTORY"
+cp -r "$ACTUAL_DIR"/docker/* "$INSTALLATION_DIRECTORY"
+cp "$ACTUAL_DIR"/ConfigureDocker "$INSTALLATION_DIRECTORY"
+cp "$ACTUAL_DIR"/setupDocker.sh "$INSTALLATION_DIRECTORY"
 cd "$INSTALLATION_DIRECTORY"
 chmod 777 setupDocker.sh
 
