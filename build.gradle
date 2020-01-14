@@ -14,7 +14,7 @@ plugins {
   id "com.github.kt3k.coveralls" version "2.8.1" 
   // id "de.aaschmid.cpd" version "1.0"
   id "org.owasp.dependencycheck" version "3.1.2"
-  id "com.dorongold.task-tree" version "1.3"
+  id "com.dorongold.task-tree" version "1.5"
   id "org.ajoberstar.grgit" version "2.0.1"
   // id "com.github.spotbugs" version "1.6.1"
   id "com.jfrog.bintray" version "1.7.3"
@@ -28,6 +28,8 @@ apply plugin: 'jacoco'
 group = 'edu.kit.datamanager.metastore'
 version = '0.3.0'
 
+println "Building ${name} version: ${version}"
+
 jar {
   baseName = 'metastore-service'
   version =  '0.3.0'
@@ -37,14 +39,15 @@ bootJar {
 	launchScript()
 }
 
-repositories {
+repositories { 
   mavenLocal() 
-  jcenter()
   mavenCentral()
+  jcenter()
   maven {
     url "./localRepo"
   }
 }
+
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -64,66 +67,71 @@ if (project.hasProperty('travis')) {
 } 
 
 dependencies {
-  compile("org.springframework.boot:spring-boot-starter-web")
-  compile("org.springframework.boot:spring-boot-starter-thymeleaf")
-  compile("org.springframework.boot:spring-boot-starter-security")
-  //compile("org.springframework.boot:spring-boot-starter-actuator")
-  //compile("org.springframework.boot:spring-boot-starter-data-jpa")
-  //compile("org.springframework.security:spring-security-config")
+  // Local dependencies
+  implementation "org.fzk.ipe:Tools:1.6"
+  implementation "jaxen:jaxen:1.1.6"
+  implementation "org.jdom:jdom:1.1"
+
+  implementation "org.springframework.boot:spring-boot-starter-web"
+  implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
+  implementation "org.springframework.boot:spring-boot-starter-security"
+  //implementation "org.springframework.boot:spring-boot-starter-actuator"
+  //implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+  //implementation "org.springframework.security:spring-security-config"
   
   // Swagger UI
-  compile("io.springfox:springfox-swagger2:2.9.2")
-  compile("io.springfox:springfox-swagger-ui:2.9.2")
+  implementation "io.springfox:springfox-swagger2:2.9.2"
+  implementation "io.springfox:springfox-swagger-ui:2.9.2"
   
-  compile("com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.9.1")
-  compile("com.fasterxml.jackson.module:jackson-module-afterburner:2.7.1")
-  compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.6.5")
+  implementation "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.9.1"
+  implementation "com.fasterxml.jackson.module:jackson-module-afterburner:2.7.1"
+  implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.6.5"
    
-  compile("com.fasterxml.jackson.datatype:jackson-datatype-joda:2.4.0")
+  implementation "com.fasterxml.jackson.datatype:jackson-datatype-joda:2.4.0"
    
-  compile("io.jsonwebtoken:jjwt:0.9.0")
+  implementation "io.jsonwebtoken:jjwt:0.9.0"
 
-  compile("com.github.fge:json-patch:1.9")
+  implementation "com.github.fge:json-patch:1.9"
   
   // ArangoDB
-  compile("com.arangodb:arangodb-spring-data:3.1.1")
-  compile("org.apache.httpcomponents:httpclient:4.5.1")
+  implementation "com.arangodb:arangodb-spring-data:3.1.1"
+  implementation "org.apache.httpcomponents:httpclient:4.5.1"
    
-  compile("org.apache.commons:commons-lang3:3.6")
-  compile("commons-io:commons-io:2.5")
+  implementation "org.apache.commons:commons-lang3:3.6"
+  implementation "commons-io:commons-io:2.5"
    
-  compile("org.apache.commons:commons-collections4:4.1")
+  implementation "org.apache.commons:commons-collections4:4.1"
    
-  compile("org.slf4j:slf4j-api:1.7.25")
-  compile("ch.qos.logback:logback-classic:1.2.3")
+  implementation "org.slf4j:slf4j-api:1.7.25"
+  implementation "ch.qos.logback:logback-classic:1.2.3"
   
   // sub modules
   // bag it
-  compile("edu.kit.ocrd:bagging:0.2.0")
-  compile("edu.kit.ocrd:ocrd-workspace:0.2.0")
-  compile("edu.kit.ocrd:ocrd-metadata:0.4.0")
-  compile("edu.kit.datamanager:service-base:0.1") { 
+  implementation "edu.kit.ocrd:bagging:0.2.0"
+  implementation "edu.kit.ocrd:ocrd-workspace:0.2.0"
+  implementation "edu.kit.ocrd:ocrd-metadata:0.4.0"
+  implementation ("edu.kit.datamanager:service-base:0.1") { 
     exclude group: '*'    
   } 
 
   // Stub for KIT DM 2.0
-  compile("io.swagger:swagger-java-client:1.0.1")
+  implementation "io.swagger:swagger-java-client:1.0.1"
   // Stub for KIT DM 2.0 Auth
-  compile("io.swagger:java-auth-client:1.0.0")
-  //compile("org.eclipse.persistence:javax.persistence:2.1.0")
-  compileOnly('org.projectlombok:lombok')
+  implementation "io.swagger:java-auth-client:1.0.0"
+  //implementation "org.eclipse.persistence:javax.persistence:2.1.0"
+  runtimeOnly "org.projectlombok:lombok"
 
-  testCompile("junit:junit:4.12")
+  testImplementation "junit:junit:4.12"
 
-  testCompile("org.mockito:mockito-core:2.8.9")
-  testCompile("org.powermock:powermock-module-junit4:1.7.4")
-  testCompile("org.powermock:powermock-api-mockito2:1.7.4")
+  testImplementation "org.mockito:mockito-core:2.8.9"
+  testImplementation "org.powermock:powermock-module-junit4:1.7.4"
+  testImplementation "org.powermock:powermock-api-mockito2:1.7.4"
   
   // Test 
-  testCompile("org.springframework.restdocs:spring-restdocs-mockmvc")
-  testCompile("org.springframework.boot:spring-boot-starter-test")
-  testCompile("org.springframework:spring-test")
-  testCompile("org.springframework.security:spring-security-test") 
+  testImplementation "org.springframework.restdocs:spring-restdocs-mockmvc"
+  testImplementation "org.springframework.boot:spring-boot-starter-test"
+  testImplementation "org.springframework:spring-test"
+  testImplementation "org.springframework.security:spring-security-test" 
 }
 
 
@@ -132,10 +140,10 @@ jacocoTestReport {
   reports {
     xml.enabled true
     html.enabled true
-    html.destination "${buildDir}/reports/coverage"
+    html.destination file("${buildDir}/reports/coverage")
   }
   afterEvaluate {
-    classDirectories = files(classDirectories.files.collect {
+    classDirectories.from(classDirectories.files.collect {
         fileTree(dir: it, exclude: [
                     '**/CrudRunner.class'
           ])
