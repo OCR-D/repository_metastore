@@ -26,11 +26,11 @@ apply plugin: 'io.spring.dependency-management'
 apply plugin: 'jacoco'
 
 group = 'edu.kit.datamanager.metastore'
-version = '0.2.0'
+version = '0.3.0'
 
 jar {
   baseName = 'metastore-service'
-  version =  '0.2.0'
+  version =  '0.3.0'
 }
 
 bootJar {
@@ -101,7 +101,7 @@ dependencies {
   // bag it
   compile("edu.kit.ocrd:bagging:0.2.0")
   compile("edu.kit.ocrd:ocrd-workspace:0.2.0")
-  compile("edu.kit.ocrd:ocrd-metadata:0.3.0")
+  compile("edu.kit.ocrd:ocrd-metadata:0.4.0")
   compile("edu.kit.datamanager:service-base:0.1") { 
     exclude group: '*'    
   } 
