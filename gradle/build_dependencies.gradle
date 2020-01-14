@@ -30,7 +30,7 @@ task buildBagitLibrary(type:Exec){
   dependsOn buildServiceBase
 
   workingDir 'submodules/bagging'
-  commandLine './gradlew', '-Pgroup=edu.kit.ocrd', '-Pversion=0.2.0', 'build', '-x', 'check', 'publishToMavenLocal'
+  commandLine './gradlew', '-Pgroup=edu.kit.ocrd', '-Pversion=0.2.0', '-x', 'check', 'build', 'publishToMavenLocal'
 
    standardOutput = new ByteArrayOutputStream()
 
