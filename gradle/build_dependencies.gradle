@@ -58,14 +58,14 @@ task buildOcrdWorkspace(type:Exec){
 
 /**Build the ocrd workspace validation library. 
  * This dependeny is build after the service-base dependency has been built.
- * 
+ *   dependsOn buildOcrdWorkspace
  */
 
 task buildOcrdMetadata(type:Exec){
-  dependsOn buildOcrdWorkspace
+      dependsOn checkoutDependencies
 
   workingDir 'submodules/ocrd_metadata'
-  commandLine './gradlew', 'build', 'publishToMavenLocal'
+  commandLine './gradlew', '-Ptravis', 'build', 'publishToMavenLocal'
 
    standardOutput = new ByteArrayOutputStream()
 
