@@ -21,44 +21,9 @@ task buildServiceBase(type:Exec){
    }
 }
 
-/**Build the bagit library. 
+/**Build the ocrd metadata library.
+ * It contains tools for extracting metadata from OCR-D bagIt container/workspace. 
  * This dependeny is build after the service-base dependency has been built.
- * 
- */
-
-task buildBagitLibrary(type:Exec){
-  dependsOn buildServiceBase
-
-  workingDir 'submodules/bagging'
-  commandLine './gradlew', '-Pgroup=edu.kit.ocrd', '-Pversion=0.2.0', '-x', 'check', 'build', 'publishToMavenLocal'
-
-   standardOutput = new ByteArrayOutputStream()
-
-   ext.output = {
-      return standardOutput.toString()
-   }
-}
-/**Build the ocrd workspace validation library. 
- * This dependeny is build after the service-base dependency has been built.
- * 
- */
-
-task buildOcrdWorkspace(type:Exec){
-  dependsOn buildBagitLibrary
-
-  workingDir 'submodules/ocrd_workspace'
-  commandLine './gradlew', 'build', 'publishToMavenLocal'
-
-   standardOutput = new ByteArrayOutputStream()
-
-   ext.output = {
-      return standardOutput.toString()
-   }
-}
-
-/**Build the ocrd workspace validation library. 
- * This dependeny is build after the service-base dependency has been built.
- *   dependsOn buildOcrdWorkspace
  */
 
 task buildOcrdMetadata(type:Exec){
