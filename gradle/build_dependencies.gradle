@@ -62,7 +62,7 @@ task buildOcrdWorkspace(type:Exec){
  */
 
 task buildOcrdMetadata(type:Exec){
-      dependsOn checkoutDependencies
+      dependsOn buildServiceBase
 
   workingDir 'submodules/ocrd_metadata'
   commandLine './gradlew', '-Ptravis', 'build', 'publishToMavenLocal'
