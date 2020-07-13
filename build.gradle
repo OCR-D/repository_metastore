@@ -143,10 +143,10 @@ jacocoTestReport {
     html.destination file("${buildDir}/reports/coverage")
   }
   afterEvaluate {
-    classDirectories.from(classDirectories.files.collect {
+    classDirectories.from(files(classDirectories.files.collect {
         fileTree(dir: it, exclude: [
                     '**/CrudRunner.class'
           ])
-      })
+      }))
   }
 }

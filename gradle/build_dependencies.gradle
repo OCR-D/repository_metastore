@@ -1,33 +1,16 @@
-/**
- * Build the service-base library. This is the first step required before any other library can be build.
+/**Build the ocrd metadata library.
  * There are two more options involved in here:
  * 
  * If properties 'release' or 'travis' are set, the current sources of all dependend libraries are pulled from the remote repository. 
- * 
- * Afterwards, 'gradlew build install' is executed for the service-base dependency.
- */
-task buildServiceBase(type:Exec){
-   if (project.hasProperty('release') || project.hasProperty('travis')) {
-      apply from: 'gradle/git_checkout.gradle'
-      dependsOn checkoutDependencies
-   }
-   workingDir 'submodules/service-base'
-   commandLine './gradlew', 'build', 'install'
-
-   standardOutput = new ByteArrayOutputStream()
-
-   ext.output = {
-      return standardOutput.toString()
-   }
-}
-
-/**Build the ocrd metadata library.
  * It contains tools for extracting metadata from OCR-D bagIt container/workspace. 
  * This dependeny is build after the service-base dependency has been built.
  */
 
 task buildOcrdMetadata(type:Exec){
-      dependsOn buildServiceBase
+   if (project.hasProperty('release') || project.hasProperty('travis')) {
+      apply from: 'gradle/git_checkout.gradle'
+      dependsOn checkoutDependencies
+   }
 
   workingDir 'submodules/ocrd_metadata'
   commandLine './gradlew', '-Ptravis', 'build', 'publishToMavenLocal'
